@@ -6,14 +6,11 @@ options
 PARSER_BEGIN(Parser)
 
 
+import java.io.StringReader;
 public class Parser
 {
-    public static void main(String[] args) throws ParseException {
-      	System.out.println("Write an arithmetic expression:");
-		Parser parser = new Parser(System.in);
-		SimpleNode root = parser.Expression();
+    Parser(StringReader stringReader){
 
-		root.dump("");
     }
 }
 
