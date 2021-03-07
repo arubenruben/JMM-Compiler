@@ -1,0 +1,92 @@
+options
+{
+    LOOKAHEAD=1;
+}
+
+PARSER_BEGIN(Parser)
+
+
+public class Parser
+{
+    public static void main(String[] args) throws ParseException {
+      	System.out.println("Write an arithmetic expression:");
+		Parser parser = new Parser(System.in);
+		SimpleNode root = parser.Expression();
+
+		root.dump("");
+    }
+}
+
+
+PARSER_END(Parser)
+
+SKIP :
+{
+	" " | "\r" | "\t"
+}
+
+TOKEN:
+{
+
+	< LF: "\n" >
+	|   < IMPORT: "import" >
+	|   < DOT: "." >
+	|   < SEMICOLON: ";" >
+	|   < CLASS: "class" >
+    |   < EXTENDS: "extends" >
+    |   < LCUR: "{" >
+    |   < RCUR: "}" >
+    |   < PUBLIC: "public" >
+    |   < LPAR: "(" >
+    |   < RPAR: ")" >
+    |   < COMMA: "," >
+    |   < RETURN: "return" >
+    |   < STATIC: "static" >
+    |   < VOID: "void" >
+    |   < MAIN: "main" >
+    |   < STRING: "string" >
+    |   < LREC: "[" >
+    |   < RREC: "]" >
+    |   < INT: "int" >
+    |   < BOOLEAN: "boolean" >
+    |   < IF: "if" >
+    |   < ELSE: "else" >
+    |   < WHILE: "while" >
+    |   < EQUAL: "equal" >
+    |   < AND: "&&" >
+    |   < LESS: "<" >
+    |   < GREATER: ">" >
+    |   < PLUS: "+" >
+    |   < MINUS: "-" >
+    |   < MULT : "*" >
+    |   < DIV : "/">
+    |   < LENGTH : "length">
+    |   < TRUE : "true">
+    |   < FALSE: "false">
+    |   < THIS:"this">
+    |   < NEW:"new">
+    |   < NOT:"not">
+    |   <IDENTIFIER: <LETTER> (<LETTER>|<NUMERIC>)*>
+    |   < LETTER: ["a"-"z","A"-"Z","_"]>
+    |   < NUMERIC: (["0"-"9"])+ >
+
+}
+
+
+SimpleNode Program(): {}
+{
+   <EOF>
+}
+
+/*
+void ImportDeclaration(): {}
+{
+
+}
+
+void ClassDeclaration(): {}
+{
+
+}
+
+ */
