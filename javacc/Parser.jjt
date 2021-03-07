@@ -6,11 +6,13 @@ options
 PARSER_BEGIN(Parser)
 
 
-import java.io.StringReader;
+import java.io.InputStream;import java.io.StringReader;import java.util.stream.Stream;
 public class Parser
 {
-    Parser(StringReader stringReader){
-
+    public static void main(String[] args){
+        Parser parser = new Parser(System.in);
+        SimpleNode root = myCalc.Program(); // returns reference to root node
+        root.dump(""); // prints the tree on the screen
     }
 }
 
@@ -62,7 +64,7 @@ TOKEN:
     |   < FALSE: "false">
     |   < THIS:"this">
     |   < NEW:"new">
-    |   < NOT:"not">
+    |   < NOT:"!">
     |   <IDENTIFIER: <LETTER> (<LETTER>|<NUMERIC>)*>
     |   < LETTER: ["a"-"z","A"-"Z","_"]>
     |   < NUMERIC: (["0"-"9"])+ >
@@ -72,18 +74,105 @@ TOKEN:
 
 SimpleNode Program(): {}
 {
-   <EOF>
+   ImportDeclaration() ClassDeclaration() <EOF> {return jjtThis;}
 }
 
-/*
+
 void ImportDeclaration(): {}
 {
-
+       (<IMPORT> Identifier() (<DOT> Identifier())* <SEMICOLON>)*
 }
+
 
 void ClassDeclaration(): {}
 {
-
+    <CLASS> Identifier() [<EXTENDS> Identifier()]
+    <LCUR>
+         (VarDeclaration())* (MethodDeclaration())*
+    <RCUR>
 }
 
- */
+void VarDeclaration(): {}
+{
+    Type() Identifier() <SEMICOLON>
+}
+
+void Identifier(): {}
+{
+    <IDENTIFIER>
+}
+
+void IntegerLiteral(): {}
+{
+    <NUMERIC>
+}
+
+void MethodDeclaration(): {}
+{
+    <PUBLIC> Type() Identifier() <LPAR> [Type() Identifier() (<COMMA> Type() Identifier())*] <RPAR>
+    <LCUR>
+        (VarDeclaration())*
+        (Statement())*
+        <RETURN> Expression() <SEMICOLON>
+    <RCUR>
+    |
+    <PUBLIC> <STATIC> <VOID> <MAIN> <LPAR> <STRING> <LREC> <RREC> Identifier() <RPAR>
+    <LCUR>
+        (VarDeclaration())*
+        (Statement())*
+    <RCUR>
+}
+
+void Type(): {}
+{
+    <INT> <LREC> <RREC> | <BOOLEAN> | <INT> | Identifier()
+}
+
+void Statement(): {}{
+    <LCUR> (Statement())* <RCUR>
+    |
+    <IF> <LPAR> Expression() <RPAR>
+        Statement()
+    <ELSE>
+        Statement()
+    |
+    <WHILE> <LPAR> Expression() <RPAR>
+        Statement()
+    |
+    Expression() <SEMICOLON>
+    |
+    Identifier() <EQUAL> Expression() <SEMICOLON>
+    |
+    Identifier() <LREC> Expression() <RREC> <EQUAL> Expression() <SEMICOLON>
+}
+
+void Expression(): {}
+{
+    //TODO Alter precendences
+    Expression() (<AND> | <LESS> | <PLUS> | <MINUS> | <MULT> | <DIV>)
+    |
+    Expression() <LREC> Expression() <RREC>
+    |
+    Expression() <DOT> <LENGTH>
+    |
+    Expression() <DOT> Identifier() <LPAR> [Expression() (<COMMA> Expression())* ] <RPAR>
+    |
+    IntegerLiteral()
+    |
+    <TRUE>
+    |
+    <FALSE>
+    |
+    Identifier()
+    |
+    <THIS>
+    |
+    <NEW> <INT> <LREC> Expression() <RREC>
+    |
+    <NEW> Identifier() <LPAR> <RPAR>
+    |
+    <NOT> Expression()
+    |
+    <LPAR> Expression() <RPAR>
+}
+

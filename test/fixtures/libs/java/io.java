@@ -1,6 +1,6 @@
-import java.io.*;
-import java.lang.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.Vector;
 
 
 public class io {

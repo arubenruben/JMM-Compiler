@@ -1,4 +1,4 @@
-import java.util.Scanner;  // Import the Scanner class
+import java.util.Scanner;
 public class BoardBase{
 
     public static int[] playerTurn(int player){

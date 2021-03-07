@@ -1,14 +1,12 @@
-
 import pt.up.fe.comp.jmm.JmmParser;
 import pt.up.fe.comp.jmm.JmmParserResult;
 import pt.up.fe.comp.jmm.report.Report;
 
-import java.io.StringReader;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.text.ParseException;
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Main implements JmmParser {
 
@@ -16,20 +14,17 @@ public class Main implements JmmParser {
 	static JmmParserResult result = null;
 
 	public JmmParserResult parse(String jmmCode) {
-		
+		Parser parser = new Parser(new StringReader(jmmCode));
+		SimpleNode root = null; // returns reference to root node
 		try {
-		    Parser parser = new Parser(new StringReader(jmmCode));
-    		SimpleNode root = parser.Program(); // returns reference to root node
-            	
-    		root.dump(""); // prints the tree on the screen
-
-
-    	
-    		return new JmmParserResult(root, new ArrayList<Report>());
-		} catch(ParseException e) {
-			throw new RuntimeException("Error while parsing", e);
+			root = parser.Program();
+		} catch (ParseException e) {
+			e.printStackTrace();
 		}
 
+		root.dump(""); // prints the tree on the screen
+
+		return new JmmParserResult(root, new ArrayList<Report>());
 	}
 
     public static void main(String[] args) {
@@ -38,10 +33,18 @@ public class Main implements JmmParser {
             throw new RuntimeException("It's supposed to fail");
         }
 
-        Main main = new Main();
+		InputStream in = null;
 
 		try {
-			 main.parse(Files.readString(Paths.get(args[0])));
+			in = new FileInputStream(args[0]);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		Main main = new Main();
+
+		try {
+			 main.parse();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

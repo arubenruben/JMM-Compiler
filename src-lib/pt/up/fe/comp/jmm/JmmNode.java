@@ -1,9 +1,9 @@
 package pt.up.fe.comp.jmm;
 
-import java.util.List;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import java.util.List;
 
 /**
  * This interface represents a node in the Jmm AST.

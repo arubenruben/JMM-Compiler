@@ -111,7 +111,6 @@ class SimpleNode implements Node, JmmNode {
      your output uses more than one line you should override
      toString(String), otherwise overriding toString() is probably all
      you need to do. */
-  String actual = Files.readString(fileName);
     public String toString() {
         return ParserTreeConstants.jjtNodeName[id];
     }
