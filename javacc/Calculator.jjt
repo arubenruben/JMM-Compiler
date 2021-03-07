@@ -29,14 +29,56 @@ SKIP :
 
 TOKEN:
 {
-    	< INTEGER: (["0"-"9"])+ >
+    < INTEGER: (["0"-"9"])+ >
 	|   < LF: "\n" >
+	|   < IMPORT: "import" >
+	|   < DOT: "." >
+	|   < SEMICOLON: ";" >
+	|   < CLASS: "class" >
+    |   < EXTENDS: "extends" >
+    |   < LCUR: "{" >
+    |   < RCUR: "}" >
+    |   < PUBLIC: "public" >
+    |   < LPAR: "(" >
+    |   < RPAR: ")" >
+    |   < COMMA: "," >
+    |   < RETURN: "return" >
+    |   < STATIC: "static" >
+    |   < VOID: "void" >
+    |   < MAIN: "main" >
+    |   < STRING: "string" >
+    |   < LREC: "[" >
+    |   < RREC: "]" >
+    |   < INT: "int" >
+    |   < BOOLEAN: "boolean" >
+    |   < IF: "if" >
+    |   < ELSE: "else" >
+    |   < WHILE: "while" >
+    |   < EQUAL: "equal" >
+    |   < AND: "&&" >
+    |   < LESS: "<" >
+    |   < GREATER: ">" >
+    |   < PLUS: "+" >
+    |   < MINUS: "-" >
+    |   < : "*" >
+
 }
 
-SimpleNode Expression(): {}
+SimpleNode Program(): {}
 {
-   Expr1() <LF>  {return jjtThis;} // Java code inside brackets
+   ImportDeclaration() ClassDeclaration() <EOF> <LF> {return jjtThis;} // Java code inside brackets
 }
+
+void ImportDeclaration(): {}
+{
+    "import
+}
+
+void ClassDeclaration(): {}
+{
+    "import
+}
+
 
 void Expr1() #void: {}
 {
