@@ -148,31 +148,20 @@ void Statement(): {}{
 
 void Expression(): {}
 {
-    //TODO Alter precendences
-    Expression() (<AND> | <LESS> | <PLUS> | <MINUS> | <MULT> | <DIV>)
-    |
-    Expression() <LREC> Expression() <RREC>
-    |
-    Expression() <DOT> <LENGTH>
-    |
-    Expression() <DOT> Identifier() <LPAR> [Expression() (<COMMA> Expression())* ] <RPAR>
-    |
-    IntegerLiteral()
-    |
-    <TRUE>
-    |
-    <FALSE>
-    |
-    Identifier()
-    |
-    <THIS>
-    |
-    <NEW> <INT> <LREC> Expression() <RREC>
-    |
-    <NEW> Identifier() <LPAR> <RPAR>
-    |
-    <NOT> Expression()
-    |
-    <LPAR> Expression() <RPAR>
-}
+    IntegerLiteral()|<TRUE>|<FALSE>|Identifier()|<THIS>
+    |<NEW> <INT> <LREC> Expression() <RREC>
+    |<NEW> Identifier() <LPAR> <RPAR>
+    |<NOT> Expression()
+    |<LPAR> Expression() <RPAR>
 
+    ExpressionRight()
+
+}
+void ExpressionRight():{}
+{
+    (<AND> | <LESS> | <PLUS> | <MINUS> | <MULT> | <DIV>) ExpressionRight()
+    | <LREC> Expression() <RREC> ExpressionRight()
+    | <DOT> <LENGTH> ExpressionRight()
+    | <DOT> Identifier() <LPAR> [Expression() (<COMMA> Expression())* ] <RPAR> ExpressionRight()
+
+}
