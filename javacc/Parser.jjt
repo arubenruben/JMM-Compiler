@@ -95,7 +95,7 @@ void ClassDeclaration() : {}
 
 void VarDeclaration() : {}
 {
-    Type()<IDENTIFIER><SEMICOLON>
+    TypeWithIdentifier()<IDENTIFIER><SEMICOLON>
 }
 
 void MethodDeclaration() : {}
@@ -105,9 +105,9 @@ void MethodDeclaration() : {}
 }
 void ClassMethod():{}
 {
-    Type() <IDENTIFIER> <LPAR> [Type() <IDENTIFIER> (<COMMA> Type() <IDENTIFIER>)*] <RPAR>
+    TypeWithIdentifier() <IDENTIFIER> <LPAR> [TypeWithIdentifier() <IDENTIFIER> (<COMMA> TypeWithIdentifier() <IDENTIFIER>)*] <RPAR>
         <LCUR>
-            (Instructions())*
+            (Statement())*
             <RETURN> Expression() <SEMICOLON>
         <RCUR>
 
@@ -116,19 +116,18 @@ void StaticFunction():{}
 {
     <STATIC> <VOID> <MAIN> <LPAR> <STRING> <LREC> <RREC> <IDENTIFIER> <RPAR>
             <LCUR>
-                (Instructions())*
+                (Statement())*
             <RCUR>
 }
-void Instructions():{}
+
+void NativeType():{}
 {
-    LOOKAHEAD(2)
-    VarDeclaration()
-    |
-    Statement()
+    <INT> [<LREC> <RREC>] | <BOOLEAN>
 }
-void Type() : {}
+
+void TypeWithIdentifier() : {}
 {
-    <INT> [<LREC> <RREC>] | <BOOLEAN> | <IDENTIFIER>
+    NativeType() | <IDENTIFIER>
 }
 
 void Statement() : {}{
@@ -144,6 +143,8 @@ void Statement() : {}{
     |
 
     Expression() <SEMICOLON>
+
+
 }
 
 void Expression() : {}
@@ -151,7 +152,8 @@ void Expression() : {}
     (<INTEGERLITERAL>
     |<TRUE>
     |<FALSE>
-    |<IDENTIFIER>
+    |NativeType() <IDENTIFIER>
+    |<IDENTIFIER>[<IDENTIFIER>]
     |<THIS>
     |(<NEW> (ObjectInstation() | ArrayInstation()))
     |(<NOT> Expression())
