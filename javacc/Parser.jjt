@@ -139,7 +139,7 @@ void Instructions():{}
 }
 void Type() : {}
 {
-    <INT> <LREC> <RREC> | <BOOLEAN> | <INT> | <IDENTIFIER>
+    <INT> [<LREC> <RREC>] | <BOOLEAN> | <IDENTIFIER>
 }
 
 void Statement() : {}{

@@ -348,7 +348,7 @@ void Type() : {/*@bgen(jjtree) Type */
 {/*@bgen(jjtree) Type */
     try {
 /*@egen*/
-    <INT> <LREC> <RREC> | <BOOLEAN> | <INT> | <IDENTIFIER>/*@bgen(jjtree)*/
+    <INT> [<LREC> <RREC>] | <BOOLEAN> | <IDENTIFIER>/*@bgen(jjtree)*/
     } finally {
       if (jjtc000) {
         jjtree.closeNodeScope(jjtn000, true);
