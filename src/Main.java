@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+
 public class Main implements JmmParser {
 
     static String content = "";
@@ -33,38 +34,14 @@ public class Main implements JmmParser {
             throw new RuntimeException("It's supposed to fail");
         }
 
-        InputStream in = null;
-
+        String code = null;
         try {
-            in = new FileInputStream(args[0]);
-        } catch (FileNotFoundException e) {
+            code = Files.readString(Paths.get("file/" + args[0]));
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
         Main main = new Main();
-
-        String code = "package file;\n" +
-                "import io;\n" +
-                "\n" +
-                "class Fac {\n" +
-                "    public int ComputeFac(int num) {\n" +
-                "        int num_aux;\n" +
-                "        if (num < 1)\n" +
-                "            num_aux = 1;\n" +
-                "        else\n" +
-                "            num_aux = num * (this.ComputeFac(num - 1));\n" +
-                "        return num_aux;\n" +
-                "    }\n" +
-                "\n" +
-                "    public static void main(String[] args) {\n" +
-                "        io.println(new Fac().ComputeFac(10)); //assuming the existence\n" +
-                "        // of the classfile io.class\n" +
-                "        /*\n" +
-                "            adsaskdaskjdkljq2wleqkwljdq String []]@¹£¹@£12\n" +
-                "        */\n" +
-                "    }\n" +
-                "}";
-
         main.parse(code);
     }
 
