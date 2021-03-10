@@ -1,6 +1,7 @@
 import pt.up.fe.comp.jmm.JmmParser;
 import pt.up.fe.comp.jmm.JmmParserResult;
 import pt.up.fe.comp.jmm.report.Report;
+import pt.up.fe.specs.util.SpecsIo;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -36,12 +37,7 @@ public class Main implements JmmParser {
         }
 
         String code = null;
-        try {
-            code = Files.readString(Paths.get("file/" + args[0]));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        code = SpecsIo.read("file/" + args[0]);
         Main main = new Main();
         main.parse(code);
     }
