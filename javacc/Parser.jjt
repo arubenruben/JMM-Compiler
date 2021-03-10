@@ -142,13 +142,8 @@ void Statement() : {}{
     <WHILE> <LPAR> Expression() <RPAR>
         Statement()
     |
-    LOOKAHEAD(2)
+
     Expression() <SEMICOLON>
-    |
-    LOOKAHEAD(2)
-    <IDENTIFIER> <EQUAL> Expression() <SEMICOLON>
-    |
-    <IDENTIFIER> <LREC> Expression() <RREC> <EQUAL> Expression() <SEMICOLON>
 }
 
 void Expression() : {}
@@ -160,7 +155,8 @@ void Expression() : {}
     |<THIS>
     |(<NEW> (ObjectInstation() | ArrayInstation()))
     |(<NOT> Expression())
-    |(<LPAR> Expression() <RPAR>))
+    |(<LPAR> Expression() <RPAR>)
+    )
 
     ExpressionRight()
 
@@ -177,14 +173,14 @@ void ObjectInstation(): {}
 }
 void ExpressionRight():{}
 {
-
     [LOOKAHEAD(2)
     (<AND> Expression()
     | <LESS> Expression()
     | <PLUS> Expression()
     | <MINUS> Expression()
     | (<MULT> | <DIV>) Expression()
-    | (<LREC> Expression() <RREC>)
+    | <EQUAL> Expression()
+    | <LREC> Expression() <RREC>[Expression()]
     | (<DOT> (<LENGTH> | <IDENTIFIER> <LPAR> [Expression() (<COMMA> Expression())* ] <RPAR>)))
     ExpressionRight()]
 }
