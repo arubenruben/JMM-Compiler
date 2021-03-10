@@ -2,14 +2,26 @@
 public interface ParserTreeConstants
 {
   public int JJTPROGRAM = 0;
-  public int JJTVOID = 1;
-  public int JJTEXPRESSIONRIGHT = 2;
+  public int JJTIMPORTDECLARATION = 1;
+  public int JJTCLASSDECLARATION = 2;
+  public int JJTVARDECLARATION = 3;
+  public int JJTMETHODDECLARATION = 4;
+  public int JJTTYPE = 5;
+  public int JJTSTATEMENT = 6;
+  public int JJTEXPRESSION = 7;
+  public int JJTEXPRESSIONRIGHT = 8;
 
 
   public String[] jjtNodeName = {
     "Program",
-    "void",
+    "ImportDeclaration",
+    "ClassDeclaration",
+    "VarDeclaration",
+    "MethodDeclaration",
+    "Type",
+    "Statement",
+    "Expression",
     "ExpressionRight",
   };
 }
-/* JavaCC - OriginalChecksum=bea20a3ffd8c870a97758971e0ca5232 (do not edit this line) */
+/* JavaCC - OriginalChecksum=763e406d9021f76ab549a36598d2a7af (do not edit this line) */

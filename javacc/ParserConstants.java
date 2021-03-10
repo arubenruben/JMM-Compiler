@@ -59,7 +59,7 @@ public interface ParserConstants {
   /** RegularExpression Id. */
   int AND = 29;
   /** RegularExpression Id. */
-  int MENOR = 30;
+  int LESS = 30;
   /** RegularExpression Id. */
   int GREATER = 31;
   /** RegularExpression Id. */
@@ -114,7 +114,7 @@ public interface ParserConstants {
     "\"static\"",
     "\"void\"",
     "\"main\"",
-    "\"string\"",
+    "\"String\"",
     "\"[\"",
     "\"]\"",
     "\"int\"",
@@ -122,7 +122,7 @@ public interface ParserConstants {
     "\"if\"",
     "\"else\"",
     "\"while\"",
-    "\"equal\"",
+    "\"=\"",
     "\"&&\"",
     "\"<\"",
     "\">\"",

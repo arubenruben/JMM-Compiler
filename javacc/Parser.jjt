@@ -45,7 +45,7 @@ TOKEN:
     |   < STATIC: "static" >
     |   < VOID: "void" >
     |   < MAIN: "main" >
-    |   < STRING: "string" >
+    |   < STRING: "String" >
     |   < LREC: "[" >
     |   < RREC: "]" >
     |   < INT: "int" >
@@ -53,9 +53,9 @@ TOKEN:
     |   < IF: "if" >
     |   < ELSE: "else" >
     |   < WHILE: "while" >
-    |   < EQUAL: "equal" >
+    |   < EQUAL: "=" >
     |   < AND: "&&" >
-    |   < MENOR: "<" >
+    |   < LESS: "<" >
     |   < GREATER: ">" >
     |   < PLUS: "+" >
     |   < MINUS: "-" >
@@ -80,24 +80,24 @@ SimpleNode Program(): {}
 }
 
 
-void ImportDeclaration() #void: {}
+void ImportDeclaration() : {}
 {
     (<IMPORT> <IDENTIFIER> (<DOT> <IDENTIFIER>)* <SEMICOLON>)*
 }
 
 
-void ClassDeclaration() #void: {}
+void ClassDeclaration() : {}
 {
     <CLASS> <IDENTIFIER> [<EXTENDS> <IDENTIFIER>]
     <LCUR>(VarDeclaration())* (MethodDeclaration())*<RCUR>
 }
 
-void VarDeclaration() #void: {}
+void VarDeclaration() : {}
 {
     Type() <IDENTIFIER> <SEMICOLON>
 }
 
-void MethodDeclaration() #void: {}
+void MethodDeclaration() : {}
 {
     <PUBLIC> Type() <IDENTIFIER> <LPAR> [Type() <IDENTIFIER> (<COMMA> Type() <IDENTIFIER>)*] <RPAR>
     <LCUR>
@@ -113,12 +113,12 @@ void MethodDeclaration() #void: {}
     <RCUR>
 }
 
-void Type() #void: {}
+void Type() : {}
 {
     <INT> <LREC> <RREC> | <BOOLEAN> | <INT> | <IDENTIFIER>
 }
 
-void Statement() #void: {}{
+void Statement() : {}{
     <LCUR> (Statement())* <RCUR>
     |
     <IF> <LPAR> Expression() <RPAR>
@@ -136,22 +136,27 @@ void Statement() #void: {}{
     <IDENTIFIER> <LREC> Expression() <RREC> <EQUAL> Expression() <SEMICOLON>
 }
 
-void Expression() #void: {}
+void Expression() : {}
 {
-    <INTEGERLITERAL>|<TRUE>|<FALSE>|<IDENTIFIER>|<THIS>
-    |<NEW> <INT> <LREC> Expression() <RREC>
-    |<NEW> <IDENTIFIER> <LPAR> <RPAR>
-    |<NOT> Expression()
-    |<LPAR> Expression() <RPAR>
+    (<INTEGERLITERAL>
+    |<TRUE>
+    |<FALSE>
+    |<IDENTIFIER>
+    |<THIS>
+    |(<NEW> <INT> <LREC> Expression() <RREC>)
+    |(<NEW> <IDENTIFIER> <LPAR> <RPAR>)
+    |(<NOT> Expression())
+    |(<LPAR> Expression() <RPAR>))
 
     ExpressionRight()
 
 }
 void ExpressionRight():{}
 {
-    (<AND> | <MENOR> | <PLUS> | <MINUS> | <MULT> | <DIV>) ExpressionRight()
-    | <LREC> Expression() <RREC> ExpressionRight()
-    | <DOT> <LENGTH> ExpressionRight()
-    | <DOT> <IDENTIFIER> <LPAR> [Expression() (<COMMA> Expression())* ] <RPAR> ExpressionRight()
+    [(((<AND> | <LESS> | <PLUS> | <MINUS> | <MULT> | <DIV>) Expression())
+    | (<LREC> Expression() <RREC>)
+    | (<DOT> <LENGTH>)
+    | (<DOT> <IDENTIFIER> <LPAR> [Expression() (<COMMA> Expression())* ] <RPAR>))
+    ExpressionRight()]
 
 }
