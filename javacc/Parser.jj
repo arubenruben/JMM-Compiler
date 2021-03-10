@@ -185,7 +185,7 @@ void VarDeclaration() : {/*@bgen(jjtree) VarDeclaration */
 {/*@bgen(jjtree) VarDeclaration */
     try {
 /*@egen*/
-    Type() <IDENTIFIER> <SEMICOLON>/*@bgen(jjtree)*/
+    Type()<IDENTIFIER><SEMICOLON>/*@bgen(jjtree)*/
     } catch (Throwable jjte000) {
       if (jjtc000) {
         jjtree.clearNodeScope(jjtn000);
@@ -249,10 +249,9 @@ void ClassMethod():{/*@bgen(jjtree) ClassMethod */
 /*@egen*/
     Type() <IDENTIFIER> <LPAR> [Type() <IDENTIFIER> (<COMMA> Type() <IDENTIFIER>)*] <RPAR>
         <LCUR>
-            (VarDeclaration())*
-            (Statement())*
+            (Instructions())*
             <RETURN> Expression() <SEMICOLON>
-    <RCUR>/*@bgen(jjtree)*/
+        <RCUR>/*@bgen(jjtree)*/
     } catch (Throwable jjte000) {
       if (jjtc000) {
         jjtree.clearNodeScope(jjtn000);
@@ -285,9 +284,8 @@ void StaticFunction():{/*@bgen(jjtree) StaticFunction */
 /*@egen*/
     <STATIC> <VOID> <MAIN> <LPAR> <STRING> <LREC> <RREC> <IDENTIFIER> <RPAR>
             <LCUR>
-                (VarDeclaration())*
-                (Statement())*
-    <RCUR>/*@bgen(jjtree)*/
+                (Instructions())*
+            <RCUR>/*@bgen(jjtree)*/
     } catch (Throwable jjte000) {
       if (jjtc000) {
         jjtree.clearNodeScope(jjtn000);
@@ -309,7 +307,39 @@ void StaticFunction():{/*@bgen(jjtree) StaticFunction */
     }
 /*@egen*/
 }
-
+void Instructions():{/*@bgen(jjtree) Instructions */
+  SimpleNode jjtn000 = new SimpleNode(JJTINSTRUCTIONS);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+/*@egen*/}
+{/*@bgen(jjtree) Instructions */
+    try {
+/*@egen*/
+    LOOKAHEAD(2)
+    VarDeclaration()
+    |
+    Statement()/*@bgen(jjtree)*/
+    } catch (Throwable jjte000) {
+      if (jjtc000) {
+        jjtree.clearNodeScope(jjtn000);
+        jjtc000 = false;
+      } else {
+        jjtree.popNode();
+      }
+      if (jjte000 instanceof RuntimeException) {
+        throw (RuntimeException)jjte000;
+      }
+      if (jjte000 instanceof ParseException) {
+        throw (ParseException)jjte000;
+      }
+      throw (Error)jjte000;
+    } finally {
+      if (jjtc000) {
+        jjtree.closeNodeScope(jjtn000, true);
+      }
+    }
+/*@egen*/
+}
 void Type() : {/*@bgen(jjtree) Type */
   SimpleNode jjtn000 = new SimpleNode(JJTTYPE);
   boolean jjtc000 = true;

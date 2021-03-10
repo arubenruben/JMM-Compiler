@@ -8,10 +8,11 @@ public interface ParserTreeConstants
   public int JJTMETHODDECLARATION = 4;
   public int JJTCLASSMETHOD = 5;
   public int JJTSTATICFUNCTION = 6;
-  public int JJTTYPE = 7;
-  public int JJTSTATEMENT = 8;
-  public int JJTEXPRESSION = 9;
-  public int JJTEXPRESSIONRIGHT = 10;
+  public int JJTINSTRUCTIONS = 7;
+  public int JJTTYPE = 8;
+  public int JJTSTATEMENT = 9;
+  public int JJTEXPRESSION = 10;
+  public int JJTEXPRESSIONRIGHT = 11;
 
 
   public String[] jjtNodeName = {
@@ -22,10 +23,11 @@ public interface ParserTreeConstants
     "MethodDeclaration",
     "ClassMethod",
     "StaticFunction",
+    "Instructions",
     "Type",
     "Statement",
     "Expression",
     "ExpressionRight",
   };
 }
-/* JavaCC - OriginalChecksum=b4a7fcbcf7d57ea65270414fc15060d5 (do not edit this line) */
+/* JavaCC - OriginalChecksum=46b9cf74496bd437d65e99ce5deb54b4 (do not edit this line) */

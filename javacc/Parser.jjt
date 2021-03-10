@@ -106,7 +106,7 @@ void ClassDeclaration() : {}
 
 void VarDeclaration() : {}
 {
-    Type() <IDENTIFIER> <SEMICOLON>
+    Type()<IDENTIFIER><SEMICOLON>
 }
 
 void MethodDeclaration() : {}
@@ -118,21 +118,25 @@ void ClassMethod():{}
 {
     Type() <IDENTIFIER> <LPAR> [Type() <IDENTIFIER> (<COMMA> Type() <IDENTIFIER>)*] <RPAR>
         <LCUR>
-            (VarDeclaration())*
-            (Statement())*
+            (Instructions())*
             <RETURN> Expression() <SEMICOLON>
-    <RCUR>
+        <RCUR>
 
 }
 void StaticFunction():{}
 {
     <STATIC> <VOID> <MAIN> <LPAR> <STRING> <LREC> <RREC> <IDENTIFIER> <RPAR>
             <LCUR>
-                (VarDeclaration())*
-                (Statement())*
-    <RCUR>
+                (Instructions())*
+            <RCUR>
 }
-
+void Instructions():{}
+{
+    LOOKAHEAD(2)
+    VarDeclaration()
+    |
+    Statement()
+}
 void Type() : {}
 {
     <INT> <LREC> <RREC> | <BOOLEAN> | <INT> | <IDENTIFIER>
