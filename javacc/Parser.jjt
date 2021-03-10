@@ -150,29 +150,52 @@ void Statement() : {}{
 //According to https://introcs.cs.princeton.edu/java/11precedence/
 void Expression() : {}
 {
-    ExpressionLevel4Priority()|(Expression() <EQUAL> ExpressionLevel4Priority())
+    ExpressionLevel4Priority() EqualExpression()
+}
+void EqualExpression():{}
+{
+    [<EQUAL> ExpressionLevel4Priority() EqualExpression() ]
 }
 void ExpressionLevel4Priority():{}
 {
-    ExpressionLevel11Priority()| (ExpressionLevel4Priority() <AND> ExpressionLevel11Priority())
+    ExpressionLevel11Priority() AndExpression()
+}
+void AndExpression():{}
+{
+    [<AND> ExpressionLevel11Priority() AndExpression() ]
 }
 void ExpressionLevel11Priority():{}
 {
-    ExpressionLevel12Priority()| (ExpressionLevel11Priority() (<PLUS>|<MINUS>)ExpressionLevel12Priority())
+    ExpressionLevel12Priority() AddSubExpression()
+}
+void AddSubExpression():{}
+{
+    [(<PLUS>|<MINUS>)ExpressionLevel12Priority() AddSubExpression() ]
 }
 void ExpressionLevel12Priority():{}
 {
-    ExpressionLevel13Priority()| (ExpressionLevel12Priority() (<MULT>|<DIV>) ExpressionLevel13Priority())
+    ExpressionLevel13Priority() MultDivExpression()
+}
+void MultDivExpression():{}
+{
+    [(<MULT>|<DIV>) ExpressionLevel13Priority() MultDivExpression()]
 }
 void ExpressionLevel13Priority():{}
 {
-    ExpressionLevel16Priority() |(ExpressionLevel13Priority() <NEW>ExpressionLevel14Priority() )
+    ExpressionLevel16Priority() NewExpression()
+}
+void NewExpression():{}
+{
+    [<NEW>ExpressionLevel14Priority() NewExpression() ]
 }
 void ExpressionLevel14Priority():{}
 {
-    ExpressionLevel16Priority() | (ExpressionLevel14Priority() <NOT> ExpressionLevel16Priority() )
+    ExpressionLevel16Priority() NotExpression()
 }
-
+void NotExpression():{}
+{
+    [<NOT> ExpressionLevel16Priority() NotExpression() ]
+}
 void ExpressionLevel16Priority():{}
 {
     Terminals() | (<LPAR>Expression()<RPAR>)|(<LREC>Expression()<RREC>)|(<DOT>Expression())
@@ -182,16 +205,6 @@ void Terminals():{}
     <IDENTIFIER>|<INTEGERLITERAL> |<TRUE>|<FALSE>|<THIS>
 }
 
-
-void ArrayInstation(): {}
-{
-    <INT> <LREC> Expression() <RREC>
-}
-
-void ObjectInstation(): {}
-{
-    <IDENTIFIER> <LPAR> <RPAR>
-}
 /*
 void Expression(): {}
 {
