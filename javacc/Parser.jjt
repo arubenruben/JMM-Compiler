@@ -147,22 +147,41 @@ void Statement() : {}{
 
 }
 
+//According to https://introcs.cs.princeton.edu/java/11precedence/
 void Expression() : {}
 {
-    (<INTEGERLITERAL>
-    |<TRUE>
-    |<FALSE>
-    |NativeType() <IDENTIFIER>
-    |<IDENTIFIER>[<IDENTIFIER>]
-    |<THIS>
-    |(<NEW> (ObjectInstation() | ArrayInstation()))
-    |(<NOT> Expression())
-    |(<LPAR> Expression() <RPAR>)
-    )
-
-    ExpressionRight()
-
+    ExpressionLevel4Priority()|(Expression() <EQUAL> ExpressionLevel4Priority())
 }
+void ExpressionLevel4Priority():{}
+{
+    ExpressionLevel11Priority()| (ExpressionLevel4Priority() <AND> ExpressionLevel11Priority())
+}
+void ExpressionLevel11Priority():{}
+{
+    ExpressionLevel12Priority()| (ExpressionLevel11Priority() (<PLUS>|<MINUS>)ExpressionLevel12Priority())
+}
+void ExpressionLevel12Priority():{}
+{
+    ExpressionLevel13Priority()| (ExpressionLevel12Priority() (<MULT>|<DIV>) ExpressionLevel13Priority())
+}
+void ExpressionLevel13Priority():{}
+{
+    ExpressionLevel16Priority() |(ExpressionLevel13Priority() <NEW>ExpressionLevel14Priority() )
+}
+void ExpressionLevel14Priority():{}
+{
+    ExpressionLevel16Priority() | (ExpressionLevel14Priority() <NOT> ExpressionLevel16Priority() )
+}
+
+void ExpressionLevel16Priority():{}
+{
+    Terminals() | (<LPAR>Expression()<RPAR>)|(<LREC>Expression()<RREC>)|(<DOT>Expression())
+}
+void Terminals():{}
+{
+    <IDENTIFIER>|<INTEGERLITERAL> |<TRUE>|<FALSE>|<THIS>
+}
+
 
 void ArrayInstation(): {}
 {
@@ -173,16 +192,17 @@ void ObjectInstation(): {}
 {
     <IDENTIFIER> <LPAR> <RPAR>
 }
-void ExpressionRight():{}
+/*
+void Expression(): {}
 {
-    [LOOKAHEAD(2)
-    (<AND> Expression()
-    | <LESS> Expression()
-    | <PLUS> Expression()
-    | <MINUS> Expression()
-    | (<MULT> | <DIV>) Expression()
-    | <EQUAL> Expression()
-    | <LREC> Expression() <RREC>[Expression()]
-    | (<DOT> (<LENGTH> | <IDENTIFIER> <LPAR> [Expression() (<COMMA> Expression())* ] <RPAR>)))
-    ExpressionRight()]
+    //TODO Alter precendences
+
+    Expression() <DOT> <LENGTH>
+    |
+    Expression() <DOT> Identifier() <LPAR> [Expression() (<COMMA> Expression())* ] <RPAR>
+    |
+    <NEW> <INT> <LREC> Expression() <RREC>
+    |
+    <NEW> Identifier() <LPAR> <RPAR>
 }
+ */

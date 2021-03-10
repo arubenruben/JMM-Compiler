@@ -2,6 +2,8 @@ import io;
 
 class Fac {
     public int ComputeFac(int num) {
+        int[] chars=new int[2];
+
         int num_aux;
         if (num < 1)
             num_aux = 1;
