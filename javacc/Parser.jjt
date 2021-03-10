@@ -1,6 +1,6 @@
 options
 {
-    LOOKAHEAD=2;
+    LOOKAHEAD=1;
 }
 
 PARSER_BEGIN(Parser)
@@ -111,17 +111,25 @@ void VarDeclaration() : {}
 
 void MethodDeclaration() : {}
 {
-    <PUBLIC> Type() <IDENTIFIER> <LPAR> [Type() <IDENTIFIER> (<COMMA> Type() <IDENTIFIER>)*] <RPAR>
-    <LCUR>
-        (VarDeclaration())*
-        (Statement())*
-        <RETURN> Expression() <SEMICOLON>
+    <PUBLIC>(ClassMethod() | StaticFunction() )
+
+}
+void ClassMethod():{}
+{
+    Type() <IDENTIFIER> <LPAR> [Type() <IDENTIFIER> (<COMMA> Type() <IDENTIFIER>)*] <RPAR>
+        <LCUR>
+            (VarDeclaration())*
+            (Statement())*
+            <RETURN> Expression() <SEMICOLON>
     <RCUR>
-    |
-    <PUBLIC> <STATIC> <VOID> <MAIN> <LPAR> <STRING> <LREC> <RREC> <IDENTIFIER> <RPAR>
-    <LCUR>
-        (VarDeclaration())*
-        (Statement())*
+
+}
+void StaticFunction():{}
+{
+    <STATIC> <VOID> <MAIN> <LPAR> <STRING> <LREC> <RREC> <IDENTIFIER> <RPAR>
+            <LCUR>
+                (VarDeclaration())*
+                (Statement())*
     <RCUR>
 }
 

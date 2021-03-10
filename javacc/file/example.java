@@ -11,6 +11,8 @@ class Fac {
     }
 
     public static void main(String[] args) {
+
+        io.println(2 + 3 - 5);
         io.println(new Fac().ComputeFac(10)); //assuming the existence
         // of the classfile io.class
         /*
