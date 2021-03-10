@@ -7,7 +7,28 @@ PARSER_BEGIN(Parser)
 
 public class Parser
 {
+    private int numberOfSyntaxErrors = 0;
+    public static int MAX_NUMBER_SYNTAX_ERRORS = 10;
+
+    private void handleWhileSyntaxError(ParseException e) throws ParseException{
+
+        System.out.println(e.toString());
+
+        Token t;
+        do {
+            t = getToken(1);
+            if (t.kind == EOF || t.kind == LCUR || t.kind == IF || t.kind == WHILE)
+                break;
+            t = getNextToken();
+        } while (t.kind != RPAR);
+
+        this.numberOfSyntaxErrors++;
+        if (this.numberOfSyntaxErrors >= MAX_NUMBER_SYNTAX_ERRORS) {
+          throw new ParseException("Parser caught the maximum amount of errors (" + MAX_NUMBER_SYNTAX_ERRORS + " errors).");
+        }
+    }
 }
+
 
 PARSER_END(Parser)
 
@@ -77,6 +98,9 @@ TOKEN:
 
 SimpleNode Program(): {}
 {
+    {
+        this.numberOfSyntaxErrors = 0;
+    }
     ImportDeclaration() ClassDeclaration() <EOF> {return jjtThis;}
 }
 
@@ -139,8 +163,7 @@ void Statement() : {}{
     <ELSE>
         Statement()
     |
-    <WHILE> <LPAR> Expression() <RPAR>
-        Statement()
+    WhileBlock()
     |
     LOOKAHEAD(2)
     Expression() <SEMICOLON>
@@ -149,6 +172,19 @@ void Statement() : {}{
     <IDENTIFIER> <EQUAL> Expression() <SEMICOLON>
     |
     <IDENTIFIER> <LREC> Expression() <RREC> <EQUAL> Expression() <SEMICOLON>
+}
+
+void WhileBlock(): {}
+{
+
+    try {
+    <WHILE>   <LPAR> Expression() <RPAR>
+    }
+    catch (ParseException e) {
+        handleWhileSyntaxError(e);
+    }
+
+    Statement()
 }
 
 void Expression() : {}
