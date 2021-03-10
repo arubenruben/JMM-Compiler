@@ -15,7 +15,8 @@ public class Main implements JmmParser {
     static JmmParserResult result = null;
 
     public JmmParserResult parse(String jmmCode) {
-        Parser parser = new Parser(new ByteArrayInputStream(jmmCode.getBytes()));
+        //TODO: Check if this is only a error given out by the idea
+        Parser parser = new Parser(new StringReader(jmmCode));
         SimpleNode root = null; // returns reference to root node
         try {
             root = parser.Program();
