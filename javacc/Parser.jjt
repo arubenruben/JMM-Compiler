@@ -25,6 +25,18 @@ PARSER_END(Parser)
 SKIP :
 {
 	" " | "\r" | "\t" | "\n"
+	|< "//" (~["\r", "\n"])* >
+	| "/*" : WithinComment
+}
+
+<WithinComment> SKIP :
+{
+  "*/" : DEFAULT
+}
+
+<WithinComment> MORE :
+{
+  <~[]>
 }
 
 TOKEN:
