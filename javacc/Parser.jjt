@@ -79,8 +79,10 @@ SimpleNode Program(): {}
 {
     ImportDeclaration() ClassDeclaration() <EOF> {return jjtThis;}
 }
-
-
+void Type():{}
+{
+    <INT> [<LREC> <RREC>] | <BOOLEAN>| <IDENTIFIER>
+}
 void ImportDeclaration() : {}
 {
     (<IMPORT> <IDENTIFIER> (<DOT> <IDENTIFIER>)* <SEMICOLON>)*
@@ -95,7 +97,7 @@ void ClassDeclaration() : {}
 
 void VarDeclaration() : {}
 {
-    TypeWithIdentifier()<IDENTIFIER><SEMICOLON>
+    Type()<IDENTIFIER><SEMICOLON>
 }
 
 void MethodDeclaration() : {}
@@ -105,31 +107,21 @@ void MethodDeclaration() : {}
 }
 void ClassMethod():{}
 {
-    TypeWithIdentifier() <IDENTIFIER> <LPAR> [TypeWithIdentifier() <IDENTIFIER> (<COMMA> TypeWithIdentifier() <IDENTIFIER>)*] <RPAR>
-        <LCUR>
-            (Statement())*
-            <RETURN> Expression() <SEMICOLON>
-        <RCUR>
+    Type() <IDENTIFIER> <LPAR> [Type() <IDENTIFIER> (<COMMA> Type() <IDENTIFIER>)*] <RPAR><LCUR>
+        (LOOKAHEAD(2)VarDeclaration())*
+        (Statement())*
+        <RETURN> Expression() <SEMICOLON>
+    <RCUR>
 
 }
 void StaticFunction():{}
 {
-    <STATIC> <VOID> <MAIN> <LPAR> <STRING> <LREC> <RREC> <IDENTIFIER> <RPAR>
-            <LCUR>
-                (Statement())*
-            <RCUR>
+    <STATIC> <VOID> <MAIN> <LPAR> <STRING> <LREC> <RREC> <IDENTIFIER> <RPAR><LCUR>
+        (LOOKAHEAD(2)VarDeclaration())*
+        (Statement())*
+        <RETURN> Expression() <SEMICOLON>
+    <RCUR>
 }
-
-void NativeType():{}
-{
-    <INT> [<LREC> <RREC>] | <BOOLEAN>
-}
-
-void TypeWithIdentifier() : {}
-{
-    NativeType() | <IDENTIFIER>
-}
-
 void Statement() : {}{
     <LCUR> (Statement())* <RCUR>
     |
@@ -142,7 +134,14 @@ void Statement() : {}{
         Statement()
     |
 
+    LOOKAHEAD(2)
+    <IDENTIFIER> <LREC> Expression() <RREC> <EQUAL> Expression() <SEMICOLON>
+    |
+    LOOKAHEAD(2)
+    <IDENTIFIER> <EQUAL> Expression() <SEMICOLON>
+    |
     Expression() <SEMICOLON>
+
 
 
 }
@@ -150,13 +149,13 @@ void Statement() : {}{
 //According to https://introcs.cs.princeton.edu/java/11precedence/
 void Expression() : {}
 {
-    ExpressionLevel4Priority() EqualExpression()
+    ExpressionLevel9Priority() LessExpression()
 }
-void EqualExpression():{}
+void LessExpression():{}
 {
-    [<EQUAL> ExpressionLevel4Priority() EqualExpression() ]
+    [<LESS> ExpressionLevel9Priority() LessExpression() ]
 }
-void ExpressionLevel4Priority():{}
+void ExpressionLevel9Priority():{}
 {
     ExpressionLevel11Priority() AndExpression()
 }
@@ -184,6 +183,7 @@ void ExpressionLevel13Priority():{}
 {
     ExpressionLevel16Priority() NewExpression()
 }
+//TODO:DOT AND NEW MIGHT NOT BE THAT WELL//TODO:DOT AND NEW MIGHT NOT BE THAT WELL
 void NewExpression():{}
 {
     [<NEW>ExpressionLevel14Priority() NewExpression() ]
@@ -196,9 +196,10 @@ void NotExpression():{}
 {
     [<NOT> ExpressionLevel16Priority() NotExpression() ]
 }
+//TODO:DOT AND NEW MIGHT NOT BE THAT WELL
 void ExpressionLevel16Priority():{}
 {
-    Terminals() | (<LPAR>Expression()<RPAR>)|(<LREC>Expression()<RREC>)|(<DOT>Expression())
+    Terminals() | (<LPAR>Expression()<RPAR>)|(<LREC>Terminals() <RREC>)|(<DOT>Terminals() )
 }
 void Terminals():{}
 {
