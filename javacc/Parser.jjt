@@ -12,9 +12,6 @@ import java.util.stream.Stream;
 
 public class Parser
 {
-    public Parser(StringReader stringReader){
-        super();
-    }
     public static void main(String[] args) throws ParseException{
         Parser parser=new Parser(System.in);
         SimpleNode root = parser.Program(); // returns reference to root node
