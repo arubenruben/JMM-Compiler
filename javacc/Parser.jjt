@@ -108,8 +108,7 @@ void MethodDeclaration() : {}
 void ClassMethod():{}
 {
     Type() <IDENTIFIER> <LPAR> [Type() <IDENTIFIER> (<COMMA> Type() <IDENTIFIER>)*] <RPAR><LCUR>
-        (LOOKAHEAD(2)VarDeclaration())*
-        (Statement())*
+         MethodBody()
         <RETURN> Expression() <SEMICOLON>
     <RCUR>
 
@@ -117,11 +116,17 @@ void ClassMethod():{}
 void StaticFunction():{}
 {
     <STATIC> <VOID> <MAIN> <LPAR> <STRING> <LREC> <RREC> <IDENTIFIER> <RPAR><LCUR>
-        (LOOKAHEAD(2)VarDeclaration())*
-        (Statement())*
+        MethodBody()
         <RETURN> Expression() <SEMICOLON>
     <RCUR>
 }
+void MethodBody():{}
+{
+    (LOOKAHEAD(2)
+    VarDeclaration())*
+    (Statement())*
+}
+
 void Statement() : {}{
     <LCUR> (Statement())* <RCUR>
     |
@@ -133,16 +138,10 @@ void Statement() : {}{
     <WHILE> <LPAR> Expression() <RPAR>
         Statement()
     |
-
     LOOKAHEAD(2)
-    <IDENTIFIER> <LREC> Expression() <RREC> <EQUAL> Expression() <SEMICOLON>
-    |
-    LOOKAHEAD(2)
-    <IDENTIFIER> <EQUAL> Expression() <SEMICOLON>
+    <IDENTIFIER> ((<LREC> Expression() <RREC> <EQUAL> Expression())|(<EQUAL> Expression())) <SEMICOLON>
     |
     Expression() <SEMICOLON>
-
-
 
 }
 
@@ -151,57 +150,53 @@ void Expression() : {}
 {
     ExpressionLevel9Priority() LessExpression()
 }
-void LessExpression():{}
-{
-    [<LESS> ExpressionLevel9Priority() LessExpression() ]
-}
 void ExpressionLevel9Priority():{}
 {
     ExpressionLevel11Priority() AndExpression()
 }
-void AndExpression():{}
+void LessExpression():{}
 {
-    [<AND> ExpressionLevel11Priority() AndExpression() ]
+    [<LESS> ExpressionLevel9Priority() LessExpression() ]
 }
 void ExpressionLevel11Priority():{}
 {
     ExpressionLevel12Priority() AddSubExpression()
 }
-void AddSubExpression():{}
+void AndExpression():{}
 {
-    [(<PLUS>|<MINUS>)ExpressionLevel12Priority() AddSubExpression() ]
+    [<AND> ExpressionLevel11Priority() AndExpression() ]
 }
 void ExpressionLevel12Priority():{}
 {
     ExpressionLevel14Priority() MultDivExpression()
 }
-void MultDivExpression():{}
+void AddSubExpression():{}
 {
-    [(<MULT>|<DIV>) ExpressionLevel14Priority() MultDivExpression()]
+    [(<PLUS>|<MINUS>)ExpressionLevel12Priority() AddSubExpression() ]
 }
-
 void ExpressionLevel14Priority():{}
 {
     ExpressionLevel16_1Priority() NotExpression()
 }
-
+void MultDivExpression():{}
+{
+    [(<MULT>|<DIV>) ExpressionLevel14Priority() MultDivExpression()]
+}
 void NotExpression():{}
 {
     [<NOT> ExpressionLevel16_1Priority() NotExpression() ]
 }
-
-void DotExpression():{}
+void ExpressionLevel16Priority():{}
 {
-    [<DOT>(<LENGTH>|(<IDENTIFIER><LPAR>[Expression() (<COMMA> Expression())* ] <RPAR> )) DotExpression() ]
+    Terminals() | (<LPAR>Expression()<RPAR>) | (<LREC>Expression() <RREC>)
 }
 void ExpressionLevel16_1Priority():{}
 {
     ExpressionLevel16Priority() DotExpression()
 }
-
-void ExpressionLevel16Priority():{}
+void DotExpression():{}
 {
-    Terminals() | (<LPAR>Expression()<RPAR>) | (<LREC>Expression() <RREC>)
+    [<DOT>(<LENGTH>|(<IDENTIFIER><LPAR>[Expression() (<COMMA> Expression())* ] <RPAR> )) DotExpression() ]
 }
 void Terminals():{}
 {
