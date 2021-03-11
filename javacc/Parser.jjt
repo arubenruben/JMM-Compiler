@@ -151,25 +151,25 @@ SimpleNode Program(): {}
     }
     ImportDeclaration() ClassDeclaration() <EOF> {return jjtThis;}
 }
-void Type():{}
+void Type() #void:{}
 {
-    <INT> [<LREC> <RREC>] | <BOOLEAN>| <IDENTIFIER>
+    <INT> [<LREC> <RREC>] | <BOOLEAN>| Identifier()
 }
 void ImportDeclaration() : {}
 {
-    (<IMPORT> <IDENTIFIER> (<DOT> <IDENTIFIER>)* <SEMICOLON>)*
+    (<IMPORT> Identifier() (<DOT> Identifier())* <SEMICOLON>)*
 }
 
 
 void ClassDeclaration() : {}
 {
-    <CLASS> <IDENTIFIER> [<EXTENDS> <IDENTIFIER>]
+    <CLASS> Identifier() [<EXTENDS> Identifier()]
     <LCUR>(VarDeclaration())* (MethodDeclaration())*<RCUR>
 }
 
 void VarDeclaration() : {}
 {
-    Type()<IDENTIFIER><SEMICOLON>
+    Type()Identifier()<SEMICOLON>
 }
 
 void MethodDeclaration() : {}
@@ -177,51 +177,63 @@ void MethodDeclaration() : {}
     <PUBLIC>(ClassMethod() | StaticFunction() )
 
 }
-void ClassMethod():{}
+void ClassMethod()#void:{}
 {
-    Type() <IDENTIFIER> <LPAR> [Type() <IDENTIFIER> (<COMMA> Type() <IDENTIFIER>)*] <RPAR><LCUR>
+    Type() Identifier() <LPAR> [Type() Identifier() (<COMMA> Type() Identifier())*] <RPAR><LCUR>
          MethodBody()
         <RETURN> Expression() <SEMICOLON>
     <RCUR>
 
 }
-void StaticFunction():{}
+void StaticFunction()#void:{}
 {
-    <STATIC> <VOID> <MAIN> <LPAR> <STRING> <LREC> <RREC> <IDENTIFIER> <RPAR><LCUR>
+    <STATIC> <VOID> <MAIN> <LPAR> <STRING> <LREC> <RREC> Identifier() <RPAR><LCUR>
         MethodBody()
         <RETURN> Expression() <SEMICOLON>
     <RCUR>
 }
-void MethodBody():{}
+void MethodBody()#void:{}
 {
     (LOOKAHEAD(2)
     VarDeclaration())*
     (Statement())*
 }
 
-void Statement() : {}{
-    <LCUR> (Statement())* <RCUR>
+void Statement() #void: {}{
+    BlockStatement()
     |
-    <IF> <LPAR> Expression() <RPAR>
-        Statement()
-    <ELSE>
-        Statement()
+    IfStatement()
     |
-    WhileBlock()
+    WhileStatement()
     |
     LOOKAHEAD(2)
-    <IDENTIFIER> ((<LREC> Expression() <RREC> <EQUAL> Expression())|(<EQUAL> Expression())) <SEMICOLON>
+    AttributionStatement()
     |
     Expression() <SEMICOLON>
 
 }
+void BlockStatement():{}
+{
+    <LCUR> (Statement())* <RCUR> #BlockScope
+}
+void IfStatement():{}
+{
+    <IF> <LPAR> Expression() <RPAR>
+            Statement()
+        <ELSE>
+    Statement()
+}
+void AttributionStatement():{}
+{
+    Identifier() ((<LREC> Expression() <RREC> <EQUAL> Expression())|(<EQUAL> Expression())) <SEMICOLON>
+}
 
 //According to https://introcs.cs.princeton.edu/java/11precedence/
-void WhileBlock(): {}
+void WhileStatement()#While: {}
 {
 
     try {
-    <WHILE>   <LPAR> Expression() <RPAR>
+    <WHILE> <LPAR> Expression() <RPAR>
     }
     catch (ParseException e) {
         handleWhileSyntaxError(e);
@@ -234,64 +246,77 @@ void Expression() : {}
 {
     ExpressionLevel9Priority() LessExpression()
 }
-void ExpressionLevel9Priority():{}
+void ExpressionLevel9Priority()#void:{}
 {
     ExpressionLevel11Priority() AndExpression()
 }
-void LessExpression():{}
+void LessExpression()#void:{}
 {
-    [<LESS> ExpressionLevel9Priority() LessExpression() ]
+    [<LESS> ExpressionLevel9Priority() LessExpression() #Less(2) ]
 }
-void ExpressionLevel11Priority():{}
+void ExpressionLevel11Priority()#void:{}
 {
     ExpressionLevel12Priority() AddSubExpression()
 }
-void AndExpression():{}
+void AndExpression()#void:{}
 {
-    [<AND> ExpressionLevel11Priority() AndExpression() ]
+    [<AND> ExpressionLevel11Priority() AndExpression() #And(2) ]
 }
-void ExpressionLevel12Priority():{}
+void ExpressionLevel12Priority()#void:{}
 {
     ExpressionLevel14Priority() MultDivExpression()
 }
-void AddSubExpression():{}
+void AddSubExpression()#void:{}
 {
-    [(<PLUS>|<MINUS>)ExpressionLevel12Priority() AddSubExpression() ]
+    [
+    (<PLUS>ExpressionLevel12Priority()) #Add(2)
+    |
+    <MINUS>ExpressionLevel12Priority() #Sub(2)
+    AddSubExpression()]
 }
-void ExpressionLevel14Priority():{}
+void ExpressionLevel14Priority()#void:{}
 {
     ExpressionLevel16_1Priority() NotExpression()
 }
-void MultDivExpression():{}
+void MultDivExpression()#void:{}
 {
-    [(<MULT>|<DIV>) ExpressionLevel14Priority() MultDivExpression()]
+    [
+    (<MULT>ExpressionLevel14Priority() #Mult(2)
+    |<DIV> ExpressionLevel14Priority()) #Div(2)
+    MultDivExpression()]
 }
-void NotExpression():{}
+void NotExpression()#void:{}
 {
-    [<NOT> ExpressionLevel16_1Priority() NotExpression() ]
+    [<NOT> ExpressionLevel16_1Priority() NotExpression() #Not(1)]
 }
-void ExpressionLevel16Priority():{}
+void ExpressionLevel16Priority()#void:{}
 {
     Terminals() | (<LPAR>Expression()<RPAR>) | (<LREC>Expression() <RREC>)
 }
-void ExpressionLevel16_1Priority():{}
+void ExpressionLevel16_1Priority()#void:{}
 {
     ExpressionLevel16Priority() DotExpression()
 }
-void DotExpression():{}
+void DotExpression()#void:{}
 {
     [<DOT>(<LENGTH>|(<IDENTIFIER><LPAR>[Expression() (<COMMA> Expression())* ] <RPAR> )) DotExpression() ]
 }
-void Terminals():{}
+void Terminals()#void:{}
 {
-    <IDENTIFIER>|<INTEGERLITERAL>|<TRUE>|<FALSE>|<THIS>
+    Identifier()|<INTEGERLITERAL>#Numeric|<TRUE>#Boolean|<FALSE>#Boolean|<THIS> #This
     |
-    ExpressionNew()
+    ExpressionNew() #New
 }
-void ExpressionNew():{}
+void ExpressionNew()#void:{}
 {
     <NEW>
     [(<INT> <LREC> Expression() <RREC>)
     |
-    (<IDENTIFIER> <LPAR> <RPAR> )]
+    (Identifier() <LPAR> <RPAR> )]
 }
+
+void Identifier()#Identifier:{}
+{
+    <IDENTIFIER>
+}
+
