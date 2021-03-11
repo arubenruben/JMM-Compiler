@@ -1,6 +1,7 @@
 options
 {
     LOOKAHEAD=1;
+    MULTI = true;
 }
 
 PARSER_BEGIN(Parser)
@@ -99,8 +100,7 @@ SKIP :
 
 TOKEN:
 {
-
-	    < IMPORT: "import" >
+	< IMPORT: "import" >
 	|   < DOT: "." >
 	|   < SEMICOLON: ";" >
 	|   < CLASS: "class" >
@@ -146,47 +146,58 @@ TOKEN:
 
 SimpleNode Program(): {}
 {
-    {
-        this.numberOfSyntaxErrors = 0;
-    }
+    { this.numberOfSyntaxErrors = 0; }
     ImportDeclaration() ClassDeclaration() <EOF> {return jjtThis;}
+}
+void ImportDeclaration() #void : {}
+{
+    (Import())*
+}
+void Import() #Import:{Token t;}
+{
+    <IMPORT>
+        ImportPath()
+    <SEMICOLON>
+}
+void ImportPath():{}
+{
+    Identifier()
+    (<DOT> Identifier())*
+}
+void ClassDeclaration() #ClassDeclaration: {Token t;}
+{
+    <CLASS> t= <IDENTIFIER> {jjtThis.value=t.image;}
+     [<EXTENDS> t=<IDENTIFIER> {jjtThis.value=t.image;} #Extends]
+    <LCUR>(VarDeclaration())* (MethodDeclaration())*<RCUR>
 }
 void Type() #Type:{}
 {
     <INT> [<LREC> <RREC>] | <BOOLEAN>| Identifier()
 }
-void ImportDeclaration() #Import : {}
+void VarDeclaration() #VarDeclaration: {Token t;}
 {
-    (<IMPORT> Identifier() (<DOT> Identifier())* <SEMICOLON>)*
+    Type() t=<IDENTIFIER> {jjtThis.value=t.image;}<SEMICOLON>
 }
-
-void ClassDeclaration() #ClassDeclaration: {}
-{
-    <CLASS> Identifier() [<EXTENDS> Identifier()]
-    <LCUR>(VarDeclaration())* (MethodDeclaration())*<RCUR>
-}
-
-void VarDeclaration() #VarDeclaration: {}
-{
-    Type()Identifier()<SEMICOLON>
-}
-
-void MethodDeclaration() #MethodDeclaration : {}
+void MethodDeclaration() #void : {}
 {
     <PUBLIC>(ClassMethod() | StaticMethod() )
 
 }
-void ClassMethod()#ClassMethod:{}
+void ClassMethod()#ClassMethod:{Token t;}
 {
-    Type() Identifier() <LPAR> [Type() Identifier() (<COMMA> Type() Identifier())*] <RPAR><LCUR>
+    Type() t=<IDENTIFIER> {jjtThis.value=t.image;} <LPAR>ClassMethodParameters()<RPAR> <LCUR>
          MethodBody()
         <RETURN> Expression() <SEMICOLON>
     <RCUR>
 
 }
-void StaticMethod()#StaticMethod:{}
+void ClassMethodParameters() #ClassMethodParameters:{}
 {
-    <STATIC> <VOID> <MAIN> <LPAR> <STRING> <LREC> <RREC> Identifier() <RPAR><LCUR>
+    [Type() Identifier() (<COMMA> Type() Identifier())*]
+}
+void StaticMethod()#StaticMethod:{Token t;}
+{
+    <STATIC> <VOID> <MAIN> <LPAR> <STRING> <LREC> <RREC> t=<IDENTIFIER> {jjtThis.value=t.image;} <RPAR><LCUR>
         MethodBody()
         <RETURN> Expression() <SEMICOLON>
     <RCUR>
@@ -197,7 +208,6 @@ void MethodBody()#void:{}
     VarDeclaration())*
     (Statement())*
 }
-
 void Statement() #void: {}{
     BlockStatement()
     |
@@ -211,18 +221,18 @@ void Statement() #void: {}{
     Expression() <SEMICOLON>
 
 }
-void BlockStatement():{}
+void BlockStatement() #void:{}
 {
-    <LCUR> (Statement())* <RCUR> #BlockScope
+    <LCUR> (Statement())* <RCUR>
 }
 void IfStatement():{}
 {
     <IF> <LPAR> Expression() <RPAR>
-            Statement()
-        <ELSE>
-    Statement()
+        Statement()
+    <ELSE>
+        Statement()
 }
-void AttributionStatement():{}
+void AttributionStatement()#Attribution:{}
 {
     Identifier() ((<LREC> Expression() <RREC> <EQUAL> Expression())|(<EQUAL> Expression())) <SEMICOLON>
 }
@@ -238,7 +248,6 @@ void WhileStatement()#While: {}
     }
     Statement()
 }
-
 void Expression() #void : {}
 {
     ExpressionLevel9Priority() LessExpression()
@@ -315,4 +324,3 @@ void Identifier()#Identifier:{}
 {
     <IDENTIFIER>
 }
-
