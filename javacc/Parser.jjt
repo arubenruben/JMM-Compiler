@@ -1,6 +1,7 @@
 options
 {
     LOOKAHEAD=1;
+    MULTI = true;
 }
 
 PARSER_BEGIN(Parser)
@@ -99,8 +100,7 @@ SKIP :
 
 TOKEN:
 {
-
-	    < IMPORT: "import" >
+	< IMPORT: "import" >
 	|   < DOT: "." >
 	|   < SEMICOLON: ";" >
 	|   < CLASS: "class" >
@@ -146,129 +146,181 @@ TOKEN:
 
 SimpleNode Program(): {}
 {
-    {
-        this.numberOfSyntaxErrors = 0;
-    }
+    { this.numberOfSyntaxErrors = 0; }
     ImportDeclaration() ClassDeclaration() <EOF> {return jjtThis;}
 }
-
-
-void ImportDeclaration() : {}
+void ImportDeclaration() #void : {}
 {
-    (<IMPORT> <IDENTIFIER> (<DOT> <IDENTIFIER>)* <SEMICOLON>)*
+    (Import())*
 }
-
-
-void ClassDeclaration() : {}
+void Import() #Import:{Token t;}
 {
-    <CLASS> <IDENTIFIER> [<EXTENDS> <IDENTIFIER>]
+    <IMPORT>
+        ImportPath()
+    <SEMICOLON>
+}
+void ImportPath():{}
+{
+    Identifier()
+    (<DOT> Identifier())*
+}
+void ClassDeclaration() #ClassDeclaration: {Token t;}
+{
+    <CLASS> t= <IDENTIFIER> {jjtThis.value=t.image;}
+     [<EXTENDS> t=<IDENTIFIER> {jjtThis.value=t.image;} #Extends]
     <LCUR>(VarDeclaration())* (MethodDeclaration())*<RCUR>
 }
-
-void VarDeclaration() : {}
+void Type() #Type:{}
 {
-    Type()<IDENTIFIER><SEMICOLON>
+    <INT> [<LREC> <RREC>] | <BOOLEAN>| Identifier()
 }
-
-void MethodDeclaration() : {}
+void VarDeclaration() #VarDeclaration: {Token t;}
 {
-    <PUBLIC>(ClassMethod() | StaticFunction() )
-
+    Type() t=<IDENTIFIER> {jjtThis.value=t.image;}<SEMICOLON>
 }
-void ClassMethod():{}
+void MethodDeclaration() #void : {}
 {
-    Type() <IDENTIFIER> <LPAR> [Type() <IDENTIFIER> (<COMMA> Type() <IDENTIFIER>)*] <RPAR>
-        <LCUR>
-            (Instructions())*
-            <RETURN> Expression() <SEMICOLON>
-        <RCUR>
+    <PUBLIC>(ClassMethod() | StaticMethod() )
 
 }
-void StaticFunction():{}
+void ClassMethod()#ClassMethod:{Token t;}
 {
-    <STATIC> <VOID> <MAIN> <LPAR> <STRING> <LREC> <RREC> <IDENTIFIER> <RPAR>
-            <LCUR>
-                (Instructions())*
-            <RCUR>
+    Type() t=<IDENTIFIER> {jjtThis.value=t.image;} <LPAR>ClassMethodParameters()<RPAR> <LCUR>
+         MethodBody()
+        <RETURN> Expression() <SEMICOLON>
+    <RCUR>
+
 }
-void Instructions():{}
+void ClassMethodParameters() #ClassMethodParameters:{}
 {
+    [Type() Identifier() (<COMMA> Type() Identifier())*]
+}
+void StaticMethod()#StaticMethod:{Token t;}
+{
+    <STATIC> <VOID> <MAIN> <LPAR> <STRING> <LREC> <RREC> t=<IDENTIFIER> {jjtThis.value=t.image;} <RPAR><LCUR>
+        MethodBody()
+        <RETURN> Expression() <SEMICOLON>
+    <RCUR>
+}
+void MethodBody()#void:{}
+{
+    (LOOKAHEAD(2)
+    VarDeclaration())*
+    (Statement())*
+}
+void Statement() #void: {}{
+    BlockStatement()
+    |
+    IfStatement()
+    |
+    WhileStatement()
+    |
     LOOKAHEAD(2)
-    VarDeclaration()
+    AttributionStatement()
     |
-    Statement()
-}
-void Type() : {}
-{
-    <INT> [<LREC> <RREC>] | <BOOLEAN> | <IDENTIFIER>
-}
+    Expression() <SEMICOLON>
 
-void Statement() : {}{
+}
+void BlockStatement() #void:{}
+{
     <LCUR> (Statement())* <RCUR>
-    |
+}
+void IfStatement():{}
+{
     <IF> <LPAR> Expression() <RPAR>
         Statement()
     <ELSE>
         Statement()
-    |
-    WhileBlock()
-    |
-    LOOKAHEAD(2)
-    Expression() <SEMICOLON>
-    |
-    LOOKAHEAD(2)
-    <IDENTIFIER> <EQUAL> Expression() <SEMICOLON>
-    |
-    <IDENTIFIER> <LREC> Expression() <RREC> <EQUAL> Expression() <SEMICOLON>
+}
+void AttributionStatement()#Attribution:{}
+{
+    Identifier() ((<LREC> Expression() <RREC> <EQUAL> Expression())|(<EQUAL> Expression())) <SEMICOLON>
 }
 
-void WhileBlock(): {}
+//According to https://introcs.cs.princeton.edu/java/11precedence/
+void WhileStatement()#While: {}
 {
-
     try {
-    <WHILE>   <LPAR> Expression() <RPAR>
+    <WHILE> <LPAR> Expression() <RPAR>
     }
     catch (ParseException e) {
         handleWhileSyntaxError(e);
     }
-
     Statement()
 }
-
-void Expression() : {}
+void Expression() #void : {}
 {
-    (<INTEGERLITERAL>
-    |<TRUE>
-    |<FALSE>
-    |<IDENTIFIER>
-    |<THIS>
-    |(<NEW> (ObjectInstation() | ArrayInstation()))
-    |(<NOT> Expression())
-    |(<LPAR> Expression() <RPAR>))
-
-    ExpressionRight()
-
+    ExpressionLevel9Priority() LessExpression()
 }
-
-void ArrayInstation(): {}
+void ExpressionLevel9Priority()#void:{}
 {
-    <INT> <LREC> Expression() <RREC>
+    ExpressionLevel11Priority() AndExpression()
 }
-
-void ObjectInstation(): {}
+void LessExpression()#void:{}
 {
-    <IDENTIFIER> <LPAR> <RPAR>
+    [<LESS> ExpressionLevel9Priority() LessExpression() #Less(2) ]
 }
-void ExpressionRight():{}
+void ExpressionLevel11Priority()#void:{}
 {
-
-    [LOOKAHEAD(2)
-    (<AND> Expression()
-    | <LESS> Expression()
-    | <PLUS> Expression()
-    | <MINUS> Expression()
-    | (<MULT> | <DIV>) Expression()
-    | (<LREC> Expression() <RREC>)
-    | (<DOT> (<LENGTH> | <IDENTIFIER> <LPAR> [Expression() (<COMMA> Expression())* ] <RPAR>)))
-    ExpressionRight()]
+    ExpressionLevel12Priority() AddSubExpression()
+}
+void AndExpression()#void:{}
+{
+    [<AND> ExpressionLevel11Priority() AndExpression() #And(2) ]
+}
+void ExpressionLevel12Priority()#void:{}
+{
+    ExpressionLevel14Priority() MultDivExpression()
+}
+void AddSubExpression()#void:{}
+{
+    [
+    (<PLUS>ExpressionLevel12Priority()) #Add(2)
+    |
+    <MINUS>ExpressionLevel12Priority() #Sub(2)
+    AddSubExpression()]
+}
+void ExpressionLevel14Priority()#void:{}
+{
+    ExpressionLevel16_1Priority() NotExpression()
+}
+void MultDivExpression()#void:{}
+{
+    [
+    (<MULT>ExpressionLevel14Priority() #Mult(2)
+    |<DIV> ExpressionLevel14Priority()) #Div(2)
+    MultDivExpression()]
+}
+void NotExpression()#void: {}
+{
+   [<NOT> ExpressionLevel16_1Priority() NotExpression() #Not(1)]
+}
+void ExpressionLevel16Priority()#void:{}
+{
+    Terminals() | (<LPAR>Expression()<RPAR>) | (<LREC>Expression() <RREC>)
+}
+void ExpressionLevel16_1Priority()#void:{}
+{
+    ExpressionLevel16Priority() DotExpression()
+}
+void DotExpression()#void:{}
+{
+    [<DOT>(<LENGTH>|(<IDENTIFIER><LPAR>[Expression() (<COMMA> Expression())* ] <RPAR> )) DotExpression() ]
+}
+void Terminals()#void:{}
+{
+    Identifier()|<INTEGERLITERAL>#Numeric|<TRUE>#Boolean|<FALSE>#Boolean|<THIS> #This
+    |
+    ExpressionNew() #New
+}
+void ExpressionNew()#void:{}
+{
+    <NEW>
+    [(<INT> <LREC> Expression() <RREC>)
+    |
+    (Identifier() <LPAR> <RPAR> )]
+}
+void Identifier()#Identifier:{}
+{
+    <IDENTIFIER>
 }
