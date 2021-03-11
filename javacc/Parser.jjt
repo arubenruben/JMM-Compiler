@@ -151,33 +151,32 @@ SimpleNode Program(): {}
     }
     ImportDeclaration() ClassDeclaration() <EOF> {return jjtThis;}
 }
-void Type() #void:{}
+void Type() #Type:{}
 {
     <INT> [<LREC> <RREC>] | <BOOLEAN>| Identifier()
 }
-void ImportDeclaration() : {}
+void ImportDeclaration() #Import : {}
 {
     (<IMPORT> Identifier() (<DOT> Identifier())* <SEMICOLON>)*
 }
 
-
-void ClassDeclaration() : {}
+void ClassDeclaration() #ClassDeclaration: {}
 {
     <CLASS> Identifier() [<EXTENDS> Identifier()]
     <LCUR>(VarDeclaration())* (MethodDeclaration())*<RCUR>
 }
 
-void VarDeclaration() : {}
+void VarDeclaration() #VarDeclaration: {}
 {
     Type()Identifier()<SEMICOLON>
 }
 
-void MethodDeclaration() : {}
+void MethodDeclaration() #MethodDeclaration : {}
 {
-    <PUBLIC>(ClassMethod() | StaticFunction() )
+    <PUBLIC>(ClassMethod() | StaticMethod() )
 
 }
-void ClassMethod()#void:{}
+void ClassMethod()#ClassMethod:{}
 {
     Type() Identifier() <LPAR> [Type() Identifier() (<COMMA> Type() Identifier())*] <RPAR><LCUR>
          MethodBody()
@@ -185,7 +184,7 @@ void ClassMethod()#void:{}
     <RCUR>
 
 }
-void StaticFunction()#void:{}
+void StaticMethod()#StaticMethod:{}
 {
     <STATIC> <VOID> <MAIN> <LPAR> <STRING> <LREC> <RREC> Identifier() <RPAR><LCUR>
         MethodBody()
@@ -231,18 +230,16 @@ void AttributionStatement():{}
 //According to https://introcs.cs.princeton.edu/java/11precedence/
 void WhileStatement()#While: {}
 {
-
     try {
     <WHILE> <LPAR> Expression() <RPAR>
     }
     catch (ParseException e) {
         handleWhileSyntaxError(e);
     }
-
     Statement()
 }
 
-void Expression() : {}
+void Expression() #void : {}
 {
     ExpressionLevel9Priority() LessExpression()
 }
@@ -285,9 +282,9 @@ void MultDivExpression()#void:{}
     |<DIV> ExpressionLevel14Priority()) #Div(2)
     MultDivExpression()]
 }
-void NotExpression()#void:{}
+void NotExpression()#void: {}
 {
-    [<NOT> ExpressionLevel16_1Priority() NotExpression() #Not(1)]
+   [<NOT> ExpressionLevel16_1Priority() NotExpression() #Not(1)]
 }
 void ExpressionLevel16Priority()#void:{}
 {
@@ -314,7 +311,6 @@ void ExpressionNew()#void:{}
     |
     (Identifier() <LPAR> <RPAR> )]
 }
-
 void Identifier()#Identifier:{}
 {
     <IDENTIFIER>
