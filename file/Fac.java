@@ -8,7 +8,7 @@ class Fac {
         else
             num_aux = num * (this.ComputeFac(num - 1));
 
-        while eee){
+        while [9911]){
         }
         return num_aux;
     }

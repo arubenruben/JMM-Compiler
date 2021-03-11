@@ -4,15 +4,63 @@ options
 }
 
 PARSER_BEGIN(Parser)
-
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Scanner;
+import java.io.FileReader;
+import java.io.FileNotFoundException;
 public class Parser
 {
     private int numberOfSyntaxErrors = 0;
     public static int MAX_NUMBER_SYNTAX_ERRORS = 10;
+    private List<String> fileLines = new ArrayList<String>();
+    private String filename;
+
+
+    private void reportSyntaxError(ParseException e){
+        String errorType = "Syntax";
+        System.out.println("------------------------------------------------");
+        System.out.println("Error Nº" + numberOfSyntaxErrors + ":");
+        System.out.println("Type of error: " + errorType);
+
+        String line = "";
+        String indicator = "";
+
+        if(!fileLines.isEmpty()){
+            line = fileLines.get(e.currentToken.next.beginLine - 1);
+            for(int i = 0; i < e.currentToken.next.beginColumn - 1; i++) {
+                if (line.charAt(i) == '\t')
+                    indicator += "\t";
+                else
+                    indicator += " ";
+            }
+            System.out.println("Error place: line " + e.currentToken.next.beginLine + " column " + indicator.length());
+            System.out.println(line);
+            indicator += "^";
+            System.out.println(indicator);
+        }
+
+        System.out.println("Found: " + e.currentToken.next);
+        System.out.print("Expected: ");
+        for (int [] expectedTokenArray : e.expectedTokenSequences){
+                for(int expectedToken : expectedTokenArray){
+                    System.out.print(e.tokenImage[expectedToken] + ",");
+                }
+        }
+        System.out.println();
+        System.out.println("------------------------------------------------");
+    }
+
+    public void setFileLines(String code){
+       Scanner s = new Scanner(code);
+       while (s.hasNext()) {
+           fileLines.add(s.nextLine());
+       }
+    }
 
     private void handleWhileSyntaxError(ParseException e) throws ParseException{
 
-        System.out.println(e.toString());
+        reportSyntaxError(e);
 
         Token t;
         do {
