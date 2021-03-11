@@ -173,50 +173,46 @@ void AddSubExpression():{}
 }
 void ExpressionLevel12Priority():{}
 {
-    ExpressionLevel13Priority() MultDivExpression()
+    ExpressionLevel14Priority() MultDivExpression()
 }
 void MultDivExpression():{}
 {
-    [(<MULT>|<DIV>) ExpressionLevel13Priority() MultDivExpression()]
+    [(<MULT>|<DIV>) ExpressionLevel14Priority() MultDivExpression()]
 }
-void ExpressionLevel13Priority():{}
-{
-    ExpressionLevel16Priority() NewExpression()
-}
-//TODO:DOT AND NEW MIGHT NOT BE THAT WELL//TODO:DOT AND NEW MIGHT NOT BE THAT WELL
-void NewExpression():{}
-{
-    [<NEW>ExpressionLevel14Priority() NewExpression() ]
-}
+
 void ExpressionLevel14Priority():{}
 {
-    ExpressionLevel16Priority() NotExpression()
+    ExpressionLevel16_1Priority() NotExpression()
 }
+
 void NotExpression():{}
 {
-    [<NOT> ExpressionLevel16Priority() NotExpression() ]
+    [<NOT> ExpressionLevel16_1Priority() NotExpression() ]
 }
-//TODO:DOT AND NEW MIGHT NOT BE THAT WELL
+
+void DotExpression():{}
+{
+    [<DOT>(<LENGTH>|(<IDENTIFIER><LPAR>[Expression() (<COMMA> Expression())* ] <RPAR> )) DotExpression() ]
+}
+void ExpressionLevel16_1Priority():{}
+{
+    ExpressionLevel16Priority() DotExpression()
+}
+
 void ExpressionLevel16Priority():{}
 {
-    Terminals() | (<LPAR>Expression()<RPAR>)|(<LREC>Terminals() <RREC>)|(<DOT>Terminals() )
+    Terminals() | (<LPAR>Expression()<RPAR>) | (<LREC>Expression() <RREC>)
 }
 void Terminals():{}
 {
-    <IDENTIFIER>|<INTEGERLITERAL> |<TRUE>|<FALSE>|<THIS>
+    <IDENTIFIER>|<INTEGERLITERAL>|<TRUE>|<FALSE>|<THIS>
+    |
+    ExpressionNew()
 }
-
-/*
-void Expression(): {}
+void ExpressionNew():{}
 {
-    //TODO Alter precendences
-
-    Expression() <DOT> <LENGTH>
+    <NEW>
+    [(<INT> <LREC> Expression() <RREC>)
     |
-    Expression() <DOT> Identifier() <LPAR> [Expression() (<COMMA> Expression())* ] <RPAR>
-    |
-    <NEW> <INT> <LREC> Expression() <RREC>
-    |
-    <NEW> Identifier() <LPAR> <RPAR>
+    (<IDENTIFIER> <LPAR> <RPAR> )]
 }
- */
