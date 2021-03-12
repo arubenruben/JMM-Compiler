@@ -260,7 +260,7 @@ void IfStatement():{}
     <ELSE>
         Statement()
 }
-void AssignmentStatement()#Assignment:{Token t;Token k;}
+void AssignmentStatement()#Assignment:{Token t;}
 {
     t=<IDENTIFIER>{jjtThis.value=t.image;} [<LREC> Expression() <RREC>] <EQUAL> Expression()  <SEMICOLON>
 }
