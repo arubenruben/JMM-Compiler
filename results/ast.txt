@@ -1,0 +1,275 @@
+{
+  "kind": "Program",
+  "attributes": {
+    "LOL": ""
+  },
+  "children": [
+    {
+      "kind": "Import",
+      "attributes": {
+        "LOL": ""
+      },
+      "children": [
+        {
+          "kind": "ImportPath",
+          "attributes": {
+            "LOL": ""
+          },
+          "children": [
+            {
+              "kind": "Identifier",
+              "attributes": {
+                "LOL": ""
+              },
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "ClassDeclaration",
+      "attributes": {
+        "LOL": ""
+      },
+      "children": [
+        {
+          "kind": "ClassMethod",
+          "attributes": {
+            "LOL": ""
+          },
+          "children": [
+            {
+              "kind": "Type",
+              "attributes": {
+                "LOL": ""
+              },
+              "children": []
+            },
+            {
+              "kind": "ClassMethodParameters",
+              "attributes": {
+                "LOL": ""
+              },
+              "children": [
+                {
+                  "kind": "Type",
+                  "attributes": {
+                    "LOL": ""
+                  },
+                  "children": []
+                },
+                {
+                  "kind": "Identifier",
+                  "attributes": {
+                    "LOL": ""
+                  },
+                  "children": []
+                }
+              ]
+            },
+            {
+              "kind": "VarDeclaration",
+              "attributes": {
+                "LOL": ""
+              },
+              "children": [
+                {
+                  "kind": "Type",
+                  "attributes": {
+                    "LOL": ""
+                  },
+                  "children": []
+                }
+              ]
+            },
+            {
+              "kind": "VarDeclaration",
+              "attributes": {
+                "LOL": ""
+              },
+              "children": [
+                {
+                  "kind": "Type",
+                  "attributes": {
+                    "LOL": ""
+                  },
+                  "children": []
+                }
+              ]
+            },
+            {
+              "kind": "Attribution",
+              "attributes": {
+                "LOL": ""
+              },
+              "children": [
+                {
+                  "kind": "Identifier",
+                  "attributes": {
+                    "LOL": ""
+                  },
+                  "children": []
+                },
+                {
+                  "kind": "New",
+                  "attributes": {
+                    "LOL": ""
+                  },
+                  "children": [
+                    {
+                      "kind": "Identifier",
+                      "attributes": {
+                        "LOL": ""
+                      },
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "kind": "Attribution",
+              "attributes": {
+                "LOL": ""
+              },
+              "children": [
+                {
+                  "kind": "Identifier",
+                  "attributes": {
+                    "LOL": ""
+                  },
+                  "children": []
+                },
+                {
+                  "kind": "Numeric",
+                  "attributes": {
+                    "LOL": ""
+                  },
+                  "children": []
+                },
+                {
+                  "kind": "Numeric",
+                  "attributes": {
+                    "LOL": ""
+                  },
+                  "children": []
+                }
+              ]
+            },
+            {
+              "kind": "IfStatement",
+              "attributes": {
+                "LOL": ""
+              },
+              "children": [
+                {
+                  "kind": "Less",
+                  "attributes": {
+                    "LOL": ""
+                  },
+                  "children": [
+                    {
+                      "kind": "Identifier",
+                      "attributes": {
+                        "LOL": ""
+                      },
+                      "children": []
+                    },
+                    {
+                      "kind": "Numeric",
+                      "attributes": {
+                        "LOL": ""
+                      },
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "kind": "Attribution",
+                  "attributes": {
+                    "LOL": ""
+                  },
+                  "children": [
+                    {
+                      "kind": "Identifier",
+                      "attributes": {
+                        "LOL": ""
+                      },
+                      "children": []
+                    },
+                    {
+                      "kind": "Numeric",
+                      "attributes": {
+                        "LOL": ""
+                      },
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "kind": "Identifier",
+                  "attributes": {
+                    "LOL": ""
+                  },
+                  "children": []
+                }
+              ]
+            },
+            {
+              "kind": "Identifier",
+              "attributes": {
+                "LOL": ""
+              },
+              "children": []
+            },
+            {
+              "kind": "While",
+              "attributes": {
+                "LOL": ""
+              },
+              "children": []
+            },
+            {
+              "kind": "Identifier",
+              "attributes": {
+                "LOL": ""
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "kind": "StaticMethod",
+          "attributes": {
+            "LOL": ""
+          },
+          "children": [
+            {
+              "kind": "VarDeclaration",
+              "attributes": {
+                "LOL": ""
+              },
+              "children": [
+                {
+                  "kind": "Type",
+                  "attributes": {
+                    "LOL": ""
+                  },
+                  "children": []
+                }
+              ]
+            },
+            {
+              "kind": "Numeric",
+              "attributes": {
+                "LOL": ""
+              },
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

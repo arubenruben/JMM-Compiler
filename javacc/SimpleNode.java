@@ -26,6 +26,8 @@ class SimpleNode implements Node, JmmNode {
   public SimpleNode(int i) {
     id = i;
     attributes = new HashMap<>();
+    attributes.put("LOL", "SDSSDASDASDASD");
+
   }
 
   public SimpleNode(Parser p, int i) {
@@ -52,7 +54,13 @@ class SimpleNode implements Node, JmmNode {
   }
 
   public List<JmmNode> getChildren() {
-    return (children == null) ? new ArrayList<>() : Arrays.asList((JmmNode[])children);
+    List<JmmNode> jmmNodeList = new ArrayList<>();
+    if (children != null) {
+      for (Node node : children) {
+        jmmNodeList.add((JmmNode) node);
+      }
+    }
+    return jmmNodeList;
   }
 
   public int getNumChildren() {
