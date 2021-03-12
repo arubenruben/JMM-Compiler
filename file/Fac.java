@@ -15,7 +15,7 @@ class Fac {
             //num_aux = num * (this.ComputeFac(num - 1));
             num_aux.test();
 
-        while dd true){
+        while (true){
 
         }
         num_aux.length;
@@ -34,6 +34,5 @@ class Fac {
         /*
             adsaskdaskjdkljq2wleqkwljdq String []]@¹£¹@£12
         */
-        return 0;
     }
 }

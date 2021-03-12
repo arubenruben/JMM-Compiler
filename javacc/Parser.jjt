@@ -248,7 +248,7 @@ void AttributionStatement()#void:{}
     Identifier() [<LREC> Expression() <RREC>] <EQUAL> Expression() <SEMICOLON>
 }
 
-void WhileStatement()#While: {}
+void WhileStatement()#void: {}
 {
     <WHILE>
     try {
