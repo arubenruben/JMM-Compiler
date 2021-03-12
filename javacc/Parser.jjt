@@ -1,6 +1,6 @@
 options
 {
-    LOOKAHEAD=1;
+    LOOKAHEAD = 1;
     MULTI = true;
 }
 
@@ -169,26 +169,35 @@ void Import() #void:{}
 }
 void ImportPath()#void:{}
 {
-    Identifier()
-    (<DOT> Identifier())*
-}
-void ClassDeclaration() #void:{}
-{
-    <CLASS> <IDENTIFIER>
-     [<EXTENDS> <IDENTIFIER>]
-    <LCUR>(VarDeclaration())* (MethodDeclaration())*<RCUR>
-}
-void Type() #void:{}
-{
-    <INT> [<LREC> <RREC>] | <BOOLEAN>| Identifier()
-}
-void Identifier()#void:{}
-{
     <IDENTIFIER>
+    (<DOT> <IDENTIFIER> )*
 }
-void VarDeclaration() #void: {}
+void ClassDeclaration() #Class :{Token t;}
 {
-    Type() <IDENTIFIER> <SEMICOLON>
+    <CLASS> t=<IDENTIFIER>{jjtThis.value=t.image;}[<EXTENDS> t=<IDENTIFIER>{jjtThis.value=t.image;} #Extends]<LCUR>
+        (VarDeclaration())*
+        (MethodDeclaration())*
+    <RCUR>
+}
+void Type() #Type:{Token t; Boolean array=false;}
+{
+    t=<BOOLEAN> {jjtThis.value=t.image;}
+    |
+    t=<IDENTIFIER>{jjtThis.value=t.image;}
+    |
+    t=<INT> [<LREC> <RREC>{array=true;}]
+    {
+        if (array)
+            jjtThis.value="["+t.image+"]";
+        else
+            {jjtThis.value=t.image;}
+    }
+
+
+}
+void VarDeclaration() #VarDeclaration: {Token t;}
+{
+    Type() t=<IDENTIFIER>{jjtThis.value=t.image;} <SEMICOLON>
 }
 void MethodDeclaration() #void : {}
 {
@@ -205,7 +214,7 @@ void ClassMethod()#void:{}
 }
 void ClassMethodParameters() #void:{}
 {
-    [Type() Identifier() (<COMMA> Type() Identifier())*]
+    [Type() <IDENTIFIER> (<COMMA> Type() <IDENTIFIER> )*]
 }
 void StaticMethod()#void:{}
 {
@@ -245,7 +254,7 @@ void IfStatement() #void:{}
 }
 void AttributionStatement()#void:{}
 {
-    Identifier() [<LREC> Expression() <RREC>] <EQUAL> Expression() <SEMICOLON>
+    <IDENTIFIER> [<LREC> Expression() <RREC>] <EQUAL> Expression() <SEMICOLON>
 }
 
 void WhileStatement()#void: {}
@@ -315,7 +324,7 @@ void ExpressionLevel15Priority()#void:{}
 }
 void DotExpression()#void:{}
 {
-    [<DOT> (<LENGTH>|(Identifier() <LPAR> [Expression() (<COMMA> Expression())* ] <RPAR>))DotExpression()]
+    [<DOT> (<LENGTH>|(<IDENTIFIER> <LPAR> [Expression() (<COMMA> Expression())* ] <RPAR>))DotExpression()]
 
 }
 void ExpressionLevel16Priority()#void:{}
@@ -325,13 +334,13 @@ void ExpressionLevel16Priority()#void:{}
 
 void Terminal()#void:{}
 {
-    Identifier()
+    <IDENTIFIER>
     |
     TermianalNonIdentifier()
     |
-    <NEW> ((<INT><LREC>Expression()<RREC>)|(Identifier() <LPAR> <RPAR>))
+    <NEW> ((<INT><LREC>Expression()<RREC>)|(<IDENTIFIER> <LPAR> <RPAR>))
 }
-void TermianalNonIdentifier()#void:{}
+void TermianalNonIdentifier() #void:{}
 {
     <INTEGERLITERAL>|<TRUE>|<FALSE>|<THIS>
 }

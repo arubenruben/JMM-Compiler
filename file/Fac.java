@@ -1,9 +1,11 @@
 import io;
 
-class Fac {
+class Fac extends Parent {
     public int ComputeFac(int num) {
         int[] chars;
         int num_aux;
+        boolean bool_test;
+        TestClass testClass;
         chars = new int[a];
         chars = new Bar();
         chars[1] = 4;

@@ -1,5 +1,82 @@
 {
   "kind": "Program",
   "attributes": {},
-  "children": []
+  "children": [
+    {
+      "kind": "Class[Fac]",
+      "attributes": {},
+      "children": [
+        {
+          "kind": "Extends[Parent]",
+          "attributes": {},
+          "children": []
+        },
+        {
+          "kind": "Type[int]",
+          "attributes": {},
+          "children": []
+        },
+        {
+          "kind": "Type[int]",
+          "attributes": {},
+          "children": []
+        },
+        {
+          "kind": "VarDeclaration[chars]",
+          "attributes": {},
+          "children": [
+            {
+              "kind": "Type[[int]]",
+              "attributes": {},
+              "children": []
+            }
+          ]
+        },
+        {
+          "kind": "VarDeclaration[num_aux]",
+          "attributes": {},
+          "children": [
+            {
+              "kind": "Type[int]",
+              "attributes": {},
+              "children": []
+            }
+          ]
+        },
+        {
+          "kind": "VarDeclaration[bool_test]",
+          "attributes": {},
+          "children": [
+            {
+              "kind": "Type[boolean]",
+              "attributes": {},
+              "children": []
+            }
+          ]
+        },
+        {
+          "kind": "VarDeclaration[testClass]",
+          "attributes": {},
+          "children": [
+            {
+              "kind": "Type[TestClass]",
+              "attributes": {},
+              "children": []
+            }
+          ]
+        },
+        {
+          "kind": "VarDeclaration[num_aux]",
+          "attributes": {},
+          "children": [
+            {
+              "kind": "Type[int]",
+              "attributes": {},
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }
