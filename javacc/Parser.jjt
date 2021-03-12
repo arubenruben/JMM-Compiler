@@ -174,6 +174,10 @@ void Type() #Type:{}
 {
     <INT> [<LREC> <RREC>] | <BOOLEAN>| Identifier()
 }
+void Identifier()#Identifier:{}
+{
+    <IDENTIFIER>
+}
 void VarDeclaration() #VarDeclaration: {Token t;}
 {
     Type() t=<IDENTIFIER> {jjtThis.value=t.image;}<SEMICOLON>
@@ -237,7 +241,6 @@ void AttributionStatement()#Attribution:{}
     Identifier() ((<LREC> Expression() <RREC> <EQUAL> Expression())|(<EQUAL> Expression())) <SEMICOLON>
 }
 
-//According to https://introcs.cs.princeton.edu/java/11precedence/
 void WhileStatement()#While: {}
 {
     try {
@@ -248,79 +251,79 @@ void WhileStatement()#While: {}
     }
     Statement()
 }
-void Expression() #void : {}
+//According to https://introcs.cs.princeton.edu/java/11precedence/
+void Expression():{}
 {
-    ExpressionLevel9Priority() LessExpression()
+    ExpressionLevel9Priority() AndExpression()
 }
-void ExpressionLevel9Priority()#void:{}
+void AndExpression():{}
 {
-    ExpressionLevel11Priority() AndExpression()
+     [<AND> #And(2)  ExpressionLevel9Priority() AndExpression()]
 }
-void LessExpression()#void:{}
+void ExpressionLevel9Priority():{}
 {
-    [<LESS> ExpressionLevel9Priority() LessExpression() #Less(2) ]
+     ExpressionLevel11Priority() LessExpression()
 }
-void ExpressionLevel11Priority()#void:{}
+void LessExpression():{}
+{
+    [<LESS> #Less(2) ExpressionLevel11Priority() LessExpression()]
+}
+void ExpressionLevel11Priority():{}
 {
     ExpressionLevel12Priority() AddSubExpression()
 }
-void AndExpression()#void:{}
+void AddSubExpression():{}
 {
-    [<AND> ExpressionLevel11Priority() AndExpression() #And(2) ]
+     [
+     <PLUS> #Add(2) ExpressionLevel12Priority() AddSubExpression()
+     |
+     <MINUS>#Sub(2) ExpressionLevel12Priority() AddSubExpression()
+     ]
 }
-void ExpressionLevel12Priority()#void:{}
+void ExpressionLevel12Priority():{}
 {
     ExpressionLevel14Priority() MultDivExpression()
 }
-void AddSubExpression()#void:{}
+
+void MultDivExpression():{}
 {
-    [
-    (<PLUS>ExpressionLevel12Priority()) #Add(2)
-    |
-    <MINUS>ExpressionLevel12Priority() #Sub(2)
-    AddSubExpression()]
+     [
+     <MULT> #Mult(2) ExpressionLevel14Priority() MultDivExpression()
+     |
+     <DIV> #Div(2) ExpressionLevel14Priority() MultDivExpression()
+     ]
 }
-void ExpressionLevel14Priority()#void:{}
+void ExpressionLevel14Priority():{}
 {
-    ExpressionLevel16_1Priority() NotExpression()
+     ExpressionLevel16Priority() NotExpression()
 }
-void MultDivExpression()#void:{}
+void NotExpression():{}
 {
-    [
-    (<MULT>ExpressionLevel14Priority() #Mult(2)
-    |<DIV> ExpressionLevel14Priority()) #Div(2)
-    MultDivExpression()]
+    [<NOT> ExpressionLevel16Priority() NotExpression() #Not(1)]
 }
-void NotExpression()#void: {}
+void ExpressionLevel16Priority():{}
 {
-   [<NOT> ExpressionLevel16_1Priority() NotExpression() #Not(1)]
+    Terminal()
 }
-void ExpressionLevel16Priority()#void:{}
+/*
+void ArrayAcessExpression():{}
 {
-    Terminals() | (<LPAR>Expression()<RPAR>) | (<LREC>Expression() <RREC>)
+
 }
-void ExpressionLevel16_1Priority()#void:{}
-{
-    ExpressionLevel16Priority() DotExpression()
-}
-void DotExpression()#void:{}
-{
-    [<DOT>(<LENGTH>|(<IDENTIFIER><LPAR>[Expression() (<COMMA> Expression())* ] <RPAR> )) DotExpression() ]
-}
-void Terminals()#void:{}
+
+ */
+void Terminal():{}
 {
     Identifier()|<INTEGERLITERAL>#Numeric|<TRUE>#Boolean|<FALSE>#Boolean|<THIS> #This
-    |
-    ExpressionNew() #New
+    //|
+    //ExpressionNew() #New
+    //|
+    //<DOT>(<LENGTH>|(<IDENTIFIER><LPAR>[Terminal() (<COMMA> Terminal() )* ] <RPAR> ))
 }
-void ExpressionNew()#void:{}
+void ExpressionNew():{}
 {
     <NEW>
     [(<INT> <LREC> Expression() <RREC>)
     |
     (Identifier() <LPAR> <RPAR> )]
-}
-void Identifier()#Identifier:{}
-{
-    <IDENTIFIER>
 }
