@@ -1,3 +1,4 @@
+import com.google.gson.JsonObject;
 import pt.up.fe.comp.jmm.JmmParser;
 import pt.up.fe.comp.jmm.JmmParserResult;
 import pt.up.fe.comp.jmm.report.Report;
@@ -6,8 +7,11 @@ import pt.up.fe.specs.util.SpecsIo;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Scanner;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 
 public class Main implements JmmParser {
@@ -33,6 +37,36 @@ public class Main implements JmmParser {
         return new JmmParserResult(root, new ArrayList<Report>());
     }
 
+    public static void writeToFile(String content, String path){
+        try {
+            FileWriter myWriter = new FileWriter(path);
+            myWriter.write(content);
+            myWriter.close();
+        } catch (IOException e) {
+            System.out.println("An error occurred writing to file");
+            e.printStackTrace();
+        }
+    }
+
+    public static JSONObject parseJSONFile(String filePath){
+        JSONParser parser = new JSONParser();
+        try {
+            Object obj = parser.parse(new FileReader(filePath));
+            // A JSON object. Key value pairs are unordered. JSONObject supports java.util.Map interface.
+            JSONObject jsonObject = (JSONObject) obj;
+            // A JSON array. JSONObject supports java.util.List interface.
+            JSONArray companyList = (JSONArray) jsonObject.get("Company List");
+            Iterator<JSONObject> iterator = companyList.iterator();
+            while (iterator.hasNext()) {
+                System.out.println(iterator.next());
+            }
+            return jsonObject;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public static void main(String[] args) {
         System.out.println("Executing with args: " + Arrays.toString(args));
         if (args[0].contains("fail")) {
@@ -43,10 +77,9 @@ public class Main implements JmmParser {
         code = SpecsIo.read("file/" + args[0]);
 
         Main main = new Main();
-        main.parse(code);
+        JmmParserResult result = main.parse(code);
+        writeToFile(result.getRootNode().toJson(), "results/ast.txt");
     }
-
-
 
 
 }
