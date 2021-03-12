@@ -48,25 +48,6 @@ public class Main implements JmmParser {
         }
     }
 
-    public static JSONObject parseJSONFile(String filePath){
-        JSONParser parser = new JSONParser();
-        try {
-            Object obj = parser.parse(new FileReader(filePath));
-            // A JSON object. Key value pairs are unordered. JSONObject supports java.util.Map interface.
-            JSONObject jsonObject = (JSONObject) obj;
-            // A JSON array. JSONObject supports java.util.List interface.
-            JSONArray companyList = (JSONArray) jsonObject.get("Company List");
-            Iterator<JSONObject> iterator = companyList.iterator();
-            while (iterator.hasNext()) {
-                System.out.println(iterator.next());
-            }
-            return jsonObject;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
     public static void main(String[] args) {
         System.out.println("Executing with args: " + Arrays.toString(args));
         if (args[0].contains("fail")) {

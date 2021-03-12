@@ -38,7 +38,9 @@ class SimpleNode implements Node, JmmNode {
     }
 
     public List<String> getAttributes() {
-        return new ArrayList<String>(attributes.keySet());
+        List<String> list = new ArrayList<>();
+        list.add("value");
+        return list;
     }
 
     public void put(String attribute, String value) {
@@ -46,7 +48,7 @@ class SimpleNode implements Node, JmmNode {
     }
 
     public String get(String attribute) {
-        return attributes.get(attribute);
+        return this.value+"";
     }
 
     public List<JmmNode> getChildren() {
