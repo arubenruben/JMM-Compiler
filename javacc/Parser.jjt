@@ -17,7 +17,6 @@ public class Parser
     private List<String> fileLines = new ArrayList<String>();
     private String filename;
 
-
     private void reportSyntaxError(ParseException e){
         String errorType = "Syntax";
         System.out.println("------------------------------------------------");
@@ -66,7 +65,7 @@ public class Parser
         Token t;
         do {
             t = getToken(1);
-            if (t.kind == EOF || t.kind == LCUR || t.kind == IF || t.kind == WHILE)
+            if (t.kind == EOF || t.kind == LCUR)
                 break;
             t = getNextToken();
         } while (t.kind != RPAR);
@@ -240,8 +239,9 @@ void AttributionStatement()#Attribution:{}
 //According to https://introcs.cs.princeton.edu/java/11precedence/
 void WhileStatement()#While: {}
 {
+    <WHILE>
     try {
-    <WHILE> <LPAR> Expression() <RPAR>
+     <LPAR> Expression() <RPAR>
     }
     catch (ParseException e) {
         handleWhileSyntaxError(e);

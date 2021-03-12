@@ -13,7 +13,12 @@ class Fac {
             num_aux;
             //num_aux = num * (this.ComputeFac(num - 1));
             num_aux.test();
+
+        while dd true){
+
+        }
         return num_aux;
+
     }
 
     public static void main(String[] args) {
@@ -24,6 +29,6 @@ class Fac {
         /*
             adsaskdaskjdkljq2wleqkwljdq String []]@¹£¹@£12
         */
-        return  num_aux;
+        return 0;
     }
 }
