@@ -78,7 +78,6 @@ public class Main implements JmmParser {
 
         Main main = new Main();
         JmmParserResult result = main.parse(code);
-
         writeToFile(result.getRootNode().toJson(), "results/ast.txt");
     }
 

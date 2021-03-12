@@ -17,11 +17,22 @@ public class Parser
     private List<String> fileLines = new ArrayList<String>();
     private String filename;
 
+    //TODO constant to be put somewhere else
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_BLACK = "\u001B[30m";
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_YELLOW = "\u001B[33m";
+    public static final String ANSI_BLUE = "\u001B[34m";
+    public static final String ANSI_PURPLE = "\u001B[35m";
+    public static final String ANSI_CYAN = "\u001B[36m";
+    public static final String ANSI_WHITE = "\u001B[37m";
+
     private void reportSyntaxError(ParseException e){
         String errorType = "Syntax";
         System.out.println("------------------------------------------------");
-        System.out.println("Error Nº" + numberOfSyntaxErrors + ":");
-        System.out.println("Type of error: " + errorType);
+        System.out.println(ANSI_RED + "Error Nº" + numberOfSyntaxErrors + ANSI_RESET);
+        System.out.println("Type of error: " + errorType + "" );
 
         String line = "";
         String indicator = "";
@@ -36,7 +47,7 @@ public class Parser
             }
             System.out.println("Error place: line " + e.currentToken.next.beginLine + " column " + indicator.length());
             System.out.println(line);
-            indicator += "^";
+            indicator += ANSI_RED + "^" + ANSI_RESET;
             System.out.println(indicator);
         }
 
