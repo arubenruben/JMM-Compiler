@@ -6,7 +6,7 @@ class Fac extends Parent {
         int num_aux;
         boolean bool_test;
         TestClass testClass;
-        chars = new int[a];
+        chars = new int[1];
         chars = new Bar();
         chars[1] = 4;
         if (num < 1 && num < 2)

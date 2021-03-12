@@ -87,19 +87,48 @@
               ]
             },
             {
-              "kind": "Identifier[a]",
+              "kind": "Assignment[chars]",
               "attributes": {},
-              "children": []
+              "children": [
+                {
+                  "kind": "New[array(int)]",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "kind": "Integer[1]",
+                      "attributes": {},
+                      "children": []
+                    }
+                  ]
+                }
+              ]
             },
             {
-              "kind": "Integer[1]",
+              "kind": "Assignment[chars]",
               "attributes": {},
-              "children": []
+              "children": [
+                {
+                  "kind": "New[Bar]",
+                  "attributes": {},
+                  "children": []
+                }
+              ]
             },
             {
-              "kind": "Integer[4]",
+              "kind": "Assignment[chars]",
               "attributes": {},
-              "children": []
+              "children": [
+                {
+                  "kind": "Integer[1]",
+                  "attributes": {},
+                  "children": []
+                },
+                {
+                  "kind": "Integer[4]",
+                  "attributes": {},
+                  "children": []
+                }
+              ]
             },
             {
               "kind": "IfStatement",
@@ -144,9 +173,15 @@
                   ]
                 },
                 {
-                  "kind": "Integer[1]",
+                  "kind": "Assignment[num_aux]",
                   "attributes": {},
-                  "children": []
+                  "children": [
+                    {
+                      "kind": "Integer[1]",
+                      "attributes": {},
+                      "children": []
+                    }
+                  ]
                 },
                 {
                   "kind": "Identifier[num_aux]",
@@ -187,36 +222,42 @@
               "children": []
             },
             {
-              "kind": "Identifier[num]",
-              "attributes": {},
-              "children": []
-            },
-            {
-              "kind": "Mult",
+              "kind": "Assignment[num_aux]",
               "attributes": {},
               "children": [
                 {
-                  "kind": "This",
+                  "kind": "Identifier[num]",
                   "attributes": {},
                   "children": []
                 },
                 {
-                  "kind": "Method[ComputeFac]",
+                  "kind": "Mult",
                   "attributes": {},
                   "children": [
                     {
-                      "kind": "Sub",
+                      "kind": "This",
+                      "attributes": {},
+                      "children": []
+                    },
+                    {
+                      "kind": "Method[ComputeFac]",
                       "attributes": {},
                       "children": [
                         {
-                          "kind": "Identifier[num]",
+                          "kind": "Sub",
                           "attributes": {},
-                          "children": []
-                        },
-                        {
-                          "kind": "Integer[1]",
-                          "attributes": {},
-                          "children": []
+                          "children": [
+                            {
+                              "kind": "Identifier[num]",
+                              "attributes": {},
+                              "children": []
+                            },
+                            {
+                              "kind": "Integer[1]",
+                              "attributes": {},
+                              "children": []
+                            }
+                          ]
                         }
                       ]
                     }
@@ -336,6 +377,11 @@
               "kind": "Method[println]",
               "attributes": {},
               "children": [
+                {
+                  "kind": "New[Fac]",
+                  "attributes": {},
+                  "children": []
+                },
                 {
                   "kind": "Method[ComputeFac]",
                   "attributes": {},

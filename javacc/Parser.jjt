@@ -260,9 +260,9 @@ void IfStatement():{}
     <ELSE>
         Statement()
 }
-void AssignmentStatement()#void:{}
+void AssignmentStatement()#Assignment:{Token t;Token k;}
 {
-    <IDENTIFIER> [<LREC> Expression() <RREC>] <EQUAL> Expression() <SEMICOLON>
+    t=<IDENTIFIER>{jjtThis.value=t.image;} [<LREC> Expression() <RREC>] <EQUAL> Expression()  <SEMICOLON>
 }
 
 void WhileStatement()#While: {}
@@ -360,7 +360,7 @@ void Terminal()#void:{Token t;}
     |
     TermianalNonIdentifier()
     |
-    <NEW> ((<INT><LREC>Expression()<RREC>)|(<IDENTIFIER> <LPAR> <RPAR>))
+    <NEW> ((<INT>{jjtThis.value="array(int)";}<LREC>Expression()<RREC>)|(t=<IDENTIFIER>{jjtThis.value=t.image;}<LPAR> <RPAR>))#New
 }
 void TermianalNonIdentifier() #void:{Token t;}
 {
