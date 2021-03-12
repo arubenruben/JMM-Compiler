@@ -208,11 +208,15 @@ void ClassMethod()#ClassMethod:{Token t;}
 {
     Type() t=<IDENTIFIER>{jjtThis.value=t.image;}<LPAR>ClassMethodParameters()<RPAR><LCUR>
          MethodBody()
-        <RETURN> Expression() <SEMICOLON>
+        ReturnInstruction()
     <RCUR>
 
 }
-void ClassMethodParameters() #ClassMethodParameters:{}
+void ReturnInstruction()#void:{}
+{
+    <RETURN> Expression() <SEMICOLON> #Return(1)
+}
+void ClassMethodParameters() #void:{}
 {
     [ClassMethodParameter() (<COMMA> ClassMethodParameter() )*]
 }
@@ -251,25 +255,21 @@ void BlockStatement() #void:{}
 }
 void IfStatement():{}
 {
-    <IF> <LPAR> Condition() <RPAR>
+    <IF> <LPAR> Expression() <RPAR>
         Statement()
     <ELSE>
         Statement()
 }
-void Condition():{}
-{
-    Expression()
-}
 void AssignmentStatement()#void:{}
 {
-    <IDENTIFIER> [<LREC> Expression() <RREC>] <EQUAL> Expression() #Assignment(2) <SEMICOLON>
+    <IDENTIFIER> [<LREC> Expression() <RREC>] <EQUAL> Expression() <SEMICOLON>
 }
 
 void WhileStatement()#While: {}
 {
     <WHILE>
     try {
-     <LPAR> Condition() <RPAR>
+     <LPAR> Expression() <RPAR>
     }
     catch (ParseException e) {
         handleWhileSyntaxError(e);
@@ -332,9 +332,23 @@ void ExpressionLevel15Priority()#void:{}
 }
 void DotExpression()#void:{}
 {
-    [<DOT> (<LENGTH>|(<IDENTIFIER> <LPAR> [Expression() (<COMMA> Expression())* ] <RPAR>))DotExpression()]
-
+    [<DOT> Method() DotExpression()]
 }
+void Method() #Method:{Token t;}
+{
+    t=<LENGTH>{jjtThis.value=t.image;}
+    |
+    (t=<IDENTIFIER>{jjtThis.value=t.image;} <LPAR> MethodParameters() <RPAR>)
+}
+void MethodParameters()#void:{}
+{
+    [Expression() (MethodParameter()) *]
+}
+void MethodParameter():{}
+{
+    <COMMA> Expression()
+}
+
 void ExpressionLevel16Priority()#void:{}
 {
     Terminal() | <LPAR>Expression()<RPAR> | <LREC>Expression()<RREC>

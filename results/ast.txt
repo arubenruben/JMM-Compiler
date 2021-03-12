@@ -21,30 +21,24 @@
               "children": []
             },
             {
-              "kind": "ClassMethodParameters",
+              "kind": "ClassMethodParameter[num]",
               "attributes": {},
               "children": [
                 {
-                  "kind": "ClassMethodParameter[num]",
+                  "kind": "Type[int]",
                   "attributes": {},
-                  "children": [
-                    {
-                      "kind": "Type[int]",
-                      "attributes": {},
-                      "children": []
-                    }
-                  ]
-                },
+                  "children": []
+                }
+              ]
+            },
+            {
+              "kind": "ClassMethodParameter[num2]",
+              "attributes": {},
+              "children": [
                 {
-                  "kind": "ClassMethodParameter[num2]",
+                  "kind": "Type[int]",
                   "attributes": {},
-                  "children": [
-                    {
-                      "kind": "Type[int]",
-                      "attributes": {},
-                      "children": []
-                    }
-                  ]
+                  "children": []
                 }
               ]
             },
@@ -71,118 +65,88 @@
               ]
             },
             {
-              "kind": "Assignment",
+              "kind": "VarDeclaration[bool_test]",
               "attributes": {},
               "children": [
                 {
-                  "kind": "VarDeclaration[bool_test]",
+                  "kind": "Type[boolean]",
                   "attributes": {},
-                  "children": [
-                    {
-                      "kind": "Type[boolean]",
-                      "attributes": {},
-                      "children": []
-                    }
-                  ]
-                },
-                {
-                  "kind": "Assignment",
-                  "attributes": {},
-                  "children": [
-                    {
-                      "kind": "VarDeclaration[testClass]",
-                      "attributes": {},
-                      "children": [
-                        {
-                          "kind": "Type[TestClass]",
-                          "attributes": {},
-                          "children": []
-                        }
-                      ]
-                    },
-                    {
-                      "kind": "Identifier[a]",
-                      "attributes": {},
-                      "children": []
-                    }
-                  ]
+                  "children": []
                 }
               ]
             },
             {
-              "kind": "Assignment",
+              "kind": "VarDeclaration[testClass]",
               "attributes": {},
               "children": [
                 {
-                  "kind": "Integer[1]",
-                  "attributes": {},
-                  "children": []
-                },
-                {
-                  "kind": "Integer[4]",
+                  "kind": "Type[TestClass]",
                   "attributes": {},
                   "children": []
                 }
               ]
+            },
+            {
+              "kind": "Identifier[a]",
+              "attributes": {},
+              "children": []
+            },
+            {
+              "kind": "Integer[1]",
+              "attributes": {},
+              "children": []
+            },
+            {
+              "kind": "Integer[4]",
+              "attributes": {},
+              "children": []
             },
             {
               "kind": "IfStatement",
               "attributes": {},
               "children": [
                 {
-                  "kind": "Assignment",
+                  "kind": "And",
                   "attributes": {},
                   "children": [
                     {
-                      "kind": "Condition",
+                      "kind": "Less",
                       "attributes": {},
                       "children": [
                         {
-                          "kind": "And",
+                          "kind": "Identifier[num]",
                           "attributes": {},
-                          "children": [
-                            {
-                              "kind": "Less",
-                              "attributes": {},
-                              "children": [
-                                {
-                                  "kind": "Identifier[num]",
-                                  "attributes": {},
-                                  "children": []
-                                },
-                                {
-                                  "kind": "Integer[1]",
-                                  "attributes": {},
-                                  "children": []
-                                }
-                              ]
-                            },
-                            {
-                              "kind": "Less",
-                              "attributes": {},
-                              "children": [
-                                {
-                                  "kind": "Identifier[num]",
-                                  "attributes": {},
-                                  "children": []
-                                },
-                                {
-                                  "kind": "Integer[2]",
-                                  "attributes": {},
-                                  "children": []
-                                }
-                              ]
-                            }
-                          ]
+                          "children": []
+                        },
+                        {
+                          "kind": "Integer[1]",
+                          "attributes": {},
+                          "children": []
                         }
                       ]
                     },
                     {
-                      "kind": "Integer[1]",
+                      "kind": "Less",
                       "attributes": {},
-                      "children": []
+                      "children": [
+                        {
+                          "kind": "Identifier[num]",
+                          "attributes": {},
+                          "children": []
+                        },
+                        {
+                          "kind": "Integer[2]",
+                          "attributes": {},
+                          "children": []
+                        }
+                      ]
                     }
                   ]
+                },
+                {
+                  "kind": "Integer[1]",
+                  "attributes": {},
+                  "children": []
                 },
                 {
                   "kind": "Identifier[num_aux]",
@@ -197,19 +161,18 @@
               "children": []
             },
             {
+              "kind": "Method[test]",
+              "attributes": {},
+              "children": []
+            },
+            {
               "kind": "While",
               "attributes": {},
               "children": [
                 {
-                  "kind": "Condition",
+                  "kind": "Boolean",
                   "attributes": {},
-                  "children": [
-                    {
-                      "kind": "Boolean",
-                      "attributes": {},
-                      "children": []
-                    }
-                  ]
+                  "children": []
                 }
               ]
             },
@@ -219,23 +182,28 @@
               "children": []
             },
             {
-              "kind": "Assignment",
+              "kind": "Method[length]",
+              "attributes": {},
+              "children": []
+            },
+            {
+              "kind": "Identifier[num]",
+              "attributes": {},
+              "children": []
+            },
+            {
+              "kind": "Mult",
               "attributes": {},
               "children": [
                 {
-                  "kind": "Identifier[num]",
+                  "kind": "This",
                   "attributes": {},
                   "children": []
                 },
                 {
-                  "kind": "Mult",
+                  "kind": "Method[ComputeFac]",
                   "attributes": {},
                   "children": [
-                    {
-                      "kind": "This",
-                      "attributes": {},
-                      "children": []
-                    },
                     {
                       "kind": "Sub",
                       "attributes": {},
@@ -262,9 +230,20 @@
               "children": []
             },
             {
-              "kind": "Identifier[num_aux]",
+              "kind": "Method[test]",
               "attributes": {},
               "children": []
+            },
+            {
+              "kind": "Return",
+              "attributes": {},
+              "children": [
+                {
+                  "kind": "Identifier[num_aux]",
+                  "attributes": {},
+                  "children": []
+                }
+              ]
             }
           ]
         },
@@ -316,27 +295,33 @@
               "children": []
             },
             {
-              "kind": "Add",
+              "kind": "Method[println]",
               "attributes": {},
               "children": [
                 {
-                  "kind": "Integer[2]",
-                  "attributes": {},
-                  "children": []
-                },
-                {
-                  "kind": "Mult",
+                  "kind": "Add",
                   "attributes": {},
                   "children": [
                     {
-                      "kind": "Integer[3]",
+                      "kind": "Integer[2]",
                       "attributes": {},
                       "children": []
                     },
                     {
-                      "kind": "Integer[5]",
+                      "kind": "Mult",
                       "attributes": {},
-                      "children": []
+                      "children": [
+                        {
+                          "kind": "Integer[3]",
+                          "attributes": {},
+                          "children": []
+                        },
+                        {
+                          "kind": "Integer[5]",
+                          "attributes": {},
+                          "children": []
+                        }
+                      ]
                     }
                   ]
                 }
@@ -348,9 +333,21 @@
               "children": []
             },
             {
-              "kind": "Integer[10]",
+              "kind": "Method[println]",
               "attributes": {},
-              "children": []
+              "children": [
+                {
+                  "kind": "Method[ComputeFac]",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "kind": "Integer[10]",
+                      "attributes": {},
+                      "children": []
+                    }
+                  ]
+                }
+              ]
             }
           ]
         }
