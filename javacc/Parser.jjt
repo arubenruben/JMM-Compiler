@@ -240,7 +240,7 @@ void Statement() #void: {}{
     WhileStatement()
     |
     LOOKAHEAD(2)
-    AttributionStatement()
+    AssignmentStatement()
     |
     Expression() <SEMICOLON>
 
@@ -249,23 +249,27 @@ void BlockStatement() #void:{}
 {
     <LCUR> (Statement())* <RCUR>
 }
-void IfStatement() #void:{}
+void IfStatement():{}
 {
-    <IF> <LPAR> Expression() <RPAR>
+    <IF> <LPAR> Condition() <RPAR>
         Statement()
     <ELSE>
         Statement()
 }
-void AttributionStatement()#void:{}
+void Condition():{}
 {
-    <IDENTIFIER> [<LREC> Expression() <RREC>] <EQUAL> Expression() <SEMICOLON>
+    Expression()
+}
+void AssignmentStatement()#void:{}
+{
+    <IDENTIFIER> [<LREC> Expression() <RREC>] <EQUAL> Expression() #Assignment(2) <SEMICOLON>
 }
 
-void WhileStatement()#void: {}
+void WhileStatement()#While: {}
 {
     <WHILE>
     try {
-     <LPAR> Expression() <RPAR>
+     <LPAR> Condition() <RPAR>
     }
     catch (ParseException e) {
         handleWhileSyntaxError(e);
@@ -273,13 +277,13 @@ void WhileStatement()#void: {}
     Statement()
 }
 //According to https://introcs.cs.princeton.edu/java/11precedence/
-void Expression()#void:{}
+void Expression() #void :{}
 {
     ExpressionLevel9Priority() AndExpression()
 }
 void AndExpression()#void:{}
 {
-     [<AND>  ExpressionLevel9Priority() AndExpression()]
+     [<AND>  ExpressionLevel9Priority() AndExpression() #And(2)]
 }
 void ExpressionLevel9Priority()#void:{}
 {
@@ -287,7 +291,7 @@ void ExpressionLevel9Priority()#void:{}
 }
 void LessExpression()#void:{}
 {
-    [<LESS>  ExpressionLevel11Priority() LessExpression()]
+    [<LESS>  ExpressionLevel11Priority() LessExpression()#Less(2)]
 }
 void ExpressionLevel11Priority()#void:{}
 {
@@ -296,9 +300,9 @@ void ExpressionLevel11Priority()#void:{}
 void AddSubExpression()#void:{}
 {
      [
-     <PLUS>  ExpressionLevel12Priority() AddSubExpression()
+     <PLUS>  ExpressionLevel12Priority() AddSubExpression() #Add(2)
      |
-     <MINUS>  ExpressionLevel12Priority() AddSubExpression()
+     <MINUS>  ExpressionLevel12Priority() AddSubExpression() #Sub(2)
      ]
 }
 void ExpressionLevel12Priority()#void:{}
@@ -309,9 +313,9 @@ void ExpressionLevel12Priority()#void:{}
 void MultDivExpression()#void:{}
 {
      [
-     <MULT>  ExpressionLevel14Priority() MultDivExpression()
+     <MULT>  ExpressionLevel14Priority() MultDivExpression() #Mult(2)
      |
-     <DIV>  ExpressionLevel14Priority() MultDivExpression()
+     <DIV>  ExpressionLevel14Priority() MultDivExpression() #Div(2)
      ]
 }
 void ExpressionLevel14Priority()#void:{}
@@ -336,15 +340,21 @@ void ExpressionLevel16Priority()#void:{}
     Terminal() | <LPAR>Expression()<RPAR> | <LREC>Expression()<RREC>
 }
 
-void Terminal()#void:{}
+void Terminal()#void:{Token t;}
 {
-    <IDENTIFIER>
+    t=<IDENTIFIER>{jjtThis.value=t.image;} #Identifier
     |
     TermianalNonIdentifier()
     |
     <NEW> ((<INT><LREC>Expression()<RREC>)|(<IDENTIFIER> <LPAR> <RPAR>))
 }
-void TermianalNonIdentifier() #void:{}
+void TermianalNonIdentifier() #void:{Token t;}
 {
-    <INTEGERLITERAL>|<TRUE>|<FALSE>|<THIS>
+    t=<INTEGERLITERAL>{jjtThis.value=t.image;} #Integer
+    |
+    t=<TRUE>{jjtThis.value=t.image;}#Boolean
+    |
+    t=<FALSE>{jjtThis.value=t.image;}#Boolean
+    |
+    t=<THIS>{jjtThis.value=t.image;}#This
 }

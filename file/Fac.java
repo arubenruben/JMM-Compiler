@@ -1,7 +1,7 @@
 import io;
 
 class Fac extends Parent {
-    public int ComputeFac(int num,int num2) {
+    public int ComputeFac(int num, int num2) {
         int[] chars;
         int num_aux;
         boolean bool_test;
@@ -9,15 +9,15 @@ class Fac extends Parent {
         chars = new int[a];
         chars = new Bar();
         chars[1] = 4;
-        if (num < 1)
+        if (num < 1 && num < 2)
             num_aux = 1;
 
         else
             num_aux;
-            //num_aux = num * (this.ComputeFac(num - 1));
-            num_aux.test();
+        //num_aux = num * (this.ComputeFac(num - 1));
+        num_aux.test();
 
-        while (true){
+        while (true) {
 
         }
         num_aux.length;
