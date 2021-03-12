@@ -26,8 +26,6 @@ class SimpleNode implements Node, JmmNode {
   public SimpleNode(int i) {
     id = i;
     attributes = new HashMap<>();
-    attributes.put("LOL", "SDSSDASDASDASD");
-
   }
 
   public SimpleNode(Parser p, int i) {
@@ -49,8 +47,7 @@ class SimpleNode implements Node, JmmNode {
   }
 
   public String get(String attribute) {
-    String ret = attributes.get(attributes);
-    return ret != null ? ret : "";
+    return attributes.get(attribute);
   }
 
   public List<JmmNode> getChildren() {
