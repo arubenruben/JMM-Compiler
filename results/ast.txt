@@ -1,8 +1,6 @@
 {
   "kind": "Program",
-  "attributes": {
-    "value": "null"
-  },
+  "attributes": {},
   "children": [
     {
       "kind": "Class[Fac]",
@@ -67,9 +65,9 @@
               },
               "children": [
                 {
-                  "kind": "Type[array(int)]",
+                  "kind": "Type[[int]]",
                   "attributes": {
-                    "value": "array(int)"
+                    "value": "[int]"
                   },
                   "children": []
                 }
@@ -121,15 +119,15 @@
               ]
             },
             {
-              "kind": "AssignmentStatement[chars]",
+              "kind": "AssignmentStatement",
               "attributes": {
                 "value": "chars"
               },
               "children": [
                 {
-                  "kind": "New[array(int)]",
+                  "kind": "New[[int]]",
                   "attributes": {
-                    "value": "array(int)"
+                    "value": "[int]"
                   },
                   "children": [
                     {
@@ -144,7 +142,7 @@
               ]
             },
             {
-              "kind": "AssignmentStatement[chars]",
+              "kind": "AssignmentStatement",
               "attributes": {
                 "value": "chars"
               },
@@ -159,16 +157,12 @@
               ]
             },
             {
-              "kind": "AssignmentStatement[array(chars)]",
-              "attributes": {
-                "value": "array(chars)"
-              },
+              "kind": "AssignmentStatement",
+              "attributes": {},
               "children": [
                 {
                   "kind": "Index",
-                  "attributes": {
-                    "value": "null"
-                  },
+                  "attributes": {},
                   "children": [
                     {
                       "kind": "Integer[1]",
@@ -190,21 +184,15 @@
             },
             {
               "kind": "IfStatement",
-              "attributes": {
-                "value": "null"
-              },
+              "attributes": {},
               "children": [
                 {
                   "kind": "And",
-                  "attributes": {
-                    "value": "null"
-                  },
+                  "attributes": {},
                   "children": [
                     {
                       "kind": "Less",
-                      "attributes": {
-                        "value": "null"
-                      },
+                      "attributes": {},
                       "children": [
                         {
                           "kind": "Identifier[num]",
@@ -224,9 +212,7 @@
                     },
                     {
                       "kind": "Less",
-                      "attributes": {
-                        "value": "null"
-                      },
+                      "attributes": {},
                       "children": [
                         {
                           "kind": "Identifier[num]",
@@ -247,7 +233,7 @@
                   ]
                 },
                 {
-                  "kind": "AssignmentStatement[num_aux]",
+                  "kind": "AssignmentStatement",
                   "attributes": {
                     "value": "num_aux"
                   },
@@ -286,9 +272,7 @@
             },
             {
               "kind": "While",
-              "attributes": {
-                "value": "null"
-              },
+              "attributes": {},
               "children": [
                 {
                   "kind": "Boolean",
@@ -314,7 +298,7 @@
               "children": []
             },
             {
-              "kind": "AssignmentStatement[num_aux]",
+              "kind": "AssignmentStatement",
               "attributes": {
                 "value": "num_aux"
               },
@@ -328,9 +312,7 @@
                 },
                 {
                   "kind": "Mult",
-                  "attributes": {
-                    "value": "null"
-                  },
+                  "attributes": {},
                   "children": [
                     {
                       "kind": "This",
@@ -347,9 +329,7 @@
                       "children": [
                         {
                           "kind": "Sub",
-                          "attributes": {
-                            "value": "null"
-                          },
+                          "attributes": {},
                           "children": [
                             {
                               "kind": "Identifier[num]",
@@ -389,9 +369,7 @@
             },
             {
               "kind": "Return",
-              "attributes": {
-                "value": "null"
-              },
+              "attributes": {},
               "children": [
                 {
                   "kind": "Identifier[num_aux]",
@@ -427,9 +405,7 @@
             },
             {
               "kind": "Add",
-              "attributes": {
-                "value": "null"
-              },
+              "attributes": {},
               "children": [
                 {
                   "kind": "Integer[2]",
@@ -440,9 +416,7 @@
                 },
                 {
                   "kind": "Mult",
-                  "attributes": {
-                    "value": "null"
-                  },
+                  "attributes": {},
                   "children": [
                     {
                       "kind": "Integer[3]",
@@ -477,9 +451,7 @@
               "children": [
                 {
                   "kind": "Add",
-                  "attributes": {
-                    "value": "null"
-                  },
+                  "attributes": {},
                   "children": [
                     {
                       "kind": "Integer[2]",
@@ -490,9 +462,7 @@
                     },
                     {
                       "kind": "Mult",
-                      "attributes": {
-                        "value": "null"
-                      },
+                      "attributes": {},
                       "children": [
                         {
                           "kind": "Integer[3]",

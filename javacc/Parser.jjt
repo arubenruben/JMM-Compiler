@@ -174,30 +174,30 @@ void ImportPath()#void:{}
 }
 void ClassDeclaration() #Class :{Token t;}
 {
-    <CLASS> t=<IDENTIFIER>{jjtThis.value=t.image;}[<EXTENDS> t=<IDENTIFIER>{jjtThis.value=t.image;} #Extends]<LCUR>
+    <CLASS> t=<IDENTIFIER>{jjtThis.put("value",t.image);}[<EXTENDS> t=<IDENTIFIER>{jjtThis.put("value",t.image);} #Extends]<LCUR>
         (VarDeclaration())*
         (MethodDeclaration())*
     <RCUR>
 }
 void Type() #Type:{Token t; Boolean array=false;}
 {
-    t=<BOOLEAN> {jjtThis.value=t.image;}
+    t=<BOOLEAN> {jjtThis.put("value",t.image);}
     |
-    t=<IDENTIFIER>{jjtThis.value=t.image;}
+    t=<IDENTIFIER>{jjtThis.put("value",t.image);}
     |
     t=<INT> [<LREC> <RREC>{array=true;}]
     {
         if (array)
-            jjtThis.value="array("+t.image+")";
+            jjtThis.put("value","["+t.image+"]");
         else
-            {jjtThis.value=t.image;}
+            {jjtThis.put("value",t.image);}
     }
 
 
 }
 void VarDeclaration() #VarDeclaration: {Token t;}
 {
-    Type() t=<IDENTIFIER>{jjtThis.value=t.image;} <SEMICOLON>
+    Type() t=<IDENTIFIER>{jjtThis.put("value",t.image);} <SEMICOLON>
 }
 void MethodDeclaration() #void : {}
 {
@@ -206,7 +206,7 @@ void MethodDeclaration() #void : {}
 }
 void ClassMethod()#ClassMethod:{Token t;}
 {
-    Type() t=<IDENTIFIER>{jjtThis.value=t.image;}<LPAR>ClassMethodParameters()<RPAR><LCUR>
+    Type() t=<IDENTIFIER>{jjtThis.put("value",t.image);}<LPAR>ClassMethodParameters()<RPAR><LCUR>
          MethodBody()
         ReturnInstruction()
     <RCUR>
@@ -222,11 +222,11 @@ void ClassMethodParameters() #void:{}
 }
 void ClassMethodParameter() #ClassMethodParameter:{Token t;}
 {
-    Type() t=<IDENTIFIER>{jjtThis.value=t.image;}
+    Type() t=<IDENTIFIER>{jjtThis.put("value",t.image);}
 }
 void StaticMethod()#Main:{Token t;}
 {
-    <STATIC> <VOID> <MAIN> <LPAR> <STRING> <LREC> <RREC> t=<IDENTIFIER>{jjtThis.value="["+t.image+"]";} <RPAR><LCUR>
+    <STATIC> <VOID> <MAIN> <LPAR> <STRING> <LREC> <RREC> t=<IDENTIFIER>{jjtThis.put("value","["+t.image+"]");} <RPAR><LCUR>
         MethodBody()
     <RCUR>
 }
@@ -266,7 +266,7 @@ void AssignmentStatement()#AssignmentStatement:{Token t;Boolean array=false;}
     {if (array){
         jjtThis.value="array("+t.image+")";
     }else{
-        jjtThis.value=t.image;
+        jjtThis.put("value",t.image);
     }
 }
 }
@@ -342,9 +342,9 @@ void DotExpression()#void:{}
 }
 void Method() #Method:{Token t;}
 {
-    t=<LENGTH>{jjtThis.value=t.image;}
+    t=<LENGTH>{jjtThis.put("value",t.image);}
     |
-    (t=<IDENTIFIER>{jjtThis.value=t.image;} <LPAR> MethodParameters() <RPAR>)
+    (t=<IDENTIFIER>{jjtThis.put("value",t.image);} <LPAR> MethodParameters() <RPAR>)
 }
 void MethodParameters()#void:{}
 {
@@ -362,19 +362,19 @@ void ExpressionLevel16Priority()#void:{}
 
 void Terminal()#void:{Token t;}
 {
-    t=<IDENTIFIER>{jjtThis.value=t.image;} #Identifier
+    t=<IDENTIFIER>{jjtThis.put("value",t.image);} #Identifier
     |
     TermianalNonIdentifier()
     |
-    <NEW> ((<INT>{jjtThis.value="array(int)";}<LREC>Expression()<RREC>)|(t=<IDENTIFIER>{jjtThis.value=t.image;}<LPAR> <RPAR>))#New
+    <NEW> ((<INT>{jjtThis.put("value","[int]");}<LREC>Expression()<RREC>)|(t=<IDENTIFIER>{jjtThis.put("value",t.image);}<LPAR> <RPAR>))#New
 }
 void TermianalNonIdentifier() #void:{Token t;}
 {
-    t=<INTEGERLITERAL>{jjtThis.value=t.image;} #Integer
+    t=<INTEGERLITERAL>{jjtThis.put("value",t.image);} #Integer
     |
-    t=<TRUE>{jjtThis.value=t.image;}#Boolean
+    t=<TRUE>{jjtThis.put("value",t.image);}#Boolean
     |
-    t=<FALSE>{jjtThis.value=t.image;}#Boolean
+    t=<FALSE>{jjtThis.put("value",t.image);}#Boolean
     |
-    t=<THIS>{jjtThis.value=t.image;}#This
+    t=<THIS>{jjtThis.put("value",t.image);}#This
 }

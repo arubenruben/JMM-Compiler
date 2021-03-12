@@ -39,7 +39,7 @@ class SimpleNode implements Node, JmmNode {
 
     public List<String> getAttributes() {
         List<String> list = new ArrayList<>();
-        list.add("value");
+        list.addAll(attributes.keySet());
         return list;
     }
 
@@ -48,7 +48,7 @@ class SimpleNode implements Node, JmmNode {
     }
 
     public String get(String attribute) {
-        return this.value+"";
+        return attributes.get(attribute);
     }
 
     public List<JmmNode> getChildren() {
@@ -133,8 +133,8 @@ class SimpleNode implements Node, JmmNode {
             case "Integer":
             case "Method":
             case "New":
-            case "AssignmentStatement":
-                return ParserTreeConstants.jjtNodeName[id] + "[" + this.value + "]";
+            case "Assignment":
+                return ParserTreeConstants.jjtNodeName[id] + "[" + this.get("value") + "]";
 
 
             default:
