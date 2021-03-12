@@ -260,9 +260,15 @@ void IfStatement():{}
     <ELSE>
         Statement()
 }
-void AssignmentStatement()#Assignment:{Token t;}
+void AssignmentStatement()#AssignmentStatement:{Token t;Boolean array=false;}
 {
-    t=<IDENTIFIER>{jjtThis.value=t.image;} [<LREC> Expression() <RREC>] <EQUAL> Expression()  <SEMICOLON>
+    t=<IDENTIFIER> [<LREC> Expression()#Index <RREC>{array=true;}] <EQUAL> Expression() <SEMICOLON>
+    {if (array){
+        jjtThis.value="array("+t.image+")";
+    }else{
+        jjtThis.value=t.image;
+    }
+}
 }
 
 void WhileStatement()#While: {}

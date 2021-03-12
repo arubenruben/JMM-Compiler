@@ -87,7 +87,7 @@
               ]
             },
             {
-              "kind": "Assignment[chars]",
+              "kind": "AssignmentStatement[chars]",
               "attributes": {},
               "children": [
                 {
@@ -104,7 +104,7 @@
               ]
             },
             {
-              "kind": "Assignment[chars]",
+              "kind": "AssignmentStatement[chars]",
               "attributes": {},
               "children": [
                 {
@@ -115,13 +115,19 @@
               ]
             },
             {
-              "kind": "Assignment[chars]",
+              "kind": "AssignmentStatement[array(chars)]",
               "attributes": {},
               "children": [
                 {
-                  "kind": "Integer[1]",
+                  "kind": "Index",
                   "attributes": {},
-                  "children": []
+                  "children": [
+                    {
+                      "kind": "Integer[1]",
+                      "attributes": {},
+                      "children": []
+                    }
+                  ]
                 },
                 {
                   "kind": "Integer[4]",
@@ -173,7 +179,7 @@
                   ]
                 },
                 {
-                  "kind": "Assignment[num_aux]",
+                  "kind": "AssignmentStatement[num_aux]",
                   "attributes": {},
                   "children": [
                     {
@@ -222,7 +228,7 @@
               "children": []
             },
             {
-              "kind": "Assignment[num_aux]",
+              "kind": "AssignmentStatement[num_aux]",
               "attributes": {},
               "children": [
                 {
