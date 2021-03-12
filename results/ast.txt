@@ -12,67 +12,102 @@
           "children": []
         },
         {
-          "kind": "Type[int]",
-          "attributes": {},
-          "children": []
-        },
-        {
-          "kind": "Type[int]",
-          "attributes": {},
-          "children": []
-        },
-        {
-          "kind": "VarDeclaration[chars]",
-          "attributes": {},
-          "children": [
-            {
-              "kind": "Type[[int]]",
-              "attributes": {},
-              "children": []
-            }
-          ]
-        },
-        {
-          "kind": "VarDeclaration[num_aux]",
+          "kind": "ClassMethod[ComputeFac]",
           "attributes": {},
           "children": [
             {
               "kind": "Type[int]",
               "attributes": {},
               "children": []
+            },
+            {
+              "kind": "ClassMethodParameters",
+              "attributes": {},
+              "children": [
+                {
+                  "kind": "ClassMethodParameter[num]",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "kind": "Type[int]",
+                      "attributes": {},
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "kind": "ClassMethodParameter[num2]",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "kind": "Type[int]",
+                      "attributes": {},
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "kind": "VarDeclaration[chars]",
+              "attributes": {},
+              "children": [
+                {
+                  "kind": "Type[array(int)]",
+                  "attributes": {},
+                  "children": []
+                }
+              ]
+            },
+            {
+              "kind": "VarDeclaration[num_aux]",
+              "attributes": {},
+              "children": [
+                {
+                  "kind": "Type[int]",
+                  "attributes": {},
+                  "children": []
+                }
+              ]
+            },
+            {
+              "kind": "VarDeclaration[bool_test]",
+              "attributes": {},
+              "children": [
+                {
+                  "kind": "Type[boolean]",
+                  "attributes": {},
+                  "children": []
+                }
+              ]
+            },
+            {
+              "kind": "VarDeclaration[testClass]",
+              "attributes": {},
+              "children": [
+                {
+                  "kind": "Type[TestClass]",
+                  "attributes": {},
+                  "children": []
+                }
+              ]
             }
           ]
         },
         {
-          "kind": "VarDeclaration[bool_test]",
+          "kind": "Main[[args]]",
           "attributes": {},
           "children": [
             {
-              "kind": "Type[boolean]",
+              "kind": "VarDeclaration[num_aux]",
               "attributes": {},
-              "children": []
-            }
-          ]
-        },
-        {
-          "kind": "VarDeclaration[testClass]",
-          "attributes": {},
-          "children": [
-            {
-              "kind": "Type[TestClass]",
-              "attributes": {},
-              "children": []
-            }
-          ]
-        },
-        {
-          "kind": "VarDeclaration[num_aux]",
-          "attributes": {},
-          "children": [
-            {
-              "kind": "Type[int]",
-              "attributes": {},
-              "children": []
+              "children": [
+                {
+                  "kind": "Type[int]",
+                  "attributes": {},
+                  "children": []
+                }
+              ]
             }
           ]
         }

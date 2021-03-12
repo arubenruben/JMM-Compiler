@@ -1,7 +1,7 @@
 import io;
 
 class Fac extends Parent {
-    public int ComputeFac(int num) {
+    public int ComputeFac(int num,int num2) {
         int[] chars;
         int num_aux;
         boolean bool_test;

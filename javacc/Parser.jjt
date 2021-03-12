@@ -188,7 +188,7 @@ void Type() #Type:{Token t; Boolean array=false;}
     t=<INT> [<LREC> <RREC>{array=true;}]
     {
         if (array)
-            jjtThis.value="["+t.image+"]";
+            jjtThis.value="array("+t.image+")";
         else
             {jjtThis.value=t.image;}
     }
@@ -204,21 +204,25 @@ void MethodDeclaration() #void : {}
     <PUBLIC>(ClassMethod() | StaticMethod() )
 
 }
-void ClassMethod()#void:{}
+void ClassMethod()#ClassMethod:{Token t;}
 {
-    Type() <IDENTIFIER> <LPAR>ClassMethodParameters()<RPAR> <LCUR>
+    Type() t=<IDENTIFIER>{jjtThis.value=t.image;}<LPAR>ClassMethodParameters()<RPAR><LCUR>
          MethodBody()
         <RETURN> Expression() <SEMICOLON>
     <RCUR>
 
 }
-void ClassMethodParameters() #void:{}
+void ClassMethodParameters() #ClassMethodParameters:{}
 {
-    [Type() <IDENTIFIER> (<COMMA> Type() <IDENTIFIER> )*]
+    [ClassMethodParameter() (<COMMA> ClassMethodParameter() )*]
 }
-void StaticMethod()#void:{}
+void ClassMethodParameter() #ClassMethodParameter:{Token t;}
 {
-    <STATIC> <VOID> <MAIN> <LPAR> <STRING> <LREC> <RREC> <IDENTIFIER> <RPAR><LCUR>
+    Type() t=<IDENTIFIER>{jjtThis.value=t.image;}
+}
+void StaticMethod()#Main:{Token t;}
+{
+    <STATIC> <VOID> <MAIN> <LPAR> <STRING> <LREC> <RREC> t=<IDENTIFIER>{jjtThis.value="["+t.image+"]";} <RPAR><LCUR>
         MethodBody()
     <RCUR>
 }
