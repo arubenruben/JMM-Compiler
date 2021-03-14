@@ -216,13 +216,13 @@ void ReturnInstruction()#void:{}
 {
     <RETURN> Expression() <SEMICOLON> #Return(1)
 }
-void ClassMethodParameters() #void:{}
+void ClassMethodParameters() #Parameters:{}
 {
     [ClassMethodParameter() (<COMMA> ClassMethodParameter() )*]
 }
-void ClassMethodParameter() #ClassMethodParameter:{Token t;}
+void ClassMethodParameter() #void:{}
 {
-    Type() t=<IDENTIFIER>{jjtThis.put("value",t.image);}
+    Type() Identifier() #Parameter(2)
 }
 void StaticMethod()#Main:{Token t;}
 {
@@ -230,7 +230,7 @@ void StaticMethod()#Main:{Token t;}
         MethodBody()
     <RCUR>
 }
-void MethodBody()#void:{}
+void MethodBody() #Body:{}
 {
     (LOOKAHEAD(2)
     VarDeclaration())*
@@ -286,7 +286,7 @@ void WhileStatement()#While: {}
 {
     <WHILE>
     try {
-     <LPAR> Expression() <RPAR>
+        Condition()
     }
     catch (ParseException e) {
         handleWhileSyntaxError(e);
@@ -349,17 +349,18 @@ void ExpressionLevel15Priority()#void:{}
 }
 void DotExpression()#void:{}
 {
-    [<DOT> Method() DotExpression()]
+    [<DOT> MethodCall() DotExpression()]
 }
-void Method() #Method:{Token t;}
+void MethodCall() #MethodCall(2) :{}
 {
-    t=<LENGTH>{jjtThis.put("value",t.image);}
+    <LENGTH>
     |
-    (t=<IDENTIFIER>{jjtThis.put("value",t.image);} <LPAR> MethodParameters() <RPAR>)
+    ((Identifier()  <LPAR> MethodParameters() <RPAR>))
 }
-void MethodParameters()#void:{}
+
+void MethodParameters() #void :{}
 {
-    [Expression() (MethodParameter()) *]
+    ([Expression() (MethodParameter()) *])
 }
 void MethodParameter():{}
 {
