@@ -119,11 +119,16 @@
               ]
             },
             {
-              "kind": "AssignmentStatement",
-              "attributes": {
-                "value": "chars"
-              },
+              "kind": "AssignmentVar",
+              "attributes": {},
               "children": [
+                {
+                  "kind": "Identifier[chars]",
+                  "attributes": {
+                    "value": "chars"
+                  },
+                  "children": []
+                },
                 {
                   "kind": "New[[int]]",
                   "attributes": {
@@ -142,11 +147,16 @@
               ]
             },
             {
-              "kind": "AssignmentStatement",
-              "attributes": {
-                "value": "chars"
-              },
+              "kind": "AssignmentVar",
+              "attributes": {},
               "children": [
+                {
+                  "kind": "Identifier[chars]",
+                  "attributes": {
+                    "value": "chars"
+                  },
+                  "children": []
+                },
                 {
                   "kind": "New[Bar]",
                   "attributes": {
@@ -157,13 +167,20 @@
               ]
             },
             {
-              "kind": "AssignmentStatement",
+              "kind": "AssignmentVarArray",
               "attributes": {},
               "children": [
                 {
-                  "kind": "Index",
+                  "kind": "ArrayAccess",
                   "attributes": {},
                   "children": [
+                    {
+                      "kind": "Identifier[chars]",
+                      "attributes": {
+                        "value": "chars"
+                      },
+                      "children": []
+                    },
                     {
                       "kind": "Integer[1]",
                       "attributes": {
@@ -233,11 +250,16 @@
                   ]
                 },
                 {
-                  "kind": "AssignmentStatement",
-                  "attributes": {
-                    "value": "num_aux"
-                  },
+                  "kind": "AssignmentVar",
+                  "attributes": {},
                   "children": [
+                    {
+                      "kind": "Identifier[num_aux]",
+                      "attributes": {
+                        "value": "num_aux"
+                      },
+                      "children": []
+                    },
                     {
                       "kind": "Integer[1]",
                       "attributes": {
@@ -298,10 +320,15 @@
               "children": []
             },
             {
-              "kind": "AssignmentStatement",
+              "kind": "Identifier[num_aux]",
               "attributes": {
                 "value": "num_aux"
               },
+              "children": []
+            },
+            {
+              "kind": "AssignmentVar",
+              "attributes": {},
               "children": [
                 {
                   "kind": "Identifier[num]",

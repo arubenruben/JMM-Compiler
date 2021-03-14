@@ -55,7 +55,7 @@ public class Main implements JmmParser {
         }
 
         String code = null;
-        code = SpecsIo.read("file/" + args[0]);
+        code = SpecsIo.read("testFiles/" + args[0]);
 
         Main main = new Main();
         JmmParserResult result = main.parse(code);

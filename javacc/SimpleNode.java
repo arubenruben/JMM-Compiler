@@ -134,6 +134,7 @@ class SimpleNode implements Node, JmmNode {
             case "Method":
             case "New":
             case "Assignment":
+            case "AssignmentStatement":
                 return ParserTreeConstants.jjtNodeName[id] + "[" + this.get("value") + "]";
 
 

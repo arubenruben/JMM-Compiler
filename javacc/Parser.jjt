@@ -260,16 +260,22 @@ void IfStatement():{}
     <ELSE>
         Statement()
 }
-void AssignmentStatement()#AssignmentStatement:{Token t;Boolean array=false;}
+void AssignmentStatement()#void : {}
 {
-    t=<IDENTIFIER> [<LREC> Expression()#Index <RREC>{array=true;}] <EQUAL> Expression() <SEMICOLON>
-    {if (array){
-        jjtThis.value="array("+t.image+")";
-    }else{
-        jjtThis.put("value",t.image);
-    }
+    Identifier() (AssignmentArray() | AssignmentVar())
 }
+
+void AssignmentArray()#void : {}
+{
+    <LREC> Expression() #ArrayAccess(2) <RREC> <EQUAL> Expression() #AssignmentVarArray(2) <SEMICOLON>
+
 }
+
+void AssignmentVar()#void : {}
+{
+    <EQUAL> Expression() #AssignmentVar(2) <SEMICOLON>
+}
+
 
 void WhileStatement()#While: {}
 {
@@ -357,7 +363,7 @@ void MethodParameter():{}
 
 void ExpressionLevel16Priority()#void:{}
 {
-    Terminal() | <LPAR>Expression()<RPAR> | <LREC>Expression()<RREC>
+    Terminal() | <LPAR>Expression()<RPAR> | <LREC>Expression()#ArrayAccess(2)<RREC>
 }
 
 void Terminal()#void:{Token t;}
@@ -377,4 +383,12 @@ void TermianalNonIdentifier() #void:{Token t;}
     t=<FALSE>{jjtThis.put("value",t.image);}#Boolean
     |
     t=<THIS>{jjtThis.put("value",t.image);}#This
+}
+
+void Identifier() :{Token t;}
+{
+    t=<IDENTIFIER>
+    {
+       jjtThis.put("value", t.image);
+    }
 }
