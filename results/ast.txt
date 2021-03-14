@@ -200,21 +200,73 @@
               ]
             },
             {
-              "kind": "IfStatement",
+              "kind": "If",
               "attributes": {},
               "children": [
                 {
-                  "kind": "And",
+                  "kind": "Condition",
                   "attributes": {},
                   "children": [
                     {
-                      "kind": "Less",
+                      "kind": "And",
                       "attributes": {},
                       "children": [
                         {
-                          "kind": "Identifier[num]",
+                          "kind": "Less",
+                          "attributes": {},
+                          "children": [
+                            {
+                              "kind": "Identifier[num]",
+                              "attributes": {
+                                "value": "num"
+                              },
+                              "children": []
+                            },
+                            {
+                              "kind": "Integer[1]",
+                              "attributes": {
+                                "value": "1"
+                              },
+                              "children": []
+                            }
+                          ]
+                        },
+                        {
+                          "kind": "Less",
+                          "attributes": {},
+                          "children": [
+                            {
+                              "kind": "Identifier[num]",
+                              "attributes": {
+                                "value": "num"
+                              },
+                              "children": []
+                            },
+                            {
+                              "kind": "Integer[2]",
+                              "attributes": {
+                                "value": "2"
+                              },
+                              "children": []
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "kind": "Then",
+                  "attributes": {},
+                  "children": [
+                    {
+                      "kind": "AssignmentVar",
+                      "attributes": {},
+                      "children": [
+                        {
+                          "kind": "Identifier[num_aux]",
                           "attributes": {
-                            "value": "num"
+                            "value": "num_aux"
                           },
                           "children": []
                         },
@@ -226,31 +278,11 @@
                           "children": []
                         }
                       ]
-                    },
-                    {
-                      "kind": "Less",
-                      "attributes": {},
-                      "children": [
-                        {
-                          "kind": "Identifier[num]",
-                          "attributes": {
-                            "value": "num"
-                          },
-                          "children": []
-                        },
-                        {
-                          "kind": "Integer[2]",
-                          "attributes": {
-                            "value": "2"
-                          },
-                          "children": []
-                        }
-                      ]
                     }
                   ]
                 },
                 {
-                  "kind": "AssignmentVar",
+                  "kind": "Else",
                   "attributes": {},
                   "children": [
                     {
@@ -261,20 +293,64 @@
                       "children": []
                     },
                     {
-                      "kind": "Integer[1]",
-                      "attributes": {
-                        "value": "1"
-                      },
-                      "children": []
+                      "kind": "If",
+                      "attributes": {},
+                      "children": [
+                        {
+                          "kind": "Condition",
+                          "attributes": {},
+                          "children": [
+                            {
+                              "kind": "Less",
+                              "attributes": {},
+                              "children": [
+                                {
+                                  "kind": "Identifier[dasdasd]",
+                                  "attributes": {
+                                    "value": "dasdasd"
+                                  },
+                                  "children": []
+                                },
+                                {
+                                  "kind": "Integer[2]",
+                                  "attributes": {
+                                    "value": "2"
+                                  },
+                                  "children": []
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "kind": "Then",
+                          "attributes": {},
+                          "children": [
+                            {
+                              "kind": "Identifier[num_aux]",
+                              "attributes": {
+                                "value": "num_aux"
+                              },
+                              "children": []
+                            }
+                          ]
+                        },
+                        {
+                          "kind": "Else",
+                          "attributes": {},
+                          "children": [
+                            {
+                              "kind": "Identifier[dsads]",
+                              "attributes": {
+                                "value": "dsads"
+                              },
+                              "children": []
+                            }
+                          ]
+                        }
+                      ]
                     }
                   ]
-                },
-                {
-                  "kind": "Identifier[num_aux]",
-                  "attributes": {
-                    "value": "num_aux"
-                  },
-                  "children": []
                 }
               ]
             },

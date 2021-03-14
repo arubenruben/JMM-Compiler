@@ -12,8 +12,13 @@ class Fac extends Parent {
         if (num < 1 && num < 2)
             num_aux = 1;
 
-        else
+        else{
             num_aux;
+            if (dasdasd < 2)
+            	num_aux;
+            else
+            	dsads;
+        }
         //num_aux = num * (this.ComputeFac(num - 1));
         num_aux.test();
 

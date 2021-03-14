@@ -253,13 +253,19 @@ void BlockStatement() #void:{}
 {
     <LCUR> (Statement())* <RCUR>
 }
-void IfStatement():{}
+void IfStatement() #If:{}
 {
-    <IF> <LPAR> Expression() <RPAR>
-        Statement()
+    <IF> Condition()
+        Statement() #Then
     <ELSE>
-        Statement()
+        Statement() #Else
 }
+
+void Condition() :{}
+{
+    <LPAR> Expression()<RPAR>
+}
+
 void AssignmentStatement()#void : {}
 {
     Identifier() (AssignmentArray() | AssignmentVar())
@@ -268,7 +274,6 @@ void AssignmentStatement()#void : {}
 void AssignmentArray()#void : {}
 {
     <LREC> Expression() #ArrayAccess(2) <RREC> <EQUAL> Expression() #AssignmentVarArray(2) <SEMICOLON>
-
 }
 
 void AssignmentVar()#void : {}
