@@ -375,76 +375,71 @@
                   ]
                 },
                 {
-                  "kind": "MethodCall",
-                  "attributes": {},
-                  "children": [
-                    {
-                      "kind": "Identifier[num_aux]",
-                      "attributes": {
-                        "value": "num_aux"
-                      },
-                      "children": []
-                    },
-                    {
-                      "kind": "Identifier[test]",
-                      "attributes": {
-                        "value": "test"
-                      },
-                      "children": []
-                    }
-                  ]
+                  "kind": "Identifier[num_aux]",
+                  "attributes": {
+                    "value": "num_aux"
+                  },
+                  "children": []
                 },
                 {
-                  "kind": "MethodCall",
+                  "kind": "Method",
+                  "attributes": {
+                    "value": "test"
+                  },
+                  "children": []
+                },
+                {
+                  "kind": "While",
                   "attributes": {},
                   "children": [
                     {
-                      "kind": "While",
+                      "kind": "Condition",
                       "attributes": {},
                       "children": [
                         {
-                          "kind": "Condition",
-                          "attributes": {},
-                          "children": [
-                            {
-                              "kind": "Boolean[true]",
-                              "attributes": {
-                                "value": "true"
-                              },
-                              "children": []
-                            }
-                          ]
-                        },
-                        {
-                          "kind": "AssignmentVar",
-                          "attributes": {},
-                          "children": [
-                            {
-                              "kind": "Identifier[dsadasdasdas]",
-                              "attributes": {
-                                "value": "dsadasdasdas"
-                              },
-                              "children": []
-                            },
-                            {
-                              "kind": "Integer[1]",
-                              "attributes": {
-                                "value": "1"
-                              },
-                              "children": []
-                            }
-                          ]
+                          "kind": "Boolean[true]",
+                          "attributes": {
+                            "value": "true"
+                          },
+                          "children": []
                         }
                       ]
                     },
                     {
-                      "kind": "Identifier[num_aux]",
-                      "attributes": {
-                        "value": "num_aux"
-                      },
-                      "children": []
+                      "kind": "AssignmentVar",
+                      "attributes": {},
+                      "children": [
+                        {
+                          "kind": "Identifier[dsadasdasdas]",
+                          "attributes": {
+                            "value": "dsadasdasdas"
+                          },
+                          "children": []
+                        },
+                        {
+                          "kind": "Integer[1]",
+                          "attributes": {
+                            "value": "1"
+                          },
+                          "children": []
+                        }
+                      ]
                     }
                   ]
+                },
+                {
+                  "kind": "Identifier[num_aux]",
+                  "attributes": {
+                    "value": "num_aux"
+                  },
+                  "children": []
+                },
+                {
+                  "kind": "Method",
+                  "attributes": {
+                    "value": "length"
+                  },
+                  "children": []
                 },
                 {
                   "kind": "Identifier[num_aux]",
@@ -476,16 +471,11 @@
                           "children": []
                         },
                         {
-                          "kind": "MethodCall",
-                          "attributes": {},
+                          "kind": "Method",
+                          "attributes": {
+                            "value": "ComputeFac"
+                          },
                           "children": [
-                            {
-                              "kind": "Identifier[ComputeFac]",
-                              "attributes": {
-                                "value": "ComputeFac"
-                              },
-                              "children": []
-                            },
                             {
                               "kind": "Sub",
                               "attributes": {},
@@ -513,24 +503,18 @@
                   ]
                 },
                 {
-                  "kind": "MethodCall",
-                  "attributes": {},
-                  "children": [
-                    {
-                      "kind": "Identifier[num_aux]",
-                      "attributes": {
-                        "value": "num_aux"
-                      },
-                      "children": []
-                    },
-                    {
-                      "kind": "Identifier[test]",
-                      "attributes": {
-                        "value": "test"
-                      },
-                      "children": []
-                    }
-                  ]
+                  "kind": "Identifier[num_aux]",
+                  "attributes": {
+                    "value": "num_aux"
+                  },
+                  "children": []
+                },
+                {
+                  "kind": "Method",
+                  "attributes": {
+                    "value": "test"
+                  },
+                  "children": []
                 }
               ]
             },
@@ -615,16 +599,11 @@
                   "children": []
                 },
                 {
-                  "kind": "MethodCall",
-                  "attributes": {},
+                  "kind": "Method",
+                  "attributes": {
+                    "value": "println"
+                  },
                   "children": [
-                    {
-                      "kind": "Identifier[println]",
-                      "attributes": {
-                        "value": "println"
-                      },
-                      "children": []
-                    },
                     {
                       "kind": "Add",
                       "attributes": {},
@@ -668,57 +647,40 @@
                   "children": []
                 },
                 {
-                  "kind": "Identifier[println]",
+                  "kind": "Method",
                   "attributes": {
                     "value": "println"
+                  },
+                  "children": [
+                    {
+                      "kind": "Identifier[fac]",
+                      "attributes": {
+                        "value": "fac"
+                      },
+                      "children": []
+                    },
+                    {
+                      "kind": "Method",
+                      "attributes": {
+                        "value": "comp"
+                      },
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "kind": "Identifier[io]",
+                  "attributes": {
+                    "value": "io"
                   },
                   "children": []
                 },
                 {
-                  "kind": "MethodCall",
-                  "attributes": {},
-                  "children": [
-                    {
-                      "kind": "MethodCall",
-                      "attributes": {},
-                      "children": [
-                        {
-                          "kind": "New[Fac]",
-                          "attributes": {
-                            "value": "Fac"
-                          },
-                          "children": []
-                        },
-                        {
-                          "kind": "Identifier[comp]",
-                          "attributes": {
-                            "value": "comp"
-                          },
-                          "children": []
-                        }
-                      ]
-                    },
-                    {
-                      "kind": "MethodCall",
-                      "attributes": {},
-                      "children": [
-                        {
-                          "kind": "Identifier[ComputeFac]",
-                          "attributes": {
-                            "value": "ComputeFac"
-                          },
-                          "children": []
-                        },
-                        {
-                          "kind": "Integer[10]",
-                          "attributes": {
-                            "value": "10"
-                          },
-                          "children": []
-                        }
-                      ]
-                    }
-                  ]
+                  "kind": "Method",
+                  "attributes": {
+                    "value": "length"
+                  },
+                  "children": []
                 }
               ]
             }

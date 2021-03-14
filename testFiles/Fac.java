@@ -36,7 +36,8 @@ class Fac extends Parent {
         int num_aux;
         2 + 3 * 4;
         io.println(2 + 3 * 5);
-        io.println(new Fac().comp().ComputeFac(10)); //assuming the existence
+        io.println(fac.comp()); //assuming the existence
+        io.length;
         // of the classfile io.class
         /*
             adsaskdaskjdkljq2wleqkwljdq String []]@¹£¹@£12

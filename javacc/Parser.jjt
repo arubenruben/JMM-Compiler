@@ -349,18 +349,17 @@ void ExpressionLevel15Priority()#void:{}
 }
 void DotExpression()#void:{}
 {
-    [<DOT> MethodCall() DotExpression()]
+    [<DOT> Method() DotExpression()]
 }
-void MethodCall() #MethodCall(2) :{}
+void Method() #Method:{Token t;}
 {
-    <LENGTH>
+    t=<LENGTH>{jjtThis.put("value",t.image);}
     |
-    ((Identifier()  <LPAR> MethodParameters() <RPAR>))
+    (t=<IDENTIFIER>{jjtThis.put("value",t.image);} <LPAR> MethodParameters() <RPAR>)
 }
-
-void MethodParameters() #void :{}
+void MethodParameters()#void:{}
 {
-    ([Expression() (MethodParameter()) *])
+    [Expression() (MethodParameter()) *]
 }
 void MethodParameter():{}
 {
@@ -369,18 +368,18 @@ void MethodParameter():{}
 
 void ExpressionLevel16Priority()#void:{}
 {
-    Terminal() | <LPAR>Expression()<RPAR> | <LREC>Expression()#ArrayAccess(2)<RREC>
+    Terminal() | <LPAR>Expression()<RPAR> | <LREC>Expression()<RREC>
 }
 
 void Terminal()#void:{Token t;}
 {
     t=<IDENTIFIER>{jjtThis.put("value",t.image);} #Identifier
     |
-    TermianalNonIdentifier()
+    TerminalNonIdentifier()
     |
     <NEW> ((<INT>{jjtThis.put("value","[int]");}<LREC>Expression()<RREC>)|(t=<IDENTIFIER>{jjtThis.put("value",t.image);}<LPAR> <RPAR>))#New
 }
-void TermianalNonIdentifier() #void:{Token t;}
+void TerminalNonIdentifier() #void:{Token t;}
 {
     t=<INTEGERLITERAL>{jjtThis.put("value",t.image);} #Integer
     |
@@ -390,7 +389,6 @@ void TermianalNonIdentifier() #void:{Token t;}
     |
     t=<THIS>{jjtThis.put("value",t.image);}#This
 }
-
 void Identifier() :{Token t;}
 {
     t=<IDENTIFIER>
