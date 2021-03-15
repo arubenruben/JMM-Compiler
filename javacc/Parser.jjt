@@ -349,17 +349,17 @@ void ExpressionLevel15Priority()#void:{}
 }
 void DotExpression()#void:{}
 {
-    [<DOT> Method() DotExpression()]
+    [<DOT> Method() #MethodCall(2) DotExpression()]
 }
-void Method() #Method:{Token t;}
+void Method() #Identifier:{Token t;}
 {
     t=<LENGTH>{jjtThis.put("value",t.image);}
     |
-    (t=<IDENTIFIER>{jjtThis.put("value",t.image);} <LPAR> MethodParameters() <RPAR>)
+    (t=<IDENTIFIER>{jjtThis.put("value",t.image);} <LPAR> [MethodParameters()] <RPAR>)
 }
-void MethodParameters()#void:{}
+void MethodParameters()#Parameters:{}
 {
-    [Expression() (MethodParameter()) *]
+    Expression() (MethodParameter()) *
 }
 void MethodParameter():{}
 {
