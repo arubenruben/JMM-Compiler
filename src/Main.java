@@ -2,16 +2,14 @@ import com.google.gson.JsonObject;
 import pt.up.fe.comp.jmm.JmmParser;
 import pt.up.fe.comp.jmm.JmmParserResult;
 import pt.up.fe.comp.jmm.report.Report;
+import pt.up.fe.comp.jmm.report.ReportType;
 import pt.up.fe.specs.util.SpecsIo;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
+
 
 
 public class Main implements JmmParser {
@@ -23,8 +21,9 @@ public class Main implements JmmParser {
     public JmmParserResult parse(String jmmCode) {
         //TODO: Check if this is only a error given out by the idea
         Parser parser = new Parser(new StringReader(jmmCode));
+        List<Report> reports = new ArrayList<>();
         parser.setFileLines(jmmCode);
-
+        parser.setReports(reports);
         SimpleNode root = null; // returns reference to root node
 
         try {
@@ -34,7 +33,7 @@ public class Main implements JmmParser {
         }
         root.dump(""); // prints the tree on the screen
 
-        return new JmmParserResult(root, new ArrayList<Report>());
+        return new JmmParserResult(root, reports);
     }
 
     public static void writeToFile(String content, String path){
@@ -59,6 +58,13 @@ public class Main implements JmmParser {
 
         Main main = new Main();
         JmmParserResult result = main.parse(code);
+
+        if(result.getReports().size() > 0) {
+            System.out.println("\n\nReports:");
+            for (Report report : result.getReports())
+                System.out.println(report.toString());
+        }
+
         writeToFile(result.getRootNode().toJson(), "results/ast.txt");
     }
 

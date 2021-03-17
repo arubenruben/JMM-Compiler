@@ -1,15 +1,11 @@
 import org.junit.Test;
 import pt.up.fe.comp.TestUtils;
 import pt.up.fe.specs.util.SpecsIo;
+import pt.up.fe.comp.jmm.report.Stage;
 
 import static org.junit.Assert.*;
 
 public class ExampleTest {
-
-    enum Stage
-    {
-        Lexical, Syntatic, Semantic
-    }
 
     /**
      * Function meant to test out if a certain file must fail or not the jjt parser
@@ -17,16 +13,15 @@ public class ExampleTest {
      * @param stage the stage at which the parse must fail
      */
     public boolean testFile(String filePath, Stage stage){
-
         try {
             String code = "";
             code = SpecsIo.read("test/" + filePath);
-                TestUtils.parse(code);
+            TestUtils.parse(code);
         }
         catch(Exception e){
+            System.err.println(e.toString());
             return false;
         }
-
         return true;
     }
 
