@@ -52,13 +52,7 @@ class SimpleNode implements Node, JmmNode {
     }
 
     public List<JmmNode> getChildren() {
-        List<JmmNode> jmmNodeList = new ArrayList<>();
-        if (children != null) {
-            for (Node node : children) {
-                jmmNodeList.add((JmmNode) node);
-            }
-        }
-        return jmmNodeList;
+        return JmmNode.convertChildren(children);
     }
 
     public int getNumChildren() {

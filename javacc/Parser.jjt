@@ -79,8 +79,8 @@ public class Parser
             if (t.kind == EOF || t.kind == LCUR)
                 break;
             t = getNextToken();
-        } while (t.kind != RPAR);
-        //TODO aqui não pode ser right par senão dá erros em casos destes while((dsd) < 0) por exemplo
+        } while (true);
+
         this.numberOfSyntaxErrors++;
         if (this.numberOfSyntaxErrors >= MAX_NUMBER_SYNTAX_ERRORS) {
           throw new ParseException("Parser caught the maximum amount of errors (" + MAX_NUMBER_SYNTAX_ERRORS + " errors).");
@@ -337,7 +337,7 @@ void MultDivExpression()#void:{}
 }
 void ExpressionLevel14Priority()#void:{}
 {
-     ExpressionLevel15Priority() NotExpression()
+     NotExpression() ExpressionLevel15Priority()
 }
 void NotExpression()#void:{}
 {
@@ -368,8 +368,7 @@ void MethodParameter():{}
 
 void ExpressionLevel16Priority()#void:{}
 {
-    //TODO: FALAR COM O RUBEN
-    Terminal() [<LPAR>Expression()<RPAR> | <LREC>Expression()<RREC>] | <LPAR>Expression()<RPAR> | <LREC>Expression()<RREC>
+    Terminal() [<LREC>Expression()<RREC>] | <LPAR>Expression()<RPAR> | <LREC>Expression()<RREC>
 }
 
 void Terminal()#void:{Token t;}
