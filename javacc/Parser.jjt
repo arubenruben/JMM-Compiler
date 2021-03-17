@@ -148,9 +148,8 @@ TOKEN:
     |   < NEW:"new">
     |   < NOT:"!">
     |   < IDENTIFIER: <LETTER> (<LETTER>|<INTEGERLITERAL> )*>
-    |   < LETTER: ["a"-"z","A"-"Z","_"]>
+    |   < LETTER: ["a"-"z","A"-"Z","_", "$"]>
     |   < INTEGERLITERAL: (["0"-"9"])+ >
-
 }
 
 

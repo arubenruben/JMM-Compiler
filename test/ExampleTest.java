@@ -24,7 +24,6 @@ public class ExampleTest {
                 TestUtils.parse(code);
         }
         catch(Exception e){
-            System.out.println(e.getMessage());
             return false;
         }
 
@@ -32,7 +31,6 @@ public class ExampleTest {
     }
 
     // Test out if the parser succeeds in parsing the files
-
     @Test
     public void testFindMaximum() {
         assertTrue(testFile("fixtures/public/FindMaximum.jmm", Stage.Syntatic));
@@ -78,9 +76,6 @@ public class ExampleTest {
         assertTrue(testFile("fixtures/public/WhileAndIF.jmm", Stage.Syntatic));
     }
 
-    // Test out if the parser fails in parsing the files
-
-    //TODO: Falar se isto tem ou não de ser erro por causa do error recovery
     @Test
     public void testBlowUp(){
         assertFalse(testFile("fixtures/public/fail/syntactical/BlowUp.jmm",  Stage.Syntatic));
@@ -88,7 +83,7 @@ public class ExampleTest {
 
     @Test
     public void testCompleteWhileTest(){
-        //assertTrue(testFile("fixtures/public/fail/syntactical/CompleteWhileTest.jmm",  Stage.Syntatic));
+        assertFalse(testFile("fixtures/public/fail/syntactical/CompleteWhileTest.jmm",  Stage.Syntatic));
     }
 
     @Test
