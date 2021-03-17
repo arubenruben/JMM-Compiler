@@ -49,6 +49,7 @@ public class TestUtils {
 			return parser.parse(code);
 
         } catch (Exception e) {
+			System.out.println(e.toString());
 			throw new RuntimeException("Could not parse code", e);
         }		
 		

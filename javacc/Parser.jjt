@@ -281,7 +281,6 @@ void AssignmentVar()#void : {}
     <EQUAL> Expression() #AssignmentVar(2) <SEMICOLON>
 }
 
-
 void WhileStatement()#While: {}
 {
     <WHILE>
@@ -300,7 +299,7 @@ void Expression() #void :{}
 }
 void AndExpression()#void:{}
 {
-     [<AND>  ExpressionLevel9Priority() AndExpression() #And(2)]
+     (<AND>  ExpressionLevel9Priority() #And(2))*
 }
 void ExpressionLevel9Priority()#void:{}
 {
@@ -308,7 +307,7 @@ void ExpressionLevel9Priority()#void:{}
 }
 void LessExpression()#void:{}
 {
-    [<LESS>  ExpressionLevel11Priority() LessExpression()#Less(2)]
+    (<LESS>  ExpressionLevel11Priority() #Less(2))*
 }
 void ExpressionLevel11Priority()#void:{}
 {
@@ -316,40 +315,29 @@ void ExpressionLevel11Priority()#void:{}
 }
 void AddSubExpression()#void:{}
 {
-     [
-     <PLUS>  ExpressionLevel12Priority() AddSubExpression() #Add(2)
-     |
-     <MINUS>  ExpressionLevel12Priority() AddSubExpression() #Sub(2)
-     ]
+  (<PLUS>  ExpressionLevel12Priority() #Add(2)
+   |
+  <MINUS>  ExpressionLevel12Priority() #Sub(2))*
 }
 void ExpressionLevel12Priority()#void:{}
 {
-    ExpressionLevel14Priority() MultDivExpression()
+    ExpressionLevel15Priority() MultDivExpression()
 }
 
 void MultDivExpression()#void:{}
 {
-     [
-     <MULT>  ExpressionLevel14Priority() MultDivExpression() #Mult(2)
+     (<MULT>  ExpressionLevel15Priority() #Mult(2)
      |
-     <DIV>  ExpressionLevel14Priority() MultDivExpression() #Div(2)
-     ]
+     <DIV>  ExpressionLevel15Priority() #Div(2))*
 }
-void ExpressionLevel14Priority()#void:{}
-{
-     NotExpression() ExpressionLevel15Priority()
-}
-void NotExpression()#void:{}
-{
-    [<NOT> ExpressionLevel15Priority() NotExpression()]
-}
+
 void ExpressionLevel15Priority()#void:{}
 {
     ExpressionLevel16Priority() DotExpression()
 }
 void DotExpression()#void:{}
 {
-    [<DOT> Method() #MethodCall(2) DotExpression()]
+    (<DOT> Method() #MethodCall(2))*
 }
 void Method() #Identifier:{Token t;}
 {
@@ -368,7 +356,7 @@ void MethodParameter():{}
 
 void ExpressionLevel16Priority()#void:{}
 {
-    Terminal() [<LREC>Expression()<RREC>] | <LPAR>Expression()<RPAR> | <LREC>Expression()<RREC>
+    Terminal() [<LREC>Expression()<RREC>] | <LPAR>Expression()<RPAR> | <LREC>Expression()<RREC> | <NOT> ExpressionLevel16Priority() #Not
 }
 
 void Terminal()#void:{Token t;}
