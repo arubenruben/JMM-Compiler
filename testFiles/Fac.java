@@ -20,7 +20,7 @@ class Fac extends Parent {
                 dsads;
         }
         //num_aux = num * (this.ComputeFac(num - 1));
-        num_aux.test();
+        num_aux.test().test(2, 1, z);
 
         while (true) {
             dsadasdasdas = 1;

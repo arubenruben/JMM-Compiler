@@ -379,18 +379,59 @@
                   "attributes": {},
                   "children": [
                     {
-                      "kind": "Identifier[num_aux]",
-                      "attributes": {
-                        "value": "num_aux"
-                      },
-                      "children": []
+                      "kind": "MethodCall",
+                      "attributes": {},
+                      "children": [
+                        {
+                          "kind": "Identifier[num_aux]",
+                          "attributes": {
+                            "value": "num_aux"
+                          },
+                          "children": []
+                        },
+                        {
+                          "kind": "Identifier[test]",
+                          "attributes": {
+                            "value": "test"
+                          },
+                          "children": []
+                        }
+                      ]
                     },
                     {
                       "kind": "Identifier[test]",
                       "attributes": {
                         "value": "test"
                       },
-                      "children": []
+                      "children": [
+                        {
+                          "kind": "Parameters",
+                          "attributes": {},
+                          "children": [
+                            {
+                              "kind": "Integer[2]",
+                              "attributes": {
+                                "value": "2"
+                              },
+                              "children": []
+                            },
+                            {
+                              "kind": "Integer[1]",
+                              "attributes": {
+                                "value": "1"
+                              },
+                              "children": []
+                            },
+                            {
+                              "kind": "Identifier[z]",
+                              "attributes": {
+                                "value": "z"
+                              },
+                              "children": []
+                            }
+                          ]
+                        }
+                      ]
                     }
                   ]
                 },

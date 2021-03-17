@@ -28,77 +28,77 @@ public class ExampleTest {
     // Test out if the parser succeeds in parsing the files
     @Test
     public void testFindMaximum() {
-        assertTrue(testFile("fixtures/public/FindMaximum.jmm", Stage.Syntatic));
+        assertTrue(testFile("fixtures/public/FindMaximum.jmm", Stage.SYNTATIC));
     }
 
     @Test
     public void testHelloWorld() {
-        assertTrue(testFile("fixtures/public/HelloWorld.jmm", Stage.Syntatic));
+        assertTrue(testFile("fixtures/public/HelloWorld.jmm", Stage.SYNTATIC));
     }
 
     @Test
     public void testLazySort() {
-        assertTrue(testFile("fixtures/public/Lazysort.jmm", Stage.Syntatic));
+        assertTrue(testFile("fixtures/public/Lazysort.jmm", Stage.SYNTATIC));
     }
 
     @Test
     public void testLife() {
-        assertTrue(testFile("fixtures/public/Life.jmm", Stage.Syntatic));
+        assertTrue(testFile("fixtures/public/Life.jmm", Stage.SYNTATIC));
     }
 
     @Test
     public void testMonteCarloPi() {
-        assertTrue(testFile("fixtures/public/MonteCarloPi.jmm", Stage.Syntatic));
+        assertTrue(testFile("fixtures/public/MonteCarloPi.jmm", Stage.SYNTATIC));
     }
 
     @Test
     public void testQuickSort() {
-        assertTrue(testFile("fixtures/public/QuickSort.jmm", Stage.Syntatic));
+        assertTrue(testFile("fixtures/public/QuickSort.jmm", Stage.SYNTATIC));
     }
 
     @Test
     public void testSimple() {
-        assertTrue(testFile("fixtures/public/Simple.jmm", Stage.Syntatic));
+        assertTrue(testFile("fixtures/public/Simple.jmm", Stage.SYNTATIC));
     }
 
     @Test
     public void testTicTacToe(){
-        assertTrue(testFile("fixtures/public/TicTacToe.jmm", Stage.Syntatic));
+        assertTrue(testFile("fixtures/public/TicTacToe.jmm", Stage.SYNTATIC));
     }
 
     @Test
     public void testWhileAndIF(){
-        assertTrue(testFile("fixtures/public/WhileAndIF.jmm", Stage.Syntatic));
+        assertTrue(testFile("fixtures/public/WhileAndIF.jmm", Stage.SYNTATIC));
     }
 
     @Test
     public void testBlowUp(){
-        assertFalse(testFile("fixtures/public/fail/syntactical/BlowUp.jmm",  Stage.Syntatic));
+        assertFalse(testFile("fixtures/public/fail/syntactical/BlowUp.jmm",  Stage.SYNTATIC));
     }
 
     @Test
     public void testCompleteWhileTest(){
-        assertFalse(testFile("fixtures/public/fail/syntactical/CompleteWhileTest.jmm",  Stage.Syntatic));
+        assertFalse(testFile("fixtures/public/fail/syntactical/CompleteWhileTest.jmm",  Stage.SYNTATIC));
     }
 
     @Test
     public void testLengthError(){
-        assertTrue(testFile("fixtures/public/fail/syntactical/LengthError.jmm",  Stage.Syntatic));
+        assertTrue(testFile("fixtures/public/fail/syntactical/LengthError.jmm",  Stage.SYNTATIC));
     }
 
     @Test
     public void testMissingRightPar(){
-        assertTrue(testFile("fixtures/public/fail/syntactical/MissingRightPar.jmm",  Stage.Syntatic));
+        assertTrue(testFile("fixtures/public/fail/syntactical/MissingRightPar.jmm",  Stage.SYNTATIC));
     }
 
     @Test
     public void testMultipleSequential(){
-        assertTrue(testFile("fixtures/public/fail/syntactical/MultipleSequential.jmm",  Stage.Syntatic));
+        assertTrue(testFile("fixtures/public/fail/syntactical/MultipleSequential.jmm",  Stage.SYNTATIC));
     }
 
     @Test
     public void testNestedLoop(){
-        assertTrue(testFile("fixtures/public/fail/syntactical/NestedLoop.jmm", Stage.Syntatic));
+        assertTrue(testFile("fixtures/public/fail/syntactical/NestedLoop.jmm", Stage.SYNTATIC));
     }
 
 }

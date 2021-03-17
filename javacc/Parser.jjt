@@ -358,7 +358,7 @@ void MethodParameters()#Parameters:{}
 {
     Expression() (MethodParameter()) *
 }
-void MethodParameter():{}
+void MethodParameter() #void:{}
 {
     <COMMA> Expression()
 }
