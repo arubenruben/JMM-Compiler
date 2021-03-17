@@ -5,16 +5,21 @@ options
 }
 
 PARSER_BEGIN(Parser)
-import java.util.List;
+import java.lang.annotation.Repeatable;import java.util.List;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.io.FileReader;
 import java.io.FileNotFoundException;
+import pt.up.fe.comp.jmm.report.Report;
+import pt.up.fe.comp.jmm.report.ReportType;
+import pt.up.fe.comp.jmm.report.Stage;
+
 public class Parser
 {
     private int numberOfSyntaxErrors = 0;
     public static int MAX_NUMBER_SYNTAX_ERRORS = 10;
     private List<String> fileLines = new ArrayList<String>();
+    private List<Report> reports = null;
     private String filename;
 
     //TODO constant to be put somewhere else
@@ -28,11 +33,10 @@ public class Parser
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_WHITE = "\u001B[37m";
 
-    private void reportSyntaxError(ParseException e){
+    private String reportSyntaxError(ParseException e){
         String errorType = "Syntax";
-        System.out.println("------------------------------------------------");
-        System.out.println(ANSI_RED + "Error Nº" + numberOfSyntaxErrors + ANSI_RESET);
-        System.out.println("Type of error: " + errorType + "" );
+        String error = "\n";
+        error += ANSI_RED + "Error Nº" + numberOfSyntaxErrors + ANSI_RESET + "\n";
 
         String line = "";
         String indicator = "";
@@ -45,21 +49,21 @@ public class Parser
                 else
                     indicator += " ";
             }
-            System.out.println("Error place: line " + e.currentToken.next.beginLine + " column " + indicator.length());
-            System.out.println(line);
-            indicator += ANSI_RED + "^" + ANSI_RESET;
-            System.out.println(indicator);
+            error += line + "\n";
+            indicator += ANSI_RED + "^" + ANSI_RESET + "\n";
+            error += indicator + "\n";
         }
 
-        System.out.println("Found: " + e.currentToken.next);
-        System.out.print("Expected: ");
+        error += "Found: " + e.currentToken.next + "\n";
+        error += "Expected: ";
         for (int [] expectedTokenArray : e.expectedTokenSequences){
                 for(int expectedToken : expectedTokenArray){
-                    System.out.print(e.tokenImage[expectedToken] + ",");
+                    error += e.tokenImage[expectedToken] + ",";
                 }
         }
-        System.out.println();
-        System.out.println("------------------------------------------------");
+
+        error += "\n------------------------------------------------";
+        return error;
     }
 
     public void setFileLines(String code){
@@ -69,9 +73,14 @@ public class Parser
        }
     }
 
+    public void setReports(List<Report> reports){
+        this.reports = reports;
+    }
+
     private void handleWhileSyntaxError(ParseException e) throws ParseException{
 
-        reportSyntaxError(e);
+         if(reports != null)
+             reports.add(new Report(ReportType.ERROR, Stage.SYNTATIC, e.currentToken.next.beginLine, e.currentToken.next.beginColumn, reportSyntaxError(e)));
 
         Token t;
         do {
@@ -79,7 +88,7 @@ public class Parser
             if (t.kind == EOF || t.kind == LCUR)
                 break;
             t = getNextToken();
-        } while (t.kind != RPAR);
+        } while (true);
 
         this.numberOfSyntaxErrors++;
         if (this.numberOfSyntaxErrors >= MAX_NUMBER_SYNTAX_ERRORS) {
@@ -87,6 +96,7 @@ public class Parser
         }
     }
 }
+
 
 
 PARSER_END(Parser)
@@ -148,9 +158,8 @@ TOKEN:
     |   < NEW:"new">
     |   < NOT:"!">
     |   < IDENTIFIER: <LETTER> (<LETTER>|<INTEGERLITERAL> )*>
-    |   < LETTER: ["a"-"z","A"-"Z","_"]>
+    |   < LETTER: ["a"-"z","A"-"Z","_", "$"]>
     |   < INTEGERLITERAL: (["0"-"9"])+ >
-
 }
 
 
@@ -281,7 +290,6 @@ void AssignmentVar()#void : {}
     <EQUAL> Expression() #AssignmentVar(2) <SEMICOLON>
 }
 
-
 void WhileStatement()#While: {}
 {
     <WHILE>
@@ -293,14 +301,14 @@ void WhileStatement()#While: {}
     }
     Statement()
 }
-//According to https://introcs.cs.princeton.edu/java/11precedence/
+//According to https://introcs.cs.princeton.import pt.up.fe.comp.jmm.report.Stage;edu/java/11precedence/
 void Expression() #void :{}
 {
     ExpressionLevel9Priority() AndExpression()
 }
 void AndExpression()#void:{}
 {
-     [<AND>  ExpressionLevel9Priority() AndExpression() #And(2)]
+     (<AND>  ExpressionLevel9Priority() #And(2))*
 }
 void ExpressionLevel9Priority()#void:{}
 {
@@ -308,7 +316,7 @@ void ExpressionLevel9Priority()#void:{}
 }
 void LessExpression()#void:{}
 {
-    [<LESS>  ExpressionLevel11Priority() LessExpression()#Less(2)]
+    (<LESS>  ExpressionLevel11Priority() #Less(2))*
 }
 void ExpressionLevel11Priority()#void:{}
 {
@@ -316,59 +324,48 @@ void ExpressionLevel11Priority()#void:{}
 }
 void AddSubExpression()#void:{}
 {
-     [
-     <PLUS>  ExpressionLevel12Priority() AddSubExpression() #Add(2)
-     |
-     <MINUS>  ExpressionLevel12Priority() AddSubExpression() #Sub(2)
-     ]
+  (<PLUS>  ExpressionLevel12Priority() #Add(2)
+   |
+  <MINUS>  ExpressionLevel12Priority() #Sub(2))*
 }
 void ExpressionLevel12Priority()#void:{}
 {
-    ExpressionLevel14Priority() MultDivExpression()
+    ExpressionLevel15Priority() MultDivExpression()
 }
 
 void MultDivExpression()#void:{}
 {
-     [
-     <MULT>  ExpressionLevel14Priority() MultDivExpression() #Mult(2)
+     (<MULT>  ExpressionLevel15Priority() #Mult(2)
      |
-     <DIV>  ExpressionLevel14Priority() MultDivExpression() #Div(2)
-     ]
+     <DIV>  ExpressionLevel15Priority() #Div(2))*
 }
-void ExpressionLevel14Priority()#void:{}
-{
-     ExpressionLevel15Priority() NotExpression()
-}
-void NotExpression()#void:{}
-{
-    [<NOT> ExpressionLevel15Priority() NotExpression()]
-}
+
 void ExpressionLevel15Priority()#void:{}
 {
     ExpressionLevel16Priority() DotExpression()
 }
 void DotExpression()#void:{}
 {
-    [<DOT> Method() DotExpression()]
+    (<DOT> Method() #MethodCall(2))*
 }
-void Method() #Method:{Token t;}
+void Method() #Identifier:{Token t;}
 {
     t=<LENGTH>{jjtThis.put("value",t.image);}
     |
-    (t=<IDENTIFIER>{jjtThis.put("value",t.image);} <LPAR> MethodParameters() <RPAR>)
+    (t=<IDENTIFIER>{jjtThis.put("value",t.image);} <LPAR> [MethodParameters()] <RPAR>)
 }
-void MethodParameters()#void:{}
+void MethodParameters()#Parameters:{}
 {
-    [Expression() (MethodParameter()) *]
+    Expression() (MethodParameter()) *
 }
-void MethodParameter():{}
+void MethodParameter() #void:{}
 {
     <COMMA> Expression()
 }
 
 void ExpressionLevel16Priority()#void:{}
 {
-    Terminal() | <LPAR>Expression()<RPAR> | <LREC>Expression()<RREC>
+    Terminal() [<LREC>Expression()<RREC>] | <LPAR>Expression()<RPAR> | <LREC>Expression()<RREC> | <NOT> ExpressionLevel16Priority() #Not
 }
 
 void Terminal()#void:{Token t;}

@@ -15,15 +15,15 @@ class Fac extends Parent {
         else{
             num_aux;
             if (dasdasd < 2)
-            	num_aux;
+                num_aux;
             else
-            	dsads;
+                dsads;
         }
         //num_aux = num * (this.ComputeFac(num - 1));
-        num_aux.test();
+        num_aux.test().test(2, 1, z);
 
         while (true) {
-		dsadasdasdas = 1;
+            dsadasdasdas = 1;
         }
         num_aux.length;
         num_aux = num * (this.ComputeFac(num - 1));

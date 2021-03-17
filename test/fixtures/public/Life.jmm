@@ -43,6 +43,7 @@ class Life {
         field = this.field(lineLenA);
         lineLen = lineLenA[0];
 
+
         xMax = lineLen - 1;
         yMax = field.length / lineLen - 1;
 
