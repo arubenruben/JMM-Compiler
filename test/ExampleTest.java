@@ -1,5 +1,7 @@
 import org.junit.Test;
 import pt.up.fe.comp.TestUtils;
+import pt.up.fe.comp.jmm.JmmParserResult;
+import pt.up.fe.comp.jmm.report.Report;
 import pt.up.fe.specs.util.SpecsIo;
 import pt.up.fe.comp.jmm.report.Stage;
 
@@ -13,16 +15,25 @@ public class ExampleTest {
      * @param stage the stage at which the parse must fail
      */
     public boolean testFile(String filePath, Stage stage){
+        JmmParserResult result = null;
         try {
             String code = "";
             code = SpecsIo.read("test/" + filePath);
-            TestUtils.parse(code);
+            result = TestUtils.parse(code);
         }
         catch(Exception e){
             System.err.println(e.toString());
             return false;
         }
-        return true;
+        finally{
+            if(result.getReports().size() > 0) {
+                System.out.println("\n\nReports:");
+                for (Report report : result.getReports())
+                    System.out.println(report.toString());
+            }
+        }
+
+        return result.getReports().size() < 10;
     }
 
     // Test out if the parser succeeds in parsing the files

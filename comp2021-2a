@@ -7,3 +7,4 @@ SCRIPT=$(readlink -f "$0")
 SCRIPTPATH=$(dirname "$SCRIPT")
 
 java -cp "$SCRIPTPATH/comp2021-2a.jar:$SCRIPTPATH/libs/utils.jar:$SCRIPTPATH/libs/gson-2.8.2.jar" "$@"
+

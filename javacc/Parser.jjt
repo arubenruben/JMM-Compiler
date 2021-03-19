@@ -21,6 +21,7 @@ public class Parser
     private List<String> fileLines = new ArrayList<String>();
     private List<Report> reports = null;
     private String filename;
+    private int numberOfPars = 0;
 
     //TODO constant to be put somewhere else
     public static final String ANSI_RESET = "\u001B[0m";
@@ -32,6 +33,7 @@ public class Parser
     public static final String ANSI_PURPLE = "\u001B[35m";
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_WHITE = "\u001B[37m";
+
 
     private String reportSyntaxError(ParseException e){
         String errorType = "Syntax";
@@ -78,16 +80,19 @@ public class Parser
     }
 
     private void handleWhileSyntaxError(ParseException e) throws ParseException{
-
          if(reports != null)
              reports.add(new Report(ReportType.ERROR, Stage.SYNTATIC, e.currentToken.next.beginLine, e.currentToken.next.beginColumn, reportSyntaxError(e)));
 
         Token t;
         do {
             t = getToken(1);
-            if (t.kind == EOF || t.kind == LCUR)
+            if (t.kind == EOF || t.kind == LCUR || this.numberOfPars == 0)
                 break;
             t = getNextToken();
+            if (t.kind == LPAR)
+                this.numberOfPars++;
+            else if (t.kind == RPAR)
+                this.numberOfPars--;
         } while (true);
 
         this.numberOfSyntaxErrors++;
@@ -272,7 +277,8 @@ void IfStatement() #If:{}
 
 void Condition() :{}
 {
-    <LPAR> Expression()<RPAR>
+
+   <LPAR> {this.numberOfPars++;} Expression() <RPAR> {this.numberOfPars--;}
 }
 
 void AssignmentStatement()#void : {}
@@ -292,6 +298,7 @@ void AssignmentVar()#void : {}
 
 void WhileStatement()#While: {}
 {
+    {this.numberOfPars = 0;}
     <WHILE>
     try {
         Condition()
@@ -365,7 +372,7 @@ void MethodParameter() #void:{}
 
 void ExpressionLevel16Priority()#void:{}
 {
-    Terminal() [<LREC>Expression()<RREC>] | <LPAR>Expression()<RPAR> | <LREC>Expression()<RREC> | <NOT> ExpressionLevel16Priority() #Not
+    Terminal() [<LREC>Expression()<RREC>] | <LPAR> {this.numberOfPars++;} Expression()<RPAR> {this.numberOfPars--;} | <LREC>Expression()<RREC> | <NOT> ExpressionLevel16Priority() #Not
 }
 
 void Terminal()#void:{Token t;}

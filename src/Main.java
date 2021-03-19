@@ -2,14 +2,12 @@ import com.google.gson.JsonObject;
 import pt.up.fe.comp.jmm.JmmParser;
 import pt.up.fe.comp.jmm.JmmParserResult;
 import pt.up.fe.comp.jmm.report.Report;
-import pt.up.fe.comp.jmm.report.ReportType;
 import pt.up.fe.specs.util.SpecsIo;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 
 
 public class Main implements JmmParser {
@@ -28,10 +26,10 @@ public class Main implements JmmParser {
 
         try {
             root = parser.Program();
+            root.dump(""); // prints the tree on the screen
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        root.dump(""); // prints the tree on the screen
 
         return new JmmParserResult(root, reports);
     }

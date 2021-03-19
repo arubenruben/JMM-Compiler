@@ -440,19 +440,6 @@
                   "attributes": {},
                   "children": [
                     {
-                      "kind": "Condition",
-                      "attributes": {},
-                      "children": [
-                        {
-                          "kind": "Boolean[true]",
-                          "attributes": {
-                            "value": "true"
-                          },
-                          "children": []
-                        }
-                      ]
-                    },
-                    {
                       "kind": "AssignmentVar",
                       "attributes": {},
                       "children": [
