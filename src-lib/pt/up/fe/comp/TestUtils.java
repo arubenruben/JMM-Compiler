@@ -85,6 +85,7 @@ public class TestUtils {
 			.filter(report -> report.getType() == type)
 			.count();
 	}
+
 	
 	public static long getNumErrors(List<Report> reports) {	
 		return getNumReports(reports, ReportType.ERROR);

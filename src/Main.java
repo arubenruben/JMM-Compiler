@@ -1,37 +1,45 @@
-import com.google.gson.JsonObject;
+import pt.up.fe.comp.TestUtils;
 import pt.up.fe.comp.jmm.JmmParser;
 import pt.up.fe.comp.jmm.JmmParserResult;
 import pt.up.fe.comp.jmm.report.Report;
+import pt.up.fe.comp.jmm.report.ReportType;
+import pt.up.fe.comp.jmm.report.Stage;
 import pt.up.fe.specs.util.SpecsIo;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 
 
 public class Main implements JmmParser {
 
-    static String content = "";
-    static JmmParserResult result = null;
-    List<String> fileLines = new ArrayList<>();
-
     public JmmParserResult parse(String jmmCode) {
         //TODO: Check if this is only a error given out by the idea
-        Parser parser = new Parser(new StringReader(jmmCode));
         List<Report> reports = new ArrayList<>();
-        parser.setFileLines(jmmCode);
-        parser.setReports(reports);
-        SimpleNode root = null; // returns reference to root node
+        List<String> fileLines = new ArrayList<>();
 
-        try {
-            root = parser.Program();
-            root.dump(""); // prints the tree on the screen
-        } catch (ParseException e) {
-            e.printStackTrace();
+        Scanner s = new Scanner(jmmCode);
+        while (s.hasNext()) {
+            fileLines.add(s.nextLine());
         }
 
-        return new JmmParserResult(root, reports);
+        try {
+            Parser parser = new Parser(new StringReader(jmmCode));
+            parser.setFileLines(fileLines);
+            parser.setReports(reports);
+            SimpleNode root = null; // returns reference to root node
+            root = parser.Program();
+            return new JmmParserResult(root, reports);
+        }
+        catch (ParseException e) {
+            reports.add(new Report(ReportType.ERROR, Stage.SYNTATIC, e.currentToken.next.beginLine, e.currentToken.next.beginColumn, Utils.reportEntryError(e, TestUtils.getNumReports(reports, ReportType.ERROR) + 1, fileLines)));
+            return new JmmParserResult(null, reports);
+        }
+        catch (RuntimeException ignored){
+            return new JmmParserResult(null, reports);
+        }
     }
 
     public static void writeToFile(String content, String path){
@@ -53,18 +61,18 @@ public class Main implements JmmParser {
 
         String code = null;
         code = SpecsIo.read("testFiles/" + args[0]);
-
+        JmmParserResult result = null;
         Main main = new Main();
-        JmmParserResult result = main.parse(code);
+        result = main.parse(code);
 
-        if(result.getReports().size() > 0) {
-            System.out.println("\n\nReports:");
-            for (Report report : result.getReports())
-                System.out.println(report.toString());
-        }
+        SimpleNode node = (SimpleNode) result.getRootNode();
+        if(node != null)
+            node.dump(""); // prints the tree on the screen
 
-        writeToFile(result.getRootNode().toJson(), "results/ast.txt");
+        Utils.printReports(result.getReports());
+
+        if(result.getRootNode() != null)
+            writeToFile(result.getRootNode().toJson(), "results/ast.txt");
     }
-
-
 }
+

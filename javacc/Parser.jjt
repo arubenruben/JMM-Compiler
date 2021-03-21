@@ -5,7 +5,8 @@ options
 }
 
 PARSER_BEGIN(Parser)
-import java.lang.annotation.Repeatable;import java.util.List;
+import java.lang.annotation.Repeatable;
+import java.util.List;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.io.FileReader;
@@ -17,62 +18,15 @@ import pt.up.fe.comp.jmm.report.Stage;
 public class Parser
 {
     private int numberOfSyntaxErrors = 0;
+     private int numberOfSyntaxWarnings = 0;
     public static int MAX_NUMBER_SYNTAX_ERRORS = 10;
     private List<String> fileLines = new ArrayList<String>();
     private List<Report> reports = null;
     private String filename;
     private int numberOfPars = 0;
 
-    //TODO constant to be put somewhere else
-    public static final String ANSI_RESET = "\u001B[0m";
-    public static final String ANSI_BLACK = "\u001B[30m";
-    public static final String ANSI_RED = "\u001B[31m";
-    public static final String ANSI_GREEN = "\u001B[32m";
-    public static final String ANSI_YELLOW = "\u001B[33m";
-    public static final String ANSI_BLUE = "\u001B[34m";
-    public static final String ANSI_PURPLE = "\u001B[35m";
-    public static final String ANSI_CYAN = "\u001B[36m";
-    public static final String ANSI_WHITE = "\u001B[37m";
-
-
-    private String reportSyntaxError(ParseException e){
-        String errorType = "Syntax";
-        String error = "\n";
-        error += ANSI_RED + "Error Nº" + numberOfSyntaxErrors + ANSI_RESET + "\n";
-
-        String line = "";
-        String indicator = "";
-
-        if(!fileLines.isEmpty()){
-            line = fileLines.get(e.currentToken.next.beginLine - 1);
-            for(int i = 0; i < e.currentToken.next.beginColumn - 1; i++) {
-                if (line.charAt(i) == '\t')
-                    indicator += "\t";
-                else
-                    indicator += " ";
-            }
-            error += line + "\n";
-            indicator += ANSI_RED + "^" + ANSI_RESET + "\n";
-            error += indicator + "\n";
-        }
-
-        error += "Found: " + e.currentToken.next + "\n";
-        error += "Expected: ";
-        for (int [] expectedTokenArray : e.expectedTokenSequences){
-                for(int expectedToken : expectedTokenArray){
-                    error += e.tokenImage[expectedToken] + ",";
-                }
-        }
-
-        error += "\n------------------------------------------------";
-        return error;
-    }
-
-    public void setFileLines(String code){
-       Scanner s = new Scanner(code);
-       while (s.hasNext()) {
-           fileLines.add(s.nextLine());
-       }
+    public void setFileLines(List<String> fileLines){
+        this.fileLines = fileLines;
     }
 
     public void setReports(List<Report> reports){
@@ -80,8 +34,11 @@ public class Parser
     }
 
     private void handleWhileSyntaxError(ParseException e) throws ParseException{
-         if(reports != null)
-             reports.add(new Report(ReportType.ERROR, Stage.SYNTATIC, e.currentToken.next.beginLine, e.currentToken.next.beginColumn, reportSyntaxError(e)));
+
+        this.numberOfSyntaxErrors++;
+
+        if(reports != null)
+             reports.add(new Report(ReportType.ERROR, Stage.SYNTATIC, e.currentToken.next.beginLine, e.currentToken.next.beginColumn, Utils.reportEntryError(e, numberOfSyntaxErrors, fileLines)));
 
         Token t;
         do {
@@ -95,9 +52,11 @@ public class Parser
                 this.numberOfPars--;
         } while (true);
 
-        this.numberOfSyntaxErrors++;
+
         if (this.numberOfSyntaxErrors >= MAX_NUMBER_SYNTAX_ERRORS) {
-          throw new ParseException("Parser caught the maximum amount of errors (" + MAX_NUMBER_SYNTAX_ERRORS + " errors).");
+            numberOfSyntaxWarnings++;
+            reports.add(new Report(ReportType.WARNING, Stage.SYNTATIC, 0, 0, Utils.reportEntryWarning("Parser caught the maximum amount of errors (" + MAX_NUMBER_SYNTAX_ERRORS + " errors).", numberOfSyntaxWarnings)));
+            throw new RuntimeException("Parser caught the maximum amount of errors (" + MAX_NUMBER_SYNTAX_ERRORS + " errors).");
         }
     }
 }

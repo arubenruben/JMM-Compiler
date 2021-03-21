@@ -9,6 +9,7 @@ class Fac extends Parent {
         chars = new int[1];
         chars = new Bar();
         chars[1] = 4;
+
         if (num < 1 && num < 2)
             num_aux = 1;
 
@@ -19,12 +20,14 @@ class Fac extends Parent {
             else
                 dsads;
         }
-        //num_aux = num * (this.ComputeFac(num - 1));
+
+        num_aux = num * (this.ComputeFac(num - 1));
         num_aux.test().test(2, 1, z);
 
-        while (true {
+        while (true) {
             dsadasdasdas = 1;
         }
+
         num_aux.length;
         num_aux = num * (this.ComputeFac(num - 1));
         num_aux.test();
