@@ -1,872 +1,875 @@
 {
-  "kind": "Program",
-  "attributes": {},
-  "children": [
-    {
-      "kind": "Class[Fac]",
-      "attributes": {
-        "value": "Fac"
-      },
-      "children": [
-        {
-          "kind": "Extends[Parent]",
-          "attributes": {
-            "value": "Parent"
-          },
-          "children": []
+  "rootNode": {
+    "kind": "Program",
+    "attributes": {},
+    "children": [
+      {
+        "kind": "Class[Fac]",
+        "attributes": {
+          "value": "Fac"
         },
-        {
-          "kind": "ClassMethod[ComputeFac]",
-          "attributes": {
-            "value": "ComputeFac"
+        "children": [
+          {
+            "kind": "Extends[Parent]",
+            "attributes": {
+              "value": "Parent"
+            },
+            "children": []
           },
-          "children": [
-            {
-              "kind": "Type[int]",
-              "attributes": {
-                "value": "int"
+          {
+            "kind": "ClassMethod[ComputeFac]",
+            "attributes": {
+              "value": "ComputeFac"
+            },
+            "children": [
+              {
+                "kind": "Type[int]",
+                "attributes": {
+                  "value": "int"
+                },
+                "children": []
               },
-              "children": []
-            },
-            {
-              "kind": "Parameters",
-              "attributes": {},
-              "children": [
-                {
-                  "kind": "Parameter",
-                  "attributes": {},
-                  "children": [
-                    {
-                      "kind": "Type[int]",
-                      "attributes": {
-                        "value": "int"
-                      },
-                      "children": []
-                    },
-                    {
-                      "kind": "Identifier[num]",
-                      "attributes": {
-                        "value": "num"
-                      },
-                      "children": []
-                    }
-                  ]
-                },
-                {
-                  "kind": "Parameter",
-                  "attributes": {},
-                  "children": [
-                    {
-                      "kind": "Type[int]",
-                      "attributes": {
-                        "value": "int"
-                      },
-                      "children": []
-                    },
-                    {
-                      "kind": "Identifier[num2]",
-                      "attributes": {
-                        "value": "num2"
-                      },
-                      "children": []
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              "kind": "Body",
-              "attributes": {},
-              "children": [
-                {
-                  "kind": "VarDeclaration[chars]",
-                  "attributes": {
-                    "value": "chars"
-                  },
-                  "children": [
-                    {
-                      "kind": "Type[[int]]",
-                      "attributes": {
-                        "value": "[int]"
-                      },
-                      "children": []
-                    }
-                  ]
-                },
-                {
-                  "kind": "VarDeclaration[num_aux]",
-                  "attributes": {
-                    "value": "num_aux"
-                  },
-                  "children": [
-                    {
-                      "kind": "Type[int]",
-                      "attributes": {
-                        "value": "int"
-                      },
-                      "children": []
-                    }
-                  ]
-                },
-                {
-                  "kind": "VarDeclaration[bool_test]",
-                  "attributes": {
-                    "value": "bool_test"
-                  },
-                  "children": [
-                    {
-                      "kind": "Type[boolean]",
-                      "attributes": {
-                        "value": "boolean"
-                      },
-                      "children": []
-                    }
-                  ]
-                },
-                {
-                  "kind": "VarDeclaration[testClass]",
-                  "attributes": {
-                    "value": "testClass"
-                  },
-                  "children": [
-                    {
-                      "kind": "Type[TestClass]",
-                      "attributes": {
-                        "value": "TestClass"
-                      },
-                      "children": []
-                    }
-                  ]
-                },
-                {
-                  "kind": "AssignmentVar",
-                  "attributes": {},
-                  "children": [
-                    {
-                      "kind": "Identifier[chars]",
-                      "attributes": {
-                        "value": "chars"
-                      },
-                      "children": []
-                    },
-                    {
-                      "kind": "New[[int]]",
-                      "attributes": {
-                        "value": "[int]"
-                      },
-                      "children": [
-                        {
-                          "kind": "Integer[1]",
-                          "attributes": {
-                            "value": "1"
-                          },
-                          "children": []
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "kind": "AssignmentVar",
-                  "attributes": {},
-                  "children": [
-                    {
-                      "kind": "Identifier[chars]",
-                      "attributes": {
-                        "value": "chars"
-                      },
-                      "children": []
-                    },
-                    {
-                      "kind": "New[Bar]",
-                      "attributes": {
-                        "value": "Bar"
-                      },
-                      "children": []
-                    }
-                  ]
-                },
-                {
-                  "kind": "AssignmentVarArray",
-                  "attributes": {},
-                  "children": [
-                    {
-                      "kind": "ArrayAccess",
-                      "attributes": {},
-                      "children": [
-                        {
-                          "kind": "Identifier[chars]",
-                          "attributes": {
-                            "value": "chars"
-                          },
-                          "children": []
+              {
+                "kind": "Parameters",
+                "attributes": {},
+                "children": [
+                  {
+                    "kind": "Parameter",
+                    "attributes": {},
+                    "children": [
+                      {
+                        "kind": "Type[int]",
+                        "attributes": {
+                          "value": "int"
                         },
-                        {
-                          "kind": "Integer[1]",
-                          "attributes": {
-                            "value": "1"
-                          },
-                          "children": []
-                        }
-                      ]
-                    },
-                    {
-                      "kind": "Integer[4]",
-                      "attributes": {
-                        "value": "4"
+                        "children": []
                       },
-                      "children": []
-                    }
-                  ]
-                },
-                {
-                  "kind": "If",
-                  "attributes": {},
-                  "children": [
-                    {
-                      "kind": "Condition",
-                      "attributes": {},
-                      "children": [
-                        {
-                          "kind": "And",
-                          "attributes": {},
-                          "children": [
-                            {
-                              "kind": "Less",
-                              "attributes": {},
-                              "children": [
-                                {
-                                  "kind": "Identifier[num]",
-                                  "attributes": {
-                                    "value": "num"
-                                  },
-                                  "children": []
-                                },
-                                {
-                                  "kind": "Integer[1]",
-                                  "attributes": {
-                                    "value": "1"
-                                  },
-                                  "children": []
-                                }
-                              ]
-                            },
-                            {
-                              "kind": "Less",
-                              "attributes": {},
-                              "children": [
-                                {
-                                  "kind": "Identifier[num]",
-                                  "attributes": {
-                                    "value": "num"
-                                  },
-                                  "children": []
-                                },
-                                {
-                                  "kind": "Integer[2]",
-                                  "attributes": {
-                                    "value": "2"
-                                  },
-                                  "children": []
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "kind": "Then",
-                      "attributes": {},
-                      "children": [
-                        {
-                          "kind": "AssignmentVar",
-                          "attributes": {},
-                          "children": [
-                            {
-                              "kind": "Identifier[num_aux]",
-                              "attributes": {
-                                "value": "num_aux"
-                              },
-                              "children": []
-                            },
-                            {
-                              "kind": "Integer[1]",
-                              "attributes": {
-                                "value": "1"
-                              },
-                              "children": []
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "kind": "Else",
-                      "attributes": {},
-                      "children": [
-                        {
-                          "kind": "Identifier[num_aux]",
-                          "attributes": {
-                            "value": "num_aux"
-                          },
-                          "children": []
+                      {
+                        "kind": "Identifier[num]",
+                        "attributes": {
+                          "value": "num"
                         },
-                        {
-                          "kind": "If",
-                          "attributes": {},
-                          "children": [
-                            {
-                              "kind": "Condition",
-                              "attributes": {},
-                              "children": [
-                                {
-                                  "kind": "Less",
-                                  "attributes": {},
-                                  "children": [
-                                    {
-                                      "kind": "Identifier[dasdasd]",
-                                      "attributes": {
-                                        "value": "dasdasd"
-                                      },
-                                      "children": []
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "Parameter",
+                    "attributes": {},
+                    "children": [
+                      {
+                        "kind": "Type[int]",
+                        "attributes": {
+                          "value": "int"
+                        },
+                        "children": []
+                      },
+                      {
+                        "kind": "Identifier[num2]",
+                        "attributes": {
+                          "value": "num2"
+                        },
+                        "children": []
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "Body",
+                "attributes": {},
+                "children": [
+                  {
+                    "kind": "VarDeclaration[chars]",
+                    "attributes": {
+                      "value": "chars"
+                    },
+                    "children": [
+                      {
+                        "kind": "Type[[int]]",
+                        "attributes": {
+                          "value": "[int]"
+                        },
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "VarDeclaration[num_aux]",
+                    "attributes": {
+                      "value": "num_aux"
+                    },
+                    "children": [
+                      {
+                        "kind": "Type[int]",
+                        "attributes": {
+                          "value": "int"
+                        },
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "VarDeclaration[bool_test]",
+                    "attributes": {
+                      "value": "bool_test"
+                    },
+                    "children": [
+                      {
+                        "kind": "Type[boolean]",
+                        "attributes": {
+                          "value": "boolean"
+                        },
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "VarDeclaration[testClass]",
+                    "attributes": {
+                      "value": "testClass"
+                    },
+                    "children": [
+                      {
+                        "kind": "Type[TestClass]",
+                        "attributes": {
+                          "value": "TestClass"
+                        },
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "AssignmentVar",
+                    "attributes": {},
+                    "children": [
+                      {
+                        "kind": "Identifier[chars]",
+                        "attributes": {
+                          "value": "chars"
+                        },
+                        "children": []
+                      },
+                      {
+                        "kind": "New[[int]]",
+                        "attributes": {
+                          "value": "[int]"
+                        },
+                        "children": [
+                          {
+                            "kind": "Integer[1]",
+                            "attributes": {
+                              "value": "1"
+                            },
+                            "children": []
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "AssignmentVar",
+                    "attributes": {},
+                    "children": [
+                      {
+                        "kind": "Identifier[chars]",
+                        "attributes": {
+                          "value": "chars"
+                        },
+                        "children": []
+                      },
+                      {
+                        "kind": "New[Bar]",
+                        "attributes": {
+                          "value": "Bar"
+                        },
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "AssignmentVarArray",
+                    "attributes": {},
+                    "children": [
+                      {
+                        "kind": "ArrayAccess",
+                        "attributes": {},
+                        "children": [
+                          {
+                            "kind": "Identifier[chars]",
+                            "attributes": {
+                              "value": "chars"
+                            },
+                            "children": []
+                          },
+                          {
+                            "kind": "Integer[1]",
+                            "attributes": {
+                              "value": "1"
+                            },
+                            "children": []
+                          }
+                        ]
+                      },
+                      {
+                        "kind": "Integer[4]",
+                        "attributes": {
+                          "value": "4"
+                        },
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "If",
+                    "attributes": {},
+                    "children": [
+                      {
+                        "kind": "Condition",
+                        "attributes": {},
+                        "children": [
+                          {
+                            "kind": "And",
+                            "attributes": {},
+                            "children": [
+                              {
+                                "kind": "Less",
+                                "attributes": {},
+                                "children": [
+                                  {
+                                    "kind": "Identifier[num]",
+                                    "attributes": {
+                                      "value": "num"
                                     },
-                                    {
-                                      "kind": "Integer[2]",
-                                      "attributes": {
-                                        "value": "2"
+                                    "children": []
+                                  },
+                                  {
+                                    "kind": "Integer[1]",
+                                    "attributes": {
+                                      "value": "1"
+                                    },
+                                    "children": []
+                                  }
+                                ]
+                              },
+                              {
+                                "kind": "Less",
+                                "attributes": {},
+                                "children": [
+                                  {
+                                    "kind": "Identifier[num]",
+                                    "attributes": {
+                                      "value": "num"
+                                    },
+                                    "children": []
+                                  },
+                                  {
+                                    "kind": "Integer[2]",
+                                    "attributes": {
+                                      "value": "2"
+                                    },
+                                    "children": []
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "kind": "Then",
+                        "attributes": {},
+                        "children": [
+                          {
+                            "kind": "AssignmentVar",
+                            "attributes": {},
+                            "children": [
+                              {
+                                "kind": "Identifier[num_aux]",
+                                "attributes": {
+                                  "value": "num_aux"
+                                },
+                                "children": []
+                              },
+                              {
+                                "kind": "Integer[1]",
+                                "attributes": {
+                                  "value": "1"
+                                },
+                                "children": []
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "kind": "Else",
+                        "attributes": {},
+                        "children": [
+                          {
+                            "kind": "Identifier[num_aux]",
+                            "attributes": {
+                              "value": "num_aux"
+                            },
+                            "children": []
+                          },
+                          {
+                            "kind": "If",
+                            "attributes": {},
+                            "children": [
+                              {
+                                "kind": "Condition",
+                                "attributes": {},
+                                "children": [
+                                  {
+                                    "kind": "Less",
+                                    "attributes": {},
+                                    "children": [
+                                      {
+                                        "kind": "Identifier[dasdasd]",
+                                        "attributes": {
+                                          "value": "dasdasd"
+                                        },
+                                        "children": []
                                       },
-                                      "children": []
-                                    }
-                                  ]
-                                }
-                              ]
-                            },
-                            {
-                              "kind": "Then",
-                              "attributes": {},
-                              "children": [
-                                {
-                                  "kind": "Identifier[num_aux]",
-                                  "attributes": {
-                                    "value": "num_aux"
-                                  },
-                                  "children": []
-                                }
-                              ]
-                            },
-                            {
-                              "kind": "Else",
-                              "attributes": {},
-                              "children": [
-                                {
-                                  "kind": "Identifier[dsads]",
-                                  "attributes": {
-                                    "value": "dsads"
-                                  },
-                                  "children": []
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "kind": "AssignmentVar",
-                  "attributes": {},
-                  "children": [
-                    {
-                      "kind": "Identifier[num_aux]",
-                      "attributes": {
-                        "value": "num_aux"
-                      },
-                      "children": []
-                    },
-                    {
-                      "kind": "Mult",
-                      "attributes": {},
-                      "children": [
-                        {
-                          "kind": "Identifier[num]",
-                          "attributes": {
-                            "value": "num"
-                          },
-                          "children": []
-                        },
-                        {
-                          "kind": "MethodCall",
-                          "attributes": {},
-                          "children": [
-                            {
-                              "kind": "This",
-                              "attributes": {
-                                "value": "this"
-                              },
-                              "children": []
-                            },
-                            {
-                              "kind": "Identifier[ComputeFac]",
-                              "attributes": {
-                                "value": "ComputeFac"
-                              },
-                              "children": [
-                                {
-                                  "kind": "Parameters",
-                                  "attributes": {},
-                                  "children": [
-                                    {
-                                      "kind": "Sub",
-                                      "attributes": {},
-                                      "children": [
-                                        {
-                                          "kind": "Identifier[num]",
-                                          "attributes": {
-                                            "value": "num"
-                                          },
-                                          "children": []
+                                      {
+                                        "kind": "Integer[2]",
+                                        "attributes": {
+                                          "value": "2"
                                         },
-                                        {
-                                          "kind": "Integer[1]",
-                                          "attributes": {
-                                            "value": "1"
-                                          },
-                                          "children": []
-                                        }
-                                      ]
-                                    }
-                                  ]
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "kind": "MethodCall",
-                  "attributes": {},
-                  "children": [
-                    {
-                      "kind": "MethodCall",
-                      "attributes": {},
-                      "children": [
-                        {
-                          "kind": "Identifier[num_aux]",
-                          "attributes": {
-                            "value": "num_aux"
-                          },
-                          "children": []
-                        },
-                        {
-                          "kind": "Identifier[test]",
-                          "attributes": {
-                            "value": "test"
-                          },
-                          "children": []
-                        }
-                      ]
-                    },
-                    {
-                      "kind": "Identifier[test]",
-                      "attributes": {
-                        "value": "test"
-                      },
-                      "children": [
-                        {
-                          "kind": "Parameters",
-                          "attributes": {},
-                          "children": [
-                            {
-                              "kind": "Integer[2]",
-                              "attributes": {
-                                "value": "2"
+                                        "children": []
+                                      }
+                                    ]
+                                  }
+                                ]
                               },
-                              "children": []
-                            },
-                            {
-                              "kind": "Integer[1]",
-                              "attributes": {
-                                "value": "1"
+                              {
+                                "kind": "Then",
+                                "attributes": {},
+                                "children": [
+                                  {
+                                    "kind": "Identifier[num_aux]",
+                                    "attributes": {
+                                      "value": "num_aux"
+                                    },
+                                    "children": []
+                                  }
+                                ]
                               },
-                              "children": []
-                            },
-                            {
-                              "kind": "Identifier[z]",
-                              "attributes": {
-                                "value": "z"
-                              },
-                              "children": []
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "kind": "While",
-                  "attributes": {},
-                  "children": [
-                    {
-                      "kind": "Condition",
-                      "attributes": {},
-                      "children": [
-                        {
-                          "kind": "Boolean[true]",
-                          "attributes": {
-                            "value": "true"
-                          },
-                          "children": []
-                        }
-                      ]
-                    },
-                    {
-                      "kind": "AssignmentVar",
-                      "attributes": {},
-                      "children": [
-                        {
-                          "kind": "Identifier[dsadasdasdas]",
-                          "attributes": {
-                            "value": "dsadasdasdas"
-                          },
-                          "children": []
-                        },
-                        {
-                          "kind": "Integer[1]",
-                          "attributes": {
-                            "value": "1"
-                          },
-                          "children": []
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "kind": "MethodCall",
-                  "attributes": {},
-                  "children": [
-                    {
-                      "kind": "Identifier[num_aux]",
-                      "attributes": {
-                        "value": "num_aux"
-                      },
-                      "children": []
-                    },
-                    {
-                      "kind": "Identifier[length]",
-                      "attributes": {
-                        "value": "length"
-                      },
-                      "children": []
-                    }
-                  ]
-                },
-                {
-                  "kind": "AssignmentVar",
-                  "attributes": {},
-                  "children": [
-                    {
-                      "kind": "Identifier[num_aux]",
-                      "attributes": {
-                        "value": "num_aux"
-                      },
-                      "children": []
-                    },
-                    {
-                      "kind": "Mult",
-                      "attributes": {},
-                      "children": [
-                        {
-                          "kind": "Identifier[num]",
-                          "attributes": {
-                            "value": "num"
-                          },
-                          "children": []
-                        },
-                        {
-                          "kind": "MethodCall",
-                          "attributes": {},
-                          "children": [
-                            {
-                              "kind": "This",
-                              "attributes": {
-                                "value": "this"
-                              },
-                              "children": []
-                            },
-                            {
-                              "kind": "Identifier[ComputeFac]",
-                              "attributes": {
-                                "value": "ComputeFac"
-                              },
-                              "children": [
-                                {
-                                  "kind": "Parameters",
-                                  "attributes": {},
-                                  "children": [
-                                    {
-                                      "kind": "Sub",
-                                      "attributes": {},
-                                      "children": [
-                                        {
-                                          "kind": "Identifier[num]",
-                                          "attributes": {
-                                            "value": "num"
-                                          },
-                                          "children": []
-                                        },
-                                        {
-                                          "kind": "Integer[1]",
-                                          "attributes": {
-                                            "value": "1"
-                                          },
-                                          "children": []
-                                        }
-                                      ]
-                                    }
-                                  ]
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "kind": "MethodCall",
-                  "attributes": {},
-                  "children": [
-                    {
-                      "kind": "Identifier[num_aux]",
-                      "attributes": {
-                        "value": "num_aux"
-                      },
-                      "children": []
-                    },
-                    {
-                      "kind": "Identifier[test]",
-                      "attributes": {
-                        "value": "test"
-                      },
-                      "children": []
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              "kind": "Return",
-              "attributes": {},
-              "children": [
-                {
-                  "kind": "Identifier[num_aux]",
-                  "attributes": {
-                    "value": "num_aux"
+                              {
+                                "kind": "Else",
+                                "attributes": {},
+                                "children": [
+                                  {
+                                    "kind": "Identifier[dsads]",
+                                    "attributes": {
+                                      "value": "dsads"
+                                    },
+                                    "children": []
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
                   },
-                  "children": []
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "kind": "Main[[args]]",
-          "attributes": {
-            "value": "[args]"
+                  {
+                    "kind": "AssignmentVar",
+                    "attributes": {},
+                    "children": [
+                      {
+                        "kind": "Identifier[num_aux]",
+                        "attributes": {
+                          "value": "num_aux"
+                        },
+                        "children": []
+                      },
+                      {
+                        "kind": "Mult",
+                        "attributes": {},
+                        "children": [
+                          {
+                            "kind": "Identifier[num]",
+                            "attributes": {
+                              "value": "num"
+                            },
+                            "children": []
+                          },
+                          {
+                            "kind": "MethodCall",
+                            "attributes": {},
+                            "children": [
+                              {
+                                "kind": "This",
+                                "attributes": {
+                                  "value": "this"
+                                },
+                                "children": []
+                              },
+                              {
+                                "kind": "Identifier[ComputeFac]",
+                                "attributes": {
+                                  "value": "ComputeFac"
+                                },
+                                "children": [
+                                  {
+                                    "kind": "Parameters",
+                                    "attributes": {},
+                                    "children": [
+                                      {
+                                        "kind": "Sub",
+                                        "attributes": {},
+                                        "children": [
+                                          {
+                                            "kind": "Identifier[num]",
+                                            "attributes": {
+                                              "value": "num"
+                                            },
+                                            "children": []
+                                          },
+                                          {
+                                            "kind": "Integer[1]",
+                                            "attributes": {
+                                              "value": "1"
+                                            },
+                                            "children": []
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "MethodCall",
+                    "attributes": {},
+                    "children": [
+                      {
+                        "kind": "MethodCall",
+                        "attributes": {},
+                        "children": [
+                          {
+                            "kind": "Identifier[num_aux]",
+                            "attributes": {
+                              "value": "num_aux"
+                            },
+                            "children": []
+                          },
+                          {
+                            "kind": "Identifier[test]",
+                            "attributes": {
+                              "value": "test"
+                            },
+                            "children": []
+                          }
+                        ]
+                      },
+                      {
+                        "kind": "Identifier[test]",
+                        "attributes": {
+                          "value": "test"
+                        },
+                        "children": [
+                          {
+                            "kind": "Parameters",
+                            "attributes": {},
+                            "children": [
+                              {
+                                "kind": "Integer[2]",
+                                "attributes": {
+                                  "value": "2"
+                                },
+                                "children": []
+                              },
+                              {
+                                "kind": "Integer[1]",
+                                "attributes": {
+                                  "value": "1"
+                                },
+                                "children": []
+                              },
+                              {
+                                "kind": "Identifier[z]",
+                                "attributes": {
+                                  "value": "z"
+                                },
+                                "children": []
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "While",
+                    "attributes": {},
+                    "children": [
+                      {
+                        "kind": "Condition",
+                        "attributes": {},
+                        "children": [
+                          {
+                            "kind": "Boolean[true]",
+                            "attributes": {
+                              "value": "true"
+                            },
+                            "children": []
+                          }
+                        ]
+                      },
+                      {
+                        "kind": "AssignmentVar",
+                        "attributes": {},
+                        "children": [
+                          {
+                            "kind": "Identifier[dsadasdasdas]",
+                            "attributes": {
+                              "value": "dsadasdasdas"
+                            },
+                            "children": []
+                          },
+                          {
+                            "kind": "Integer[1]",
+                            "attributes": {
+                              "value": "1"
+                            },
+                            "children": []
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "MethodCall",
+                    "attributes": {},
+                    "children": [
+                      {
+                        "kind": "Identifier[num_aux]",
+                        "attributes": {
+                          "value": "num_aux"
+                        },
+                        "children": []
+                      },
+                      {
+                        "kind": "Identifier[length]",
+                        "attributes": {
+                          "value": "length"
+                        },
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "AssignmentVar",
+                    "attributes": {},
+                    "children": [
+                      {
+                        "kind": "Identifier[num_aux]",
+                        "attributes": {
+                          "value": "num_aux"
+                        },
+                        "children": []
+                      },
+                      {
+                        "kind": "Mult",
+                        "attributes": {},
+                        "children": [
+                          {
+                            "kind": "Identifier[num]",
+                            "attributes": {
+                              "value": "num"
+                            },
+                            "children": []
+                          },
+                          {
+                            "kind": "MethodCall",
+                            "attributes": {},
+                            "children": [
+                              {
+                                "kind": "This",
+                                "attributes": {
+                                  "value": "this"
+                                },
+                                "children": []
+                              },
+                              {
+                                "kind": "Identifier[ComputeFac]",
+                                "attributes": {
+                                  "value": "ComputeFac"
+                                },
+                                "children": [
+                                  {
+                                    "kind": "Parameters",
+                                    "attributes": {},
+                                    "children": [
+                                      {
+                                        "kind": "Sub",
+                                        "attributes": {},
+                                        "children": [
+                                          {
+                                            "kind": "Identifier[num]",
+                                            "attributes": {
+                                              "value": "num"
+                                            },
+                                            "children": []
+                                          },
+                                          {
+                                            "kind": "Integer[1]",
+                                            "attributes": {
+                                              "value": "1"
+                                            },
+                                            "children": []
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "MethodCall",
+                    "attributes": {},
+                    "children": [
+                      {
+                        "kind": "Identifier[num_aux]",
+                        "attributes": {
+                          "value": "num_aux"
+                        },
+                        "children": []
+                      },
+                      {
+                        "kind": "Identifier[test]",
+                        "attributes": {
+                          "value": "test"
+                        },
+                        "children": []
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "Return",
+                "attributes": {},
+                "children": [
+                  {
+                    "kind": "Identifier[num_aux]",
+                    "attributes": {
+                      "value": "num_aux"
+                    },
+                    "children": []
+                  }
+                ]
+              }
+            ]
           },
-          "children": [
-            {
-              "kind": "Body",
-              "attributes": {},
-              "children": [
-                {
-                  "kind": "VarDeclaration[num_aux]",
-                  "attributes": {
-                    "value": "num_aux"
-                  },
-                  "children": [
-                    {
-                      "kind": "Type[int]",
-                      "attributes": {
-                        "value": "int"
-                      },
-                      "children": []
-                    }
-                  ]
-                },
-                {
-                  "kind": "Add",
-                  "attributes": {},
-                  "children": [
-                    {
-                      "kind": "Integer[2]",
-                      "attributes": {
-                        "value": "2"
-                      },
-                      "children": []
+          {
+            "kind": "Main[[args]]",
+            "attributes": {
+              "value": "[args]"
+            },
+            "children": [
+              {
+                "kind": "Body",
+                "attributes": {},
+                "children": [
+                  {
+                    "kind": "VarDeclaration[num_aux]",
+                    "attributes": {
+                      "value": "num_aux"
                     },
-                    {
-                      "kind": "Mult",
-                      "attributes": {},
-                      "children": [
-                        {
-                          "kind": "Integer[3]",
-                          "attributes": {
-                            "value": "3"
-                          },
-                          "children": []
+                    "children": [
+                      {
+                        "kind": "Type[int]",
+                        "attributes": {
+                          "value": "int"
                         },
-                        {
-                          "kind": "Integer[4]",
-                          "attributes": {
-                            "value": "4"
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "Add",
+                    "attributes": {},
+                    "children": [
+                      {
+                        "kind": "Integer[2]",
+                        "attributes": {
+                          "value": "2"
+                        },
+                        "children": []
+                      },
+                      {
+                        "kind": "Mult",
+                        "attributes": {},
+                        "children": [
+                          {
+                            "kind": "Integer[3]",
+                            "attributes": {
+                              "value": "3"
+                            },
+                            "children": []
                           },
-                          "children": []
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "kind": "MethodCall",
-                  "attributes": {},
-                  "children": [
-                    {
-                      "kind": "Identifier[io]",
-                      "attributes": {
-                        "value": "io"
+                          {
+                            "kind": "Integer[4]",
+                            "attributes": {
+                              "value": "4"
+                            },
+                            "children": []
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "MethodCall",
+                    "attributes": {},
+                    "children": [
+                      {
+                        "kind": "Identifier[io]",
+                        "attributes": {
+                          "value": "io"
+                        },
+                        "children": []
                       },
-                      "children": []
-                    },
-                    {
-                      "kind": "Identifier[println]",
-                      "attributes": {
-                        "value": "println"
-                      },
-                      "children": [
-                        {
-                          "kind": "Parameters",
-                          "attributes": {},
-                          "children": [
-                            {
-                              "kind": "Add",
-                              "attributes": {},
-                              "children": [
-                                {
-                                  "kind": "Integer[2]",
-                                  "attributes": {
-                                    "value": "2"
-                                  },
-                                  "children": []
-                                },
-                                {
-                                  "kind": "Mult",
-                                  "attributes": {},
-                                  "children": [
-                                    {
-                                      "kind": "Integer[3]",
-                                      "attributes": {
-                                        "value": "3"
-                                      },
-                                      "children": []
+                      {
+                        "kind": "Identifier[println]",
+                        "attributes": {
+                          "value": "println"
+                        },
+                        "children": [
+                          {
+                            "kind": "Parameters",
+                            "attributes": {},
+                            "children": [
+                              {
+                                "kind": "Add",
+                                "attributes": {},
+                                "children": [
+                                  {
+                                    "kind": "Integer[2]",
+                                    "attributes": {
+                                      "value": "2"
                                     },
-                                    {
-                                      "kind": "Integer[5]",
-                                      "attributes": {
-                                        "value": "5"
+                                    "children": []
+                                  },
+                                  {
+                                    "kind": "Mult",
+                                    "attributes": {},
+                                    "children": [
+                                      {
+                                        "kind": "Integer[3]",
+                                        "attributes": {
+                                          "value": "3"
+                                        },
+                                        "children": []
                                       },
-                                      "children": []
-                                    }
-                                  ]
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "kind": "MethodCall",
-                  "attributes": {},
-                  "children": [
-                    {
-                      "kind": "Identifier[io]",
-                      "attributes": {
-                        "value": "io"
+                                      {
+                                        "kind": "Integer[5]",
+                                        "attributes": {
+                                          "value": "5"
+                                        },
+                                        "children": []
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "MethodCall",
+                    "attributes": {},
+                    "children": [
+                      {
+                        "kind": "Identifier[io]",
+                        "attributes": {
+                          "value": "io"
+                        },
+                        "children": []
                       },
-                      "children": []
-                    },
-                    {
-                      "kind": "Identifier[println]",
-                      "attributes": {
-                        "value": "println"
-                      },
-                      "children": [
-                        {
-                          "kind": "Parameters",
-                          "attributes": {},
-                          "children": [
-                            {
-                              "kind": "MethodCall",
-                              "attributes": {},
-                              "children": [
-                                {
-                                  "kind": "Identifier[fac]",
-                                  "attributes": {
-                                    "value": "fac"
+                      {
+                        "kind": "Identifier[println]",
+                        "attributes": {
+                          "value": "println"
+                        },
+                        "children": [
+                          {
+                            "kind": "Parameters",
+                            "attributes": {},
+                            "children": [
+                              {
+                                "kind": "MethodCall",
+                                "attributes": {},
+                                "children": [
+                                  {
+                                    "kind": "Identifier[fac]",
+                                    "attributes": {
+                                      "value": "fac"
+                                    },
+                                    "children": []
                                   },
-                                  "children": []
-                                },
-                                {
-                                  "kind": "Identifier[comp]",
-                                  "attributes": {
-                                    "value": "comp"
-                                  },
-                                  "children": []
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "kind": "MethodCall",
-                  "attributes": {},
-                  "children": [
-                    {
-                      "kind": "Identifier[io]",
-                      "attributes": {
-                        "value": "io"
+                                  {
+                                    "kind": "Identifier[comp]",
+                                    "attributes": {
+                                      "value": "comp"
+                                    },
+                                    "children": []
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "MethodCall",
+                    "attributes": {},
+                    "children": [
+                      {
+                        "kind": "Identifier[io]",
+                        "attributes": {
+                          "value": "io"
+                        },
+                        "children": []
                       },
-                      "children": []
-                    },
-                    {
-                      "kind": "Identifier[length]",
-                      "attributes": {
-                        "value": "length"
-                      },
-                      "children": []
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    }
-  ]
+                      {
+                        "kind": "Identifier[length]",
+                        "attributes": {
+                          "value": "length"
+                        },
+                        "children": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "reports": []
 }

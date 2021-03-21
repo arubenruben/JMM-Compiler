@@ -60,7 +60,7 @@ public class Main implements JmmParser {
         }
 
         String code = null;
-        code = SpecsIo.read("testFiles/" + args[0]);
+        code = SpecsIo.read(args[0]);
         JmmParserResult result = null;
         Main main = new Main();
         result = main.parse(code);
@@ -72,7 +72,7 @@ public class Main implements JmmParser {
         Utils.printReports(result.getReports());
 
         if(result.getRootNode() != null)
-            writeToFile(result.getRootNode().toJson(), "results/ast.txt");
+            writeToFile(result.toJson(), "results/ast.txt");
     }
 }
 
