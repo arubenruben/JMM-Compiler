@@ -33,6 +33,12 @@ public class MainAnalysis implements JmmAnalysis { // }, JmmOptimization, Jasmin
         analysis.semanticAnalysis(parserResult);
     }
 
+    public String dealWithIdentifier(JmmNode node, String space) {
+        System.out.println("HERE");
+        return "";
+    }
+
+
     @Override
     public JmmSemanticsResult semanticAnalysis(JmmParserResult parserResult) {
 
@@ -44,13 +50,15 @@ public class MainAnalysis implements JmmAnalysis { // }, JmmOptimization, Jasmin
             return null;
         }
 
+        // Convert Simple node to JmmNodeIml
         JmmNode node = parserResult.getRootNode().sanitize();
 
+
         System.out.println("VISITOR");
-        ExampleVisitor visitor = new ExampleVisitor("Identifier", "id");
+        ExampleVisitor visitor = new ExampleVisitor("Identifier", "value");
         System.out.println(visitor.visit(node, ""));
 
-        System.out.println("PREORDER VISITOR");
+        /*System.out.println("PREORDER VISITOR");
         var preOrderVisitor = new ExamplePreorderVisitor("Identifier", "id");
         System.out.println(preOrderVisitor.visit(node, ""));
 
@@ -58,7 +66,7 @@ public class MainAnalysis implements JmmAnalysis { // }, JmmOptimization, Jasmin
         var postOrderVisitor = new ExamplePostorderVisitor();
         var kindCount = new HashMap<String, Integer>();
         postOrderVisitor.visit(node, kindCount);
-        System.out.println("Kinds count: " + kindCount);
+        System.out.println("Kinds count: " + kindCount);*/
 
         // No Symbol Table being calculated yet
         return new JmmSemanticsResult(node, null, parserResult.getReports());
