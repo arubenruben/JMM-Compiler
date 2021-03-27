@@ -7,6 +7,7 @@ import pt.up.fe.comp.jmm.JmmNode;
 import pt.up.fe.comp.jmm.JmmParserResult;
 import pt.up.fe.comp.jmm.analysis.JmmAnalysis;
 import pt.up.fe.comp.jmm.analysis.JmmSemanticsResult;
+import pt.up.fe.comp.jmm.analysis.table.SymbolTable;
 import pt.up.fe.comp.jmm.ast.examples.ExamplePostorderVisitor;
 import pt.up.fe.comp.jmm.ast.examples.ExamplePreorderVisitor;
 import pt.up.fe.comp.jmm.ast.examples.ExampleVisitor;
@@ -45,7 +46,6 @@ public class MainAnalysis implements JmmAnalysis { // }, JmmOptimization, Jasmin
         if (TestUtils.getNumReports(parserResult.getReports(), ReportType.ERROR) > 0) {
             return null;
         }
-
         if (parserResult.getRootNode() == null) {
             return null;
         }
@@ -53,12 +53,11 @@ public class MainAnalysis implements JmmAnalysis { // }, JmmOptimization, Jasmin
         // Convert Simple node to JmmNodeIml
         JmmNode node = parserResult.getRootNode().sanitize();
 
-
         System.out.println("VISITOR");
         ExampleVisitor visitor = new ExampleVisitor("Identifier", "value");
         System.out.println(visitor.visit(node, ""));
 
-        /*System.out.println("PREORDER VISITOR");
+        System.out.println("PREORDER VISITOR");
         var preOrderVisitor = new ExamplePreorderVisitor("Identifier", "id");
         System.out.println(preOrderVisitor.visit(node, ""));
 
@@ -66,7 +65,7 @@ public class MainAnalysis implements JmmAnalysis { // }, JmmOptimization, Jasmin
         var postOrderVisitor = new ExamplePostorderVisitor();
         var kindCount = new HashMap<String, Integer>();
         postOrderVisitor.visit(node, kindCount);
-        System.out.println("Kinds count: " + kindCount);*/
+        System.out.println("Kinds count: " + kindCount);
 
         // No Symbol Table being calculated yet
         return new JmmSemanticsResult(node, null, parserResult.getReports());
