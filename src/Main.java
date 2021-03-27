@@ -1,6 +1,10 @@
 import pt.up.fe.comp.TestUtils;
+import pt.up.fe.comp.jmm.JmmNode;
 import pt.up.fe.comp.jmm.JmmParser;
 import pt.up.fe.comp.jmm.JmmParserResult;
+import pt.up.fe.comp.jmm.ast.JmmNodeImpl;
+import pt.up.fe.comp.jmm.ast.PreorderJmmVisitor;
+import pt.up.fe.comp.jmm.ast.examples.ExamplePreorderVisitor;
 import pt.up.fe.comp.jmm.report.Report;
 import pt.up.fe.comp.jmm.report.ReportType;
 import pt.up.fe.comp.jmm.report.Stage;
@@ -66,9 +70,10 @@ public class Main implements JmmParser {
         Main main = new Main();
         result = main.parse(code);
 
-        SimpleNode node = (SimpleNode) result.getRootNode();
+        JmmNode node = result.getRootNode();
+        PreorderJmmVisitor preorderJmmVisitor = new ExamplePreorderVisitor("Identifier",  "id");
         if(node != null)
-            node.dump(""); // prints the tree on the screen
+            System.out.println(preorderJmmVisitor.visit(node, ""));
 
         Utils.printReports(result.getReports());
 

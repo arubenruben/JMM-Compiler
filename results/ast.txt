@@ -6,12 +6,16 @@
       {
         "kind": "Class[Fac]",
         "attributes": {
+          "line": "2",
+          "column": "6",
           "value": "Fac"
         },
         "children": [
           {
             "kind": "Extends[Parent]",
             "attributes": {
+              "line": "2",
+              "column": "18",
               "value": "Parent"
             },
             "children": []
@@ -19,12 +23,16 @@
           {
             "kind": "ClassMethod[ComputeFac]",
             "attributes": {
+              "line": "3",
+              "column": "15",
               "value": "ComputeFac"
             },
             "children": [
               {
                 "kind": "Type[int]",
                 "attributes": {
+                  "line": "3",
+                  "column": "11",
                   "value": "int"
                 },
                 "children": []
@@ -40,6 +48,8 @@
                       {
                         "kind": "Type[int]",
                         "attributes": {
+                          "line": "3",
+                          "column": "26",
                           "value": "int"
                         },
                         "children": []
@@ -60,6 +70,8 @@
                       {
                         "kind": "Type[int]",
                         "attributes": {
+                          "line": "3",
+                          "column": "35",
                           "value": "int"
                         },
                         "children": []
@@ -82,6 +94,8 @@
                   {
                     "kind": "VarDeclaration[chars]",
                     "attributes": {
+                      "line": "4",
+                      "column": "14",
                       "value": "chars"
                     },
                     "children": [
@@ -97,12 +111,16 @@
                   {
                     "kind": "VarDeclaration[num_aux]",
                     "attributes": {
+                      "line": "5",
+                      "column": "12",
                       "value": "num_aux"
                     },
                     "children": [
                       {
                         "kind": "Type[int]",
                         "attributes": {
+                          "line": "5",
+                          "column": "8",
                           "value": "int"
                         },
                         "children": []
@@ -112,12 +130,16 @@
                   {
                     "kind": "VarDeclaration[bool_test]",
                     "attributes": {
+                      "line": "6",
+                      "column": "16",
                       "value": "bool_test"
                     },
                     "children": [
                       {
                         "kind": "Type[boolean]",
                         "attributes": {
+                          "line": "6",
+                          "column": "8",
                           "value": "boolean"
                         },
                         "children": []
@@ -127,12 +149,16 @@
                   {
                     "kind": "VarDeclaration[testClass]",
                     "attributes": {
+                      "line": "7",
+                      "column": "18",
                       "value": "testClass"
                     },
                     "children": [
                       {
                         "kind": "Type[TestClass]",
                         "attributes": {
+                          "line": "7",
+                          "column": "8",
                           "value": "TestClass"
                         },
                         "children": []
@@ -159,6 +185,8 @@
                           {
                             "kind": "Integer[1]",
                             "attributes": {
+                              "line": "8",
+                              "column": "24",
                               "value": "1"
                             },
                             "children": []
@@ -181,6 +209,8 @@
                       {
                         "kind": "New[Bar]",
                         "attributes": {
+                          "line": "9",
+                          "column": "20",
                           "value": "Bar"
                         },
                         "children": []
@@ -205,6 +235,8 @@
                           {
                             "kind": "Integer[1]",
                             "attributes": {
+                              "line": "10",
+                              "column": "14",
                               "value": "1"
                             },
                             "children": []
@@ -214,6 +246,8 @@
                       {
                         "kind": "Integer[4]",
                         "attributes": {
+                          "line": "10",
+                          "column": "19",
                           "value": "4"
                         },
                         "children": []
@@ -239,6 +273,8 @@
                                   {
                                     "kind": "Identifier[num]",
                                     "attributes": {
+                                      "line": "12",
+                                      "column": "12",
                                       "value": "num"
                                     },
                                     "children": []
@@ -246,6 +282,8 @@
                                   {
                                     "kind": "Integer[1]",
                                     "attributes": {
+                                      "line": "12",
+                                      "column": "18",
                                       "value": "1"
                                     },
                                     "children": []
@@ -259,6 +297,8 @@
                                   {
                                     "kind": "Identifier[num]",
                                     "attributes": {
+                                      "line": "12",
+                                      "column": "23",
                                       "value": "num"
                                     },
                                     "children": []
@@ -266,6 +306,8 @@
                                   {
                                     "kind": "Integer[2]",
                                     "attributes": {
+                                      "line": "12",
+                                      "column": "29",
                                       "value": "2"
                                     },
                                     "children": []
@@ -294,6 +336,8 @@
                               {
                                 "kind": "Integer[1]",
                                 "attributes": {
+                                  "line": "13",
+                                  "column": "22",
                                   "value": "1"
                                 },
                                 "children": []
@@ -309,6 +353,8 @@
                           {
                             "kind": "Identifier[num_aux]",
                             "attributes": {
+                              "line": "16",
+                              "column": "12",
                               "value": "num_aux"
                             },
                             "children": []
@@ -328,6 +374,8 @@
                                       {
                                         "kind": "Identifier[dasdasd]",
                                         "attributes": {
+                                          "line": "17",
+                                          "column": "16",
                                           "value": "dasdasd"
                                         },
                                         "children": []
@@ -335,6 +383,8 @@
                                       {
                                         "kind": "Integer[2]",
                                         "attributes": {
+                                          "line": "17",
+                                          "column": "26",
                                           "value": "2"
                                         },
                                         "children": []
@@ -350,6 +400,8 @@
                                   {
                                     "kind": "Identifier[num_aux]",
                                     "attributes": {
+                                      "line": "18",
+                                      "column": "16",
                                       "value": "num_aux"
                                     },
                                     "children": []
@@ -363,6 +415,8 @@
                                   {
                                     "kind": "Identifier[dsads]",
                                     "attributes": {
+                                      "line": "20",
+                                      "column": "16",
                                       "value": "dsads"
                                     },
                                     "children": []
@@ -393,6 +447,8 @@
                           {
                             "kind": "Identifier[num]",
                             "attributes": {
+                              "line": "23",
+                              "column": "18",
                               "value": "num"
                             },
                             "children": []
@@ -404,6 +460,8 @@
                               {
                                 "kind": "This",
                                 "attributes": {
+                                  "line": "23",
+                                  "column": "25",
                                   "value": "this"
                                 },
                                 "children": []
@@ -411,6 +469,8 @@
                               {
                                 "kind": "Identifier[ComputeFac]",
                                 "attributes": {
+                                  "line": "23",
+                                  "column": "30",
                                   "value": "ComputeFac"
                                 },
                                 "children": [
@@ -425,6 +485,8 @@
                                           {
                                             "kind": "Identifier[num]",
                                             "attributes": {
+                                              "line": "23",
+                                              "column": "41",
                                               "value": "num"
                                             },
                                             "children": []
@@ -432,6 +494,8 @@
                                           {
                                             "kind": "Integer[1]",
                                             "attributes": {
+                                              "line": "23",
+                                              "column": "47",
                                               "value": "1"
                                             },
                                             "children": []
@@ -459,6 +523,8 @@
                           {
                             "kind": "Identifier[num_aux]",
                             "attributes": {
+                              "line": "24",
+                              "column": "8",
                               "value": "num_aux"
                             },
                             "children": []
@@ -466,6 +532,8 @@
                           {
                             "kind": "Identifier[test]",
                             "attributes": {
+                              "line": "24",
+                              "column": "16",
                               "value": "test"
                             },
                             "children": []
@@ -475,6 +543,8 @@
                       {
                         "kind": "Identifier[test]",
                         "attributes": {
+                          "line": "24",
+                          "column": "23",
                           "value": "test"
                         },
                         "children": [
@@ -485,6 +555,8 @@
                               {
                                 "kind": "Integer[2]",
                                 "attributes": {
+                                  "line": "24",
+                                  "column": "28",
                                   "value": "2"
                                 },
                                 "children": []
@@ -492,6 +564,8 @@
                               {
                                 "kind": "Integer[1]",
                                 "attributes": {
+                                  "line": "24",
+                                  "column": "31",
                                   "value": "1"
                                 },
                                 "children": []
@@ -499,6 +573,8 @@
                               {
                                 "kind": "Identifier[z]",
                                 "attributes": {
+                                  "line": "24",
+                                  "column": "34",
                                   "value": "z"
                                 },
                                 "children": []
@@ -520,6 +596,8 @@
                           {
                             "kind": "Boolean[true]",
                             "attributes": {
+                              "line": "26",
+                              "column": "15",
                               "value": "true"
                             },
                             "children": []
@@ -540,6 +618,8 @@
                           {
                             "kind": "Integer[1]",
                             "attributes": {
+                              "line": "27",
+                              "column": "27",
                               "value": "1"
                             },
                             "children": []
@@ -555,6 +635,8 @@
                       {
                         "kind": "Identifier[num_aux]",
                         "attributes": {
+                          "line": "30",
+                          "column": "8",
                           "value": "num_aux"
                         },
                         "children": []
@@ -562,6 +644,8 @@
                       {
                         "kind": "Identifier[length]",
                         "attributes": {
+                          "line": "30",
+                          "column": "16",
                           "value": "length"
                         },
                         "children": []
@@ -586,6 +670,8 @@
                           {
                             "kind": "Identifier[num]",
                             "attributes": {
+                              "line": "31",
+                              "column": "18",
                               "value": "num"
                             },
                             "children": []
@@ -597,6 +683,8 @@
                               {
                                 "kind": "This",
                                 "attributes": {
+                                  "line": "31",
+                                  "column": "25",
                                   "value": "this"
                                 },
                                 "children": []
@@ -604,6 +692,8 @@
                               {
                                 "kind": "Identifier[ComputeFac]",
                                 "attributes": {
+                                  "line": "31",
+                                  "column": "30",
                                   "value": "ComputeFac"
                                 },
                                 "children": [
@@ -618,6 +708,8 @@
                                           {
                                             "kind": "Identifier[num]",
                                             "attributes": {
+                                              "line": "31",
+                                              "column": "41",
                                               "value": "num"
                                             },
                                             "children": []
@@ -625,6 +717,8 @@
                                           {
                                             "kind": "Integer[1]",
                                             "attributes": {
+                                              "line": "31",
+                                              "column": "47",
                                               "value": "1"
                                             },
                                             "children": []
@@ -648,6 +742,8 @@
                       {
                         "kind": "Identifier[num_aux]",
                         "attributes": {
+                          "line": "32",
+                          "column": "8",
                           "value": "num_aux"
                         },
                         "children": []
@@ -655,6 +751,8 @@
                       {
                         "kind": "Identifier[test]",
                         "attributes": {
+                          "line": "32",
+                          "column": "16",
                           "value": "test"
                         },
                         "children": []
@@ -670,6 +768,8 @@
                   {
                     "kind": "Identifier[num_aux]",
                     "attributes": {
+                      "line": "33",
+                      "column": "15",
                       "value": "num_aux"
                     },
                     "children": []
@@ -691,12 +791,16 @@
                   {
                     "kind": "VarDeclaration[num_aux]",
                     "attributes": {
+                      "line": "38",
+                      "column": "12",
                       "value": "num_aux"
                     },
                     "children": [
                       {
                         "kind": "Type[int]",
                         "attributes": {
+                          "line": "38",
+                          "column": "8",
                           "value": "int"
                         },
                         "children": []
@@ -710,6 +814,8 @@
                       {
                         "kind": "Integer[2]",
                         "attributes": {
+                          "line": "39",
+                          "column": "8",
                           "value": "2"
                         },
                         "children": []
@@ -721,6 +827,8 @@
                           {
                             "kind": "Integer[3]",
                             "attributes": {
+                              "line": "39",
+                              "column": "12",
                               "value": "3"
                             },
                             "children": []
@@ -728,6 +836,8 @@
                           {
                             "kind": "Integer[4]",
                             "attributes": {
+                              "line": "39",
+                              "column": "16",
                               "value": "4"
                             },
                             "children": []
@@ -743,6 +853,8 @@
                       {
                         "kind": "Identifier[io]",
                         "attributes": {
+                          "line": "40",
+                          "column": "8",
                           "value": "io"
                         },
                         "children": []
@@ -750,6 +862,8 @@
                       {
                         "kind": "Identifier[println]",
                         "attributes": {
+                          "line": "40",
+                          "column": "11",
                           "value": "println"
                         },
                         "children": [
@@ -764,6 +878,8 @@
                                   {
                                     "kind": "Integer[2]",
                                     "attributes": {
+                                      "line": "40",
+                                      "column": "19",
                                       "value": "2"
                                     },
                                     "children": []
@@ -775,6 +891,8 @@
                                       {
                                         "kind": "Integer[3]",
                                         "attributes": {
+                                          "line": "40",
+                                          "column": "23",
                                           "value": "3"
                                         },
                                         "children": []
@@ -782,6 +900,8 @@
                                       {
                                         "kind": "Integer[5]",
                                         "attributes": {
+                                          "line": "40",
+                                          "column": "27",
                                           "value": "5"
                                         },
                                         "children": []
@@ -803,6 +923,8 @@
                       {
                         "kind": "Identifier[io]",
                         "attributes": {
+                          "line": "41",
+                          "column": "8",
                           "value": "io"
                         },
                         "children": []
@@ -810,6 +932,8 @@
                       {
                         "kind": "Identifier[println]",
                         "attributes": {
+                          "line": "41",
+                          "column": "11",
                           "value": "println"
                         },
                         "children": [
@@ -824,6 +948,8 @@
                                   {
                                     "kind": "Identifier[fac]",
                                     "attributes": {
+                                      "line": "41",
+                                      "column": "19",
                                       "value": "fac"
                                     },
                                     "children": []
@@ -831,6 +957,8 @@
                                   {
                                     "kind": "Identifier[comp]",
                                     "attributes": {
+                                      "line": "41",
+                                      "column": "23",
                                       "value": "comp"
                                     },
                                     "children": []
@@ -850,6 +978,8 @@
                       {
                         "kind": "Identifier[io]",
                         "attributes": {
+                          "line": "42",
+                          "column": "8",
                           "value": "io"
                         },
                         "children": []
@@ -857,6 +987,8 @@
                       {
                         "kind": "Identifier[length]",
                         "attributes": {
+                          "line": "42",
+                          "column": "11",
                           "value": "length"
                         },
                         "children": []

@@ -18,7 +18,7 @@ import pt.up.fe.comp.jmm.report.Stage;
 public class Parser
 {
     private int numberOfSyntaxErrors = 0;
-     private int numberOfSyntaxWarnings = 0;
+    private int numberOfSyntaxWarnings = 0;
     public static int MAX_NUMBER_SYNTAX_ERRORS = 10;
     private List<String> fileLines = new ArrayList<String>();
     private List<Report> reports = null;
@@ -58,6 +58,12 @@ public class Parser
             reports.add(new Report(ReportType.WARNING, Stage.SYNTATIC, 0, 0, Utils.reportEntryWarning("Parser caught the maximum amount of errors (" + MAX_NUMBER_SYNTAX_ERRORS + " errors).", numberOfSyntaxWarnings)));
             throw new RuntimeException("Parser caught the maximum amount of errors (" + MAX_NUMBER_SYNTAX_ERRORS + " errors).");
         }
+    }
+
+    private void addAtributes(SimpleNode simpleNode, Token token){
+        simpleNode.put("value", token.image);
+        simpleNode.put("line", Integer.toString(token.beginLine - 1));
+        simpleNode.put("column", Integer.toString(token.beginColumn - 1));
     }
 }
 
@@ -147,30 +153,30 @@ void ImportPath()#void:{}
 }
 void ClassDeclaration() #Class :{Token t;}
 {
-    <CLASS> t=<IDENTIFIER>{jjtThis.put("value",t.image);}[<EXTENDS> t=<IDENTIFIER>{jjtThis.put("value",t.image);} #Extends]<LCUR>
+    <CLASS> t=<IDENTIFIER>{addAtributes(jjtThis, t);}[<EXTENDS> t=<IDENTIFIER>{addAtributes(jjtThis, t);} #Extends]<LCUR>
         (VarDeclaration())*
         (MethodDeclaration())*
     <RCUR>
 }
 void Type() #Type:{Token t; Boolean array=false;}
 {
-    t=<BOOLEAN> {jjtThis.put("value",t.image);}
+    t=<BOOLEAN> {addAtributes(jjtThis, t);}
     |
-    t=<IDENTIFIER>{jjtThis.put("value",t.image);}
+    t=<IDENTIFIER>{addAtributes(jjtThis, t);}
     |
     t=<INT> [<LREC> <RREC>{array=true;}]
     {
         if (array)
             jjtThis.put("value","["+t.image+"]");
         else
-            {jjtThis.put("value",t.image);}
+            {addAtributes(jjtThis, t);}
     }
 
 
 }
 void VarDeclaration() #VarDeclaration: {Token t;}
 {
-    Type() t=<IDENTIFIER>{jjtThis.put("value",t.image);} <SEMICOLON>
+    Type() t=<IDENTIFIER>{addAtributes(jjtThis, t);} <SEMICOLON>
 }
 void MethodDeclaration() #void : {}
 {
@@ -179,7 +185,7 @@ void MethodDeclaration() #void : {}
 }
 void ClassMethod()#ClassMethod:{Token t;}
 {
-    Type() t=<IDENTIFIER>{jjtThis.put("value",t.image);}<LPAR>ClassMethodParameters()<RPAR><LCUR>
+    Type() t=<IDENTIFIER>{addAtributes(jjtThis, t);}<LPAR>ClassMethodParameters()<RPAR><LCUR>
          MethodBody()
         ReturnInstruction()
     <RCUR>
@@ -316,9 +322,9 @@ void DotExpression()#void:{}
 }
 void Method() #Identifier:{Token t;}
 {
-    t=<LENGTH>{jjtThis.put("value",t.image);}
+    t=<LENGTH>{addAtributes(jjtThis, t);}
     |
-    (t=<IDENTIFIER>{jjtThis.put("value",t.image);} <LPAR> [MethodParameters()] <RPAR>)
+    (t=<IDENTIFIER>{addAtributes(jjtThis, t);} <LPAR> [MethodParameters()] <RPAR>)
 }
 void MethodParameters()#Parameters:{}
 {
@@ -336,21 +342,21 @@ void ExpressionLevel16Priority()#void:{}
 
 void Terminal()#void:{Token t;}
 {
-    t=<IDENTIFIER>{jjtThis.put("value",t.image);} #Identifier
+    t=<IDENTIFIER>{addAtributes(jjtThis, t);} #Identifier
     |
     TerminalNonIdentifier()
     |
-    <NEW> ((<INT>{jjtThis.put("value","[int]");}<LREC>Expression()<RREC>)|(t=<IDENTIFIER>{jjtThis.put("value",t.image);}<LPAR> <RPAR>))#New
+    <NEW> ((<INT>{jjtThis.put("value","[int]");}<LREC>Expression()<RREC>)|(t=<IDENTIFIER>{addAtributes(jjtThis, t);}<LPAR> <RPAR>))#New
 }
 void TerminalNonIdentifier() #void:{Token t;}
 {
-    t=<INTEGERLITERAL>{jjtThis.put("value",t.image);} #Integer
+    t=<INTEGERLITERAL>{addAtributes(jjtThis, t);} #Integer
     |
-    t=<TRUE>{jjtThis.put("value",t.image);}#Boolean
+    t=<TRUE>{addAtributes(jjtThis, t);}#Boolean
     |
-    t=<FALSE>{jjtThis.put("value",t.image);}#Boolean
+    t=<FALSE>{addAtributes(jjtThis, t);}#Boolean
     |
-    t=<THIS>{jjtThis.put("value",t.image);}#This
+    t=<THIS>{addAtributes(jjtThis, t);}#This
 }
 void Identifier() :{Token t;}
 {
