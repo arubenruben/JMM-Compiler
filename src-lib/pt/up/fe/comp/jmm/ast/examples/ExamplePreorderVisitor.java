@@ -31,7 +31,7 @@ public class ExamplePreorderVisitor extends PreorderJmmVisitor<String, String> {
             return space + "THIS_ACCESS";
         }
 
-        return defaultVisit(node, space);
+        return defaultVisit(node, space) ;
     }
 
     private String defaultVisit(JmmNode node, String space) {

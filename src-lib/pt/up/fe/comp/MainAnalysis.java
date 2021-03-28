@@ -31,6 +31,7 @@ public class MainAnalysis implements JmmAnalysis { // }, JmmOptimization, Jasmin
         // for CP2: symbol table generation and semantic analysis
         var analysis = new MainAnalysis();
 
+
         analysis.semanticAnalysis(parserResult);
     }
 
@@ -42,6 +43,7 @@ public class MainAnalysis implements JmmAnalysis { // }, JmmOptimization, Jasmin
 
     @Override
     public JmmSemanticsResult semanticAnalysis(JmmParserResult parserResult) {
+
 
         if (TestUtils.getNumReports(parserResult.getReports(), ReportType.ERROR) > 0) {
             return null;
@@ -57,7 +59,7 @@ public class MainAnalysis implements JmmAnalysis { // }, JmmOptimization, Jasmin
         ExampleVisitor visitor = new ExampleVisitor("Identifier", "value");
         System.out.println(visitor.visit(node, ""));
 
-        System.out.println("PREORDER VISITOR");
+       /* System.out.println("PREORDER VISITOR");
         var preOrderVisitor = new ExamplePreorderVisitor("Identifier", "id");
         System.out.println(preOrderVisitor.visit(node, ""));
 
@@ -65,7 +67,7 @@ public class MainAnalysis implements JmmAnalysis { // }, JmmOptimization, Jasmin
         var postOrderVisitor = new ExamplePostorderVisitor();
         var kindCount = new HashMap<String, Integer>();
         postOrderVisitor.visit(node, kindCount);
-        System.out.println("Kinds count: " + kindCount);
+        System.out.println("Kinds count: " + kindCount);*/
 
         // No Symbol Table being calculated yet
         return new JmmSemanticsResult(node, null, parserResult.getReports());
