@@ -62,8 +62,8 @@ public class Parser
 
     private void addAtributes(SimpleNode simpleNode, Token token){
         simpleNode.put("value", token.image);
-        simpleNode.put("line", Integer.toString(token.beginLine - 1));
-        simpleNode.put("column", Integer.toString(token.beginColumn - 1));
+        simpleNode.put("line", Integer.toString(token.beginLine));
+        simpleNode.put("column", Integer.toString(token.beginColumn));
     }
 }
 
@@ -146,10 +146,14 @@ void Import() #void:{}
 {
     <IMPORT>ImportPath()<SEMICOLON>
 }
-void ImportPath()#void:{}
+void ImportPath() :{Token t;}
 {
-    <IDENTIFIER>
-    (<DOT> <IDENTIFIER> )*
+    {
+        String complete_path = "";
+
+    }
+    t = <IDENTIFIER> {complete_path += t.image + ".";}
+    (<DOT> t = <IDENTIFIER> {complete_path += t.image + ".";})* {jjtThis.put("value",complete_path);}
 }
 void ClassDeclaration() #Class :{Token t;}
 {

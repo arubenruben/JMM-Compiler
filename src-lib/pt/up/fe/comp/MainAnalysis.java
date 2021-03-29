@@ -44,7 +44,6 @@ public class MainAnalysis implements JmmAnalysis { // }, JmmOptimization, Jasmin
     @Override
     public JmmSemanticsResult semanticAnalysis(JmmParserResult parserResult) {
 
-
         if (TestUtils.getNumReports(parserResult.getReports(), ReportType.ERROR) > 0) {
             return null;
         }
@@ -56,7 +55,7 @@ public class MainAnalysis implements JmmAnalysis { // }, JmmOptimization, Jasmin
         JmmNode node = parserResult.getRootNode().sanitize();
 
         System.out.println("VISITOR");
-        ExampleVisitor visitor = new ExampleVisitor("Identifier", "value");
+        ExampleVisitor visitor = new ExampleVisitor("Import", "");
         System.out.println(visitor.visit(node, ""));
 
        /* System.out.println("PREORDER VISITOR");

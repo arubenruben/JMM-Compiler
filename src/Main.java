@@ -1,3 +1,4 @@
+import Visitors.FirstVisitor;
 import pt.up.fe.comp.MainAnalysis;
 import pt.up.fe.comp.TestUtils;
 import pt.up.fe.comp.jmm.JmmNode;
@@ -81,7 +82,7 @@ public class Main implements JmmParser, JmmAnalysis {
             System.out.println(preorderJmmVisitor.visit(node, ""));
 
         Utils.printReports(result.getReports());*/
-        var analysis = new MainAnalysis();
+        var analysis = new Main();
 
         analysis.semanticAnalysis(result);
 
@@ -91,7 +92,7 @@ public class Main implements JmmParser, JmmAnalysis {
 
     }
 
-    @Override
+
     public JmmSemanticsResult semanticAnalysis(JmmParserResult parserResult) {
 
         SymbolTable symbolTable = new SymbolTableIml();
@@ -107,8 +108,8 @@ public class Main implements JmmParser, JmmAnalysis {
         JmmNode node = parserResult.getRootNode().sanitize();
 
         System.out.println("VISITOR");
-        ExampleVisitor visitor = new ExampleVisitor("Identifier", "value");
-        System.out.println(visitor.visit(node, ""));
+        FirstVisitor visitor = new FirstVisitor("ImportPath", "value", symbolTable);
+        System.out.println(visitor.visit(node, symbolTable));
 
        /* System.out.println("PREORDER VISITOR");
         var preOrderVisitor = new ExamplePreorderVisitor("Identifier", "id");
@@ -121,7 +122,7 @@ public class Main implements JmmParser, JmmAnalysis {
         System.out.println("Kinds count: " + kindCount);*/
 
         // No Symbol Table being calculated yet
-        return new JmmSemanticsResult(node, null, parserResult.getReports());
+        return new JmmSemanticsResult(node, symbolTable, parserResult.getReports());
 
     }
 }
