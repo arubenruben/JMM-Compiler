@@ -108,8 +108,11 @@ public class Main implements JmmParser, JmmAnalysis {
         JmmNode node = parserResult.getRootNode().sanitize();
 
         System.out.println("VISITOR");
-        FirstVisitor visitor = new FirstVisitor("ImportPath", "value", symbolTable);
+        FirstVisitor visitor = new FirstVisitor( "value", symbolTable);
         System.out.println(visitor.visit(node, symbolTable));
+
+       // ExampleVisitor visitor = new ExampleVisitor("VarDeclaration", "value");
+        // System.out.println(visitor.visit(node, ""));
 
        /* System.out.println("PREORDER VISITOR");
         var preOrderVisitor = new ExamplePreorderVisitor("Identifier", "id");

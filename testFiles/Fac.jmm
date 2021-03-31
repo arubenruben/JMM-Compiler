@@ -2,6 +2,8 @@ import io.io.jota.aiou;
 import ruben.amorim;
 
 class Fac extends Parent {
+    int[] test;
+
     public int ComputeFac(int num, int num2) {
         int[] chars;
         int num_aux;
