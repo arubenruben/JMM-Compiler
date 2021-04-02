@@ -3,7 +3,7 @@ package pt.up.fe.comp.jmm.analysis.table;
 public class Symbol {
     private final Type type;
     private final String name;
-    
+
     public Symbol(Type type, String name) {
         this.type = type;
         this.name = name;
@@ -15,5 +15,13 @@ public class Symbol {
   
     public String getName() {
         return name;
+    }
+
+    @Override
+    public String toString() {
+        return "Symbol{" +
+                "name=" + name + "," +
+                "type=" + type +
+                '}';
     }
 }

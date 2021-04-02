@@ -1,3 +1,5 @@
+package Symbols;
+
 import pt.up.fe.comp.jmm.analysis.table.Symbol;
 import pt.up.fe.comp.jmm.analysis.table.Type;
 
@@ -53,4 +55,11 @@ public class MethodSymbol extends Symbol {
         this.variables = variables;
     }
 
+    @Override
+    public String toString() {
+        return "Symbols.MethodSymbol{" +
+                "parameters=" + parameters +
+                ", variables=" + variables +
+                '}';
+    }
 }

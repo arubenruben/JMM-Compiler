@@ -1,5 +1,5 @@
+import Symbols.SymbolTableIml;
 import Visitors.FirstVisitor;
-import pt.up.fe.comp.MainAnalysis;
 import pt.up.fe.comp.TestUtils;
 import pt.up.fe.comp.jmm.JmmNode;
 import pt.up.fe.comp.jmm.JmmParser;
@@ -7,10 +7,8 @@ import pt.up.fe.comp.jmm.JmmParserResult;
 import pt.up.fe.comp.jmm.analysis.JmmAnalysis;
 import pt.up.fe.comp.jmm.analysis.JmmSemanticsResult;
 import pt.up.fe.comp.jmm.analysis.table.SymbolTable;
-import pt.up.fe.comp.jmm.ast.JmmNodeImpl;
 import pt.up.fe.comp.jmm.ast.PreorderJmmVisitor;
 import pt.up.fe.comp.jmm.ast.examples.ExamplePreorderVisitor;
-import pt.up.fe.comp.jmm.ast.examples.ExampleVisitor;
 import pt.up.fe.comp.jmm.report.Report;
 import pt.up.fe.comp.jmm.report.ReportType;
 import pt.up.fe.comp.jmm.report.Stage;
@@ -77,11 +75,11 @@ public class Main implements JmmParser, JmmAnalysis {
         result = main.parse(code);
 
         JmmNode node = result.getRootNode();
-      /*  PreorderJmmVisitor preorderJmmVisitor = new ExamplePreorderVisitor("Integer",  "value");
+        PreorderJmmVisitor preorderJmmVisitor = new ExamplePreorderVisitor("Integer",  "value");
         if(node != null)
             System.out.println(preorderJmmVisitor.visit(node, ""));
 
-        Utils.printReports(result.getReports());*/
+        Utils.printReports(result.getReports());
         var analysis = new Main();
 
         analysis.semanticAnalysis(result);
@@ -95,7 +93,7 @@ public class Main implements JmmParser, JmmAnalysis {
 
     public JmmSemanticsResult semanticAnalysis(JmmParserResult parserResult) {
 
-        SymbolTable symbolTable = new SymbolTableIml();
+        SymbolTableIml symbolTable = new SymbolTableIml();
 
         if (TestUtils.getNumReports(parserResult.getReports(), ReportType.ERROR) > 0) {
             return null;
@@ -108,8 +106,10 @@ public class Main implements JmmParser, JmmAnalysis {
         JmmNode node = parserResult.getRootNode().sanitize();
 
         System.out.println("VISITOR");
-        FirstVisitor visitor = new FirstVisitor( "value", symbolTable);
+        FirstVisitor visitor = new FirstVisitor( "value");
         System.out.println(visitor.visit(node, symbolTable));
+
+        System.out.println(symbolTable.toString());
 
        // ExampleVisitor visitor = new ExampleVisitor("VarDeclaration", "value");
         // System.out.println(visitor.visit(node, ""));

@@ -5,37 +5,10 @@ class Fac extends Parent {
     int[] test;
 
     public int ComputeFac(int num, int num2) {
-        int[] chars;
-        int num_aux;
-        boolean bool_test;
-        TestClass testClass;
-        chars = new int[1];
-        chars = new Bar();
-        chars[1] = 4;
-
-        if (num < 1 && num < 2)
-            num_aux = 1;
-
-        else{
-            num_aux;
-            if (dasdasd < 2)
-                num_aux;
-            else
-                dsads;
-        }
-
-        num_aux = num * (this.ComputeFac(num - 1));
-        num_aux.test().test(2, 1, z);
-
-        while (true) {
-            dsadasdasdas = 1;
-        }
-
-        num_aux.length;
-        num_aux = num * (this.ComputeFac(num - 1));
-        num_aux.test();
-        return num_aux;
-
+        int[] var1;
+        int var2;
+        boolean var3;
+        return 0;
     }
 
     public static void main(String[] args) {
