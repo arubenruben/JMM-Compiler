@@ -62,8 +62,8 @@ public class Parser
 
     private void addAtributes(SimpleNode simpleNode, Token token){
         simpleNode.put("value", token.image);
-        simpleNode.put("line", Integer.toString(token.beginLine - 1));
-        simpleNode.put("column", Integer.toString(token.beginColumn - 1));
+        simpleNode.put("line", Integer.toString(token.beginLine));
+        simpleNode.put("column", Integer.toString(token.beginColumn));
     }
 }
 
@@ -146,10 +146,14 @@ void Import() #void:{}
 {
     <IMPORT>ImportPath()<SEMICOLON>
 }
-void ImportPath()#void:{}
+void ImportPath() :{Token t;}
 {
-    <IDENTIFIER>
-    (<DOT> <IDENTIFIER> )*
+    {
+        String complete_path = "";
+
+    }
+    t = <IDENTIFIER> {complete_path += t.image + ".";}
+    (<DOT> t = <IDENTIFIER> {complete_path += t.image + ".";})* {jjtThis.put("value",complete_path);}
 }
 void ClassDeclaration() #Class :{Token t;}
 {
@@ -160,19 +164,21 @@ void ClassDeclaration() #Class :{Token t;}
 }
 void Type() #Type:{Token t; Boolean array=false;}
 {
-    t=<BOOLEAN> {addAtributes(jjtThis, t);}
+    (t=<BOOLEAN>
     |
-    t=<IDENTIFIER>{addAtributes(jjtThis, t);}
+    t=<IDENTIFIER>
     |
-    t=<INT> [<LREC> <RREC>{array=true;}]
+    t=<INT> [<LREC> <RREC>{array=true;}])
     {
         if (array)
-            jjtThis.put("value","["+t.image+"]");
-        else
-            {addAtributes(jjtThis, t);}
+        {
+            jjtThis.put("isArray", "true");
+        }
+        else{
+            jjtThis.put("isArray", "false");
+        }
+        {addAtributes(jjtThis, t);}
     }
-
-
 }
 void VarDeclaration() #VarDeclaration: {Token t;}
 {

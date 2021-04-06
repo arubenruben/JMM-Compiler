@@ -1,8 +1,12 @@
+import Symbols.SymbolTableIml;
+import Visitors.FirstVisitor;
 import pt.up.fe.comp.TestUtils;
 import pt.up.fe.comp.jmm.JmmNode;
 import pt.up.fe.comp.jmm.JmmParser;
 import pt.up.fe.comp.jmm.JmmParserResult;
-import pt.up.fe.comp.jmm.ast.JmmNodeImpl;
+import pt.up.fe.comp.jmm.analysis.JmmAnalysis;
+import pt.up.fe.comp.jmm.analysis.JmmSemanticsResult;
+import pt.up.fe.comp.jmm.analysis.table.SymbolTable;
 import pt.up.fe.comp.jmm.ast.PreorderJmmVisitor;
 import pt.up.fe.comp.jmm.ast.examples.ExamplePreorderVisitor;
 import pt.up.fe.comp.jmm.report.Report;
@@ -18,7 +22,7 @@ import java.util.Scanner;
 
 
 
-public class Main implements JmmParser {
+public class Main implements JmmParser, JmmAnalysis {
 
     public JmmParserResult parse(String jmmCode) {
         //TODO: Check if this is only a error given out by the idea
@@ -71,14 +75,58 @@ public class Main implements JmmParser {
         result = main.parse(code);
 
         JmmNode node = result.getRootNode();
-        PreorderJmmVisitor preorderJmmVisitor = new ExamplePreorderVisitor("Identifier",  "id");
+        PreorderJmmVisitor preorderJmmVisitor = new ExamplePreorderVisitor("Integer",  "value");
         if(node != null)
             System.out.println(preorderJmmVisitor.visit(node, ""));
 
         Utils.printReports(result.getReports());
+        var analysis = new Main();
+
+        analysis.semanticAnalysis(result);
+
 
         if(result.getRootNode() != null)
             writeToFile(result.toJson(), "results/ast.txt");
+
+    }
+
+
+    public JmmSemanticsResult semanticAnalysis(JmmParserResult parserResult) {
+
+        SymbolTableIml symbolTable = new SymbolTableIml();
+
+        if (TestUtils.getNumReports(parserResult.getReports(), ReportType.ERROR) > 0) {
+            return null;
+        }
+        if (parserResult.getRootNode() == null) {
+            return null;
+        }
+
+        // Convert Simple node to JmmNodeIml
+        JmmNode node = parserResult.getRootNode().sanitize();
+
+        System.out.println("VISITOR");
+        FirstVisitor visitor = new FirstVisitor( "value");
+        System.out.println(visitor.visit(node, symbolTable));
+
+        System.out.println(symbolTable.toString());
+
+       // ExampleVisitor visitor = new ExampleVisitor("VarDeclaration", "value");
+        // System.out.println(visitor.visit(node, ""));
+
+       /* System.out.println("PREORDER VISITOR");
+        var preOrderVisitor = new ExamplePreorderVisitor("Identifier", "id");
+        System.out.println(preOrderVisitor.visit(node, ""));
+
+        System.out.println("POSTORDER VISITOR");
+        var postOrderVisitor = new ExamplePostorderVisitor();
+        var kindCount = new HashMap<String, Integer>();
+        postOrderVisitor.visit(node, kindCount);
+        System.out.println("Kinds count: " + kindCount);*/
+
+        // No Symbol Table being calculated yet
+        return new JmmSemanticsResult(node, symbolTable, parserResult.getReports());
+
     }
 }
 

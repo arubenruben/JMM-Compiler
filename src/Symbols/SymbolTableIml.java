@@ -1,3 +1,5 @@
+package Symbols;
+
 import pt.up.fe.comp.jmm.analysis.table.Symbol;
 import pt.up.fe.comp.jmm.analysis.table.SymbolTable;
 import pt.up.fe.comp.jmm.analysis.table.Type;
@@ -67,6 +69,17 @@ public class SymbolTableIml implements SymbolTable {
     @Override
     public List<Symbol> getLocalVariables(String methodName) {
         return methods.containsKey(methodName) ? methods.get(methodName).getVariables() : null;
+    }
+
+    @Override
+    public String toString() {
+        return "Symbols.SymbolTableIml{" +
+                "  superName='" + superName + "," + '\n' +
+                "  className='" + className + "," + '\n' +
+                "  imports=" + imports + "," +  "\n" +
+                "  fields=" + fields +  "," + "\n" +
+                "  methods=" + methods + "," +  "\n" +
+                '}';
     }
 
     public String getSuperName() {

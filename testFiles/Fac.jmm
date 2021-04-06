@@ -1,0 +1,25 @@
+import io.io.jota.aiou;
+import ruben.amorim;
+
+class Fac extends Parent {
+    int[] test;
+
+    public int ComputeFac(int num, int num2) {
+        int[] var1;
+        int var2;
+        boolean var3;
+        return 0;
+    }
+
+    public static void main(String[] args) {
+        int num_aux;
+        2 + 3 * 4;
+        io.println(2 + 3 * 5);
+        io.println(fac.comp()); //assuming the existence
+        io.length;
+        // of the classfile io.class
+        /*
+            adsaskdaskjdkljq2wleqkwljdq String []]@¹£¹@£12
+        */
+    }
+}

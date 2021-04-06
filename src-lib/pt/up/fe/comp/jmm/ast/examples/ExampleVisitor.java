@@ -17,11 +17,12 @@ public class ExampleVisitor extends AJmmVisitor<String, String> {
 
     public String dealWithIdentifier(JmmNode node, String space) {
 
+
         if (node.get(identifierAttribute).equals("this")) {
             return space + "THIS_ACCESS\n";
         }
 
-        return defaultVisit(node, space);
+        return "Encontrou" + defaultVisit(node, space) ;
     }
 
     private String defaultVisit(JmmNode node, String space) {
