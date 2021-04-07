@@ -47,20 +47,18 @@ public class SymbolTableIml implements SymbolTable {
 
     @Override
     public Type getReturnType(String methodName) {
-        //return methods.containsKey(methodName) ? methods.get(methodName).getType() : null;
-        return null;
+        return methodsHashmap.containsKey(methodName) ? methodsHashmap.get(methodName).getType() : null;
     }
 
     @Override
     public List<Symbol> getParameters(String methodName) {
-        //return methods.containsKey(methodName) ? methods.get(methodName).getParameters() : null;
-        return null;
+        return methodsHashmap.containsKey(methodName) ? methodsHashmap.get(methodName).getParameters() : null;
+
     }
 
     @Override
     public List<Symbol> getLocalVariables(String methodName) {
-        //return methods.containsKey(methodName) ? methods.get(methodName).getVariables() : null;
-        return null;
+        return methodsHashmap.containsKey(methodName) ? methodsHashmap.get(methodName).getVariables() : null;
     }
 
     public void setSuperName(String superName) {
