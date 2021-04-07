@@ -2,6 +2,9 @@ package Visitors;
 
 import Symbols.MethodSymbol;
 import Symbols.SymbolTableIml;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.reflect.TypeToken;
 import pt.up.fe.comp.jmm.JmmNode;
 import pt.up.fe.comp.jmm.analysis.table.Symbol;
 import pt.up.fe.comp.jmm.analysis.table.SymbolTable;
@@ -14,80 +17,85 @@ import pt.up.fe.specs.util.providers.ResourceProvider;
 import pt.up.fe.specs.util.utilities.StringLines;
 
 import java.lang.reflect.Method;
+import java.nio.file.attribute.FileTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class FirstVisitor extends AJmmVisitor<SymbolTableIml,String> {
+public class FirstVisitor extends PreorderJmmVisitor<SymbolTableIml, Boolean> {
 
-    private final String identifierAttribute;
+    public FirstVisitor() {
 
-    public FirstVisitor( String identifierAttribute) {
-
-        this.identifierAttribute = identifierAttribute;
-        String importIdentifier = "ImportPath";
-        String fieldIdentifier = "VarDeclaration";
-        String methodIdentifier = "ClassMethod";
-
-        addVisit(importIdentifier, this::dealWithImport);
-        addVisit(fieldIdentifier, this::dealWithField);
-        addVisit(methodIdentifier, this::dealWithClassMethod);
+        addVisit("ImportPath", this::dealWithImport);
+        addVisit("Class", this::dealWithClassDefinition);
+        addVisit("Extends", this::dealWithSuper);
+        addVisit("VarDeclaration", this::dealWithVarDeclaration);
+        addVisit("ClassMethod", this::dealWithClassMethod);
         setDefaultVisit(this::defaultVisit);
     }
 
-    private String dealWithField(JmmNode node, SymbolTable symbolTable) {
-
-        if (node.getParent().getKind().equals("Class")){
-
-            String name = node.getChildren().get(0).get("value");
-            boolean isArray = node.getChildren().get(0).get("isArray").equals("true");
-            Type nodeType = new Type(name, isArray);
-            Symbol fieldSymbol = new Symbol(nodeType,node.get("value"));
-
-            symbolTable.getFields().add(fieldSymbol);
-        }
-        return "";
+    private Boolean dealWithSuper(JmmNode node, SymbolTableIml symbolTableIml) {
+        symbolTableIml.setSuperName(node.get("value"));
+        return true;
     }
 
-    private String dealWithImport(JmmNode node, SymbolTableIml symbolTable) {
-
-        symbolTable.getImports().add(node.get(identifierAttribute).substring(0,node.get(identifierAttribute).length()-1));
-
-        return "";
+    private Boolean dealWithClassDefinition(JmmNode node, SymbolTableIml symbolTableIml) {
+        symbolTableIml.setClassName(node.get("value"));
+        return true;
     }
 
-    private String dealWithClassMethod(JmmNode node, SymbolTableIml symbolTable) {
+    protected Boolean dealWithImport(JmmNode node, SymbolTableIml symbolTable) {
+        StringBuilder importPath = new StringBuilder();
 
-        List<Symbol> parameters = new ArrayList<>();
-        List<Symbol> variables = new ArrayList<>();
-        JmmNode returnType = node.getChildren().get(0);
-        JmmNode parameterBlock = node.getChildren().get(1);
+        Gson gson = new Gson();
+        List<String> importList = gson.fromJson(node.get("value"), new TypeToken<List<String>>() {
+        }.getType());
 
-        for (JmmNode parameter : parameterBlock.getChildren()) {
-            JmmNode nodeType = parameter.getChildren().get(0);
-            JmmNode nodeIdentifier = parameter.getChildren().get(1);
-            Type type = new Type(nodeType.get("value"), nodeType.get("isArray").equals("true"));
-            parameters.add(new Symbol(type, nodeIdentifier.get("value")));
+        for (int i = 0; i < importList.size(); i++) {
+            importPath.append(importList.get(i));
+            if (i < importList.size() - 1)
+                importPath.append(".");
         }
 
-        MethodBodyVisitor methodBodyVisitor = new MethodBodyVisitor();
+        symbolTable.getImports().add(importPath.toString());
 
-        JmmNode bodyBlock = node.getChildren().get(2);
-
-        methodBodyVisitor.visit(bodyBlock, variables);
-
-        MethodSymbol methodSymbol = new MethodSymbol(new Type(node.get("value"), returnType.get("value").equals("true")), node.get("value"), parameters, variables);
-        symbolTable.addMethod(node.get("value"), methodSymbol);
-        return "";
+        return true;
     }
 
-    private String defaultVisit(JmmNode node, SymbolTableIml symbolTable) {
+    protected Boolean dealWithVarDeclaration(JmmNode node, SymbolTableIml symbolTable) {
 
-        for (JmmNode child : node.getChildren()) {
-            visit(child, symbolTable);
-        }
+        if (node.getParent().getKind().equals("Class"))
+            return dealWithClassField(node, symbolTable);
+        /*
+        if (node.getParent().getKind().equals("Body"))
+            return dealWithMethodVariable(node, symbolTable);
+         */
+        return false;
+    }
 
-        return "";
+    protected Boolean dealWithClassField(JmmNode node, SymbolTableIml symbolTable) {
+
+        Type nodeType = new Type(node.getChildren().get(0).get("value"), node.getChildren().get(0).get("isArray").equals("true"));
+        Symbol fieldSymbol = new Symbol(nodeType, node.get("value"));
+
+        symbolTable.getFields().add(fieldSymbol);
+
+        return true;
+    }
+
+    protected Boolean dealWithMethodVariable(JmmNode node, SymbolTableIml symbolTable) {
+        System.err.println("Not implemented yet");
+        return false;
+    }
+
+    protected Boolean dealWithClassMethod(JmmNode node, SymbolTableIml symbolTable) {
+
+
+        return false;
+    }
+
+    protected Boolean defaultVisit(JmmNode node, SymbolTableIml symbolTable) {
+        return true;
     }
 
 }

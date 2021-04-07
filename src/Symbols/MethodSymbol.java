@@ -8,8 +8,10 @@ import java.util.List;
 
 public class MethodSymbol extends Symbol {
 
-    private List<Symbol> parameters;
-    private List<Symbol> variables;
+    private final List<Symbol> parameters;
+
+    //TODO:Maybe an hashmap to store the values directly
+    private final List<Symbol> variables;
 
     public MethodSymbol(Type type, String name) {
         super(type, name);
@@ -23,36 +25,13 @@ public class MethodSymbol extends Symbol {
         this.variables = variables != null ? variables : new ArrayList<>();
     }
 
-    public void addParameter(Symbol parameter){
-        parameters.add(parameter);
-    }
-
-    public void removeParameter(Symbol parameter){
-        parameters.remove(parameter);
-    }
-
-    public void addVariables(Symbol variable){
-        variables.add(variable);
-    }
-
-    public void removeVariables(Symbol variable){
-        variables.remove(variable);
-    }
 
     public List<Symbol> getParameters() {
         return parameters;
     }
 
-    public void setParameters(List<Symbol> parameters) {
-        this.parameters = parameters;
-    }
-
     public List<Symbol> getVariables() {
         return variables;
-    }
-
-    public void setVariables(List<Symbol> variables) {
-        this.variables = variables;
     }
 
     @Override

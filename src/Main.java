@@ -6,9 +6,7 @@ import pt.up.fe.comp.jmm.JmmParser;
 import pt.up.fe.comp.jmm.JmmParserResult;
 import pt.up.fe.comp.jmm.analysis.JmmAnalysis;
 import pt.up.fe.comp.jmm.analysis.JmmSemanticsResult;
-import pt.up.fe.comp.jmm.analysis.table.SymbolTable;
-import pt.up.fe.comp.jmm.ast.PreorderJmmVisitor;
-import pt.up.fe.comp.jmm.ast.examples.ExamplePreorderVisitor;
+import pt.up.fe.comp.jmm.ast.AJmmVisitor;
 import pt.up.fe.comp.jmm.report.Report;
 import pt.up.fe.comp.jmm.report.ReportType;
 import pt.up.fe.comp.jmm.report.Stage;
@@ -21,8 +19,43 @@ import java.util.List;
 import java.util.Scanner;
 
 
-
 public class Main implements JmmParser, JmmAnalysis {
+
+
+    public static void main(String[] args) {
+        String code;
+        Main main = new Main();
+        JmmParserResult parserResult;
+
+        if (args[0].contains("fail"))
+            throw new RuntimeException("It's supposed to fail");
+
+
+        System.out.println("Executing with args: " + Arrays.toString(args));
+
+        code = SpecsIo.read(args[0]);
+
+        parserResult = main.parse(code);
+
+        if (parserResult.getRootNode() != null)
+            writeToFile(parserResult.toJson(), "results/ast.txt");
+
+        JmmSemanticsResult semanticAnalysis = main.semanticAnalysis(parserResult);
+    /*
+        if (node != null)
+            System.out.println(preorderJmmVisitor.visit(node, ""));
+
+        Utils.printReports(result.getReports());
+
+
+
+        if (result.getRootNode() != null)
+            writeToFile(result.toJson(), "results/ast.txt");
+
+
+     */
+    }
+
 
     public JmmParserResult parse(String jmmCode) {
         //TODO: Check if this is only a error given out by the idea
@@ -35,83 +68,41 @@ public class Main implements JmmParser, JmmAnalysis {
         }
 
         try {
+            SimpleNode root; // returns reference to root node
             Parser parser = new Parser(new StringReader(jmmCode));
             parser.setFileLines(fileLines);
             parser.setReports(reports);
-            SimpleNode root = null; // returns reference to root node
             root = parser.Program();
             return new JmmParserResult(root, reports);
-        }
-        catch (ParseException e) {
+        } catch (ParseException e) {
             reports.add(new Report(ReportType.ERROR, Stage.SYNTATIC, e.currentToken.next.beginLine, e.currentToken.next.beginColumn, Utils.reportEntryError(e, TestUtils.getNumReports(reports, ReportType.ERROR) + 1, fileLines)));
             return new JmmParserResult(null, reports);
-        }
-        catch (RuntimeException ignored){
+        } catch (RuntimeException ignored) {
             return new JmmParserResult(null, reports);
         }
     }
-
-    public static void writeToFile(String content, String path){
-        try {
-            FileWriter myWriter = new FileWriter(path);
-            myWriter.write(content);
-            myWriter.close();
-        } catch (IOException e) {
-            System.out.println("An error occurred writing to file");
-            e.printStackTrace();
-        }
-    }
-
-    public static void main(String[] args) {
-        System.out.println("Executing with args: " + Arrays.toString(args));
-        if (args[0].contains("fail")) {
-            throw new RuntimeException("It's supposed to fail");
-        }
-
-        String code = null;
-        code = SpecsIo.read(args[0]);
-        JmmParserResult result = null;
-        Main main = new Main();
-        result = main.parse(code);
-
-        JmmNode node = result.getRootNode();
-        PreorderJmmVisitor preorderJmmVisitor = new ExamplePreorderVisitor("Integer",  "value");
-        if(node != null)
-            System.out.println(preorderJmmVisitor.visit(node, ""));
-
-        Utils.printReports(result.getReports());
-        var analysis = new Main();
-
-        analysis.semanticAnalysis(result);
-
-
-        if(result.getRootNode() != null)
-            writeToFile(result.toJson(), "results/ast.txt");
-
-    }
-
 
     public JmmSemanticsResult semanticAnalysis(JmmParserResult parserResult) {
 
         SymbolTableIml symbolTable = new SymbolTableIml();
 
-        if (TestUtils.getNumReports(parserResult.getReports(), ReportType.ERROR) > 0) {
-            return null;
-        }
-        if (parserResult.getRootNode() == null) {
-            return null;
-        }
-
         // Convert Simple node to JmmNodeIml
         JmmNode node = parserResult.getRootNode().sanitize();
 
-        System.out.println("VISITOR");
-        FirstVisitor visitor = new FirstVisitor( "value");
-        System.out.println(visitor.visit(node, symbolTable));
+        //TODO:???-Ruben
+        if (TestUtils.getNumReports(parserResult.getReports(), ReportType.ERROR) > 0)
+            return null;
+        //TODO:???-Ruben
+        if (parserResult.getRootNode() == null)
+            return null;
+
+
+        AJmmVisitor<SymbolTableIml, Boolean> firstVisitor = new FirstVisitor();
+        firstVisitor.visit(node, symbolTable);
 
         System.out.println(symbolTable.toString());
 
-       // ExampleVisitor visitor = new ExampleVisitor("VarDeclaration", "value");
+        // ExampleVisitor visitor = new ExampleVisitor("VarDeclaration", "value");
         // System.out.println(visitor.visit(node, ""));
 
        /* System.out.println("PREORDER VISITOR");
@@ -127,6 +118,17 @@ public class Main implements JmmParser, JmmAnalysis {
         // No Symbol Table being calculated yet
         return new JmmSemanticsResult(node, symbolTable, parserResult.getReports());
 
+    }
+
+    public static void writeToFile(String content, String path) {
+        try {
+            FileWriter myWriter = new FileWriter(path);
+            myWriter.write(content);
+            myWriter.close();
+        } catch (IOException e) {
+            System.out.println("An error occurred writing to file");
+            e.printStackTrace();
+        }
     }
 }
 

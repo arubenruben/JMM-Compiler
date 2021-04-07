@@ -148,12 +148,9 @@ void Import() #void:{}
 }
 void ImportPath() :{Token t;}
 {
-    {
-        String complete_path = "";
-
-    }
-    t = <IDENTIFIER> {complete_path += t.image + ".";}
-    (<DOT> t = <IDENTIFIER> {complete_path += t.image + ".";})* {jjtThis.put("value",complete_path);}
+    {List<String> stringList=new ArrayList<String>();}
+    t = <IDENTIFIER> {stringList.add(t.image);}
+    (<DOT> t = <IDENTIFIER> {stringList.add(t.image);})* {jjtThis.put("value",stringList.toString());}
 }
 void ClassDeclaration() #Class :{Token t;}
 {
