@@ -10,9 +10,7 @@ import pt.up.fe.comp.jmm.ast.PreorderJmmVisitor;
 public class MethodBodyVisitor extends PreorderJmmVisitor<MethodSymbol, Boolean> {
 
     public MethodBodyVisitor() {
-        String fieldIdentifier = "VarDeclaration";
-
-        addVisit(fieldIdentifier, this::dealWithField);
+        addVisit("VarDeclaration", this::dealWithField);
         setDefaultVisit(this::defaultVisit);
     }
 
