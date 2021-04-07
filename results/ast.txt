@@ -239,39 +239,24 @@
                     ]
                   },
                   {
-                    "kind": "Add",
+                    "kind": "Mult",
                     "attributes": {},
                     "children": [
                       {
-                        "kind": "Mult",
-                        "attributes": {},
-                        "children": [
-                          {
-                            "kind": "Identifier",
-                            "attributes": {
-                              "line": "16",
-                              "column": "9",
-                              "value": "var1"
-                            },
-                            "children": []
-                          },
-                          {
-                            "kind": "Identifier",
-                            "attributes": {
-                              "line": "16",
-                              "column": "14",
-                              "value": "var2"
-                            },
-                            "children": []
-                          }
-                        ]
+                        "kind": "Identifier",
+                        "attributes": {
+                          "line": "16",
+                          "column": "9",
+                          "value": "var1"
+                        },
+                        "children": []
                       },
                       {
                         "kind": "Identifier",
                         "attributes": {
                           "line": "16",
-                          "column": "19",
-                          "value": "var3"
+                          "column": "14",
+                          "value": "var2"
                         },
                         "children": []
                       }

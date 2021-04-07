@@ -105,7 +105,7 @@ public class Main implements JmmParser, JmmAnalysis {
 
         for (String methodName : symbolTable.getMethodsHashmap().keySet()) {
             AJmmVisitor<SymbolTableIml, Boolean> secondVisitor = new SecondVisitor(methodName);
-            secondVisitor.visit(node, symbolTable);
+            secondVisitor.visit(symbolTable.getNodeMap().get(methodName), symbolTable);
         }
 
 

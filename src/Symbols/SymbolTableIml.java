@@ -24,8 +24,8 @@ public class SymbolTableIml implements SymbolTable {
     public SymbolTableIml() {
         this.hashMapClassFields = new HashMap<>();
         this.methodsHashmap = new HashMap<>();
-        this.imports=new ArrayList<>();
-        this.nodeMap=new HashMap<>();
+        this.imports = new ArrayList<>();
+        this.nodeMap = new HashMap<>();
     }
 
 
@@ -69,7 +69,7 @@ public class SymbolTableIml implements SymbolTable {
 
     @Override
     public List<Symbol> getLocalVariables(String methodName) {
-        //return methods.containsKey(methodName) ? methods.get(methodName).getVariables() : null;
+        //return methodsHashmap.containsKey(methodName) ? methodsHashmap.get(methodName).getVariables() : null;
         return null;
     }
 
@@ -98,5 +98,9 @@ public class SymbolTableIml implements SymbolTable {
 
     public Map<Symbol, String> getHashMapClassFields() {
         return hashMapClassFields;
+    }
+
+    public Map<String, JmmNode> getNodeMap() {
+        return nodeMap;
     }
 }

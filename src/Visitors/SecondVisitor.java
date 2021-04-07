@@ -2,6 +2,7 @@ package Visitors;
 
 import Symbols.SymbolTableIml;
 import Visitors.helpers.SecondVisitorHelper;
+import Visitors.helpers.SeekTypesVisitor;
 import pt.up.fe.comp.jmm.JmmNode;
 import pt.up.fe.comp.jmm.analysis.table.Type;
 import pt.up.fe.comp.jmm.ast.PreorderJmmVisitor;

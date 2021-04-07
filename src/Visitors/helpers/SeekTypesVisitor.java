@@ -1,4 +1,4 @@
-package Visitors;
+package Visitors.helpers;
 
 import Visitors.helpers.SecondVisitorHelper;
 import pt.up.fe.comp.jmm.JmmNode;
@@ -11,9 +11,11 @@ import java.util.List;
 import java.util.Map;
 
 public class SeekTypesVisitor extends PreorderJmmVisitor<SecondVisitorHelper, List<Type>> {
-    private final List<Type> nodesFound = new ArrayList<>();
+    private List<Type> nodesFound;
 
     public SeekTypesVisitor(String[] typesToSeek) {
+
+        this.nodesFound = new ArrayList<>();
 
         for (String typeToSeek : typesToSeek)
             addVisit(typeToSeek, this::dealWithType);
@@ -22,9 +24,6 @@ public class SeekTypesVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Li
     }
 
     protected List<Type> dealWithType(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
-        //TODO:Refactor this. This is used to detect a variable that doesn't Exist
-        if (nodesFound == null)
-            return null;
 
         Map<Symbol, String> hashmap = secondVisitorHelper.getSymbolTableIml().getMethodsHashmap().get(secondVisitorHelper.getCurrentMethodName()).getVariables();
 
@@ -33,9 +32,9 @@ public class SeekTypesVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Li
                 if (methodSymbol.getName().equals(node.get("value"))) {
                     nodesFound.add(methodSymbol.getType());
                     return nodesFound;
-                } else
-                    return null;
+                }
             }
+            System.err.println(("Variable not declared"));
         } else
             nodesFound.add(new Type(node.getKind(), false));
 
