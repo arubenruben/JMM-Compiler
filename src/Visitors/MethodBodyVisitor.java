@@ -18,13 +18,13 @@ public class MethodBodyVisitor extends PreorderJmmVisitor<MethodSymbol, Boolean>
 
     protected Boolean dealWithField(JmmNode node, MethodSymbol methodSymbol) {
 
-
-        methodSymbol.getVariables().add(
+        methodSymbol.getVariables().put(
                 new Symbol(
                         new Type(
                                 node.getChildren().get(0).get("value"),
                                 node.getChildren().get(0).get("isArray").equals("true")),
-                        node.get("value"))
+                        node.get("value")),
+                ""
         );
 
         return true;
