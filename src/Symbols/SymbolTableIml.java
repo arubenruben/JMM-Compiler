@@ -1,5 +1,6 @@
 package Symbols;
 
+import pt.up.fe.comp.jmm.JmmNode;
 import pt.up.fe.comp.jmm.analysis.table.Symbol;
 import pt.up.fe.comp.jmm.analysis.table.SymbolTable;
 import pt.up.fe.comp.jmm.analysis.table.Type;
@@ -13,11 +14,20 @@ public class SymbolTableIml implements SymbolTable {
 
     private String className;
     private String superName;
-    private final List<String> imports = new ArrayList<>();
+    private final List<String> imports;
+    private final Map<String, JmmNode> nodeMap;
 
-    private final Map<Symbol, String> hashMapClassFields = new HashMap<>();
+    private final Map<Symbol, String> hashMapClassFields;
 
-    private final HashMap<String, MethodSymbol> methodsHashmap = new HashMap<>();
+    private final Map<String, MethodSymbol> methodsHashmap;
+
+    public SymbolTableIml() {
+        this.hashMapClassFields = new HashMap<>();
+        this.methodsHashmap = new HashMap<>();
+        this.imports=new ArrayList<>();
+        this.nodeMap=new HashMap<>();
+    }
+
 
     @Override
     public List<String> getImports() {
@@ -82,7 +92,7 @@ public class SymbolTableIml implements SymbolTable {
                 '}';
     }
 
-    public HashMap<String, MethodSymbol> getMethodsHashmap() {
+    public Map<String, MethodSymbol> getMethodsHashmap() {
         return methodsHashmap;
     }
 

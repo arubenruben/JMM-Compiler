@@ -243,9 +243,48 @@
                     "attributes": {},
                     "children": [
                       {
-                        "kind": "Integer",
+                        "kind": "Mult",
+                        "attributes": {},
+                        "children": [
+                          {
+                            "kind": "Identifier",
+                            "attributes": {
+                              "line": "16",
+                              "column": "9",
+                              "value": "var1"
+                            },
+                            "children": []
+                          },
+                          {
+                            "kind": "Identifier",
+                            "attributes": {
+                              "line": "16",
+                              "column": "14",
+                              "value": "var2"
+                            },
+                            "children": []
+                          }
+                        ]
+                      },
+                      {
+                        "kind": "Identifier",
                         "attributes": {
                           "line": "16",
+                          "column": "19",
+                          "value": "var3"
+                        },
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "Add",
+                    "attributes": {},
+                    "children": [
+                      {
+                        "kind": "Integer",
+                        "attributes": {
+                          "line": "17",
                           "column": "9",
                           "value": "2"
                         },
@@ -258,7 +297,7 @@
                           {
                             "kind": "Integer",
                             "attributes": {
-                              "line": "16",
+                              "line": "17",
                               "column": "13",
                               "value": "3"
                             },
@@ -267,52 +306,13 @@
                           {
                             "kind": "Boolean",
                             "attributes": {
-                              "line": "16",
+                              "line": "17",
                               "column": "17",
                               "value": "true"
                             },
                             "children": []
                           }
                         ]
-                      }
-                    ]
-                  },
-                  {
-                    "kind": "Add",
-                    "attributes": {},
-                    "children": [
-                      {
-                        "kind": "Mult",
-                        "attributes": {},
-                        "children": [
-                          {
-                            "kind": "Identifier",
-                            "attributes": {
-                              "line": "17",
-                              "column": "9",
-                              "value": "var1"
-                            },
-                            "children": []
-                          },
-                          {
-                            "kind": "Identifier",
-                            "attributes": {
-                              "line": "17",
-                              "column": "14",
-                              "value": "var2"
-                            },
-                            "children": []
-                          }
-                        ]
-                      },
-                      {
-                        "kind": "Identifier",
-                        "attributes": {
-                          "line": "17",
-                          "column": "19",
-                          "value": "var3"
-                        },
-                        "children": []
                       }
                     ]
                   },

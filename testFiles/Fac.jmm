@@ -13,8 +13,8 @@ class Fac extends Parent {
 
     public static void main(String[] args) {
         int num_aux;
-        2 + 3 * true;
         var1*var2+var3;
+        2 + 3 * true;
 
         //var1*var2+var3;
 

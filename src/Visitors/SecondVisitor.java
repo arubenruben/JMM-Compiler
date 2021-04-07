@@ -45,7 +45,7 @@ public class SecondVisitor extends PreorderJmmVisitor<SymbolTableIml, Boolean> {
         for (int i = 0; i < typesFound.size() - 1; i++) {
             if (!typesFound.get(i).getName().equals(typesFound.get(i + 1).getName())) {
                 System.err.println("This operands are not the same type");
-                break;
+                return true;
             }
         }
         return true;
