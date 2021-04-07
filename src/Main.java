@@ -1,5 +1,6 @@
 import Symbols.SymbolTableIml;
 import Visitors.FirstVisitor;
+import Visitors.SecondVisitor;
 import pt.up.fe.comp.TestUtils;
 import pt.up.fe.comp.jmm.JmmNode;
 import pt.up.fe.comp.jmm.JmmParser;
@@ -102,7 +103,11 @@ public class Main implements JmmParser, JmmAnalysis {
         AJmmVisitor<SymbolTableIml, Boolean> firstVisitor = new FirstVisitor();
         firstVisitor.visit(node, symbolTable);
 
-        System.out.println(symbolTable.toString());
+        for (String methodName : symbolTable.getMethodsHashmap().keySet()) {
+            AJmmVisitor<SymbolTableIml, Boolean> secondVisitor = new SecondVisitor(methodName);
+            secondVisitor.visit(node, symbolTable);
+        }
+
 
         // ExampleVisitor visitor = new ExampleVisitor("VarDeclaration", "value");
         // System.out.println(visitor.visit(node, ""));

@@ -265,15 +265,54 @@
                             "children": []
                           },
                           {
-                            "kind": "Integer",
+                            "kind": "Boolean",
                             "attributes": {
                               "line": "16",
                               "column": "17",
-                              "value": "4"
+                              "value": "true"
                             },
                             "children": []
                           }
                         ]
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "Add",
+                    "attributes": {},
+                    "children": [
+                      {
+                        "kind": "Mult",
+                        "attributes": {},
+                        "children": [
+                          {
+                            "kind": "Identifier",
+                            "attributes": {
+                              "line": "17",
+                              "column": "9",
+                              "value": "var1"
+                            },
+                            "children": []
+                          },
+                          {
+                            "kind": "Identifier",
+                            "attributes": {
+                              "line": "17",
+                              "column": "14",
+                              "value": "var2"
+                            },
+                            "children": []
+                          }
+                        ]
+                      },
+                      {
+                        "kind": "Identifier",
+                        "attributes": {
+                          "line": "17",
+                          "column": "19",
+                          "value": "var3"
+                        },
+                        "children": []
                       }
                     ]
                   },
@@ -284,7 +323,7 @@
                       {
                         "kind": "Identifier",
                         "attributes": {
-                          "line": "17",
+                          "line": "21",
                           "column": "9",
                           "value": "io"
                         },
@@ -293,7 +332,7 @@
                       {
                         "kind": "Identifier",
                         "attributes": {
-                          "line": "17",
+                          "line": "21",
                           "column": "12",
                           "value": "println"
                         },
@@ -309,7 +348,7 @@
                                   {
                                     "kind": "Integer",
                                     "attributes": {
-                                      "line": "17",
+                                      "line": "21",
                                       "column": "20",
                                       "value": "2"
                                     },
@@ -322,7 +361,7 @@
                                       {
                                         "kind": "Integer",
                                         "attributes": {
-                                          "line": "17",
+                                          "line": "21",
                                           "column": "24",
                                           "value": "3"
                                         },
@@ -331,7 +370,7 @@
                                       {
                                         "kind": "Integer",
                                         "attributes": {
-                                          "line": "17",
+                                          "line": "21",
                                           "column": "28",
                                           "value": "5"
                                         },
@@ -354,7 +393,7 @@
                       {
                         "kind": "Identifier",
                         "attributes": {
-                          "line": "18",
+                          "line": "22",
                           "column": "9",
                           "value": "io"
                         },
@@ -363,7 +402,7 @@
                       {
                         "kind": "Identifier",
                         "attributes": {
-                          "line": "18",
+                          "line": "22",
                           "column": "12",
                           "value": "println"
                         },
@@ -379,7 +418,7 @@
                                   {
                                     "kind": "Identifier",
                                     "attributes": {
-                                      "line": "18",
+                                      "line": "22",
                                       "column": "20",
                                       "value": "fac"
                                     },
@@ -388,7 +427,7 @@
                                   {
                                     "kind": "Identifier",
                                     "attributes": {
-                                      "line": "18",
+                                      "line": "22",
                                       "column": "24",
                                       "value": "comp"
                                     },
@@ -409,7 +448,7 @@
                       {
                         "kind": "Identifier",
                         "attributes": {
-                          "line": "19",
+                          "line": "23",
                           "column": "9",
                           "value": "io"
                         },
@@ -418,7 +457,7 @@
                       {
                         "kind": "Identifier",
                         "attributes": {
-                          "line": "19",
+                          "line": "23",
                           "column": "12",
                           "value": "length"
                         },
