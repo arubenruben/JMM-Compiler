@@ -10,13 +10,14 @@ import java.util.List;
 
 public class SymbolTableIml implements SymbolTable {
 
-    String className;
-    String superName;
-    List<String> imports = new ArrayList<>();
-    //TODO:Maybe a direct hashmap
-    List<Symbol> fields = new ArrayList<>();
+    private String className;
+    private String superName;
+    private final List<String> imports = new ArrayList<>();
 
-    HashMap<String, MethodSymbol> methods = new HashMap<>();
+    //TODO:Maybe a direct hashmap
+    private final List<Symbol> fields = new ArrayList<>();
+
+    private final HashMap<String, MethodSymbol> methodsHashmap = new HashMap<>();
 
     @Override
     public List<String> getImports() {
@@ -40,30 +41,26 @@ public class SymbolTableIml implements SymbolTable {
 
     @Override
     public List<String> getMethods() {
-        List<String> methodsName = new ArrayList<>();
-        methods.forEach((k, v) -> {
-            methodsName.add(v.getName());
-        });
-        return methodsName;
+        return null;
     }
+
 
     @Override
     public Type getReturnType(String methodName) {
-        return methods.containsKey(methodName) ? methods.get(methodName).getType() : null;
+        //return methods.containsKey(methodName) ? methods.get(methodName).getType() : null;
+        return null;
     }
 
     @Override
     public List<Symbol> getParameters(String methodName) {
-        return methods.containsKey(methodName) ? methods.get(methodName).getParameters() : null;
+        //return methods.containsKey(methodName) ? methods.get(methodName).getParameters() : null;
+        return null;
     }
 
     @Override
     public List<Symbol> getLocalVariables(String methodName) {
-        return methods.containsKey(methodName) ? methods.get(methodName).getVariables() : null;
-    }
-
-    public String getSuperName() {
-        return superName;
+        //return methods.containsKey(methodName) ? methods.get(methodName).getVariables() : null;
+        return null;
     }
 
     public void setSuperName(String superName) {
@@ -74,30 +71,18 @@ public class SymbolTableIml implements SymbolTable {
         this.className = className;
     }
 
-    public void addFields(Symbol field) {
-        fields.add(field);
-    }
-
-    public void addImport(String importName) {
-        imports.add(importName);
-    }
-
-    public void addMethod(String methodName, MethodSymbol methodSymbol) {
-        methods.put(methodName, methodSymbol);
-    }
-
-    public MethodSymbol getMethod(String methodName) {
-        return methods.getOrDefault(methodName, null);
-    }
-
     @Override
     public String toString() {
         return "SymbolTableIml{" +
-                "className='" + className + '\'' +
-                ", superName='" + superName + '\'' +
-                ", imports=" + imports +
-                ", fields=" + fields +
-                ", methods=" + methods +
+                "className='" + className + '\'' +"\n"+
+                ", superName='" + superName + '\'' +"\n"+
+                ", imports=" + imports +"\n"+
+                ", fields=" + fields +"\n"+
+                ", methods=" + methodsHashmap.toString() +"\n"+
                 '}';
+    }
+
+    public HashMap<String, MethodSymbol> getMethodsHashmap() {
+        return methodsHashmap;
     }
 }

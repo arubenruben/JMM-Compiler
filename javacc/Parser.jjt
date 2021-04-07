@@ -208,7 +208,7 @@ void ClassMethodParameter() #void:{}
 }
 void StaticMethod()#Main:{Token t;}
 {
-    <STATIC> <VOID> <MAIN> <LPAR> <STRING> <LREC> <RREC> t=<IDENTIFIER>{jjtThis.put("value","["+t.image+"]");} <RPAR><LCUR>
+    <STATIC> <VOID> <MAIN> <LPAR> <STRING> <LREC> <RREC> t=<IDENTIFIER>{jjtThis.put("value",t.image);jjtThis.put("isArray","true");} <RPAR><LCUR>
         MethodBody()
     <RCUR>
 }

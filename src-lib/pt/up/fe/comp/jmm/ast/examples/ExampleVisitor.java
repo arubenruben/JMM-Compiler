@@ -1,9 +1,9 @@
 package pt.up.fe.comp.jmm.ast.examples;
 
-import java.util.stream.Collectors;
-
 import pt.up.fe.comp.jmm.JmmNode;
 import pt.up.fe.comp.jmm.ast.AJmmVisitor;
+
+import java.util.stream.Collectors;
 
 public class ExampleVisitor extends AJmmVisitor<String, String> {
     private final String identifierAttribute;

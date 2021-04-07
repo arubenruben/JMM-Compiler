@@ -13,12 +13,12 @@
 
 package pt.up.fe.comp.jmm.ast;
 
+import pt.up.fe.comp.jmm.JmmNode;
+import pt.up.fe.specs.util.SpecsCheck;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiFunction;
-
-import pt.up.fe.comp.jmm.JmmNode;
-import pt.up.fe.specs.util.SpecsCheck;
 
 /**
  * Visitor that automatically applies a postorder, bottom-up traversal (first the children, then the current node).

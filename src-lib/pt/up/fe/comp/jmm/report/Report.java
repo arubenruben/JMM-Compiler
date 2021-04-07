@@ -1,9 +1,9 @@
 package pt.up.fe.comp.jmm.report;
 
-import java.util.Optional;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import java.util.Optional;
 
 public class Report {
 

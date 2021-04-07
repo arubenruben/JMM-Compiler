@@ -1,11 +1,11 @@
 package pt.up.fe.comp.jmm.ast;
 
+import pt.up.fe.comp.jmm.JmmNode;
+import pt.up.fe.specs.util.SpecsCheck;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiFunction;
-
-import pt.up.fe.comp.jmm.JmmNode;
-import pt.up.fe.specs.util.SpecsCheck;
 
 public abstract class AJmmVisitor<D, R> implements JmmVisitor<D, R> {
 

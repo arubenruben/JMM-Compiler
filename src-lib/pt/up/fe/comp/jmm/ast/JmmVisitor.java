@@ -13,9 +13,9 @@
 
 package pt.up.fe.comp.jmm.ast;
 
-import java.util.function.BiFunction;
-
 import pt.up.fe.comp.jmm.JmmNode;
+
+import java.util.function.BiFunction;
 
 /**
  * 

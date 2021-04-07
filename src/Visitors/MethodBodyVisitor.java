@@ -1,16 +1,13 @@
 package Visitors;
 
-import Symbols.SymbolTableIml;
+import Symbols.MethodSymbol;
 import pt.up.fe.comp.jmm.JmmNode;
 import pt.up.fe.comp.jmm.analysis.table.Symbol;
-import pt.up.fe.comp.jmm.analysis.table.SymbolTable;
 import pt.up.fe.comp.jmm.analysis.table.Type;
-import pt.up.fe.comp.jmm.ast.AJmmVisitor;
+import pt.up.fe.comp.jmm.ast.PreorderJmmVisitor;
 
-import java.util.ArrayList;
-import java.util.List;
 
-public class MethodBodyVisitor extends AJmmVisitor<List<Symbol>, String> {
+public class MethodBodyVisitor extends PreorderJmmVisitor<MethodSymbol, Boolean> {
 
     public MethodBodyVisitor() {
         String fieldIdentifier = "VarDeclaration";
@@ -19,24 +16,22 @@ public class MethodBodyVisitor extends AJmmVisitor<List<Symbol>, String> {
         setDefaultVisit(this::defaultVisit);
     }
 
-    private String dealWithField(JmmNode node, List<Symbol> symbolList) {
+    protected Boolean dealWithField(JmmNode node, MethodSymbol methodSymbol) {
 
-        String name = node.getChildren().get(0).get("value");
-        boolean isArray = node.getChildren().get(0).get("isArray").equals("true");
-        Type nodeType = new Type(name, isArray);
-        Symbol fieldSymbol = new Symbol(nodeType,node.get("value"));
-        symbolList.add(fieldSymbol);
 
-        return "";
+        methodSymbol.getVariables().add(
+                new Symbol(
+                        new Type(
+                                node.getChildren().get(0).get("value"),
+                                node.getChildren().get(0).get("isArray").equals("true")),
+                        node.get("value"))
+        );
+
+        return true;
     }
 
 
-    private String defaultVisit(JmmNode node, List<Symbol> symbolList) {
-
-        for (JmmNode child : node.getChildren()) {
-            visit(child, symbolList);
-        }
-
-        return "";
+    protected Boolean defaultVisit(JmmNode node, MethodSymbol methodSymbol) {
+        return true;
     }
 }

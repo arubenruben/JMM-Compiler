@@ -1,11 +1,8 @@
 import org.junit.Test;
 import pt.up.fe.comp.TestUtils;
 import pt.up.fe.comp.jmm.JmmParserResult;
-import pt.up.fe.comp.jmm.report.Report;
-import pt.up.fe.specs.util.SpecsIo;
 import pt.up.fe.comp.jmm.report.Stage;
-
-import static org.junit.Assert.*;
+import pt.up.fe.specs.util.SpecsIo;
 
 public class ExampleTest {
 

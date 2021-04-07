@@ -1,8 +1,3 @@
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-
 import pt.up.fe.comp.TestUtils;
 import pt.up.fe.comp.jmm.JmmNode;
 import pt.up.fe.comp.jmm.JmmParserResult;
@@ -15,6 +10,10 @@ import pt.up.fe.comp.jmm.ast.examples.ExampleVisitor;
 import pt.up.fe.comp.jmm.report.Report;
 import pt.up.fe.comp.jmm.report.ReportType;
 import pt.up.fe.comp.jmm.report.Stage;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 
 public class AnalysisStage implements JmmAnalysis {
 

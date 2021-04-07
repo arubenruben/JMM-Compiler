@@ -210,7 +210,8 @@
           {
             "kind": "Main",
             "attributes": {
-              "value": "[args]"
+              "isArray": "true",
+              "value": "args"
             },
             "children": [
               {

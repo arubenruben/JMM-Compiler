@@ -1,11 +1,11 @@
 package pt.up.fe.comp.jmm.ast.examples;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import pt.up.fe.comp.jmm.JmmNode;
 import pt.up.fe.comp.jmm.ast.PreorderJmmVisitor;
 import pt.up.fe.specs.util.utilities.StringLines;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Counts the occurences of each node kind.
