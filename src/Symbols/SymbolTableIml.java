@@ -7,6 +7,7 @@ import pt.up.fe.comp.jmm.analysis.table.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SymbolTableIml implements SymbolTable {
 
@@ -14,8 +15,7 @@ public class SymbolTableIml implements SymbolTable {
     private String superName;
     private final List<String> imports = new ArrayList<>();
 
-    //TODO:Maybe a direct hashmap
-    private final List<Symbol> fields = new ArrayList<>();
+    private final Map<Symbol, String> hashMapClassFields = new HashMap<>();
 
     private final HashMap<String, MethodSymbol> methodsHashmap = new HashMap<>();
 
@@ -36,7 +36,7 @@ public class SymbolTableIml implements SymbolTable {
 
     @Override
     public List<Symbol> getFields() {
-        return fields;
+        return null;
     }
 
     @Override
@@ -74,15 +74,19 @@ public class SymbolTableIml implements SymbolTable {
     @Override
     public String toString() {
         return "SymbolTableIml{" +
-                "className='" + className + '\'' +"\n"+
-                ", superName='" + superName + '\'' +"\n"+
-                ", imports=" + imports +"\n"+
-                ", fields=" + fields +"\n"+
-                ", methods=" + methodsHashmap.toString() +"\n"+
+                "className='" + className + '\'' + "\n" +
+                ", superName='" + superName + '\'' + "\n" +
+                ", imports=" + imports + "\n" +
+                ", fields=" + hashMapClassFields.toString() + "\n" +
+                ", methods=" + methodsHashmap.toString() + "\n" +
                 '}';
     }
 
     public HashMap<String, MethodSymbol> getMethodsHashmap() {
         return methodsHashmap;
+    }
+
+    public Map<Symbol, String> getHashMapClassFields() {
+        return hashMapClassFields;
     }
 }

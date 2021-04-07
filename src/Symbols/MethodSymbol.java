@@ -4,19 +4,21 @@ import pt.up.fe.comp.jmm.analysis.table.Symbol;
 import pt.up.fe.comp.jmm.analysis.table.Type;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MethodSymbol extends Symbol {
 
     private List<Symbol> parameters;
 
     //TODO:Maybe an hashmap to store the values directly
-    private List<Symbol> variables;
+    private Map<Symbol, String> variables;
 
     public MethodSymbol(Type returnType, String name) {
         super(returnType, name);
         this.parameters = new ArrayList<>();
-        this.variables = new ArrayList<>();
+        this.variables = new HashMap<>();
     }
 
     public List<Symbol> getParameters() {
@@ -27,11 +29,11 @@ public class MethodSymbol extends Symbol {
         this.parameters = parameters;
     }
 
-    public List<Symbol> getVariables() {
+    public Map<Symbol, String> getVariables() {
         return variables;
     }
 
-    public void setVariables(List<Symbol> variables) {
+    public void setVariables(Map<Symbol, String> variables) {
         this.variables = variables;
     }
 
@@ -40,7 +42,7 @@ public class MethodSymbol extends Symbol {
         return "Symbols.MethodSymbol{" +
                 "return type" + getType() +
                 "parameters=" + parameters +
-                ", variables=" + variables +
+                ", variables=" + variables.toString() +
                 '}';
     }
 }

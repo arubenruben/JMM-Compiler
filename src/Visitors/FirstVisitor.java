@@ -67,7 +67,7 @@ public class FirstVisitor extends PreorderJmmVisitor<SymbolTableIml, Boolean> {
         Type nodeType = new Type(node.getChildren().get(0).get("value"), node.getChildren().get(0).get("isArray").equals("true"));
         Symbol fieldSymbol = new Symbol(nodeType, node.get("value"));
 
-        symbolTable.getFields().add(fieldSymbol);
+        symbolTable.getHashMapClassFields().put(fieldSymbol, "");
 
         return true;
     }
@@ -113,6 +113,10 @@ public class FirstVisitor extends PreorderJmmVisitor<SymbolTableIml, Boolean> {
 
         methodSymbol.setParameters(parameters);
         symbolTableIml.getMethodsHashmap().put(methodSymbol.getName(), methodSymbol);
+
+        MethodBodyVisitor methodBodyVisitor = new MethodBodyVisitor();
+
+        methodBodyVisitor.visit(node.getChildren().get(0), methodSymbol);
 
         return true;
     }
