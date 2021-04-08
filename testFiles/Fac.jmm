@@ -7,11 +7,17 @@ class Fac extends Parent {
     int ola;
     int ola2;
 
+    public int get(int number){
+        return number;
+    }
 
     public static void main(String[] args) {
+           Fac facTest;
+           facTest=new Fac();
            //var1[1]+var2[3];
-           //ola+var1.length;
+           ola+facTest.get(1)+var1.length;
            //true+true+ola+ola;
-           ola+ola+ola+true;
+           //ola+ola+ola+true;
+           //ola+ola+ola+ola;
     }
 }

@@ -30,14 +30,21 @@ public class SecondVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boole
 
         Type TypeRight = seekReturnTypeVisitorRight.getType();
 
-        if (TypeLeft == null)
+        if (TypeLeft == null){
             System.err.println("Left child is null");
+            return true;
+        }
 
-        if (TypeRight == null)
+        if (TypeRight == null){
             System.err.println("Right child is null");
+            return true;
+        }
 
         else if (!TypeLeft.equals(TypeRight))
             System.err.println("Not equals");
+
+        System.out.println("Left"+TypeLeft.toString());
+        System.out.println("Right"+TypeRight.toString());
 
 
         return true;

@@ -30,9 +30,40 @@ public class SeekReturnTypeVisitor extends PreorderJmmVisitor<SecondVisitorHelpe
     }
 
     protected Type dealWithMethodCall(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
-        //TODO:Falta
+
         if (type != null)
             return type;
+
+        //Variable dont exist
+        if (node.getChildren().get(0).getKind().equals("Identifier")) {
+            if (variableLookup(node.getChildren().get(0).get("value"), secondVisitorHelper) == null) {
+                //Todo:Falta report
+                System.err.println("Var dont exist");
+                return type;
+            }
+        }
+
+        if (node.getChildren().get(1).getKind().equals("Identifier")) {
+            if (node.getChildren().get(1).get("value").equals("length")) {
+                type = new Type("int", false);
+                return type;
+            }
+
+            MethodSymbol method = secondVisitorHelper.getSymbolTableIml().getMethodsHashmap().get(node.getChildren().get(1).get("value"));
+
+            //Todo:Falta report
+            if (method == null) {
+                System.err.println("Method dont exist");
+                return type;
+            } else
+                System.out.println("Method" + method.toString());
+
+            type = method.getType();
+
+            return type;
+        }
+
+
         return type;
     }
 
@@ -67,29 +98,11 @@ public class SeekReturnTypeVisitor extends PreorderJmmVisitor<SecondVisitorHelpe
         if (type != null)
             return type;
 
-        MethodSymbol methodSymbol = secondVisitorHelper.getSymbolTableIml().getMethodsHashmap().get(secondVisitorHelper.getCurrentMethodName());
+        Symbol symbol = variableLookup(node.get("value"), secondVisitorHelper);
 
-        for (Symbol symbol : methodSymbol.getVariables().keySet()) {
-            //Exists a local variable with that name
-            if (symbol.getName().equals(node.get("value"))) {
-                type = symbol.getType();
-                return type;
-            }
-        }
-        for (Symbol symbol : methodSymbol.getParameters()) {
-            //Exists a method parameter variable with that name
-            if (symbol.getName().equals(node.get("value"))) {
-                type = symbol.getType();
-                return type;
-            }
-        }
-        for (Symbol symbol : secondVisitorHelper.getSymbolTableIml().getHashMapClassFields().keySet()) {
-            //Exists a class Field variable with that name
-            if (symbol.getName().equals(node.get("value"))) {
-                type = symbol.getType();
-                return type;
-            }
-        }
+        if (symbol != null)
+            type = symbol.getType();
+
         return type;
     }
 
@@ -99,5 +112,26 @@ public class SeekReturnTypeVisitor extends PreorderJmmVisitor<SecondVisitorHelpe
 
     public Type getType() {
         return type;
+    }
+
+    private Symbol variableLookup(String variableName, SecondVisitorHelper secondVisitorHelper) {
+        MethodSymbol methodSymbol = secondVisitorHelper.getSymbolTableIml().getMethodsHashmap().get(secondVisitorHelper.getCurrentMethodName());
+
+        for (Symbol symbol : methodSymbol.getVariables().keySet()) {
+            //Exists a local variable with that name
+            if (symbol.getName().equals(variableName))
+                return symbol;
+        }
+        for (Symbol symbol : methodSymbol.getParameters()) {
+            //Exists a method parameter variable with that name
+            if (symbol.getName().equals(variableName))
+                return symbol;
+        }
+        for (Symbol symbol : secondVisitorHelper.getSymbolTableIml().getHashMapClassFields().keySet()) {
+            //Exists a class Field variable with that name
+            if (symbol.getName().equals(variableName))
+                return symbol;
+        }
+        return null;
     }
 }
