@@ -206,11 +206,18 @@ void ClassMethodParameter() #void:{}
 {
     Type() Identifier() #Parameter(2)
 }
-void StaticMethod()#Main:{Token t;}
+void StaticMethod()#ClassMethod:{Token t;}
 {
-    <STATIC> <VOID> <MAIN> <LPAR> <STRING> <LREC> <RREC> t=<IDENTIFIER>{jjtThis.put("value",t.image);jjtThis.put("isArray","true");} <RPAR><LCUR>
+    <STATIC> <VOID> t=<MAIN>{addAtributes(jjtThis,t);} <LPAR> StaticParameters() <RPAR><LCUR>
         MethodBody()
     <RCUR>
+}
+void StaticParameters() #Parameters:{}
+{
+    StaticType() Identifier() #Parameter(2)
+}
+void StaticType() #Type:{Token t;}{
+    t=<STRING> <LREC> <RREC>{addAtributes(jjtThis,t);jjtThis.put("isArray","true");}
 }
 void MethodBody() #Body:{}
 {
@@ -369,7 +376,5 @@ void TerminalNonIdentifier() #void:{Token t;}
 void Identifier() :{Token t;}
 {
     t=<IDENTIFIER>
-    {
-       jjtThis.put("value", t.image);
-    }
+    {addAtributes(jjtThis,t);}
 }

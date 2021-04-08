@@ -51,7 +51,7 @@ public class Main implements JmmParser, JmmAnalysis {
         if (TestUtils.getNumReports(parserResult.getReports(), ReportType.ERROR) > 0)
             return;
 
-        JmmSemanticsResult semanticAnalysis = main.semanticAnalysis(parserResult);
+        //JmmSemanticsResult semanticAnalysis = main.semanticAnalysis(parserResult);
 
     }
 

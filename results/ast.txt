@@ -35,12 +35,44 @@
             "children": []
           },
           {
-            "kind": "Main",
+            "kind": "ClassMethod",
             "attributes": {
-              "isArray": "true",
-              "value": "args"
+              "line": "6",
+              "column": "24",
+              "value": "main"
             },
             "children": [
+              {
+                "kind": "Parameters",
+                "attributes": {},
+                "children": [
+                  {
+                    "kind": "Parameter",
+                    "attributes": {},
+                    "children": [
+                      {
+                        "kind": "Type",
+                        "attributes": {
+                          "line": "6",
+                          "column": "29",
+                          "isArray": "true",
+                          "value": "String"
+                        },
+                        "children": []
+                      },
+                      {
+                        "kind": "Identifier",
+                        "attributes": {
+                          "line": "6",
+                          "column": "38",
+                          "value": "args"
+                        },
+                        "children": []
+                      }
+                    ]
+                  }
+                ]
+              },
               {
                 "kind": "Body",
                 "attributes": {},
@@ -72,6 +104,8 @@
                       {
                         "kind": "Identifier",
                         "attributes": {
+                          "line": "8",
+                          "column": "8",
                           "value": "asdas"
                         },
                         "children": []
@@ -93,6 +127,8 @@
                       {
                         "kind": "Identifier",
                         "attributes": {
+                          "line": "10",
+                          "column": "8",
                           "value": "array"
                         },
                         "children": []
@@ -124,6 +160,8 @@
                       {
                         "kind": "Identifier",
                         "attributes": {
+                          "line": "11",
+                          "column": "8",
                           "value": "result"
                         },
                         "children": []
