@@ -6,6 +6,6 @@ class Fac extends Parent {
     public static void main(String[] args) {
         array=new int[2];
         result=array[0]+array[1];
-
+        array[1];
     }
 }

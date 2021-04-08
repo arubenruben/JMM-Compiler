@@ -226,9 +226,9 @@ void Statement() #void: {}{
     WhileStatement()
     |
     (LOOKAHEAD(2)
-    AssignmentStatement()
-    |
     Expression()<SEMICOLON>
+    |
+    AssignmentStatement()
     )
 
 }
