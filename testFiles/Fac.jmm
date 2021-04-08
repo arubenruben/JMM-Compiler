@@ -9,8 +9,9 @@ class Fac extends Parent {
 
 
     public static void main(String[] args) {
-           var1[1]+var2[3];
-           ola+var1.length;
-           ola+true;
+           //var1[1]+var2[3];
+           //ola+var1.length;
+           //true+true+ola+ola;
+           ola+ola+ola+true;
     }
 }
