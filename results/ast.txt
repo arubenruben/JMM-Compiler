@@ -180,120 +180,52 @@
                     "attributes": {},
                     "children": [
                       {
-                        "kind": "ArrayAccess",
+                        "kind": "Add",
                         "attributes": {},
                         "children": [
                           {
-                            "kind": "Identifier",
-                            "attributes": {
-                              "line": "12",
-                              "column": "12",
-                              "isArray": "false",
-                              "value": "var1"
-                            },
-                            "children": []
+                            "kind": "Add",
+                            "attributes": {},
+                            "children": [
+                              {
+                                "kind": "Identifier",
+                                "attributes": {
+                                  "line": "15",
+                                  "column": "12",
+                                  "isArray": "false",
+                                  "value": "ola"
+                                },
+                                "children": []
+                              },
+                              {
+                                "kind": "Identifier",
+                                "attributes": {
+                                  "line": "15",
+                                  "column": "16",
+                                  "isArray": "false",
+                                  "value": "ola"
+                                },
+                                "children": []
+                              }
+                            ]
                           },
                           {
-                            "kind": "Integer",
-                            "attributes": {
-                              "line": "12",
-                              "column": "17",
-                              "isArray": "false",
-                              "value": "1"
-                            },
-                            "children": []
-                          }
-                        ]
-                      },
-                      {
-                        "kind": "ArrayAccess",
-                        "attributes": {},
-                        "children": [
-                          {
                             "kind": "Identifier",
                             "attributes": {
-                              "line": "12",
+                              "line": "15",
                               "column": "20",
                               "isArray": "false",
-                              "value": "var2"
-                            },
-                            "children": []
-                          },
-                          {
-                            "kind": "Integer",
-                            "attributes": {
-                              "line": "12",
-                              "column": "25",
-                              "isArray": "false",
-                              "value": "3"
+                              "value": "ola"
                             },
                             "children": []
                           }
                         ]
-                      }
-                    ]
-                  },
-                  {
-                    "kind": "Add",
-                    "attributes": {},
-                    "children": [
-                      {
-                        "kind": "Identifier",
-                        "attributes": {
-                          "line": "13",
-                          "column": "12",
-                          "isArray": "false",
-                          "value": "ola"
-                        },
-                        "children": []
-                      },
-                      {
-                        "kind": "MethodCall",
-                        "attributes": {},
-                        "children": [
-                          {
-                            "kind": "Identifier",
-                            "attributes": {
-                              "line": "13",
-                              "column": "16",
-                              "isArray": "false",
-                              "value": "var1"
-                            },
-                            "children": []
-                          },
-                          {
-                            "kind": "Identifier",
-                            "attributes": {
-                              "line": "13",
-                              "column": "21",
-                              "isArray": "false",
-                              "value": "length"
-                            },
-                            "children": []
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "kind": "Add",
-                    "attributes": {},
-                    "children": [
-                      {
-                        "kind": "Identifier",
-                        "attributes": {
-                          "line": "14",
-                          "column": "12",
-                          "isArray": "false",
-                          "value": "ola"
-                        },
-                        "children": []
                       },
                       {
                         "kind": "Boolean",
                         "attributes": {
-                          "line": "14",
-                          "column": "16",
+                          "line": "15",
+                          "column": "24",
                           "isArray": "false",
                           "value": "true"
                         },
