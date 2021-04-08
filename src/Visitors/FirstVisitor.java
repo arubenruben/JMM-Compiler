@@ -22,7 +22,6 @@ public class FirstVisitor extends PreorderJmmVisitor<SymbolTableIml, Boolean> {
         addVisit("Extends", this::dealWithSuper);
         addVisit("VarDeclaration", this::dealWithClassFieldDeclaration);
         addVisit("ClassMethod", this::dealWithClassMethod);
-        addVisit("Main", this::dealWithMain);
         setDefaultVisit(this::defaultVisit);
     }
 
@@ -83,7 +82,6 @@ public class FirstVisitor extends PreorderJmmVisitor<SymbolTableIml, Boolean> {
                 new Type(node.getChildren().get(0).get("value"), node.getChildren().get(0).get("isArray").equals("true")),
                 node.get("value"));
 
-
         for (JmmNode parameter : parameterBlock.getChildren()) {
             JmmNode nodeType = parameter.getChildren().get(0);
             JmmNode nodeIdentifier = parameter.getChildren().get(1);
@@ -100,27 +98,6 @@ public class FirstVisitor extends PreorderJmmVisitor<SymbolTableIml, Boolean> {
         MethodBodyVisitor methodBodyVisitor = new MethodBodyVisitor();
 
         methodBodyVisitor.visit(bodyBlock, methodSymbol);
-
-        return true;
-    }
-
-    protected Boolean dealWithMain(JmmNode node, SymbolTableIml symbolTable) {
-        List<Symbol> parameters = new ArrayList<>();
-        MethodSymbol methodSymbol = new MethodSymbol(
-                new Type("void", false),
-                "Main");
-
-        parameters.add(new Symbol(new Type("String", true), node.get("value")));
-
-        methodSymbol.setParameters(parameters);
-
-        symbolTable.getMethodsHashmap().put(methodSymbol.getName(), methodSymbol);
-
-        MethodBodyVisitor methodBodyVisitor = new MethodBodyVisitor();
-
-        symbolTable.getNodeMap().put(methodSymbol.getName(), node);
-
-        methodBodyVisitor.visit(node.getChildren().get(0), methodSymbol);
 
         return true;
     }
