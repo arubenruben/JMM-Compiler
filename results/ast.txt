@@ -37,9 +37,51 @@
             "children": []
           },
           {
-            "kind": "ClassMethod",
+            "kind": "VarDeclaration",
+            "attributes": {
+              "line": "5",
+              "column": "11",
+              "isArray": "false",
+              "value": "var1"
+            },
+            "children": [
+              {
+                "kind": "Type",
+                "attributes": {
+                  "line": "5",
+                  "column": "5",
+                  "isArray": "true",
+                  "value": "int"
+                },
+                "children": []
+              }
+            ]
+          },
+          {
+            "kind": "VarDeclaration",
             "attributes": {
               "line": "6",
+              "column": "13",
+              "isArray": "false",
+              "value": "boowqe"
+            },
+            "children": [
+              {
+                "kind": "Type",
+                "attributes": {
+                  "line": "6",
+                  "column": "5",
+                  "isArray": "false",
+                  "value": "boolean"
+                },
+                "children": []
+              }
+            ]
+          },
+          {
+            "kind": "ClassMethod",
+            "attributes": {
+              "line": "9",
               "column": "24",
               "isArray": "false",
               "value": "main"
@@ -48,7 +90,7 @@
               {
                 "kind": "Type",
                 "attributes": {
-                  "line": "6",
+                  "line": "9",
                   "column": "19",
                   "isArray": "false",
                   "value": "void"
@@ -66,7 +108,7 @@
                       {
                         "kind": "Type",
                         "attributes": {
-                          "line": "6",
+                          "line": "9",
                           "column": "29",
                           "isArray": "true",
                           "value": "String"
@@ -76,7 +118,7 @@
                       {
                         "kind": "Identifier",
                         "attributes": {
-                          "line": "6",
+                          "line": "9",
                           "column": "38",
                           "isArray": "false",
                           "value": "args"
@@ -94,19 +136,19 @@
                   {
                     "kind": "VarDeclaration",
                     "attributes": {
-                      "line": "7",
-                      "column": "15",
+                      "line": "12",
+                      "column": "12",
                       "isArray": "false",
-                      "value": "asdas"
+                      "value": "var"
                     },
                     "children": [
                       {
                         "kind": "Type",
                         "attributes": {
-                          "line": "7",
+                          "line": "12",
                           "column": "8",
                           "isArray": "false",
-                          "value": "ASdase"
+                          "value": "int"
                         },
                         "children": []
                       }
@@ -119,20 +161,62 @@
                       {
                         "kind": "Identifier",
                         "attributes": {
-                          "line": "8",
+                          "line": "13",
                           "column": "8",
                           "isArray": "false",
-                          "value": "asdas"
+                          "value": "var"
                         },
                         "children": []
                       },
                       {
-                        "kind": "New",
+                        "kind": "Integer",
                         "attributes": {
-                          "line": "8",
-                          "column": "18",
+                          "line": "13",
+                          "column": "14",
                           "isArray": "false",
-                          "value": "asdAS"
+                          "value": "1"
+                        },
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "Add",
+                    "attributes": {},
+                    "children": [
+                      {
+                        "kind": "Add",
+                        "attributes": {},
+                        "children": [
+                          {
+                            "kind": "Integer",
+                            "attributes": {
+                              "line": "15",
+                              "column": "8",
+                              "isArray": "false",
+                              "value": "1"
+                            },
+                            "children": []
+                          },
+                          {
+                            "kind": "Integer",
+                            "attributes": {
+                              "line": "15",
+                              "column": "10",
+                              "isArray": "false",
+                              "value": "3"
+                            },
+                            "children": []
+                          }
+                        ]
+                      },
+                      {
+                        "kind": "Boolean",
+                        "attributes": {
+                          "line": "15",
+                          "column": "12",
+                          "isArray": "false",
+                          "value": "true"
                         },
                         "children": []
                       }
@@ -145,18 +229,18 @@
                       {
                         "kind": "Identifier",
                         "attributes": {
-                          "line": "10",
+                          "line": "16",
                           "column": "8",
                           "isArray": "false",
-                          "value": "array"
+                          "value": "array1"
                         },
                         "children": []
                       },
                       {
                         "kind": "New",
                         "attributes": {
-                          "line": "10",
-                          "column": "18",
+                          "line": "16",
+                          "column": "19",
                           "isArray": "true",
                           "value": "int"
                         },
@@ -164,8 +248,8 @@
                           {
                             "kind": "Integer",
                             "attributes": {
-                              "line": "10",
-                              "column": "22",
+                              "line": "16",
+                              "column": "23",
                               "isArray": "false",
                               "value": "2"
                             },
@@ -182,7 +266,44 @@
                       {
                         "kind": "Identifier",
                         "attributes": {
-                          "line": "11",
+                          "line": "17",
+                          "column": "8",
+                          "isArray": "false",
+                          "value": "array2"
+                        },
+                        "children": []
+                      },
+                      {
+                        "kind": "New",
+                        "attributes": {
+                          "line": "17",
+                          "column": "19",
+                          "isArray": "true",
+                          "value": "int"
+                        },
+                        "children": [
+                          {
+                            "kind": "Integer",
+                            "attributes": {
+                              "line": "17",
+                              "column": "23",
+                              "isArray": "false",
+                              "value": "2"
+                            },
+                            "children": []
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "AssignmentVar",
+                    "attributes": {},
+                    "children": [
+                      {
+                        "kind": "Identifier",
+                        "attributes": {
+                          "line": "18",
                           "column": "8",
                           "isArray": "false",
                           "value": "result"
@@ -194,56 +315,24 @@
                         "attributes": {},
                         "children": [
                           {
-                            "kind": "ArrayAccess",
-                            "attributes": {},
-                            "children": [
-                              {
-                                "kind": "Identifier",
-                                "attributes": {
-                                  "line": "11",
-                                  "column": "15",
-                                  "isArray": "false",
-                                  "value": "array"
-                                },
-                                "children": []
-                              },
-                              {
-                                "kind": "Integer",
-                                "attributes": {
-                                  "line": "11",
-                                  "column": "21",
-                                  "isArray": "false",
-                                  "value": "0"
-                                },
-                                "children": []
-                              }
-                            ]
+                            "kind": "Identifier",
+                            "attributes": {
+                              "line": "18",
+                              "column": "15",
+                              "isArray": "false",
+                              "value": "array1"
+                            },
+                            "children": []
                           },
                           {
-                            "kind": "ArrayAccess",
-                            "attributes": {},
-                            "children": [
-                              {
-                                "kind": "Identifier",
-                                "attributes": {
-                                  "line": "11",
-                                  "column": "24",
-                                  "isArray": "false",
-                                  "value": "array"
-                                },
-                                "children": []
-                              },
-                              {
-                                "kind": "Integer",
-                                "attributes": {
-                                  "line": "11",
-                                  "column": "30",
-                                  "isArray": "false",
-                                  "value": "1"
-                                },
-                                "children": []
-                              }
-                            ]
+                            "kind": "Identifier",
+                            "attributes": {
+                              "line": "18",
+                              "column": "22",
+                              "isArray": "false",
+                              "value": "array2"
+                            },
+                            "children": []
                           }
                         ]
                       }
@@ -256,7 +345,7 @@
                       {
                         "kind": "Identifier",
                         "attributes": {
-                          "line": "12",
+                          "line": "19",
                           "column": "8",
                           "isArray": "false",
                           "value": "array"
@@ -266,7 +355,7 @@
                       {
                         "kind": "Integer",
                         "attributes": {
-                          "line": "12",
+                          "line": "19",
                           "column": "14",
                           "isArray": "false",
                           "value": "1"
@@ -282,7 +371,7 @@
                       {
                         "kind": "Identifier",
                         "attributes": {
-                          "line": "14",
+                          "line": "22",
                           "column": "8",
                           "isArray": "false",
                           "value": "array"
@@ -292,7 +381,7 @@
                       {
                         "kind": "Identifier",
                         "attributes": {
-                          "line": "14",
+                          "line": "22",
                           "column": "14",
                           "isArray": "false",
                           "value": "length"
@@ -308,7 +397,7 @@
                       {
                         "kind": "Identifier",
                         "attributes": {
-                          "line": "15",
+                          "line": "23",
                           "column": "8",
                           "isArray": "false",
                           "value": "asdas"
@@ -318,7 +407,7 @@
                       {
                         "kind": "Identifier",
                         "attributes": {
-                          "line": "15",
+                          "line": "23",
                           "column": "14",
                           "isArray": "false",
                           "value": "method"
@@ -331,7 +420,7 @@
                               {
                                 "kind": "Identifier",
                                 "attributes": {
-                                  "line": "15",
+                                  "line": "23",
                                   "column": "21",
                                   "isArray": "false",
                                   "value": "ola"

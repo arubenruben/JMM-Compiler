@@ -1,3 +1,5 @@
+import Symbols.SymbolTableIml;
+import pt.up.fe.comp.jmm.analysis.table.SymbolTable;
 import pt.up.fe.comp.jmm.report.Report;
 
 import java.io.ByteArrayInputStream;
@@ -6,10 +8,9 @@ import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 
-
 public class Utils {
-	
-	public static InputStream toInputStream(String text) {
+
+    public static InputStream toInputStream(String text) {
         try {
             return new ByteArrayInputStream(text.getBytes("UTF-8"));
         } catch (UnsupportedEncodingException e) {
@@ -17,7 +18,7 @@ public class Utils {
         }
     }
 
-    public static void printReports(List<Report> reports){
+    public static void printReports(List<Report> reports) {
         if (reports.size() > 0) {
             System.out.println("Reports:");
             System.out.println("------------------------------------------------");
@@ -26,7 +27,7 @@ public class Utils {
         }
     }
 
-    public static String reportEntryWarning(String message, int numberOfSyntaxWarnings){
+    public static String reportEntryWarning(String message, int numberOfSyntaxWarnings) {
         String error = "\n";
         error += Constants.ANSI_YELLOW + "Warning Nº" + numberOfSyntaxWarnings + Constants.ANSI_RESET + "\n";
         error += message;
@@ -34,16 +35,16 @@ public class Utils {
         return error;
     }
 
-    public static String reportEntryError(ParseException e, long numberOfSyntaxErrors, List<String> fileLines){
+    public static String reportEntryError(ParseException e, long numberOfSyntaxErrors, List<String> fileLines) {
         String errorType = "Syntax";
         String error = "\n";
         error += Constants.ANSI_RED + "Error Nº" + numberOfSyntaxErrors + Constants.ANSI_RESET + "\n";
         String line = "";
         String indicator = "";
 
-        if(!fileLines.isEmpty()){
+        if (!fileLines.isEmpty()) {
             line = fileLines.get(e.currentToken.next.beginLine - 1);
-            for(int i = 0; i < e.currentToken.next.beginColumn - 1; i++) {
+            for (int i = 0; i < e.currentToken.next.beginColumn - 1; i++) {
                 if (line.charAt(i) == '\t')
                     indicator += "\t";
                 else
@@ -56,14 +57,18 @@ public class Utils {
 
         error += "Found: " + e.currentToken.next + "\n";
         error += "Expected: ";
-        for (int [] expectedTokenArray : e.expectedTokenSequences){
-            for(int expectedToken : expectedTokenArray){
+        for (int[] expectedTokenArray : e.expectedTokenSequences) {
+            for (int expectedToken : expectedTokenArray) {
                 error += e.tokenImage[expectedToken] + ",";
             }
         }
 
         error += "\n------------------------------------------------";
         return error;
+    }
+
+    public static void printSymbolTable(SymbolTable symbolTableIml) {
+        System.out.println(symbolTableIml.toString());
     }
 
 }

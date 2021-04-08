@@ -83,12 +83,11 @@ public class SymbolTableIml implements SymbolTable {
 
     @Override
     public String toString() {
-        return "SymbolTableIml{" +
-                "className='" + className + '\'' + "\n" +
-                ", superName='" + superName + '\'' + "\n" +
-                ", imports=" + imports + "\n" +
-                ", fields=" + hashMapClassFields.toString() + "\n" +
-                ", methods=" + methodsHashmap.toString() + "\n" +
+        return "ClassName='" + className + '\'' + "\n" +
+                "superName='" + superName + '\'' + "\n" +
+                "imports=" + imports + "\n" +
+                "fields=" + hashMapClassFields.toString() + "\n" +
+                "methods=" + methodsHashmap.toString() + "\n" +
                 '}';
     }
 

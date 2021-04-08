@@ -2,14 +2,22 @@ import io.io.jota.aiou;
 import ruben.amorim;
 
 class Fac extends Parent {
+    int[] var1;
+    boolean boowqe;
+
 
     public static void main(String[] args) {
-       ASdase asdas;
-       asdas=new asdAS();
 
-       array=new int[2];
-       result=array[0]+array[1];
+
+       int var;
+       var = 1;
+
+       1+3+true;
+       array1=new int[2];
+       array2=new int[2];
+       result=array1+array2;
        array[1];
+
 
        array.length;
        asdas.method(ola);
