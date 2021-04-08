@@ -250,140 +250,34 @@
                 "attributes": {},
                 "children": [
                   {
-                    "kind": "VarDeclaration",
-                    "attributes": {
-                      "line": "15",
-                      "column": "16",
-                      "isArray": "false",
-                      "value": "facTest"
-                    },
-                    "children": [
-                      {
-                        "kind": "Type",
-                        "attributes": {
-                          "line": "15",
-                          "column": "12",
-                          "isArray": "false",
-                          "value": "Fac"
-                        },
-                        "children": []
-                      }
-                    ]
-                  },
-                  {
-                    "kind": "AssignmentVar",
+                    "kind": "And",
                     "attributes": {},
                     "children": [
                       {
-                        "kind": "Identifier",
-                        "attributes": {
-                          "line": "16",
-                          "column": "12",
-                          "isArray": "false",
-                          "value": "facTest"
-                        },
-                        "children": []
-                      },
-                      {
-                        "kind": "New",
-                        "attributes": {
-                          "line": "16",
-                          "column": "24",
-                          "isArray": "false",
-                          "value": "Fac"
-                        },
-                        "children": []
-                      }
-                    ]
-                  },
-                  {
-                    "kind": "Add",
-                    "attributes": {},
-                    "children": [
-                      {
-                        "kind": "Add",
+                        "kind": "Not",
                         "attributes": {},
                         "children": [
                           {
-                            "kind": "Identifier",
+                            "kind": "Integer",
                             "attributes": {
-                              "line": "18",
-                              "column": "12",
+                              "line": "17",
+                              "column": "13",
                               "isArray": "false",
-                              "value": "ola"
+                              "value": "1"
                             },
                             "children": []
-                          },
-                          {
-                            "kind": "MethodCall",
-                            "attributes": {},
-                            "children": [
-                              {
-                                "kind": "Identifier",
-                                "attributes": {
-                                  "line": "18",
-                                  "column": "16",
-                                  "isArray": "false",
-                                  "value": "facTest"
-                                },
-                                "children": []
-                              },
-                              {
-                                "kind": "Identifier",
-                                "attributes": {
-                                  "line": "18",
-                                  "column": "24",
-                                  "isArray": "false",
-                                  "value": "get"
-                                },
-                                "children": [
-                                  {
-                                    "kind": "Parameters",
-                                    "attributes": {},
-                                    "children": [
-                                      {
-                                        "kind": "Integer",
-                                        "attributes": {
-                                          "line": "18",
-                                          "column": "28",
-                                          "isArray": "false",
-                                          "value": "1"
-                                        },
-                                        "children": []
-                                      }
-                                    ]
-                                  }
-                                ]
-                              }
-                            ]
                           }
                         ]
                       },
                       {
-                        "kind": "MethodCall",
-                        "attributes": {},
-                        "children": [
-                          {
-                            "kind": "Identifier",
-                            "attributes": {
-                              "line": "18",
-                              "column": "31",
-                              "isArray": "false",
-                              "value": "var1"
-                            },
-                            "children": []
-                          },
-                          {
-                            "kind": "Identifier",
-                            "attributes": {
-                              "line": "18",
-                              "column": "36",
-                              "isArray": "false",
-                              "value": "length"
-                            },
-                            "children": []
-                          }
-                        ]
+                        "kind": "Boolean",
+                        "attributes": {
+                          "line": "17",
+                          "column": "18",
+                          "isArray": "false",
+                          "value": "true"
+                        },
+                        "children": []
                       }
                     ]
                   }
