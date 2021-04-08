@@ -1,6 +1,6 @@
 package Visitors.helpers;
 
-import Visitors.helpers.SecondVisitorHelper;
+import Visitors.helpers.data_helpers.SecondVisitorHelper;
 import pt.up.fe.comp.jmm.JmmNode;
 import pt.up.fe.comp.jmm.analysis.table.Symbol;
 import pt.up.fe.comp.jmm.analysis.table.Type;
