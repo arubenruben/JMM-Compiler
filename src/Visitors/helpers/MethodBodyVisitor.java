@@ -1,4 +1,4 @@
-package Visitors;
+package Visitors.helpers;
 
 import Symbols.MethodSymbol;
 import pt.up.fe.comp.jmm.JmmNode;

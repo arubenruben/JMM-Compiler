@@ -2,6 +2,7 @@ package Visitors;
 
 import Symbols.MethodSymbol;
 import Symbols.SymbolTableIml;
+import Visitors.helpers.MethodBodyVisitor;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import pt.up.fe.comp.jmm.JmmNode;
@@ -26,13 +27,13 @@ public class FirstVisitor extends PreorderJmmVisitor<SymbolTableIml, Boolean> {
     }
 
 
-    private Boolean dealWithSuper(JmmNode node, SymbolTableIml symbolTableIml) {
-        symbolTableIml.setSuperName(node.get("value"));
+    private Boolean dealWithSuper(JmmNode node, SymbolTableIml symbolTable) {
+        symbolTable.setSuperName(node.get("value"));
         return true;
     }
 
-    private Boolean dealWithClassDefinition(JmmNode node, SymbolTableIml symbolTableIml) {
-        symbolTableIml.setClassName(node.get("value"));
+    private Boolean dealWithClassDefinition(JmmNode node, SymbolTableIml symbolTable) {
+        symbolTable.setClassName(node.get("value"));
         return true;
     }
 
@@ -78,7 +79,6 @@ public class FirstVisitor extends PreorderJmmVisitor<SymbolTableIml, Boolean> {
         JmmNode parameterBlock = node.getChildren().get(1);
         JmmNode bodyBlock = node.getChildren().get(2);
 
-
         MethodSymbol methodSymbol = new MethodSymbol(
                 new Type(node.getChildren().get(0).get("value"), node.getChildren().get(0).get("isArray").equals("true")),
                 node.get("value"));
@@ -95,6 +95,7 @@ public class FirstVisitor extends PreorderJmmVisitor<SymbolTableIml, Boolean> {
 
         symbolTable.getMethodsHashmap().put(methodSymbol.getName(), methodSymbol);
 
+        symbolTable.getNodeMap().put(methodSymbol.getName(), node);
 
         MethodBodyVisitor methodBodyVisitor = new MethodBodyVisitor();
 
@@ -103,7 +104,7 @@ public class FirstVisitor extends PreorderJmmVisitor<SymbolTableIml, Boolean> {
         return true;
     }
 
-    protected Boolean dealWithMain(JmmNode node, SymbolTableIml symbolTableIml) {
+    protected Boolean dealWithMain(JmmNode node, SymbolTableIml symbolTable) {
         List<Symbol> parameters = new ArrayList<>();
         MethodSymbol methodSymbol = new MethodSymbol(
                 new Type("void", false),
@@ -112,9 +113,12 @@ public class FirstVisitor extends PreorderJmmVisitor<SymbolTableIml, Boolean> {
         parameters.add(new Symbol(new Type("String", true), node.get("value")));
 
         methodSymbol.setParameters(parameters);
-        symbolTableIml.getMethodsHashmap().put(methodSymbol.getName(), methodSymbol);
+
+        symbolTable.getMethodsHashmap().put(methodSymbol.getName(), methodSymbol);
 
         MethodBodyVisitor methodBodyVisitor = new MethodBodyVisitor();
+
+        symbolTable.getNodeMap().put(methodSymbol.getName(), node);
 
         methodBodyVisitor.visit(node.getChildren().get(0), methodSymbol);
 
