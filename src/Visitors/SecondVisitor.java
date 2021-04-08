@@ -5,6 +5,9 @@ import Visitors.helpers.data_helpers.SecondVisitorHelper;
 import pt.up.fe.comp.jmm.JmmNode;
 import pt.up.fe.comp.jmm.analysis.table.Type;
 import pt.up.fe.comp.jmm.ast.PreorderJmmVisitor;
+import pt.up.fe.comp.jmm.report.Report;
+import pt.up.fe.comp.jmm.report.ReportType;
+import pt.up.fe.comp.jmm.report.Stage;
 
 
 public class SecondVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boolean> {
@@ -24,37 +27,25 @@ public class SecondVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boole
         SeekReturnTypeVisitor seekReturnTypeVisitorLeft = new SeekReturnTypeVisitor();
         SeekReturnTypeVisitor seekReturnTypeVisitorRight = new SeekReturnTypeVisitor();
 
-
-        //TODO:WHY???? NULL ON VISIT??'
         seekReturnTypeVisitorLeft.visit(node.getChildren().get(0), secondVisitorHelper);
         Type TypeLeft = seekReturnTypeVisitorLeft.getType();
 
         seekReturnTypeVisitorRight.visit(node.getChildren().get(1), secondVisitorHelper);
-
         Type TypeRight = seekReturnTypeVisitorRight.getType();
 
-        if (TypeLeft == null) {
-            System.err.println("Left child is null");
-            return true;
-        }
+        if (TypeLeft != null && TypeRight != null && !TypeLeft.equals(TypeRight))
+            secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.getChildren().get(1).get("line")), "Attempt to do a math operation under operands of different types"));
 
-        if (TypeRight == null) {
-            System.err.println("Right child is null");
-            return true;
-        } else if (!TypeLeft.equals(TypeRight))
-            System.err.println("Not equals");
 
         return true;
     }
 
     protected Boolean dealWithBooleanOperation(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
 
-        if (node.getKind().equals("And"))
-        {
+        if (node.getKind().equals("And")) {
             SeekReturnTypeVisitor seekReturnTypeVisitorLeft = new SeekReturnTypeVisitor();
             SeekReturnTypeVisitor seekReturnTypeVisitorRight = new SeekReturnTypeVisitor();
 
-            //TODO:WHY???? NULL ON VISIT??'
             seekReturnTypeVisitorLeft.visit(node.getChildren().get(0), secondVisitorHelper);
             Type TypeLeft = seekReturnTypeVisitorLeft.getType();
 
@@ -74,8 +65,7 @@ public class SecondVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boole
             else if ((!TypeLeft.getName().equals("boolean")) || (!TypeRight.getName().equals("boolean")))
                 System.err.println("One or more elements are not booleans");
 
-        }
-        else {
+        } else {
 
             SeekReturnTypeVisitor seekReturnTypeVisitorLeft = new SeekReturnTypeVisitor();
 
@@ -90,7 +80,6 @@ public class SecondVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boole
                 System.err.println("One or more elements are not booleans");
 
         }
-
 
 
         return true;

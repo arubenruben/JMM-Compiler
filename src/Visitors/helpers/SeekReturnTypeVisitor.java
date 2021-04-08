@@ -6,6 +6,9 @@ import pt.up.fe.comp.jmm.JmmNode;
 import pt.up.fe.comp.jmm.analysis.table.Symbol;
 import pt.up.fe.comp.jmm.analysis.table.Type;
 import pt.up.fe.comp.jmm.ast.PreorderJmmVisitor;
+import pt.up.fe.comp.jmm.report.Report;
+import pt.up.fe.comp.jmm.report.ReportType;
+import pt.up.fe.comp.jmm.report.Stage;
 
 public class SeekReturnTypeVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Type> {
     private Type type;
@@ -24,9 +27,22 @@ public class SeekReturnTypeVisitor extends PreorderJmmVisitor<SecondVisitorHelpe
         if (type != null)
             return type;
 
-        type = new Type("int", false);
+        if (node.getChildren().get(0).getKind().equals("Identifier")) {
+            Symbol symbol = variableLookup(node.getChildren().get(0).get("value"), secondVisitorHelper);
+            if (symbol == null) {
+                secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.getChildren().get(0).get("line")), "Attempt to call an non declared array"));
+                return type;
+            }
+        }
+        /*
+        //Todo:Check the array index
+        if (node.getChildren().get(0).getKind().equals("Integer")) {
 
-        return type;
+        }
+         */
+
+
+        return new Type("int", false);
     }
 
     protected Type dealWithMethodCall(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
@@ -37,8 +53,7 @@ public class SeekReturnTypeVisitor extends PreorderJmmVisitor<SecondVisitorHelpe
         //Variable dont exist
         if (node.getChildren().get(0).getKind().equals("Identifier")) {
             if (variableLookup(node.getChildren().get(0).get("value"), secondVisitorHelper) == null) {
-                //Todo:Falta report
-                System.err.println("Var dont exist");
+                secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.get("line")), "Attempt to call on method on non declared variable"));
                 return type;
             }
         }
@@ -51,16 +66,12 @@ public class SeekReturnTypeVisitor extends PreorderJmmVisitor<SecondVisitorHelpe
 
             MethodSymbol method = secondVisitorHelper.getSymbolTableIml().getMethodsHashmap().get(node.getChildren().get(1).get("value"));
 
-            //Todo:Falta report
             if (method == null) {
-                System.err.println("Method dont exist");
+                secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.get("line")), "Attempt to call on method non existent in this object"));
                 return type;
-            } else
-                System.out.println("Method" + method.toString());
+            }
 
-            type = method.getType();
-
-            return type;
+            return method.getType();
         }
 
 
@@ -71,27 +82,21 @@ public class SeekReturnTypeVisitor extends PreorderJmmVisitor<SecondVisitorHelpe
         if (type != null)
             return type;
 
-        type = new Type("int", false);
-
-        return type;
+        return new Type("int", false);
     }
 
     protected Type dealWithBoolean(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
         if (type != null)
             return type;
 
-        type = new Type("boolean", false);
-
-        return type;
+        return new Type("boolean", false);
     }
 
     protected Type dealWithThis(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
         if (type != null)
             return type;
 
-        type = new Type("this", false);
-
-        return type;
+        return new Type("this", false);
     }
 
     protected Type dealWithIdentifier(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
@@ -100,10 +105,12 @@ public class SeekReturnTypeVisitor extends PreorderJmmVisitor<SecondVisitorHelpe
 
         Symbol symbol = variableLookup(node.get("value"), secondVisitorHelper);
 
-        if (symbol != null)
-            type = symbol.getType();
+        if (symbol == null) {
+            secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.get("line")), "Attempt to access variable not declared"));
+            return type;
+        }
 
-        return type;
+        return symbol.getType();
     }
 
     protected Type defaultVisit(JmmNode node, SecondVisitorHelper secondVisitorHelper) {

@@ -66,6 +66,14 @@ public class Parser
         simpleNode.put("column", Integer.toString(token.beginColumn));
         simpleNode.put("isArray", isArray.toString());
     }
+    private void addAttributes(SimpleNode simpleNode, Token token){
+        simpleNode.put("value", token.image);
+        simpleNode.put("line", Integer.toString(token.beginLine));
+        simpleNode.put("column", Integer.toString(token.beginColumn));
+    }
+    private void addAttributes(SimpleNode simpleNode,int line){
+        simpleNode.put("line", Integer.toString(token.beginLine));
+    }
 }
 
 
@@ -155,7 +163,7 @@ void ImportPath() :{Token t;}
 }
 void ClassDeclaration() #Class :{Token t;}
 {
-    <CLASS> t=<IDENTIFIER>{addAttributes(jjtThis, t,false);}[<EXTENDS> t=<IDENTIFIER>{addAttributes(jjtThis, t, false);} #Extends]<LCUR>
+    <CLASS> t=<IDENTIFIER>{addAttributes(jjtThis,t);}[<EXTENDS> t=<IDENTIFIER>{addAttributes(jjtThis, t);} #Extends]<LCUR>
         (VarDeclaration())*
         (MethodDeclaration())*
     <RCUR>
@@ -171,7 +179,7 @@ void Type() #Type:{Token t; Boolean array=false;}
 }
 void VarDeclaration() #VarDeclaration: {Token t;}
 {
-    Type() t=<IDENTIFIER>{addAttributes(jjtThis, t, false);} <SEMICOLON>
+    Type() t=<IDENTIFIER>{addAttributes(jjtThis, t);} <SEMICOLON>
 }
 void MethodDeclaration() #void : {}
 {
@@ -180,7 +188,7 @@ void MethodDeclaration() #void : {}
 }
 void ClassMethod()#ClassMethod:{Token t;}
 {
-    Type() t=<IDENTIFIER>{addAttributes(jjtThis, t,false);}<LPAR>ClassMethodParameters()<RPAR><LCUR>
+    Type() t=<IDENTIFIER>{addAttributes(jjtThis,t);}<LPAR>ClassMethodParameters()<RPAR><LCUR>
          MethodBody()
         ReturnInstruction()
     <RCUR>
@@ -200,7 +208,7 @@ void ClassMethodParameter() #void:{}
 }
 void StaticMethod()#ClassMethod:{Token t;}
 {
-    StaticReturn() t=<MAIN>{addAttributes(jjtThis,t,false);} <LPAR> StaticParameters() <RPAR><LCUR>
+    StaticReturn() t=<MAIN>{addAttributes(jjtThis,t);} <LPAR> StaticParameters() <RPAR><LCUR>
         MethodBody()
     <RCUR>
 }
@@ -209,7 +217,7 @@ void StaticParameters() #Parameters:{}
     StaticType() Identifier() #Parameter(2)
 }
 void StaticReturn() #Type:{Token t;}{
-    <STATIC> t=<VOID> {addAttributes(jjtThis,t,false);}
+    <STATIC> t=<VOID> {addAttributes(jjtThis,t, false);}
 }
 void StaticType() #Type:{Token t;}{
     t=<STRING> <LREC> <RREC>{addAttributes(jjtThis,t,true);}
@@ -330,9 +338,9 @@ void DotExpression()#void:{}
 }
 void Method() #Identifier:{Token t;}
 {
-    t=<LENGTH>{addAttributes(jjtThis, t,false);}
+    t=<LENGTH>{addAttributes(jjtThis,t);}
     |
-    (t=<IDENTIFIER>{addAttributes(jjtThis, t,false);} <LPAR> [MethodParameters()] <RPAR>)
+    (t=<IDENTIFIER>{addAttributes(jjtThis,t);} <LPAR> [MethodParameters()] <RPAR>)
 }
 void MethodParameters()#Parameters:{}
 {
@@ -350,7 +358,7 @@ void ExpressionLevel16Priority()#void:{}
 
 void Terminal()#void:{Token t;}
 {
-    t=<IDENTIFIER>{addAttributes(jjtThis, t,false);} #Identifier [ArrayAccess()]
+    t=<IDENTIFIER>{addAttributes(jjtThis,t);} #Identifier [ArrayAccess()]
     |
     TerminalNonIdentifier()
     |
@@ -358,20 +366,20 @@ void Terminal()#void:{Token t;}
     (
     (t=<INT>{addAttributes(jjtThis,t,true);}<LREC>Expression()<RREC>)
     |
-    (t=<IDENTIFIER>{addAttributes(jjtThis,t,false);}<LPAR> <RPAR>)
+    (t=<IDENTIFIER>{addAttributes(jjtThis,t);}<LPAR> <RPAR>)
     )#New
 }
 void TerminalNonIdentifier() #void:{Token t;}
 {
-    t=<INTEGERLITERAL>{addAttributes(jjtThis, t,false);} #Integer
+    t=<INTEGERLITERAL>{addAttributes(jjtThis,t);} #Integer
     |
-    t=<TRUE>{addAttributes(jjtThis, t,false);}#Boolean
+    t=<TRUE>{addAttributes(jjtThis,t);}#Boolean
     |
-    t=<FALSE>{addAttributes(jjtThis, t,false);}#Boolean
+    t=<FALSE>{addAttributes(jjtThis,t);}#Boolean
     |
-    t=<THIS>{addAttributes(jjtThis, t,false);}#This
+    t=<THIS>{addAttributes(jjtThis,t);}#This
 }
 void Identifier() :{Token t;}
 {
-    t=<IDENTIFIER>{addAttributes(jjtThis,t,false);}
+    t=<IDENTIFIER>{addAttributes(jjtThis,t);}
 }
