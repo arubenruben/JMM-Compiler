@@ -1,4 +1,3 @@
-import Symbols.SymbolTableIml;
 import pt.up.fe.comp.jmm.analysis.table.SymbolTable;
 import pt.up.fe.comp.jmm.report.Report;
 
@@ -6,7 +5,6 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
-
 
 public class Utils {
 

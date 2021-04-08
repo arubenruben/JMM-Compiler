@@ -3,24 +3,14 @@ import ruben.amorim;
 
 class Fac extends Parent {
     int[] var1;
-    boolean boowqe;
+    int[] var2;
+    int ola;
+    int ola2;
 
 
     public static void main(String[] args) {
-
-
-       int var;
-       var = 1;
-
-       1+3+true;
-       array1=new int[2];
-       array2=new int[2];
-       result=array1+array2;
-       array[1];
-
-
-       array.length;
-       asdas.method(ola);
-
+           var1[1]+var2[3];
+           ola+var1.length;
+           ola+true;
     }
 }

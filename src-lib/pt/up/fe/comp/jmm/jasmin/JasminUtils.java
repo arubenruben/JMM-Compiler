@@ -1,14 +1,9 @@
 package pt.up.fe.comp.jmm.jasmin;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
 import jas.jasError;
 import jasmin.ClassFile;
+
+import java.io.*;
 
 class JasminUtils {
     /**

@@ -1,15 +1,15 @@
 package pt.up.fe.comp.jmm.jasmin;
 
-import java.io.File;
-import java.util.Arrays;
-import java.util.List;
-
 import pt.up.fe.comp.TestUtils;
 import pt.up.fe.comp.jmm.ollir.OllirResult;
 import pt.up.fe.comp.jmm.report.Report;
 import pt.up.fe.specs.util.SpecsCollections;
 import pt.up.fe.specs.util.SpecsIo;
 import pt.up.fe.specs.util.SpecsSystem;
+
+import java.io.File;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * A semantic analysis returns the analysed tree and the generated symbol table.

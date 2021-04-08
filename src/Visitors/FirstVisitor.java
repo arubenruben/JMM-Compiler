@@ -1,7 +1,6 @@
 package Visitors;
 
 import Symbols.MethodSymbol;
-import Symbols.SymbolTableIml;
 import Visitors.helpers.MethodBodyVisitor;
 import Visitors.helpers.data_helpers.VisitorDataHelper;
 import com.google.gson.Gson;
@@ -56,15 +55,22 @@ public class FirstVisitor extends PreorderJmmVisitor<VisitorDataHelper, Boolean>
 
     protected Boolean dealWithClassFieldDeclaration(JmmNode node, VisitorDataHelper visitorDataHelper) {
 
-        if (node.getParent().getKind().equals("Class")) {
-            Type nodeType = new Type(node.getChildren().get(0).get("value"), node.getChildren().get(0).get("isArray").equals("true"));
-            Symbol fieldSymbol = new Symbol(nodeType, node.get("value"));
+        if (!node.getParent().getKind().equals("Class"))
+            return false;
 
-            visitorDataHelper.getSymbolTableIml().getHashMapClassFields().put(fieldSymbol, "");
-            return true;
-        }
+        String variableName = node.get("value");
 
-        return false;
+        Type nodeType = new Type(
+                node.getChildren().get(0).get("value"),
+                node.getChildren().get(0).get("isArray").equals("true")
+        );
+        Symbol fieldSymbol = new Symbol(nodeType, variableName);
+
+        visitorDataHelper.getSymbolTableIml().getHashMapClassFields().put(fieldSymbol, "");
+
+        return true;
+
+
     }
 
     protected Boolean dealWithClassMethod(JmmNode node, VisitorDataHelper visitorDataHelper) {

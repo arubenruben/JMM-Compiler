@@ -17,9 +17,10 @@ public class SymbolTableIml implements SymbolTable {
     private final List<String> imports;
     private final Map<String, JmmNode> nodeMap;
 
+    private final Map<String, MethodSymbol> methodsHashmap;
+
     private final Map<Symbol, String> hashMapClassFields;
 
-    private final Map<String, MethodSymbol> methodsHashmap;
 
     public SymbolTableIml() {
         this.hashMapClassFields = new HashMap<>();

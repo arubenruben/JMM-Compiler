@@ -171,7 +171,7 @@ void Type() #Type:{Token t; Boolean array=false;}
 }
 void VarDeclaration() #VarDeclaration: {Token t;}
 {
-    Type() t=<IDENTIFIER>{addAttributes(jjtThis, t,false);} <SEMICOLON>
+    Type() t=<IDENTIFIER>{addAttributes(jjtThis, t, false);} <SEMICOLON>
 }
 void MethodDeclaration() #void : {}
 {
