@@ -1,6 +1,7 @@
 import Symbols.SymbolTableIml;
 import Visitors.FirstVisitor;
 import Visitors.SecondVisitor;
+import Visitors.helpers.data_helpers.SecondVisitorHelper;
 import pt.up.fe.comp.TestUtils;
 import pt.up.fe.comp.jmm.JmmNode;
 import pt.up.fe.comp.jmm.JmmParser;
@@ -51,7 +52,9 @@ public class Main implements JmmParser, JmmAnalysis {
         if (TestUtils.getNumReports(parserResult.getReports(), ReportType.ERROR) > 0)
             return;
 
-        //JmmSemanticsResult semanticAnalysis = main.semanticAnalysis(parserResult);
+        JmmSemanticsResult semanticAnalysis = main.semanticAnalysis(parserResult);
+
+        System.out.println(semanticAnalysis.getSymbolTable().toString());
 
     }
 
@@ -95,8 +98,8 @@ public class Main implements JmmParser, JmmAnalysis {
         firstVisitor.visit(node, symbolTable);
 
         for (String methodName : symbolTable.getMethodsHashmap().keySet()) {
-            AJmmVisitor<SymbolTableIml, Boolean> secondVisitor = new SecondVisitor(methodName);
-            secondVisitor.visit(symbolTable.getNodeMap().get(methodName), symbolTable);
+            AJmmVisitor<SecondVisitorHelper, Boolean> secondVisitor = new SecondVisitor();
+            secondVisitor.visit(symbolTable.getNodeMap().get(methodName), new SecondVisitorHelper(methodName, symbolTable, reports));
         }
 
 

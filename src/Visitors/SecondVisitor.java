@@ -1,7 +1,7 @@
 package Visitors;
 
 import Symbols.SymbolTableIml;
-import Visitors.helpers.SecondVisitorHelper;
+import Visitors.helpers.data_helpers.SecondVisitorHelper;
 import Visitors.helpers.SeekTypesVisitor;
 import pt.up.fe.comp.jmm.JmmNode;
 import pt.up.fe.comp.jmm.analysis.table.Type;
@@ -11,12 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class SecondVisitor extends PreorderJmmVisitor<SymbolTableIml, Boolean> {
-    private final String methodName;
+public class SecondVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boolean> {
 
-    public SecondVisitor(String methodName) {
-        this.methodName = methodName;
-
+    public SecondVisitor() {
         addVisit("Add", this::dealWithMathOperation);
         addVisit("Sub", this::dealWithMathOperation);
         addVisit("Mult", this::dealWithMathOperation);
@@ -25,7 +22,7 @@ public class SecondVisitor extends PreorderJmmVisitor<SymbolTableIml, Boolean> {
     }
 
     //TODO:Pass The report List inside
-    protected Boolean dealWithMathOperation(JmmNode node, SymbolTableIml symbolTableIml) {
+    protected Boolean dealWithMathOperation(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
         List<String> list = new ArrayList<>();
         list.add("Integer");
         list.add("Boolean");
@@ -36,7 +33,7 @@ public class SecondVisitor extends PreorderJmmVisitor<SymbolTableIml, Boolean> {
 
         SeekTypesVisitor seekTypesVisitor = new SeekTypesVisitor(list.toArray(new String[0]));
 
-        List<Type> typesFound = seekTypesVisitor.visit(node, new SecondVisitorHelper(methodName, symbolTableIml));
+        List<Type> typesFound = seekTypesVisitor.visit(node, secondVisitorHelper);
 
         if (typesFound == null) {
             System.err.println("Identifier found that have not been declared");
@@ -52,7 +49,7 @@ public class SecondVisitor extends PreorderJmmVisitor<SymbolTableIml, Boolean> {
         return true;
     }
 
-    protected Boolean defaultVisit(JmmNode node, SymbolTableIml symbolTable) {
+    protected Boolean defaultVisit(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
         return true;
     }
 
