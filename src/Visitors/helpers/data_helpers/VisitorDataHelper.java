@@ -5,7 +5,7 @@ import pt.up.fe.comp.jmm.report.Report;
 
 import java.util.List;
 
-public abstract class VisitorDataHelper {
+public class VisitorDataHelper {
     private final SymbolTableIml symbolTableIml;
     private final List<Report> reportList;
 

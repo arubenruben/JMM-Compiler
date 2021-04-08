@@ -17,9 +17,10 @@ public class SymbolTableIml implements SymbolTable {
     private final List<String> imports;
     private final Map<String, JmmNode> nodeMap;
 
+    private final Map<String, MethodSymbol> methodsHashmap;
+
     private final Map<Symbol, String> hashMapClassFields;
 
-    private final Map<String, MethodSymbol> methodsHashmap;
 
     public SymbolTableIml() {
         this.hashMapClassFields = new HashMap<>();
@@ -82,12 +83,11 @@ public class SymbolTableIml implements SymbolTable {
 
     @Override
     public String toString() {
-        return "SymbolTableIml{" +
-                "className='" + className + '\'' + "\n" +
-                ", superName='" + superName + '\'' + "\n" +
-                ", imports=" + imports + "\n" +
-                ", fields=" + hashMapClassFields.toString() + "\n" +
-                ", methods=" + methodsHashmap.toString() + "\n" +
+        return "ClassName='" + className + '\'' + "\n" +
+                "superName='" + superName + '\'' + "\n" +
+                "imports=" + imports + "\n" +
+                "fields=" + hashMapClassFields.toString() + "\n" +
+                "methods=" + methodsHashmap.toString() + "\n" +
                 '}';
     }
 

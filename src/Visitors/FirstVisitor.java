@@ -1,8 +1,8 @@
 package Visitors;
 
 import Symbols.MethodSymbol;
-import Symbols.SymbolTableIml;
 import Visitors.helpers.MethodBodyVisitor;
+import Visitors.helpers.data_helpers.VisitorDataHelper;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import pt.up.fe.comp.jmm.JmmNode;
@@ -13,7 +13,7 @@ import pt.up.fe.comp.jmm.ast.PreorderJmmVisitor;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FirstVisitor extends PreorderJmmVisitor<SymbolTableIml, Boolean> {
+public class FirstVisitor extends PreorderJmmVisitor<VisitorDataHelper, Boolean> {
 
     public FirstVisitor() {
 
@@ -25,18 +25,7 @@ public class FirstVisitor extends PreorderJmmVisitor<SymbolTableIml, Boolean> {
         setDefaultVisit(this::defaultVisit);
     }
 
-
-    private Boolean dealWithSuper(JmmNode node, SymbolTableIml symbolTable) {
-        symbolTable.setSuperName(node.get("value"));
-        return true;
-    }
-
-    private Boolean dealWithClassDefinition(JmmNode node, SymbolTableIml symbolTable) {
-        symbolTable.setClassName(node.get("value"));
-        return true;
-    }
-
-    protected Boolean dealWithImport(JmmNode node, SymbolTableIml symbolTable) {
+    protected Boolean dealWithImport(JmmNode node, VisitorDataHelper visitorDataHelper) {
         StringBuilder importPath = new StringBuilder();
 
         Gson gson = new Gson();
@@ -49,30 +38,42 @@ public class FirstVisitor extends PreorderJmmVisitor<SymbolTableIml, Boolean> {
                 importPath.append(".");
         }
 
-        symbolTable.getImports().add(importPath.toString());
+        visitorDataHelper.getSymbolTableIml().getImports().add(importPath.toString());
 
         return true;
     }
 
-    protected Boolean dealWithClassFieldDeclaration(JmmNode node, SymbolTableIml symbolTable) {
-
-        if (node.getParent().getKind().equals("Class"))
-            return dealWithClassField(node, symbolTable);
-
-        return false;
-    }
-
-    protected Boolean dealWithClassField(JmmNode node, SymbolTableIml symbolTable) {
-
-        Type nodeType = new Type(node.getChildren().get(0).get("value"), node.getChildren().get(0).get("isArray").equals("true"));
-        Symbol fieldSymbol = new Symbol(nodeType, node.get("value"));
-
-        symbolTable.getHashMapClassFields().put(fieldSymbol, "");
-
+    protected Boolean dealWithClassDefinition(JmmNode node, VisitorDataHelper visitorDataHelper) {
+        visitorDataHelper.getSymbolTableIml().setClassName(node.get("value"));
         return true;
     }
 
-    protected Boolean dealWithClassMethod(JmmNode node, SymbolTableIml symbolTable) {
+    protected Boolean dealWithSuper(JmmNode node, VisitorDataHelper visitorDataHelper) {
+        visitorDataHelper.getSymbolTableIml().setSuperName(node.get("value"));
+        return true;
+    }
+
+    protected Boolean dealWithClassFieldDeclaration(JmmNode node, VisitorDataHelper visitorDataHelper) {
+
+        if (!node.getParent().getKind().equals("Class"))
+            return false;
+
+        String variableName = node.get("value");
+
+        Type nodeType = new Type(
+                node.getChildren().get(0).get("value"),
+                node.getChildren().get(0).get("isArray").equals("true")
+        );
+        Symbol fieldSymbol = new Symbol(nodeType, variableName);
+
+        visitorDataHelper.getSymbolTableIml().getHashMapClassFields().put(fieldSymbol, "");
+
+        return true;
+
+
+    }
+
+    protected Boolean dealWithClassMethod(JmmNode node, VisitorDataHelper visitorDataHelper) {
         List<Symbol> parameters = new ArrayList<>();
 
         JmmNode parameterBlock = node.getChildren().get(1);
@@ -91,9 +92,9 @@ public class FirstVisitor extends PreorderJmmVisitor<SymbolTableIml, Boolean> {
 
         methodSymbol.setParameters(parameters);
 
-        symbolTable.getMethodsHashmap().put(methodSymbol.getName(), methodSymbol);
+        visitorDataHelper.getSymbolTableIml().getMethodsHashmap().put(methodSymbol.getName(), methodSymbol);
 
-        symbolTable.getNodeMap().put(methodSymbol.getName(), node);
+        visitorDataHelper.getSymbolTableIml().getNodeMap().put(methodSymbol.getName(), node);
 
         MethodBodyVisitor methodBodyVisitor = new MethodBodyVisitor();
 
@@ -102,7 +103,7 @@ public class FirstVisitor extends PreorderJmmVisitor<SymbolTableIml, Boolean> {
         return true;
     }
 
-    protected Boolean defaultVisit(JmmNode node, SymbolTableIml symbolTable) {
+    protected Boolean defaultVisit(JmmNode node, VisitorDataHelper visitorDataHelper) {
         return true;
     }
 

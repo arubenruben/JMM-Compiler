@@ -1,13 +1,15 @@
 package Visitors;
 
-import Symbols.SymbolTableIml;
-import Visitors.helpers.data_helpers.SecondVisitorHelper;
+import Symbols.MethodSymbol;
 import Visitors.helpers.SeekTypesVisitor;
+import Visitors.helpers.data_helpers.SecondVisitorHelper;
 import pt.up.fe.comp.jmm.JmmNode;
+import pt.up.fe.comp.jmm.analysis.table.Symbol;
 import pt.up.fe.comp.jmm.analysis.table.Type;
 import pt.up.fe.comp.jmm.ast.PreorderJmmVisitor;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -21,32 +23,60 @@ public class SecondVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boole
         setDefaultVisit(this::defaultVisit);
     }
 
-    //TODO:Pass The report List inside
     protected Boolean dealWithMathOperation(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
-        List<String> list = new ArrayList<>();
-        list.add("Integer");
-        list.add("Boolean");
-        list.add("Identifier");
 
-        //TODO:Operaçoes em arrays
-        //list.add()
+        Type[] types = new Type[2];
 
-        SeekTypesVisitor seekTypesVisitor = new SeekTypesVisitor(list.toArray(new String[0]));
+        types[0] = seekReturnType(node.getChildren().get(0), secondVisitorHelper);
+        types[1] = seekReturnType(node.getChildren().get(1), secondVisitorHelper);
 
-        List<Type> typesFound = seekTypesVisitor.visit(node, secondVisitorHelper);
-
-        if (typesFound == null) {
-            System.err.println("Identifier found that have not been declared");
-            return true;
+        if (!types[0].equals(types[1])) {
+            System.err.println("Not equals");
         }
 
-        for (int i = 0; i < typesFound.size() - 1; i++) {
-            if (!typesFound.get(i).getName().equals(typesFound.get(i + 1).getName())) {
-                System.err.println("This operands are not the same type");
-                return true;
-            }
-        }
         return true;
+    }
+
+    private Type seekReturnType(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
+        Type typeReturned = null;
+
+        switch (node.getKind()) {
+            case "ArrayAccess":
+            case "Integer":
+                typeReturned = new Type("int", false);
+                break;
+            case "Boolean":
+                typeReturned = new Type("boolean", false);
+                break;
+            case "This":
+                typeReturned = new Type("this", false);
+                break;
+            //Check Symbol Table
+            case "Identifier":
+                MethodSymbol methodSymbol = secondVisitorHelper.getSymbolTableIml().getMethodsHashmap().get(secondVisitorHelper.getCurrentMethodName());
+
+                for (Symbol symbol : methodSymbol.getVariables().keySet()) {
+                    //Exists a local variable with that name
+                    if (symbol.getName().equals(node.get("value"))) {
+                        return symbol.getType();
+                    }
+                }
+                for (Symbol symbol : methodSymbol.getParameters()) {
+                    //Exists a method parameter variable with that name
+                    if (symbol.getName().equals(node.get("value"))) {
+                        return symbol.getType();
+                    }
+                }
+                for (Symbol symbol : secondVisitorHelper.getSymbolTableIml().getHashMapClassFields().keySet()) {
+                    //Exists a class Field variable with that name
+                    if (symbol.getName().equals(node.get("value")))
+                        return symbol.getType();
+                }
+                break;
+            case "MethodCall":
+                break;
+        }
+        return typeReturned;
     }
 
     protected Boolean defaultVisit(JmmNode node, SecondVisitorHelper secondVisitorHelper) {

@@ -2,6 +2,7 @@ import Symbols.SymbolTableIml;
 import Visitors.FirstVisitor;
 import Visitors.SecondVisitor;
 import Visitors.helpers.data_helpers.SecondVisitorHelper;
+import Visitors.helpers.data_helpers.VisitorDataHelper;
 import pt.up.fe.comp.TestUtils;
 import pt.up.fe.comp.jmm.JmmNode;
 import pt.up.fe.comp.jmm.JmmParser;
@@ -54,7 +55,7 @@ public class Main implements JmmParser, JmmAnalysis {
 
         JmmSemanticsResult semanticAnalysis = main.semanticAnalysis(parserResult);
 
-        System.out.println(semanticAnalysis.getSymbolTable().toString());
+        Utils.printSymbolTable(semanticAnalysis.getSymbolTable());
 
     }
 
@@ -88,22 +89,20 @@ public class Main implements JmmParser, JmmAnalysis {
 
         // Convert Simple node to JmmNodeIml
         JmmNode node = parserResult.getRootNode().sanitize();
-        //
 
         SymbolTableIml symbolTable = new SymbolTableIml();
+        List<Report> reportList = new ArrayList<>(parserResult.getReports());
 
-        List<Report> reports = new ArrayList<>(parserResult.getReports());
-
-        AJmmVisitor<SymbolTableIml, Boolean> firstVisitor = new FirstVisitor();
-        firstVisitor.visit(node, symbolTable);
+        AJmmVisitor<VisitorDataHelper, Boolean> firstVisitor = new FirstVisitor();
+        firstVisitor.visit(node, new VisitorDataHelper(symbolTable, reportList));
 
         for (String methodName : symbolTable.getMethodsHashmap().keySet()) {
             AJmmVisitor<SecondVisitorHelper, Boolean> secondVisitor = new SecondVisitor();
-            secondVisitor.visit(symbolTable.getNodeMap().get(methodName), new SecondVisitorHelper(methodName, symbolTable, reports));
+            secondVisitor.visit(symbolTable.getNodeMap().get(methodName), new SecondVisitorHelper(methodName, symbolTable, reportList));
         }
 
 
-        return new JmmSemanticsResult(node, symbolTable, reports);
+        return new JmmSemanticsResult(node, symbolTable, reportList);
 
     }
 

@@ -1,16 +1,14 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import org.specs.comp.ollir.ClassUnit;
 import org.specs.comp.ollir.OllirErrorException;
-
 import pt.up.fe.comp.jmm.jasmin.JasminBackend;
 import pt.up.fe.comp.jmm.jasmin.JasminResult;
 import pt.up.fe.comp.jmm.ollir.OllirResult;
 import pt.up.fe.comp.jmm.report.Report;
 import pt.up.fe.comp.jmm.report.Stage;
-import pt.up.fe.specs.util.SpecsIo;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Copyright 2021 SPeCS.
