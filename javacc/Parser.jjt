@@ -225,10 +225,11 @@ void Statement() #void: {}{
     |
     WhileStatement()
     |
-    LOOKAHEAD(2)
+    (LOOKAHEAD(2)
     AssignmentStatement()
     |
-    Expression() <SEMICOLON>
+    Expression()<SEMICOLON>
+    )
 
 }
 void BlockStatement() #void:{}
@@ -242,26 +243,28 @@ void IfStatement() #If:{}
     <ELSE>
         Statement() #Else
 }
-
 void Condition() :{}
 {
-
    <LPAR> {this.numberOfPars++;} Expression() <RPAR> {this.numberOfPars--;}
 }
-
 void AssignmentStatement()#void : {}
 {
-    Identifier() (AssignmentArray() | AssignmentVar())
+    Identifier() (AssignmentArray() | AssignmentVar())<SEMICOLON>
 }
 
 void AssignmentArray()#void : {}
 {
-    <LREC> Expression() #ArrayAccess(2) <RREC> <EQUAL> Expression() #AssignmentVarArray(2) <SEMICOLON>
+     ArrayAccess() <EQUAL> Expression() #AssignmentVarArray(2)
+}
+
+void ArrayAccess()#void:{}
+{
+    <LREC> Expression() #ArrayAccess(2) <RREC>
 }
 
 void AssignmentVar()#void : {}
 {
-    <EQUAL> Expression() #AssignmentVar(2) <SEMICOLON>
+    <EQUAL> Expression() #AssignmentVar(2)
 }
 
 void WhileStatement()#While: {}
@@ -340,12 +343,12 @@ void MethodParameter() #void:{}
 
 void ExpressionLevel16Priority()#void:{}
 {
-    Terminal() [<LREC>Expression()<RREC>] | <LPAR> {this.numberOfPars++;} Expression()<RPAR> {this.numberOfPars--;} | <LREC>Expression()<RREC> | <NOT> ExpressionLevel16Priority() #Not
+    Terminal() | <LPAR> {this.numberOfPars++;} Expression()<RPAR> {this.numberOfPars--;}  | <NOT> ExpressionLevel16Priority() #Not
 }
 
 void Terminal()#void:{Token t;}
 {
-    t=<IDENTIFIER>{addAtributes(jjtThis, t);} #Identifier
+    t=<IDENTIFIER>{addAtributes(jjtThis, t);} #Identifier [ArrayAccess()]
     |
     TerminalNonIdentifier()
     |

@@ -40,23 +40,19 @@ public class Main implements JmmParser, JmmAnalysis {
 
         parserResult = main.parse(code);
 
+        Utils.printReports(parserResult.getReports());
+
         if (parserResult.getRootNode() != null)
             writeToFile(parserResult.toJson(), "results/ast.txt");
 
+        if (parserResult.getRootNode() == null)
+            return;
+
+        if (TestUtils.getNumReports(parserResult.getReports(), ReportType.ERROR) > 0)
+            return;
+
         JmmSemanticsResult semanticAnalysis = main.semanticAnalysis(parserResult);
-    /*
-        if (node != null)
-            System.out.println(preorderJmmVisitor.visit(node, ""));
 
-        Utils.printReports(result.getReports());
-
-
-
-        if (result.getRootNode() != null)
-            writeToFile(result.toJson(), "results/ast.txt");
-
-
-     */
     }
 
 
@@ -87,18 +83,13 @@ public class Main implements JmmParser, JmmAnalysis {
 
     public JmmSemanticsResult semanticAnalysis(JmmParserResult parserResult) {
 
-        SymbolTableIml symbolTable = new SymbolTableIml();
-
         // Convert Simple node to JmmNodeIml
         JmmNode node = parserResult.getRootNode().sanitize();
+        //
 
-        //TODO:???-Ruben
-        if (TestUtils.getNumReports(parserResult.getReports(), ReportType.ERROR) > 0)
-            return null;
-        //TODO:???-Ruben
-        if (parserResult.getRootNode() == null)
-            return null;
+        SymbolTableIml symbolTable = new SymbolTableIml();
 
+        List<Report> reports = new ArrayList<>(parserResult.getReports());
 
         AJmmVisitor<SymbolTableIml, Boolean> firstVisitor = new FirstVisitor();
         firstVisitor.visit(node, symbolTable);
@@ -109,21 +100,7 @@ public class Main implements JmmParser, JmmAnalysis {
         }
 
 
-        // ExampleVisitor visitor = new ExampleVisitor("VarDeclaration", "value");
-        // System.out.println(visitor.visit(node, ""));
-
-       /* System.out.println("PREORDER VISITOR");
-        var preOrderVisitor = new ExamplePreorderVisitor("Identifier", "id");
-        System.out.println(preOrderVisitor.visit(node, ""));
-
-        System.out.println("POSTORDER VISITOR");
-        var postOrderVisitor = new ExamplePostorderVisitor();
-        var kindCount = new HashMap<String, Integer>();
-        postOrderVisitor.visit(node, kindCount);
-        System.out.println("Kinds count: " + kindCount);*/
-
-        // No Symbol Table being calculated yet
-        return new JmmSemanticsResult(node, symbolTable, parserResult.getReports());
+        return new JmmSemanticsResult(node, symbolTable, reports);
 
     }
 
