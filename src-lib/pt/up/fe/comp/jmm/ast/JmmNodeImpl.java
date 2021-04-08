@@ -1,5 +1,12 @@
 package pt.up.fe.comp.jmm.ast;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import pt.up.fe.comp.jmm.JmmNode;
@@ -113,6 +120,11 @@ public class JmmNodeImpl implements JmmNode {
 
     @Override
     public String toString() {
-        return getKind();
+        var attrs = getAttributes();
+        var attrsString = attrs.isEmpty() ? ""
+                : attrs.stream()
+                        .map(attr -> attr + ": " + get(attr))
+                        .collect(Collectors.joining(", ", " (", ")"));
+        return getKind() + attrsString;
     }
 }
