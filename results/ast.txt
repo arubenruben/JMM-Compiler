@@ -176,46 +176,20 @@
                 "attributes": {},
                 "children": [
                   {
-                    "kind": "Add",
+                    "kind": "And",
                     "attributes": {},
                     "children": [
                       {
-                        "kind": "Add",
+                        "kind": "Not",
                         "attributes": {},
                         "children": [
                           {
-                            "kind": "Add",
-                            "attributes": {},
-                            "children": [
-                              {
-                                "kind": "Identifier",
-                                "attributes": {
-                                  "line": "15",
-                                  "column": "12",
-                                  "isArray": "false",
-                                  "value": "ola"
-                                },
-                                "children": []
-                              },
-                              {
-                                "kind": "Identifier",
-                                "attributes": {
-                                  "line": "15",
-                                  "column": "16",
-                                  "isArray": "false",
-                                  "value": "ola"
-                                },
-                                "children": []
-                              }
-                            ]
-                          },
-                          {
-                            "kind": "Identifier",
+                            "kind": "Integer",
                             "attributes": {
-                              "line": "15",
-                              "column": "20",
+                              "line": "17",
+                              "column": "13",
                               "isArray": "false",
-                              "value": "ola"
+                              "value": "1"
                             },
                             "children": []
                           }
@@ -224,8 +198,8 @@
                       {
                         "kind": "Boolean",
                         "attributes": {
-                          "line": "15",
-                          "column": "24",
+                          "line": "17",
+                          "column": "18",
                           "isArray": "false",
                           "value": "true"
                         },

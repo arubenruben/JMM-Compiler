@@ -12,6 +12,8 @@ class Fac extends Parent {
            //var1[1]+var2[3];
            //ola+var1.length;
            //true+true+ola+ola;
-           ola+ola+ola+true;
+           // ola+ola+ola+true;
+           // true && true && 1;
+           !1 && true;
     }
 }
