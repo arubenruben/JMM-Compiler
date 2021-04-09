@@ -327,10 +327,16 @@ void MultDivExpression()#void:{}
      |
      <DIV>  ExpressionLevel15Priority() #Div(2))*
 }
+void ExpressionLevel15Priority()#void:{}{
+    ExpressionLevel16Priority() ArrayExpression()
+}
+void ArrayExpression()#void:{}{
+    (ArrayAccess())*
+}
 
-void ExpressionLevel15Priority()#void:{}
+void ExpressionLevel16Priority()#void:{}
 {
-    ExpressionLevel16Priority() DotExpression()
+    ExpressionLevel17Priority() DotExpression()
 }
 void DotExpression()#void:{}
 {
@@ -351,14 +357,14 @@ void MethodParameter() #void:{}
     <COMMA> Expression()
 }
 
-void ExpressionLevel16Priority()#void:{}
+void ExpressionLevel17Priority()#void:{}
 {
-    Terminal() | <LPAR> {this.numberOfPars++;} Expression()<RPAR> {this.numberOfPars--;}  | <NOT> ExpressionLevel16Priority() #Not
+    Terminal() | <LPAR> {this.numberOfPars++;} Expression()<RPAR> {this.numberOfPars--;}  | <NOT> ExpressionLevel17Priority() #Not
 }
 
 void Terminal()#void:{Token t;}
 {
-    t=<IDENTIFIER>{addAttributes(jjtThis,t);} #Identifier [ArrayAccess()]
+    t=<IDENTIFIER>{addAttributes(jjtThis,t);} #Identifier
     |
     TerminalNonIdentifier()
     |

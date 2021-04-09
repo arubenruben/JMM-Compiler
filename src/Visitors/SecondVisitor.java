@@ -62,14 +62,21 @@ public class SecondVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boole
         if (typeLeft == null)
             return true;
 
-
-        //Todo: Array Index
         seekReturnTypeVisitorRight.visit(node.getChildren().get(1), secondVisitorHelper);
         Type typeRight = seekReturnTypeVisitorRight.getType();
 
         if (typeRight == null)
             return true;
 
+        if (!typeLeft.isArray()) {
+            secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.getChildren().get(1).get("line")), "Try to array access in non array type. You can only perform array access on arrays"));
+            return false;
+        }
+
+        if (!typeRight.isArray() && !typeRight.getName().equals("int")) {
+            secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.getChildren().get(1).get("line")), "Index in array access must be of type integer"));
+            return false;
+        }
 
         return true;
     }

@@ -54,7 +54,7 @@ public class SeekReturnTypeVisitor extends PreorderJmmVisitor<SecondVisitorHelpe
         //Variable dont exist
         if (node.getChildren().get(0).getKind().equals("Identifier")) {
             if (secondVisitorHelper.getSymbolTableIml().lookup(node.getChildren().get(0).get("value"), secondVisitorHelper.getCurrentMethodName()) == null) {
-                secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.get("line")), "Attempt to call on method on non declared variable"));
+                secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.getChildren().get(1).get("line")), "Attempt to call on method on non declared variable"));
                 return type;
             }
         }
