@@ -27,20 +27,6 @@ public class SeekReturnTypeVisitor extends PreorderJmmVisitor<SecondVisitorHelpe
         if (type != null)
             return type;
 
-        if (node.getChildren().get(0).getKind().equals("Identifier")) {
-            Symbol symbol = secondVisitorHelper.getSymbolTableIml().lookup(node.getChildren().get(0).get("value"), secondVisitorHelper.getCurrentMethodName());
-            if (symbol == null) {
-                secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.getChildren().get(0).get("line")), "Attempt to call an non declared array"));
-                return type;
-            }
-        }
-        /*
-        //Todo:Check the array index
-        if (node.getChildren().get(0).getKind().equals("Integer")) {
-
-        }
-         */
-
         type = new Type("int", false);
 
         return type;
@@ -51,14 +37,6 @@ public class SeekReturnTypeVisitor extends PreorderJmmVisitor<SecondVisitorHelpe
         if (type != null)
             return type;
 
-        //Variable dont exist
-        if (node.getChildren().get(0).getKind().equals("Identifier")) {
-            if (secondVisitorHelper.getSymbolTableIml().lookup(node.getChildren().get(0).get("value"), secondVisitorHelper.getCurrentMethodName()) == null) {
-                secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.getChildren().get(1).get("line")), "Attempt to call on method on non declared variable"));
-                return type;
-            }
-        }
-
         if (node.getChildren().get(1).getKind().equals("Identifier")) {
             if (node.getChildren().get(1).get("value").equals("length")) {
                 type = new Type("int", false);
@@ -67,15 +45,11 @@ public class SeekReturnTypeVisitor extends PreorderJmmVisitor<SecondVisitorHelpe
 
             MethodSymbol method = secondVisitorHelper.getSymbolTableIml().getMethodsHashmap().get(node.getChildren().get(1).get("value"));
 
-            if (method == null) {
-                secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.get("line")), "Attempt to call on method non existent in this object"));
+            if (method == null)
                 return type;
-            }
+
             type = method.getType();
-
-            return type;
         }
-
 
         return type;
     }
@@ -113,10 +87,9 @@ public class SeekReturnTypeVisitor extends PreorderJmmVisitor<SecondVisitorHelpe
 
         Symbol symbol = secondVisitorHelper.getSymbolTableIml().lookup(node.get("value"), secondVisitorHelper.getCurrentMethodName());
 
-        if (symbol == null) {
-            secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.get("line")), "Attempt to access variable not declared"));
+        if (symbol == null)
             return type;
-        }
+
         type = symbol.getType();
 
         return type;

@@ -5,7 +5,7 @@ class Fac extends Parent {
     int[] var1;
     int[] var2;
     int ola;
-    //int ola2;
+    int ola2;
 
     public int get(int number){
         return number;
@@ -18,18 +18,18 @@ class Fac extends Parent {
            Fac facTest;
            facTest=new Fac();
 
-           //facTest.get(1).returnArray()[1];
+           facTest.get(1).returnArray()[1];
            facTest.get(1)+facTest.get(1);
            ola[facTest.returnArray()]+var1[true];
-           //var1[1]+var3[3];
-           //var1+var2;
-           //ola3+ola1+ola;
-           //1+2+3+4*5+6/false;
-           //1+2+3+4*5+6/2;
-           //ola+facTest.get(1)+var1.length;
-           //true+true+ola+ola;
-           // ola+ola+ola+true;
-           // true && true && 1;
+           var1[1]+var3[3];
+           var1+var2;
+           ola3+ola1+ola;
+           1+2+3+4*5+6/false;
+           1+2+3+4*5+6/2;
+           ola+facTest.get(1)+var1.length;
+           true+true+ola+ola;
+           ola+ola+ola+true;
+           //true && true && 1;
            //!1 && true;
            //ola+ola+ola+true;
            //ola+ola+ola+ola;

@@ -102,6 +102,26 @@
             ]
           },
           {
+            "kind": "VarDeclaration",
+            "attributes": {
+              "col": "5",
+              "line": "8",
+              "value": "ola2"
+            },
+            "children": [
+              {
+                "kind": "Type",
+                "attributes": {
+                  "col": "5",
+                  "line": "8",
+                  "isArray": "false",
+                  "value": "int"
+                },
+                "children": []
+              }
+            ]
+          },
+          {
             "kind": "ClassMethod",
             "attributes": {
               "col": "12",
@@ -348,6 +368,88 @@
                     ]
                   },
                   {
+                    "kind": "ArrayAccess",
+                    "attributes": {
+                      "col": "41",
+                      "line": "21"
+                    },
+                    "children": [
+                      {
+                        "kind": "MethodCall",
+                        "attributes": {
+                          "col": "27",
+                          "line": "21"
+                        },
+                        "children": [
+                          {
+                            "kind": "MethodCall",
+                            "attributes": {
+                              "col": "20",
+                              "line": "21"
+                            },
+                            "children": [
+                              {
+                                "kind": "Identifier",
+                                "attributes": {
+                                  "col": "19",
+                                  "line": "21",
+                                  "value": "facTest"
+                                },
+                                "children": []
+                              },
+                              {
+                                "kind": "Identifier",
+                                "attributes": {
+                                  "col": "20",
+                                  "line": "21",
+                                  "value": "get"
+                                },
+                                "children": [
+                                  {
+                                    "kind": "Parameters",
+                                    "attributes": {
+                                      "col": "24",
+                                      "line": "21"
+                                    },
+                                    "children": [
+                                      {
+                                        "kind": "Integer",
+                                        "attributes": {
+                                          "col": "25",
+                                          "line": "21",
+                                          "value": "1"
+                                        },
+                                        "children": []
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "kind": "Identifier",
+                            "attributes": {
+                              "col": "27",
+                              "line": "21",
+                              "value": "returnArray"
+                            },
+                            "children": []
+                          }
+                        ]
+                      },
+                      {
+                        "kind": "Integer",
+                        "attributes": {
+                          "col": "42",
+                          "line": "21",
+                          "value": "1"
+                        },
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
                     "kind": "Add",
                     "attributes": {
                       "col": "27",
@@ -526,6 +628,601 @@
                             "children": []
                           }
                         ]
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "Add",
+                    "attributes": {
+                      "col": "20",
+                      "line": "24"
+                    },
+                    "children": [
+                      {
+                        "kind": "ArrayAccess",
+                        "attributes": {
+                          "col": "17",
+                          "line": "24"
+                        },
+                        "children": [
+                          {
+                            "kind": "Identifier",
+                            "attributes": {
+                              "col": "16",
+                              "line": "24",
+                              "value": "var1"
+                            },
+                            "children": []
+                          },
+                          {
+                            "kind": "Integer",
+                            "attributes": {
+                              "col": "18",
+                              "line": "24",
+                              "value": "1"
+                            },
+                            "children": []
+                          }
+                        ]
+                      },
+                      {
+                        "kind": "ArrayAccess",
+                        "attributes": {
+                          "col": "25",
+                          "line": "24"
+                        },
+                        "children": [
+                          {
+                            "kind": "Identifier",
+                            "attributes": {
+                              "col": "24",
+                              "line": "24",
+                              "value": "var3"
+                            },
+                            "children": []
+                          },
+                          {
+                            "kind": "Integer",
+                            "attributes": {
+                              "col": "26",
+                              "line": "24",
+                              "value": "3"
+                            },
+                            "children": []
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "Add",
+                    "attributes": {
+                      "col": "17",
+                      "line": "25"
+                    },
+                    "children": [
+                      {
+                        "kind": "Identifier",
+                        "attributes": {
+                          "col": "16",
+                          "line": "25",
+                          "value": "var1"
+                        },
+                        "children": []
+                      },
+                      {
+                        "kind": "Identifier",
+                        "attributes": {
+                          "col": "21",
+                          "line": "25",
+                          "value": "var2"
+                        },
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "Add",
+                    "attributes": {
+                      "col": "22",
+                      "line": "26"
+                    },
+                    "children": [
+                      {
+                        "kind": "Add",
+                        "attributes": {
+                          "col": "17",
+                          "line": "26"
+                        },
+                        "children": [
+                          {
+                            "kind": "Identifier",
+                            "attributes": {
+                              "col": "16",
+                              "line": "26",
+                              "value": "ola3"
+                            },
+                            "children": []
+                          },
+                          {
+                            "kind": "Identifier",
+                            "attributes": {
+                              "col": "21",
+                              "line": "26",
+                              "value": "ola1"
+                            },
+                            "children": []
+                          }
+                        ]
+                      },
+                      {
+                        "kind": "Identifier",
+                        "attributes": {
+                          "col": "25",
+                          "line": "26",
+                          "value": "ola"
+                        },
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "Add",
+                    "attributes": {
+                      "col": "22",
+                      "line": "27"
+                    },
+                    "children": [
+                      {
+                        "kind": "Add",
+                        "attributes": {
+                          "col": "18",
+                          "line": "27"
+                        },
+                        "children": [
+                          {
+                            "kind": "Add",
+                            "attributes": {
+                              "col": "16",
+                              "line": "27"
+                            },
+                            "children": [
+                              {
+                                "kind": "Add",
+                                "attributes": {
+                                  "col": "14",
+                                  "line": "27"
+                                },
+                                "children": [
+                                  {
+                                    "kind": "Integer",
+                                    "attributes": {
+                                      "col": "13",
+                                      "line": "27",
+                                      "value": "1"
+                                    },
+                                    "children": []
+                                  },
+                                  {
+                                    "kind": "Integer",
+                                    "attributes": {
+                                      "col": "15",
+                                      "line": "27",
+                                      "value": "2"
+                                    },
+                                    "children": []
+                                  }
+                                ]
+                              },
+                              {
+                                "kind": "Integer",
+                                "attributes": {
+                                  "col": "17",
+                                  "line": "27",
+                                  "value": "3"
+                                },
+                                "children": []
+                              }
+                            ]
+                          },
+                          {
+                            "kind": "Mult",
+                            "attributes": {
+                              "col": "20",
+                              "line": "27"
+                            },
+                            "children": [
+                              {
+                                "kind": "Integer",
+                                "attributes": {
+                                  "col": "19",
+                                  "line": "27",
+                                  "value": "4"
+                                },
+                                "children": []
+                              },
+                              {
+                                "kind": "Integer",
+                                "attributes": {
+                                  "col": "21",
+                                  "line": "27",
+                                  "value": "5"
+                                },
+                                "children": []
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "kind": "Div",
+                        "attributes": {
+                          "col": "24",
+                          "line": "27"
+                        },
+                        "children": [
+                          {
+                            "kind": "Integer",
+                            "attributes": {
+                              "col": "23",
+                              "line": "27",
+                              "value": "6"
+                            },
+                            "children": []
+                          },
+                          {
+                            "kind": "Boolean",
+                            "attributes": {
+                              "col": "29",
+                              "line": "27",
+                              "value": "false"
+                            },
+                            "children": []
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "Add",
+                    "attributes": {
+                      "col": "22",
+                      "line": "28"
+                    },
+                    "children": [
+                      {
+                        "kind": "Add",
+                        "attributes": {
+                          "col": "18",
+                          "line": "28"
+                        },
+                        "children": [
+                          {
+                            "kind": "Add",
+                            "attributes": {
+                              "col": "16",
+                              "line": "28"
+                            },
+                            "children": [
+                              {
+                                "kind": "Add",
+                                "attributes": {
+                                  "col": "14",
+                                  "line": "28"
+                                },
+                                "children": [
+                                  {
+                                    "kind": "Integer",
+                                    "attributes": {
+                                      "col": "13",
+                                      "line": "28",
+                                      "value": "1"
+                                    },
+                                    "children": []
+                                  },
+                                  {
+                                    "kind": "Integer",
+                                    "attributes": {
+                                      "col": "15",
+                                      "line": "28",
+                                      "value": "2"
+                                    },
+                                    "children": []
+                                  }
+                                ]
+                              },
+                              {
+                                "kind": "Integer",
+                                "attributes": {
+                                  "col": "17",
+                                  "line": "28",
+                                  "value": "3"
+                                },
+                                "children": []
+                              }
+                            ]
+                          },
+                          {
+                            "kind": "Mult",
+                            "attributes": {
+                              "col": "20",
+                              "line": "28"
+                            },
+                            "children": [
+                              {
+                                "kind": "Integer",
+                                "attributes": {
+                                  "col": "19",
+                                  "line": "28",
+                                  "value": "4"
+                                },
+                                "children": []
+                              },
+                              {
+                                "kind": "Integer",
+                                "attributes": {
+                                  "col": "21",
+                                  "line": "28",
+                                  "value": "5"
+                                },
+                                "children": []
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "kind": "Div",
+                        "attributes": {
+                          "col": "24",
+                          "line": "28"
+                        },
+                        "children": [
+                          {
+                            "kind": "Integer",
+                            "attributes": {
+                              "col": "23",
+                              "line": "28",
+                              "value": "6"
+                            },
+                            "children": []
+                          },
+                          {
+                            "kind": "Integer",
+                            "attributes": {
+                              "col": "25",
+                              "line": "28",
+                              "value": "2"
+                            },
+                            "children": []
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "Add",
+                    "attributes": {
+                      "col": "31",
+                      "line": "29"
+                    },
+                    "children": [
+                      {
+                        "kind": "Add",
+                        "attributes": {
+                          "col": "16",
+                          "line": "29"
+                        },
+                        "children": [
+                          {
+                            "kind": "Identifier",
+                            "attributes": {
+                              "col": "15",
+                              "line": "29",
+                              "value": "ola"
+                            },
+                            "children": []
+                          },
+                          {
+                            "kind": "MethodCall",
+                            "attributes": {
+                              "col": "24",
+                              "line": "29"
+                            },
+                            "children": [
+                              {
+                                "kind": "Identifier",
+                                "attributes": {
+                                  "col": "23",
+                                  "line": "29",
+                                  "value": "facTest"
+                                },
+                                "children": []
+                              },
+                              {
+                                "kind": "Identifier",
+                                "attributes": {
+                                  "col": "24",
+                                  "line": "29",
+                                  "value": "get"
+                                },
+                                "children": [
+                                  {
+                                    "kind": "Parameters",
+                                    "attributes": {
+                                      "col": "28",
+                                      "line": "29"
+                                    },
+                                    "children": [
+                                      {
+                                        "kind": "Integer",
+                                        "attributes": {
+                                          "col": "29",
+                                          "line": "29",
+                                          "value": "1"
+                                        },
+                                        "children": []
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "kind": "MethodCall",
+                        "attributes": {
+                          "col": "36",
+                          "line": "29"
+                        },
+                        "children": [
+                          {
+                            "kind": "Identifier",
+                            "attributes": {
+                              "col": "35",
+                              "line": "29",
+                              "value": "var1"
+                            },
+                            "children": []
+                          },
+                          {
+                            "kind": "Identifier",
+                            "attributes": {
+                              "col": "36",
+                              "line": "29",
+                              "value": "length"
+                            },
+                            "children": []
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "Add",
+                    "attributes": {
+                      "col": "26",
+                      "line": "30"
+                    },
+                    "children": [
+                      {
+                        "kind": "Add",
+                        "attributes": {
+                          "col": "22",
+                          "line": "30"
+                        },
+                        "children": [
+                          {
+                            "kind": "Add",
+                            "attributes": {
+                              "col": "17",
+                              "line": "30"
+                            },
+                            "children": [
+                              {
+                                "kind": "Boolean",
+                                "attributes": {
+                                  "col": "16",
+                                  "line": "30",
+                                  "value": "true"
+                                },
+                                "children": []
+                              },
+                              {
+                                "kind": "Boolean",
+                                "attributes": {
+                                  "col": "21",
+                                  "line": "30",
+                                  "value": "true"
+                                },
+                                "children": []
+                              }
+                            ]
+                          },
+                          {
+                            "kind": "Identifier",
+                            "attributes": {
+                              "col": "25",
+                              "line": "30",
+                              "value": "ola"
+                            },
+                            "children": []
+                          }
+                        ]
+                      },
+                      {
+                        "kind": "Identifier",
+                        "attributes": {
+                          "col": "29",
+                          "line": "30",
+                          "value": "ola"
+                        },
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "Add",
+                    "attributes": {
+                      "col": "24",
+                      "line": "31"
+                    },
+                    "children": [
+                      {
+                        "kind": "Add",
+                        "attributes": {
+                          "col": "20",
+                          "line": "31"
+                        },
+                        "children": [
+                          {
+                            "kind": "Add",
+                            "attributes": {
+                              "col": "16",
+                              "line": "31"
+                            },
+                            "children": [
+                              {
+                                "kind": "Identifier",
+                                "attributes": {
+                                  "col": "15",
+                                  "line": "31",
+                                  "value": "ola"
+                                },
+                                "children": []
+                              },
+                              {
+                                "kind": "Identifier",
+                                "attributes": {
+                                  "col": "19",
+                                  "line": "31",
+                                  "value": "ola"
+                                },
+                                "children": []
+                              }
+                            ]
+                          },
+                          {
+                            "kind": "Identifier",
+                            "attributes": {
+                              "col": "23",
+                              "line": "31",
+                              "value": "ola"
+                            },
+                            "children": []
+                          }
+                        ]
+                      },
+                      {
+                        "kind": "Boolean",
+                        "attributes": {
+                          "col": "28",
+                          "line": "31",
+                          "value": "true"
+                        },
+                        "children": []
                       }
                     ]
                   }
