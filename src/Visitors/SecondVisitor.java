@@ -18,8 +18,7 @@ public class SecondVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boole
         addVisit("Mult", this::dealWithMathOperation);
         addVisit("Div", this::dealWithMathOperation);
         addVisit("ArrayAccess", this::dealWithArrayAccess);
-        addVisit("AssignmentVar", this::dealWithAssignmentVar);
-        addVisit("AssignmentVarArray", this::dealWithAssignmentVarArray);
+        addVisit("Assignment", this::dealWithAssignment);
         addVisit("And", this::dealWithBooleanOperation);
         addVisit("Not", this::dealWithBooleanOperation);
         setDefaultVisit(this::defaultVisit);
@@ -124,7 +123,7 @@ public class SecondVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boole
         return true;
     }
 
-    protected Boolean dealWithAssignmentVar(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
+    protected Boolean dealWithAssignment(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
 
         SeekReturnTypeVisitor seekReturnTypeVisitorLeft = new SeekReturnTypeVisitor();
         SeekReturnTypeVisitor seekReturnTypeVisitorRight = new SeekReturnTypeVisitor();
@@ -146,11 +145,6 @@ public class SecondVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boole
             return true;
         }
 
-
-        return true;
-    }
-
-    protected Boolean dealWithAssignmentVarArray(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
         return true;
     }
 

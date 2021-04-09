@@ -429,11 +429,11 @@
                         ]
                       },
                       {
-                        "kind": "Integer",
+                        "kind": "Boolean",
                         "attributes": {
-                          "col": "21",
+                          "col": "24",
                           "line": "22",
-                          "value": "3"
+                          "value": "true"
                         },
                         "children": []
                       }
