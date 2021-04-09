@@ -20,8 +20,7 @@ class Fac extends Parent {
 
            //facTest.get(1).returnArray()[1];
            facTest.get(1)+facTest.get(1);
-           facTest.returnArray()[2]+var1[1];
-           var1[true]+ola[1];
+           ola[facTest.returnArray()]+var1[true];
            //var1[1]+var3[3];
            //var1+var2;
            //ola3+ola1+ola;

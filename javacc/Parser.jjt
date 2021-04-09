@@ -2,6 +2,7 @@ options
 {
     LOOKAHEAD = 1;
     MULTI = true;
+    NODE_SCOPE_HOOK=true;
 }
 
 PARSER_BEGIN(Parser)
@@ -62,18 +63,19 @@ public class Parser
 
     private void addAttributes(SimpleNode simpleNode, Token token,Boolean isArray){
         simpleNode.put("value", token.image);
-        simpleNode.put("line", Integer.toString(token.beginLine));
-        simpleNode.put("column", Integer.toString(token.beginColumn));
         simpleNode.put("isArray", isArray.toString());
     }
     private void addAttributes(SimpleNode simpleNode, Token token){
         simpleNode.put("value", token.image);
-        simpleNode.put("line", Integer.toString(token.beginLine));
-        simpleNode.put("column", Integer.toString(token.beginColumn));
     }
-    private void addAttributes(SimpleNode simpleNode,int line){
-        simpleNode.put("line", Integer.toString(token.beginLine));
+
+    void jjtreeOpenNodeScope(Node n) {
+        ((SimpleNode)n).put("line", Integer.toString(getToken(1).beginLine));
+        ((SimpleNode)n).put("col", Integer.toString(getToken(1).beginColumn));
     }
+
+    void jjtreeCloseNodeScope(Node n) {
+     }
 }
 
 
