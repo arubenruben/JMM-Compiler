@@ -176,33 +176,65 @@
                 "attributes": {},
                 "children": [
                   {
-                    "kind": "And",
+                    "kind": "If",
                     "attributes": {},
                     "children": [
                       {
-                        "kind": "Not",
+                        "kind": "Condition",
                         "attributes": {},
                         "children": [
                           {
-                            "kind": "Integer",
-                            "attributes": {
-                              "line": "17",
-                              "column": "13",
-                              "isArray": "false",
-                              "value": "1"
-                            },
-                            "children": []
+                            "kind": "Less",
+                            "attributes": {},
+                            "children": [
+                              {
+                                "kind": "Add",
+                                "attributes": {},
+                                "children": [
+                                  {
+                                    "kind": "Integer",
+                                    "attributes": {
+                                      "line": "20",
+                                      "column": "16",
+                                      "isArray": "false",
+                                      "value": "1"
+                                    },
+                                    "children": []
+                                  },
+                                  {
+                                    "kind": "Integer",
+                                    "attributes": {
+                                      "line": "20",
+                                      "column": "18",
+                                      "isArray": "false",
+                                      "value": "1"
+                                    },
+                                    "children": []
+                                  }
+                                ]
+                              },
+                              {
+                                "kind": "Integer",
+                                "attributes": {
+                                  "line": "20",
+                                  "column": "21",
+                                  "isArray": "false",
+                                  "value": "2"
+                                },
+                                "children": []
+                              }
+                            ]
                           }
                         ]
                       },
                       {
-                        "kind": "Boolean",
-                        "attributes": {
-                          "line": "17",
-                          "column": "18",
-                          "isArray": "false",
-                          "value": "true"
-                        },
+                        "kind": "Then",
+                        "attributes": {},
+                        "children": []
+                      },
+                      {
+                        "kind": "Else",
+                        "attributes": {},
                         "children": []
                       }
                     ]

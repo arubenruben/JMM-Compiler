@@ -9,9 +9,7 @@ public class Type {
         this.isArray = isArray;
     }
 
-    public String getName() {
-        return name;
-    }
+    public String getName() { return name; }
 
     public boolean isArray() {
         return isArray;
