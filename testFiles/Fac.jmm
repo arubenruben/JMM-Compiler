@@ -15,8 +15,10 @@ class Fac extends Parent {
     }
 
     public static void main(String[] args) {
+
            Fac facTest;
            facTest=new Fac();
+           ola=2;
            var1[2]=3;
            facTest.get(1).returnArray()[1];
            facTest.get(1)+facTest.get(1);

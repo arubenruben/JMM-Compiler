@@ -237,11 +237,8 @@ void Statement() #void: {}{
     |
     WhileStatement()
     |
-    (LOOKAHEAD(2)
     Expression()<SEMICOLON>
-    |
-    AssignmentStatement()
-    )
+
 
 }
 void BlockStatement() #void:{}
@@ -259,25 +256,6 @@ void Condition() :{}
 {
    <LPAR> {this.numberOfPars++;} Expression() <RPAR> {this.numberOfPars--;}
 }
-void AssignmentStatement()#void : {}
-{
-    Identifier() (AssignmentArray() | AssignmentVar())<SEMICOLON>
-}
-
-void AssignmentArray()#void : {}
-{
-     ArrayAccess() <EQUAL> Expression() #AssignmentVarArray(2)
-}
-
-void ArrayAccess()#void:{}
-{
-    <LREC> Expression() #ArrayAccess(2) <RREC>
-}
-
-void AssignmentVar()#void : {}
-{
-    <EQUAL> Expression() #AssignmentVar(2)
-}
 
 void WhileStatement()#While: {}
 {
@@ -291,8 +269,20 @@ void WhileStatement()#While: {}
     }
     Statement()
 }
-//According to https://introcs.cs.princeton.import pt.up.fe.comp.jmm.report.Stage;edu/java/11precedence/
+//According to https://introcs.cs.princeton
 void Expression() #void :{}
+{
+    ExpressionLevel1Priority()
+}
+void ExpressionLevel1Priority()#void :{}
+{
+    ExpressionLevel4Priority() [AssignmentExpression()]
+}
+void AssignmentExpression()#void:{}
+{
+    <EQUAL> ExpressionLevel4Priority() #Assignment(2)
+}
+void ExpressionLevel4Priority()#void:{}
 {
     ExpressionLevel9Priority() AndExpression()
 }
@@ -390,4 +380,9 @@ void TerminalNonIdentifier() #void:{Token t;}
 void Identifier() :{Token t;}
 {
     t=<IDENTIFIER>{addAttributes(jjtThis,t);}
+}
+
+void ArrayAccess()#void:{}
+{
+    <LREC> Expression() #ArrayAccess(2) <RREC>
 }
