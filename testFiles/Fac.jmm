@@ -17,7 +17,7 @@ class Fac extends Parent {
     public static void main(String[] args) {
            Fac facTest;
            facTest=new Fac();
-
+           var1[2]=3;
            facTest.get(1).returnArray()[1];
            facTest.get(1)+facTest.get(1);
            ola[facTest.returnArray()]+var1[true];
@@ -29,6 +29,7 @@ class Fac extends Parent {
            ola+facTest.get(1)+var1.length;
            true+true+ola+ola;
            ola+ola+ola+true;
+
            //true && true && 1;
            //!1 && true;
            //ola+ola+ola+true;

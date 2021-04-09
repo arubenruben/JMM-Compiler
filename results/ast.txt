@@ -341,31 +341,58 @@
                     ]
                   },
                   {
-                    "kind": "AssignmentVar",
+                    "kind": "Identifier",
                     "attributes": {
-                      "col": "20",
-                      "line": "19"
+                      "col": "19",
+                      "line": "19",
+                      "value": "facTest"
+                    },
+                    "children": []
+                  },
+                  {
+                    "kind": "New",
+                    "attributes": {
+                      "col": "24",
+                      "line": "19",
+                      "value": "Fac"
+                    },
+                    "children": []
+                  },
+                  {
+                    "kind": "ArrayAccess",
+                    "attributes": {
+                      "col": "17",
+                      "line": "20"
                     },
                     "children": [
                       {
                         "kind": "Identifier",
                         "attributes": {
-                          "col": "12",
-                          "line": "19",
-                          "value": "facTest"
+                          "col": "16",
+                          "line": "20",
+                          "value": "var1"
                         },
                         "children": []
                       },
                       {
-                        "kind": "New",
+                        "kind": "Integer",
                         "attributes": {
-                          "col": "24",
-                          "line": "19",
-                          "value": "Fac"
+                          "col": "18",
+                          "line": "20",
+                          "value": "2"
                         },
                         "children": []
                       }
                     ]
+                  },
+                  {
+                    "kind": "Integer",
+                    "attributes": {
+                      "col": "21",
+                      "line": "20",
+                      "value": "3"
+                    },
+                    "children": []
                   },
                   {
                     "kind": "ArrayAccess",
