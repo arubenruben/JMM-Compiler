@@ -73,6 +73,28 @@ public class SymbolTableIml implements SymbolTable {
         return null;
     }
 
+    public Symbol lookup(String variableName, String currentMethodName) {
+        MethodSymbol methodSymbol = methodsHashmap.get(currentMethodName);
+
+        for (Symbol symbol : methodSymbol.getVariables().keySet()) {
+            //Exists a local variable with that name
+            if (symbol.getName().equals(variableName))
+                return symbol;
+        }
+        for (Symbol symbol : methodSymbol.getParameters()) {
+            //Exists a method parameter variable with that name
+            if (symbol.getName().equals(variableName))
+                return symbol;
+        }
+        for (Symbol symbol : hashMapClassFields.keySet()) {
+            //Exists a class Field variable with that name
+            if (symbol.getName().equals(variableName))
+                return symbol;
+        }
+        return null;
+
+    }
+
     public void setSuperName(String superName) {
         this.superName = superName;
     }

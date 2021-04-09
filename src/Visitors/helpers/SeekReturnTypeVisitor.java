@@ -28,7 +28,7 @@ public class SeekReturnTypeVisitor extends PreorderJmmVisitor<SecondVisitorHelpe
             return type;
 
         if (node.getChildren().get(0).getKind().equals("Identifier")) {
-            Symbol symbol = variableLookup(node.getChildren().get(0).get("value"), secondVisitorHelper);
+            Symbol symbol = secondVisitorHelper.getSymbolTableIml().lookup(node.getChildren().get(0).get("value"), secondVisitorHelper.getCurrentMethodName());
             if (symbol == null) {
                 secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.getChildren().get(0).get("line")), "Attempt to call an non declared array"));
                 return type;
@@ -41,8 +41,9 @@ public class SeekReturnTypeVisitor extends PreorderJmmVisitor<SecondVisitorHelpe
         }
          */
 
+        type = new Type("int", false);
 
-        return new Type("int", false);
+        return type;
     }
 
     protected Type dealWithMethodCall(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
@@ -52,7 +53,7 @@ public class SeekReturnTypeVisitor extends PreorderJmmVisitor<SecondVisitorHelpe
 
         //Variable dont exist
         if (node.getChildren().get(0).getKind().equals("Identifier")) {
-            if (variableLookup(node.getChildren().get(0).get("value"), secondVisitorHelper) == null) {
+            if (secondVisitorHelper.getSymbolTableIml().lookup(node.getChildren().get(0).get("value"), secondVisitorHelper.getCurrentMethodName()) == null) {
                 secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.get("line")), "Attempt to call on method on non declared variable"));
                 return type;
             }
@@ -70,8 +71,9 @@ public class SeekReturnTypeVisitor extends PreorderJmmVisitor<SecondVisitorHelpe
                 secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.get("line")), "Attempt to call on method non existent in this object"));
                 return type;
             }
+            type = method.getType();
 
-            return method.getType();
+            return type;
         }
 
 
@@ -82,35 +84,42 @@ public class SeekReturnTypeVisitor extends PreorderJmmVisitor<SecondVisitorHelpe
         if (type != null)
             return type;
 
-        return new Type("int", false);
+        type = new Type("int", false);
+
+        return type;
     }
 
     protected Type dealWithBoolean(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
         if (type != null)
             return type;
 
-        return new Type("boolean", false);
+        type = new Type("boolean", false);
+
+        return type;
     }
 
     protected Type dealWithThis(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
         if (type != null)
             return type;
 
-        return new Type("this", false);
+        type = new Type("this", false);
+
+        return type;
     }
 
     protected Type dealWithIdentifier(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
         if (type != null)
             return type;
 
-        Symbol symbol = variableLookup(node.get("value"), secondVisitorHelper);
+        Symbol symbol = secondVisitorHelper.getSymbolTableIml().lookup(node.get("value"), secondVisitorHelper.getCurrentMethodName());
 
         if (symbol == null) {
             secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.get("line")), "Attempt to access variable not declared"));
             return type;
         }
+        type = symbol.getType();
 
-        return symbol.getType();
+        return type;
     }
 
     protected Type defaultVisit(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
@@ -121,24 +130,4 @@ public class SeekReturnTypeVisitor extends PreorderJmmVisitor<SecondVisitorHelpe
         return type;
     }
 
-    private Symbol variableLookup(String variableName, SecondVisitorHelper secondVisitorHelper) {
-        MethodSymbol methodSymbol = secondVisitorHelper.getSymbolTableIml().getMethodsHashmap().get(secondVisitorHelper.getCurrentMethodName());
-
-        for (Symbol symbol : methodSymbol.getVariables().keySet()) {
-            //Exists a local variable with that name
-            if (symbol.getName().equals(variableName))
-                return symbol;
-        }
-        for (Symbol symbol : methodSymbol.getParameters()) {
-            //Exists a method parameter variable with that name
-            if (symbol.getName().equals(variableName))
-                return symbol;
-        }
-        for (Symbol symbol : secondVisitorHelper.getSymbolTableIml().getHashMapClassFields().keySet()) {
-            //Exists a class Field variable with that name
-            if (symbol.getName().equals(variableName))
-                return symbol;
-        }
-        return null;
-    }
 }

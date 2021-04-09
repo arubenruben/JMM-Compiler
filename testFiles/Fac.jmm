@@ -10,12 +10,19 @@ class Fac extends Parent {
     public int get(int number){
         return number;
     }
+    public int[] returnArray(){
+        return var1;
+    }
 
     public static void main(String[] args) {
-           //Fac facTest;
-           //facTest=new Fac();
+           Fac facTest;
+           facTest=new Fac();
+
+           //facTest.returnArray()[1];
+
            //var1[1]+var3[3];
-           ola3+ola1+ola;
+           //var1+var2;
+           //ola3+ola1+ola;
            //1+2+3+4*5+6/false;
            //1+2+3+4*5+6/2;
            //ola+facTest.get(1)+var1.length;

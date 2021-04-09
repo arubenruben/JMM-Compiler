@@ -239,39 +239,24 @@
                 "attributes": {},
                 "children": [
                   {
-                    "kind": "Add",
+                    "kind": "ArrayAccess",
                     "attributes": {},
                     "children": [
                       {
-                        "kind": "Add",
-                        "attributes": {},
-                        "children": [
-                          {
-                            "kind": "Identifier",
-                            "attributes": {
-                              "line": "18",
-                              "column": "12",
-                              "value": "ola3"
-                            },
-                            "children": []
-                          },
-                          {
-                            "kind": "Identifier",
-                            "attributes": {
-                              "line": "18",
-                              "column": "17",
-                              "value": "ola1"
-                            },
-                            "children": []
-                          }
-                        ]
-                      },
-                      {
                         "kind": "Identifier",
                         "attributes": {
-                          "line": "18",
-                          "column": "22",
-                          "value": "ola"
+                          "line": "15",
+                          "column": "12",
+                          "value": "var1"
+                        },
+                        "children": []
+                      },
+                      {
+                        "kind": "Integer",
+                        "attributes": {
+                          "line": "15",
+                          "column": "17",
+                          "value": "2"
                         },
                         "children": []
                       }
