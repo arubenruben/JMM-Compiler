@@ -1,4 +1,4 @@
-package Symbols;
+package symbols;
 
 import pt.up.fe.comp.jmm.JmmNode;
 import pt.up.fe.comp.jmm.analysis.table.Symbol;
@@ -14,6 +14,7 @@ public class SymbolTableIml implements SymbolTable {
 
     private String className;
     private String superName;
+    private final Symbol variableThis;
     private final List<String> imports;
     private final Map<String, JmmNode> nodeMap;
 
@@ -27,12 +28,24 @@ public class SymbolTableIml implements SymbolTable {
         this.methodsHashmap = new HashMap<>();
         this.imports = new ArrayList<>();
         this.nodeMap = new HashMap<>();
+        this.variableThis = new Symbol(new Type("this", false), "this");
     }
 
 
     @Override
     public List<String> getImports() {
         return imports;
+    }
+
+    public List<String> getImportedClasses() {
+        List<String> importedClasses = new ArrayList<>();
+
+        for (String importStr : imports) {
+            String[] result = importStr.split("\\.");
+            importedClasses.add(result[result.length - 1]);
+        }
+
+        return importedClasses;
     }
 
     @Override
@@ -73,6 +86,29 @@ public class SymbolTableIml implements SymbolTable {
         return null;
     }
 
+    public Symbol lookup(String variableName, String currentMethodName) {
+
+        MethodSymbol methodSymbol = methodsHashmap.get(currentMethodName);
+
+        for (Symbol symbol : methodSymbol.getVariables().keySet()) {
+            //Exists a local variable with that name
+            if (symbol.getName().equals(variableName))
+                return symbol;
+        }
+        for (Symbol symbol : methodSymbol.getParameters()) {
+            //Exists a method parameter variable with that name
+            if (symbol.getName().equals(variableName))
+                return symbol;
+        }
+        for (Symbol symbol : hashMapClassFields.keySet()) {
+            //Exists a class Field variable with that name
+            if (symbol.getName().equals(variableName))
+                return symbol;
+        }
+        return null;
+
+    }
+
     public void setSuperName(String superName) {
         this.superName = superName;
     }
@@ -101,5 +137,9 @@ public class SymbolTableIml implements SymbolTable {
 
     public Map<String, JmmNode> getNodeMap() {
         return nodeMap;
+    }
+
+    public Symbol getVariableThis() {
+        return variableThis;
     }
 }

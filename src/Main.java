@@ -1,8 +1,9 @@
-import Symbols.SymbolTableIml;
-import Visitors.FirstVisitor;
-import Visitors.SecondVisitor;
-import Visitors.helpers.data_helpers.SecondVisitorHelper;
-import Visitors.helpers.data_helpers.VisitorDataHelper;
+import symbols.SymbolTableIml;
+import visitors.FirstVisitor;
+import visitors.SecondVisitor;
+import visitors.ThirdVisitor;
+import visitors.helpers.data_helpers.SecondVisitorHelper;
+import visitors.helpers.data_helpers.VisitorDataHelper;
 import pt.up.fe.comp.TestUtils;
 import pt.up.fe.comp.jmm.JmmNode;
 import pt.up.fe.comp.jmm.JmmParser;
@@ -53,9 +54,10 @@ public class Main implements JmmParser, JmmAnalysis {
         if (TestUtils.getNumReports(parserResult.getReports(), ReportType.ERROR) > 0)
             return;
 
-        JmmSemanticsResult semanticAnalysis = main.semanticAnalysis(parserResult);
+        JmmSemanticsResult semanticsResults = main.semanticAnalysis(parserResult);
 
-        Utils.printSymbolTable(semanticAnalysis.getSymbolTable());
+        Utils.printSymbolTable(semanticsResults.getSymbolTable());
+        Utils.printReports(semanticsResults.getReports());
 
     }
 
@@ -99,6 +101,10 @@ public class Main implements JmmParser, JmmAnalysis {
         for (String methodName : symbolTable.getMethodsHashmap().keySet()) {
             AJmmVisitor<SecondVisitorHelper, Boolean> secondVisitor = new SecondVisitor();
             secondVisitor.visit(symbolTable.getNodeMap().get(methodName), new SecondVisitorHelper(methodName, symbolTable, reportList));
+        }
+        for (String methodName : symbolTable.getMethodsHashmap().keySet()) {
+            AJmmVisitor<SecondVisitorHelper, Boolean> thirdVisitor = new ThirdVisitor();
+            thirdVisitor.visit(symbolTable.getNodeMap().get(methodName), new SecondVisitorHelper(methodName, symbolTable, reportList));
         }
 
 

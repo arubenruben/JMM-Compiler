@@ -2,6 +2,7 @@ options
 {
     LOOKAHEAD = 1;
     MULTI = true;
+    NODE_SCOPE_HOOK=true;
 }
 
 PARSER_BEGIN(Parser)
@@ -62,10 +63,19 @@ public class Parser
 
     private void addAttributes(SimpleNode simpleNode, Token token,Boolean isArray){
         simpleNode.put("value", token.image);
-        simpleNode.put("line", Integer.toString(token.beginLine));
-        simpleNode.put("column", Integer.toString(token.beginColumn));
         simpleNode.put("isArray", isArray.toString());
     }
+    private void addAttributes(SimpleNode simpleNode, Token token){
+        simpleNode.put("value", token.image);
+    }
+
+    void jjtreeOpenNodeScope(Node n) {
+        ((SimpleNode)n).put("line", Integer.toString(getToken(1).beginLine));
+        ((SimpleNode)n).put("col", Integer.toString(getToken(1).beginColumn));
+    }
+
+    void jjtreeCloseNodeScope(Node n) {
+     }
 }
 
 
@@ -155,7 +165,7 @@ void ImportPath() :{Token t;}
 }
 void ClassDeclaration() #Class :{Token t;}
 {
-    <CLASS> t=<IDENTIFIER>{addAttributes(jjtThis, t,false);}[<EXTENDS> t=<IDENTIFIER>{addAttributes(jjtThis, t, false);} #Extends]<LCUR>
+    <CLASS> t=<IDENTIFIER>{addAttributes(jjtThis,t);}[<EXTENDS> t=<IDENTIFIER>{addAttributes(jjtThis, t);} #Extends]<LCUR>
         (VarDeclaration())*
         (MethodDeclaration())*
     <RCUR>
@@ -171,7 +181,7 @@ void Type() #Type:{Token t; Boolean array=false;}
 }
 void VarDeclaration() #VarDeclaration: {Token t;}
 {
-    Type() t=<IDENTIFIER>{addAttributes(jjtThis, t, false);} <SEMICOLON>
+    Type() t=<IDENTIFIER>{addAttributes(jjtThis, t);} <SEMICOLON>
 }
 void MethodDeclaration() #void : {}
 {
@@ -180,7 +190,7 @@ void MethodDeclaration() #void : {}
 }
 void ClassMethod()#ClassMethod:{Token t;}
 {
-    Type() t=<IDENTIFIER>{addAttributes(jjtThis, t,false);}<LPAR>ClassMethodParameters()<RPAR><LCUR>
+    Type() t=<IDENTIFIER>{addAttributes(jjtThis,t);}<LPAR>ClassMethodParameters()<RPAR><LCUR>
          MethodBody()
         ReturnInstruction()
     <RCUR>
@@ -200,7 +210,7 @@ void ClassMethodParameter() #void:{}
 }
 void StaticMethod()#ClassMethod:{Token t;}
 {
-    StaticReturn() t=<MAIN>{addAttributes(jjtThis,t,false);} <LPAR> StaticParameters() <RPAR><LCUR>
+    StaticReturn() t=<MAIN>{addAttributes(jjtThis,t);} <LPAR> StaticParameters() <RPAR><LCUR>
         MethodBody()
     <RCUR>
 }
@@ -209,7 +219,7 @@ void StaticParameters() #Parameters:{}
     StaticType() Identifier() #Parameter(2)
 }
 void StaticReturn() #Type:{Token t;}{
-    <STATIC> t=<VOID> {addAttributes(jjtThis,t,false);}
+    <STATIC> t=<VOID> {addAttributes(jjtThis,t, false);}
 }
 void StaticType() #Type:{Token t;}{
     t=<STRING> <LREC> <RREC>{addAttributes(jjtThis,t,true);}
@@ -227,11 +237,8 @@ void Statement() #void: {}{
     |
     WhileStatement()
     |
-    (LOOKAHEAD(2)
     Expression()<SEMICOLON>
-    |
-    AssignmentStatement()
-    )
+
 
 }
 void BlockStatement() #void:{}
@@ -249,25 +256,6 @@ void Condition() :{}
 {
    <LPAR> {this.numberOfPars++;} Expression() <RPAR> {this.numberOfPars--;}
 }
-void AssignmentStatement()#void : {}
-{
-    Identifier() (AssignmentArray() | AssignmentVar())<SEMICOLON>
-}
-
-void AssignmentArray()#void : {}
-{
-     ArrayAccess() <EQUAL> Expression() #AssignmentVarArray(2)
-}
-
-void ArrayAccess()#void:{}
-{
-    <LREC> Expression() #ArrayAccess(2) <RREC>
-}
-
-void AssignmentVar()#void : {}
-{
-    <EQUAL> Expression() #AssignmentVar(2)
-}
 
 void WhileStatement()#While: {}
 {
@@ -281,8 +269,20 @@ void WhileStatement()#While: {}
     }
     Statement()
 }
-//According to https://introcs.cs.princeton.import pt.up.fe.comp.jmm.report.Stage;edu/java/11precedence/
+//According to https://introcs.cs.princeton
 void Expression() #void :{}
+{
+    ExpressionLevel1Priority()
+}
+void ExpressionLevel1Priority()#void :{}
+{
+    ExpressionLevel4Priority() [AssignmentExpression()]
+}
+void AssignmentExpression()#void:{}
+{
+    <EQUAL> ExpressionLevel4Priority() #Assignment(2)
+}
+void ExpressionLevel4Priority()#void:{}
 {
     ExpressionLevel9Priority() AndExpression()
 }
@@ -319,10 +319,16 @@ void MultDivExpression()#void:{}
      |
      <DIV>  ExpressionLevel15Priority() #Div(2))*
 }
+void ExpressionLevel15Priority()#void:{}{
+    ExpressionLevel16Priority() ArrayExpression()
+}
+void ArrayExpression()#void:{}{
+    (ArrayAccess())*
+}
 
-void ExpressionLevel15Priority()#void:{}
+void ExpressionLevel16Priority()#void:{}
 {
-    ExpressionLevel16Priority() DotExpression()
+    ExpressionLevel17Priority() DotExpression()
 }
 void DotExpression()#void:{}
 {
@@ -330,9 +336,9 @@ void DotExpression()#void:{}
 }
 void Method() #Identifier:{Token t;}
 {
-    t=<LENGTH>{addAttributes(jjtThis, t,false);}
+    t=<LENGTH>{addAttributes(jjtThis,t);}
     |
-    (t=<IDENTIFIER>{addAttributes(jjtThis, t,false);} <LPAR> [MethodParameters()] <RPAR>)
+    (t=<IDENTIFIER>{addAttributes(jjtThis,t);} <LPAR> [MethodParameters()] <RPAR>)
 }
 void MethodParameters()#Parameters:{}
 {
@@ -343,35 +349,40 @@ void MethodParameter() #void:{}
     <COMMA> Expression()
 }
 
-void ExpressionLevel16Priority()#void:{}
+void ExpressionLevel17Priority()#void:{}
 {
-    Terminal() | <LPAR> {this.numberOfPars++;} Expression()<RPAR> {this.numberOfPars--;}  | <NOT> ExpressionLevel16Priority() #Not
+    Terminal() | <LPAR> {this.numberOfPars++;} Expression()<RPAR> {this.numberOfPars--;}  | <NOT> ExpressionLevel17Priority() #Not
 }
 
 void Terminal()#void:{Token t;}
 {
-    t=<IDENTIFIER>{addAttributes(jjtThis, t,false);} #Identifier [ArrayAccess()]
+    t=<IDENTIFIER>{addAttributes(jjtThis,t);} #Identifier
     |
     TerminalNonIdentifier()
     |
     <NEW>
     (
-    (t=<INT>{addAttributes(jjtThis,t,true);}<LREC>Expression()<RREC>)
+    (t=<INT>{addAttributes(jjtThis,t,true);}<LREC>Expression()<RREC>)#NewArray
     |
-    (t=<IDENTIFIER>{addAttributes(jjtThis,t,false);}<LPAR> <RPAR>)
-    )#New
+    (t=<IDENTIFIER>{addAttributes(jjtThis,t);}<LPAR> <RPAR>)#NewObject
+    )
 }
 void TerminalNonIdentifier() #void:{Token t;}
 {
-    t=<INTEGERLITERAL>{addAttributes(jjtThis, t,false);} #Integer
+    t=<INTEGERLITERAL>{addAttributes(jjtThis,t);} #Integer
     |
-    t=<TRUE>{addAttributes(jjtThis, t,false);}#Boolean
+    t=<TRUE>{addAttributes(jjtThis,t);}#Boolean
     |
-    t=<FALSE>{addAttributes(jjtThis, t,false);}#Boolean
+    t=<FALSE>{addAttributes(jjtThis,t);}#Boolean
     |
-    t=<THIS>{addAttributes(jjtThis, t,false);}#This
+    t=<THIS>{addAttributes(jjtThis,t);}#This
 }
 void Identifier() :{Token t;}
 {
-    t=<IDENTIFIER>{addAttributes(jjtThis,t,false);}
+    t=<IDENTIFIER>{addAttributes(jjtThis,t);}
+}
+
+void ArrayAccess()#void:{}
+{
+    <LREC> Expression() #ArrayAccess(2) <RREC>
 }

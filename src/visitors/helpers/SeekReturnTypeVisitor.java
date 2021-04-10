@@ -1,7 +1,10 @@
-package Visitors.helpers;
+package visitors.helpers;
 
-import Symbols.MethodSymbol;
-import Visitors.helpers.data_helpers.SecondVisitorHelper;
+import pt.up.fe.comp.jmm.report.Report;
+import pt.up.fe.comp.jmm.report.ReportType;
+import pt.up.fe.comp.jmm.report.Stage;
+import symbols.MethodSymbol;
+import visitors.helpers.data_helpers.SecondVisitorHelper;
 import pt.up.fe.comp.jmm.JmmNode;
 import pt.up.fe.comp.jmm.analysis.table.Symbol;
 import pt.up.fe.comp.jmm.analysis.table.Type;
@@ -17,6 +20,8 @@ public class SeekReturnTypeVisitor extends PreorderJmmVisitor<SecondVisitorHelpe
         addVisit("Boolean", this::dealWithBoolean);
         addVisit("This", this::dealWithThis);
         addVisit("Identifier", this::dealWithIdentifier);
+        addVisit("NewArray", this::dealWithNewArray);
+        addVisit("NewObject", this::dealWithNewObject);
         setDefaultVisit(this::defaultVisit);
     }
 
@@ -30,9 +35,24 @@ public class SeekReturnTypeVisitor extends PreorderJmmVisitor<SecondVisitorHelpe
     }
 
     protected Type dealWithMethodCall(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
-        //TODO:Falta
+
         if (type != null)
             return type;
+
+        if (node.getChildren().get(1).getKind().equals("Identifier")) {
+            if (node.getChildren().get(1).get("value").equals("length")) {
+                type = new Type("int", false);
+                return type;
+            }
+
+            MethodSymbol method = secondVisitorHelper.getSymbolTableIml().getMethodsHashmap().get(node.getChildren().get(1).get("value"));
+
+            if (method == null)
+                return type;
+
+            type = method.getType();
+        }
+
         return type;
     }
 
@@ -67,37 +87,52 @@ public class SeekReturnTypeVisitor extends PreorderJmmVisitor<SecondVisitorHelpe
         if (type != null)
             return type;
 
-        MethodSymbol methodSymbol = secondVisitorHelper.getSymbolTableIml().getMethodsHashmap().get(secondVisitorHelper.getCurrentMethodName());
+        Symbol symbol = secondVisitorHelper.getSymbolTableIml().lookup(node.get("value"), secondVisitorHelper.getCurrentMethodName());
 
-        for (Symbol symbol : methodSymbol.getVariables().keySet()) {
-            //Exists a local variable with that name
-            if (symbol.getName().equals(node.get("value"))) {
-                type = symbol.getType();
-                return type;
-            }
+        if (symbol == null)
+            return type;
+
+        type = symbol.getType();
+
+        return type;
+    }
+
+    protected Type dealWithNewArray(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
+        if (type != null)
+            return type;
+
+        type = new Type(node.get("value"), node.get("isArray").equals("true"));
+
+        return type;
+    }
+
+    private Type dealWithNewObject(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
+        if (type != null)
+            return type;
+
+        if (node.get("value").equals(secondVisitorHelper.getSymbolTableIml().getClassName())) {
+            type = new Type(node.get("value"), false);
+            return type;
         }
-        for (Symbol symbol : methodSymbol.getParameters()) {
-            //Exists a method parameter variable with that name
-            if (symbol.getName().equals(node.get("value"))) {
-                type = symbol.getType();
-                return type;
-            }
+        if (node.get("value").equals(secondVisitorHelper.getSymbolTableIml().getSuper())) {
+            type = new Type(node.get("value"), false);
+            return type;
         }
-        for (Symbol symbol : secondVisitorHelper.getSymbolTableIml().getHashMapClassFields().keySet()) {
-            //Exists a class Field variable with that name
-            if (symbol.getName().equals(node.get("value"))) {
-                type = symbol.getType();
-                return type;
-            }
+        if (secondVisitorHelper.getSymbolTableIml().getImportedClasses().contains(node.get("value"))) {
+            type = new Type(node.get("value"), false);
+            return type;
         }
+
         return type;
     }
 
     protected Type defaultVisit(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
+
         return type;
     }
 
     public Type getType() {
         return type;
     }
+
 }

@@ -1,99 +1,43 @@
 {
   "rootNode": {
     "kind": "Program",
-    "attributes": {},
+    "attributes": {
+      "col": "1",
+      "line": "1"
+    },
     "children": [
-      {
-        "kind": "ImportPath",
-        "attributes": {
-          "value": "[io, io, jota, aiou]"
-        },
-        "children": []
-      },
-      {
-        "kind": "ImportPath",
-        "attributes": {
-          "value": "[ruben, amorim]"
-        },
-        "children": []
-      },
       {
         "kind": "Class",
         "attributes": {
-          "line": "4",
-          "column": "7",
-          "isArray": "false",
-          "value": "Fac"
+          "col": "1",
+          "line": "1",
+          "value": "T"
         },
         "children": [
           {
             "kind": "Extends",
             "attributes": {
-              "line": "4",
-              "column": "19",
-              "isArray": "false",
-              "value": "Parent"
+              "col": "20",
+              "line": "1",
+              "value": "FCP"
             },
             "children": []
           },
           {
             "kind": "VarDeclaration",
             "attributes": {
-              "line": "5",
-              "column": "11",
-              "isArray": "false",
-              "value": "var1"
+              "col": "5",
+              "line": "2",
+              "value": "b"
             },
             "children": [
               {
                 "kind": "Type",
                 "attributes": {
-                  "line": "5",
-                  "column": "5",
-                  "isArray": "true",
-                  "value": "int"
-                },
-                "children": []
-              }
-            ]
-          },
-          {
-            "kind": "VarDeclaration",
-            "attributes": {
-              "line": "6",
-              "column": "11",
-              "isArray": "false",
-              "value": "var2"
-            },
-            "children": [
-              {
-                "kind": "Type",
-                "attributes": {
-                  "line": "6",
-                  "column": "5",
-                  "isArray": "true",
-                  "value": "int"
-                },
-                "children": []
-              }
-            ]
-          },
-          {
-            "kind": "VarDeclaration",
-            "attributes": {
-              "line": "7",
-              "column": "9",
-              "isArray": "false",
-              "value": "ola"
-            },
-            "children": [
-              {
-                "kind": "Type",
-                "attributes": {
-                  "line": "7",
-                  "column": "5",
+                  "col": "5",
+                  "line": "2",
                   "isArray": "false",
-                  "value": "int"
+                  "value": "T"
                 },
                 "children": []
               }
@@ -102,19 +46,18 @@
           {
             "kind": "VarDeclaration",
             "attributes": {
-              "line": "8",
-              "column": "9",
-              "isArray": "false",
-              "value": "ola2"
+              "col": "5",
+              "line": "3",
+              "value": "d"
             },
             "children": [
               {
                 "kind": "Type",
                 "attributes": {
-                  "line": "8",
-                  "column": "5",
+                  "col": "5",
+                  "line": "3",
                   "isArray": "false",
-                  "value": "int"
+                  "value": "FCP"
                 },
                 "children": []
               }
@@ -123,17 +66,16 @@
           {
             "kind": "ClassMethod",
             "attributes": {
-              "line": "11",
-              "column": "24",
-              "isArray": "false",
+              "col": "12",
+              "line": "4",
               "value": "main"
             },
             "children": [
               {
                 "kind": "Type",
                 "attributes": {
-                  "line": "11",
-                  "column": "19",
+                  "col": "12",
+                  "line": "4",
                   "isArray": "false",
                   "value": "void"
                 },
@@ -141,17 +83,23 @@
               },
               {
                 "kind": "Parameters",
-                "attributes": {},
+                "attributes": {
+                  "col": "29",
+                  "line": "4"
+                },
                 "children": [
                   {
                     "kind": "Parameter",
-                    "attributes": {},
+                    "attributes": {
+                      "col": "38",
+                      "line": "4"
+                    },
                     "children": [
                       {
                         "kind": "Type",
                         "attributes": {
-                          "line": "11",
-                          "column": "29",
+                          "col": "29",
+                          "line": "4",
                           "isArray": "true",
                           "value": "String"
                         },
@@ -160,10 +108,9 @@
                       {
                         "kind": "Identifier",
                         "attributes": {
-                          "line": "11",
-                          "column": "38",
-                          "isArray": "false",
-                          "value": "args"
+                          "col": "38",
+                          "line": "4",
+                          "value": "s"
                         },
                         "children": []
                       }
@@ -173,9 +120,13 @@
               },
               {
                 "kind": "Body",
-                "attributes": {},
+                "attributes": {
+                  "col": "8",
+                  "line": "5"
+                },
                 "children": [
                   {
+<<<<<<< HEAD
                     "kind": "If",
                     "attributes": {},
                     "children": [
@@ -190,24 +141,93 @@
                               {
                                 "kind": "Add",
                                 "attributes": {},
+=======
+                    "kind": "VarDeclaration",
+                    "attributes": {
+                      "col": "8",
+                      "line": "5",
+                      "value": "a"
+                    },
+                    "children": [
+                      {
+                        "kind": "Type",
+                        "attributes": {
+                          "col": "8",
+                          "line": "5",
+                          "isArray": "false",
+                          "value": "int"
+                        },
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "Assignment",
+                    "attributes": {
+                      "col": "12",
+                      "line": "6"
+                    },
+                    "children": [
+                      {
+                        "kind": "Identifier",
+                        "attributes": {
+                          "col": "10",
+                          "line": "6",
+                          "value": "a"
+                        },
+                        "children": []
+                      },
+                      {
+                        "kind": "Add",
+                        "attributes": {
+                          "col": "24",
+                          "line": "6"
+                        },
+                        "children": [
+                          {
+                            "kind": "Add",
+                            "attributes": {
+                              "col": "20",
+                              "line": "6"
+                            },
+                            "children": [
+                              {
+                                "kind": "Add",
+                                "attributes": {
+                                  "col": "16",
+                                  "line": "6"
+                                },
+>>>>>>> ruben_refactor
                                 "children": [
                                   {
                                     "kind": "Integer",
                                     "attributes": {
+<<<<<<< HEAD
                                       "line": "20",
                                       "column": "16",
                                       "isArray": "false",
                                       "value": "1"
+=======
+                                      "col": "14",
+                                      "line": "6",
+                                      "value": "2"
+>>>>>>> ruben_refactor
                                     },
                                     "children": []
                                   },
                                   {
                                     "kind": "Integer",
                                     "attributes": {
+<<<<<<< HEAD
                                       "line": "20",
                                       "column": "18",
                                       "isArray": "false",
                                       "value": "1"
+=======
+                                      "col": "18",
+                                      "line": "6",
+                                      "value": "3"
+>>>>>>> ruben_refactor
                                     },
                                     "children": []
                                   }
@@ -216,14 +236,21 @@
                               {
                                 "kind": "Integer",
                                 "attributes": {
+<<<<<<< HEAD
                                   "line": "20",
                                   "column": "21",
                                   "isArray": "false",
                                   "value": "2"
+=======
+                                  "col": "22",
+                                  "line": "6",
+                                  "value": "3"
+>>>>>>> ruben_refactor
                                 },
                                 "children": []
                               }
                             ]
+<<<<<<< HEAD
                           }
                         ]
                       },
@@ -236,6 +263,19 @@
                         "kind": "Else",
                         "attributes": {},
                         "children": []
+=======
+                          },
+                          {
+                            "kind": "Integer",
+                            "attributes": {
+                              "col": "25",
+                              "line": "6",
+                              "value": "4"
+                            },
+                            "children": []
+                          }
+                        ]
+>>>>>>> ruben_refactor
                       }
                     ]
                   }

@@ -1,12 +1,19 @@
-import io.io.jota.aiou;
-import ruben.amorim;
+class T extends FCP{
+    T b;
+    FCP d;
+    public static void main(String[] s) {
+        FCP c;
+        /*
+        T var2;
 
-class Fac extends Parent {
-    int[] var1;
-    int[] var2;
-    int ola;
-    int ola2;
+        int[] a;
+        int c;
+        // This is valid in Java
+        a = new int[0];
+        c = a[true];
+        */
 
+<<<<<<< HEAD
 
     public static void main(String[] args) {
            // var1[1]+var2[3];
@@ -22,5 +29,11 @@ class Fac extends Parent {
            }
            else{}
 
+=======
+        int[] a;
+        a = new int[3];
+        b= new T();
+        c=new FCP();
+>>>>>>> ruben_refactor
     }
 }
