@@ -21,6 +21,14 @@ public class SecondVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boole
         addVisit("Assignment", this::dealWithAssignment);
         addVisit("And", this::dealWithBooleanOperation);
         addVisit("Not", this::dealWithBooleanOperation);
+
+        addVisit("And", this::dealWithBooleanOperation);
+        addVisit("Not", this::dealWithBooleanOperation);
+        addVisit("Less", this::dealWithBooleanOperation);
+
+        addVisit("If", this::dealWithConditionOperation);
+        addVisit("While", this::dealWithConditionOperation);
+
         setDefaultVisit(this::defaultVisit);
     }
 
@@ -93,16 +101,19 @@ public class SecondVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boole
 
     protected Boolean dealWithBooleanOperation(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
 
-        if (node.getKind().equals("And")) {
-            SeekReturnTypeVisitor seekReturnTypeVisitorLeft = new SeekReturnTypeVisitor();
-            SeekReturnTypeVisitor seekReturnTypeVisitorRight = new SeekReturnTypeVisitor();
+        SeekReturnTypeVisitor seekReturnTypeVisitorLeft = new SeekReturnTypeVisitor();
+        SeekReturnTypeVisitor seekReturnTypeVisitorRight = new SeekReturnTypeVisitor();
 
-            seekReturnTypeVisitorLeft.visit(node.getChildren().get(0), secondVisitorHelper);
-            Type TypeLeft = seekReturnTypeVisitorLeft.getType();
 
-            seekReturnTypeVisitorRight.visit(node.getChildren().get(1), secondVisitorHelper);
+        seekReturnTypeVisitorLeft.visit(node.getChildren().get(0), secondVisitorHelper);
+        Type TypeLeft = seekReturnTypeVisitorLeft.getType();
 
-            Type TypeRight = seekReturnTypeVisitorRight.getType();
+        seekReturnTypeVisitorRight.visit(node.getChildren().get(1), secondVisitorHelper);
+
+        Type TypeRight = seekReturnTypeVisitorRight.getType();
+
+        if (node.getKind().equals("And"))
+        {
 
             System.out.println(!TypeLeft.getName().equals("boolean"));
             System.out.println(!TypeRight.getName().equals("boolean"));
@@ -114,15 +125,10 @@ public class SecondVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boole
                 System.err.println("Right child is null");
 
             else if ((!TypeLeft.getName().equals("boolean")) || (!TypeRight.getName().equals("boolean")))
-                System.err.println("One or more elements are not booleans");
+                System.err.println("One or more elements are not boooleans");
 
-        } else {
-
-            SeekReturnTypeVisitor seekReturnTypeVisitorLeft = new SeekReturnTypeVisitor();
-
-
-            seekReturnTypeVisitorLeft.visit(node.getChildren().get(0), secondVisitorHelper);
-            Type TypeLeft = seekReturnTypeVisitorLeft.getType();
+        }
+        else if(node.getKind().equals("Not")){
 
             if (TypeLeft == null)
                 System.err.println("Left child is null");
@@ -131,6 +137,19 @@ public class SecondVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boole
                 System.err.println("One or more elements are not booleans");
 
         }
+        else if(node.getKind().equals("Less")){
+
+            if (TypeLeft == null)
+                System.err.println("Left child is null");
+
+            if (TypeRight == null)
+                System.err.println("Right child is null");
+
+            else if ((!TypeLeft.getName().equals("int")) || (!TypeRight.getName().equals("int")))
+                System.err.println("The *less* operation is not being used between integers");
+
+        }
+
         return true;
     }
 
@@ -156,6 +175,24 @@ public class SecondVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boole
             return true;
         }
 
+        return true;
+    }
+
+
+    protected Boolean dealWithConditionOperation(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
+
+        JmmNode conditionNode = node.getChildren().get(0).getChildren().get(0);
+        String nodeType = conditionNode.getKind();
+
+        if(nodeType.equals("Boolean")){
+            return true;
+        }
+        else if(nodeType.equals("And") || nodeType.equals("Not") || nodeType.equals("Less")){
+            dealWithBooleanOperation(conditionNode,secondVisitorHelper);
+        }
+        else if(nodeType.equals("Add") || nodeType.equals("Sub") || nodeType.equals("Mult") || nodeType.equals("Div")){
+            System.err.println("If or While statement is not a boolean");
+        }
         return true;
     }
 

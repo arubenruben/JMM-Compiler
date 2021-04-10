@@ -112,6 +112,7 @@ public class Main implements JmmParser, JmmAnalysis {
 
     }
 
+
     public static void writeToFile(String content, String path) {
         try {
             FileWriter myWriter = new FileWriter(path);
