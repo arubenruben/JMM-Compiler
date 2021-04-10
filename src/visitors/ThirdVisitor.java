@@ -27,7 +27,6 @@ public class ThirdVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boolea
         addVisit("MethodCall", this::dealWithMethodCall);
 
         /* TODO:Look At boolean operations
-        addVisit("Assignment", this::dealWithAssignment);
         addVisit("And", this::dealWithBooleanOperation);
         addVisit("Not", this::dealWithBooleanOperation);
          */

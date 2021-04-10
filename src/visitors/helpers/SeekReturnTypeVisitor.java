@@ -17,6 +17,7 @@ public class SeekReturnTypeVisitor extends PreorderJmmVisitor<SecondVisitorHelpe
         addVisit("Boolean", this::dealWithBoolean);
         addVisit("This", this::dealWithThis);
         addVisit("Identifier", this::dealWithIdentifier);
+        addVisit("New", this::dealWithNew);
         setDefaultVisit(this::defaultVisit);
     }
 
@@ -92,7 +93,17 @@ public class SeekReturnTypeVisitor extends PreorderJmmVisitor<SecondVisitorHelpe
         return type;
     }
 
+    protected Type dealWithNew(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
+        if (type != null)
+            return type;
+
+        type = new Type(node.get("value"), node.get("isArray").equals("true"));
+
+        return type;
+    }
+
     protected Type defaultVisit(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
+
         return type;
     }
 
