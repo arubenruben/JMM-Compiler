@@ -19,8 +19,6 @@ public class SecondVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boole
         addVisit("Div", this::dealWithMathOperation);
         addVisit("ArrayAccess", this::dealWithArrayAccess);
         addVisit("Assignment", this::dealWithAssignment);
-        addVisit("And", this::dealWithBooleanOperation);
-        addVisit("Not", this::dealWithBooleanOperation);
 
         addVisit("And", this::dealWithBooleanOperation);
         addVisit("Not", this::dealWithBooleanOperation);
