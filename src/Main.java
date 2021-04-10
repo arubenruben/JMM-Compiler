@@ -1,6 +1,7 @@
 import Symbols.SymbolTableIml;
 import Visitors.FirstVisitor;
 import Visitors.SecondVisitor;
+import Visitors.ThirdVisitor;
 import Visitors.helpers.data_helpers.SecondVisitorHelper;
 import Visitors.helpers.data_helpers.VisitorDataHelper;
 import pt.up.fe.comp.TestUtils;
@@ -100,6 +101,10 @@ public class Main implements JmmParser, JmmAnalysis {
         for (String methodName : symbolTable.getMethodsHashmap().keySet()) {
             AJmmVisitor<SecondVisitorHelper, Boolean> secondVisitor = new SecondVisitor();
             secondVisitor.visit(symbolTable.getNodeMap().get(methodName), new SecondVisitorHelper(methodName, symbolTable, reportList));
+        }
+        for (String methodName : symbolTable.getMethodsHashmap().keySet()) {
+            AJmmVisitor<SecondVisitorHelper, Boolean> thirdVisitor = new ThirdVisitor();
+            thirdVisitor.visit(symbolTable.getNodeMap().get(methodName), new SecondVisitorHelper(methodName, symbolTable, reportList));
         }
 
 
