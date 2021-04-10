@@ -66,7 +66,7 @@ public class FirstVisitor extends PreorderJmmVisitor<VisitorDataHelper, Boolean>
         String variableType = node.getChildren().get(0).get("value");
 
         //If not a primitive it must be imported
-        if (!variableType.equals("int") && !variableType.equals("boolean") && !variableType.equals(visitorDataHelper.getSymbolTableIml().getClassName())) {
+        if (!variableType.equals("int") && !variableType.equals("boolean") && !variableType.equals(visitorDataHelper.getSymbolTableIml().getClassName()) && !variableType.equals(visitorDataHelper.getSymbolTableIml().getSuper())) {
             if (!visitorDataHelper.getSymbolTableIml().getImportedClasses().contains(variableType)) {
                 visitorDataHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.get("line")), "This object type don't exist. Try to import it."));
                 return true;

@@ -15,11 +15,20 @@
         },
         "children": [
           {
+            "kind": "Extends",
+            "attributes": {
+              "col": "20",
+              "line": "1",
+              "value": "FCP"
+            },
+            "children": []
+          },
+          {
             "kind": "VarDeclaration",
             "attributes": {
               "col": "5",
               "line": "2",
-              "value": "var3"
+              "value": "b"
             },
             "children": [
               {
@@ -35,10 +44,30 @@
             ]
           },
           {
+            "kind": "VarDeclaration",
+            "attributes": {
+              "col": "5",
+              "line": "3",
+              "value": "d"
+            },
+            "children": [
+              {
+                "kind": "Type",
+                "attributes": {
+                  "col": "5",
+                  "line": "3",
+                  "isArray": "false",
+                  "value": "FCP"
+                },
+                "children": []
+              }
+            ]
+          },
+          {
             "kind": "ClassMethod",
             "attributes": {
               "col": "12",
-              "line": "3",
+              "line": "4",
               "value": "main"
             },
             "children": [
@@ -46,7 +75,7 @@
                 "kind": "Type",
                 "attributes": {
                   "col": "12",
-                  "line": "3",
+                  "line": "4",
                   "isArray": "false",
                   "value": "void"
                 },
@@ -56,21 +85,21 @@
                 "kind": "Parameters",
                 "attributes": {
                   "col": "29",
-                  "line": "3"
+                  "line": "4"
                 },
                 "children": [
                   {
                     "kind": "Parameter",
                     "attributes": {
                       "col": "38",
-                      "line": "3"
+                      "line": "4"
                     },
                     "children": [
                       {
                         "kind": "Type",
                         "attributes": {
                           "col": "29",
-                          "line": "3",
+                          "line": "4",
                           "isArray": "true",
                           "value": "String"
                         },
@@ -80,7 +109,7 @@
                         "kind": "Identifier",
                         "attributes": {
                           "col": "38",
-                          "line": "3",
+                          "line": "4",
                           "value": "s"
                         },
                         "children": []
@@ -93,24 +122,24 @@
                 "kind": "Body",
                 "attributes": {
                   "col": "9",
-                  "line": "4"
+                  "line": "5"
                 },
                 "children": [
                   {
                     "kind": "VarDeclaration",
                     "attributes": {
                       "col": "9",
-                      "line": "4",
-                      "value": "var2"
+                      "line": "5",
+                      "value": "c"
                     },
                     "children": [
                       {
                         "kind": "Type",
                         "attributes": {
                           "col": "9",
-                          "line": "4",
+                          "line": "5",
                           "isArray": "false",
-                          "value": "T"
+                          "value": "FCP"
                         },
                         "children": []
                       }
@@ -120,7 +149,7 @@
                     "kind": "VarDeclaration",
                     "attributes": {
                       "col": "9",
-                      "line": "13",
+                      "line": "16",
                       "value": "a"
                     },
                     "children": [
@@ -128,7 +157,7 @@
                         "kind": "Type",
                         "attributes": {
                           "col": "9",
-                          "line": "13",
+                          "line": "16",
                           "isArray": "true",
                           "value": "int"
                         },
@@ -140,37 +169,118 @@
                     "kind": "Assignment",
                     "attributes": {
                       "col": "13",
-                      "line": "14"
+                      "line": "17"
                     },
                     "children": [
                       {
                         "kind": "Identifier",
                         "attributes": {
                           "col": "11",
-                          "line": "14",
+                          "line": "17",
                           "value": "a"
                         },
                         "children": []
                       },
                       {
-                        "kind": "New",
+                        "kind": "NewArray",
                         "attributes": {
                           "col": "17",
-                          "line": "14",
+                          "line": "17",
                           "isArray": "true",
                           "value": "int"
                         },
                         "children": [
                           {
-                            "kind": "Boolean",
+                            "kind": "Integer",
                             "attributes": {
-                              "col": "25",
-                              "line": "14",
-                              "value": "true"
+                              "col": "22",
+                              "line": "17",
+                              "value": "3"
                             },
                             "children": []
                           }
                         ]
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "Assignment",
+                    "attributes": {
+                      "col": "12",
+                      "line": "18"
+                    },
+                    "children": [
+                      {
+                        "kind": "Identifier",
+                        "attributes": {
+                          "col": "10",
+                          "line": "18",
+                          "value": "b"
+                        },
+                        "children": []
+                      },
+                      {
+                        "kind": "NewObject",
+                        "attributes": {
+                          "col": "16",
+                          "line": "18",
+                          "value": "T"
+                        },
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "Assignment",
+                    "attributes": {
+                      "col": "11",
+                      "line": "19"
+                    },
+                    "children": [
+                      {
+                        "kind": "Identifier",
+                        "attributes": {
+                          "col": "10",
+                          "line": "19",
+                          "value": "c"
+                        },
+                        "children": []
+                      },
+                      {
+                        "kind": "NewObject",
+                        "attributes": {
+                          "col": "15",
+                          "line": "19",
+                          "value": "FCP"
+                        },
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "Assignment",
+                    "attributes": {
+                      "col": "11",
+                      "line": "20"
+                    },
+                    "children": [
+                      {
+                        "kind": "Identifier",
+                        "attributes": {
+                          "col": "10",
+                          "line": "20",
+                          "value": "b"
+                        },
+                        "children": []
+                      },
+                      {
+                        "kind": "Integer",
+                        "attributes": {
+                          "col": "12",
+                          "line": "20",
+                          "value": "3"
+                        },
+                        "children": []
                       }
                     ]
                   }

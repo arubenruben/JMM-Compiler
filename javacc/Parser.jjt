@@ -362,10 +362,10 @@ void Terminal()#void:{Token t;}
     |
     <NEW>
     (
-    (t=<INT>{addAttributes(jjtThis,t,true);}<LREC>Expression()<RREC>)
+    (t=<INT>{addAttributes(jjtThis,t,true);}<LREC>Expression()<RREC>)#NewArray
     |
-    (t=<IDENTIFIER>{addAttributes(jjtThis,t);}<LPAR> <RPAR>)
-    )#New
+    (t=<IDENTIFIER>{addAttributes(jjtThis,t);}<LPAR> <RPAR>)#NewObject
+    )
 }
 void TerminalNonIdentifier() #void:{Token t;}
 {

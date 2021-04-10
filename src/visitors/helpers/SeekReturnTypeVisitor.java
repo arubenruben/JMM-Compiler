@@ -1,5 +1,8 @@
 package visitors.helpers;
 
+import pt.up.fe.comp.jmm.report.Report;
+import pt.up.fe.comp.jmm.report.ReportType;
+import pt.up.fe.comp.jmm.report.Stage;
 import symbols.MethodSymbol;
 import visitors.helpers.data_helpers.SecondVisitorHelper;
 import pt.up.fe.comp.jmm.JmmNode;
@@ -17,7 +20,9 @@ public class SeekReturnTypeVisitor extends PreorderJmmVisitor<SecondVisitorHelpe
         addVisit("Boolean", this::dealWithBoolean);
         addVisit("This", this::dealWithThis);
         addVisit("Identifier", this::dealWithIdentifier);
-        addVisit("New", this::dealWithNew);
+        addVisit("NewArray", this::dealWithNewArray);
+        addVisit("NewObject", this::dealWithNewObject);
+
         setDefaultVisit(this::defaultVisit);
     }
 
@@ -93,11 +98,31 @@ public class SeekReturnTypeVisitor extends PreorderJmmVisitor<SecondVisitorHelpe
         return type;
     }
 
-    protected Type dealWithNew(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
+    protected Type dealWithNewArray(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
         if (type != null)
             return type;
 
         type = new Type(node.get("value"), node.get("isArray").equals("true"));
+
+        return type;
+    }
+
+    private Type dealWithNewObject(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
+        if (type != null)
+            return type;
+
+        if (node.get("value").equals(secondVisitorHelper.getSymbolTableIml().getClassName())) {
+            type = new Type(node.get("value"), false);
+            return type;
+        }
+        if (node.get("value").equals(secondVisitorHelper.getSymbolTableIml().getSuper())) {
+            type = new Type(node.get("value"), false);
+            return type;
+        }
+        if (secondVisitorHelper.getSymbolTableIml().getImportedClasses().contains(node.get("value"))) {
+            type = new Type(node.get("value"), false);
+            return type;
+        }
 
         return type;
     }
