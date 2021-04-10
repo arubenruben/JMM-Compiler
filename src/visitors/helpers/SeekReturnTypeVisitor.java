@@ -22,7 +22,6 @@ public class SeekReturnTypeVisitor extends PreorderJmmVisitor<SecondVisitorHelpe
         addVisit("Identifier", this::dealWithIdentifier);
         addVisit("NewArray", this::dealWithNewArray);
         addVisit("NewObject", this::dealWithNewObject);
-
         setDefaultVisit(this::defaultVisit);
     }
 

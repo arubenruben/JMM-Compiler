@@ -23,51 +23,11 @@ public class SemanticTest {
         }
     }
 
-    // Test out if the parser succeeds in parsing the files
-    @Test
-    public void testFindMaximum() {
-        testFile("fixtures/public/FindMaximum.jmm", false);
-    }
-
-    @Test
-    public void testHelloWorld() {
-        testFile("fixtures/public/HelloWorld.jmm", false);
-    }
-
-    @Test
-    public void testLazySort() {
-        testFile("fixtures/public/Lazysort.jmm", false);
-    }
-
-    @Test
-    public void testLife() {
-        testFile("fixtures/public/Life.jmm", false);
-    }
-
     @Test
     public void testMonteCarloPi() {
         testFile("fixtures/public/MonteCarloPi.jmm", false);
     }
 
-    @Test
-    public void testQuickSort() {
-        testFile("fixtures/public/QuickSort.jmm", false);
-    }
-
-    @Test
-    public void testSimple() {
-        testFile("fixtures/public/Simple.jmm", false);
-    }
-
-    @Test
-    public void testTicTacToe() {
-        testFile("fixtures/public/TicTacToe.jmm", false);
-    }
-
-    @Test
-    public void testWhileAndIF() {
-        testFile("fixtures/public/WhileAndIF.jmm", false);
-    }
 
     @Test
     public void testArrayIndex() {
