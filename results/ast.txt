@@ -350,100 +350,55 @@
                     ]
                   },
                   {
-                    "kind": "Add",
+                    "kind": "MethodCall",
                     "attributes": {
-                      "col": "31",
-                      "line": "41"
+                      "col": "20",
+                      "line": "20"
                     },
                     "children": [
                       {
-                        "kind": "Add",
+                        "kind": "Identifier",
                         "attributes": {
-                          "col": "16",
-                          "line": "41"
+                          "col": "19",
+                          "line": "20",
+                          "value": "facTest"
+                        },
+                        "children": []
+                      },
+                      {
+                        "kind": "Identifier",
+                        "attributes": {
+                          "col": "20",
+                          "line": "20",
+                          "value": "get"
                         },
                         "children": [
                           {
-                            "kind": "Identifier",
-                            "attributes": {
-                              "col": "15",
-                              "line": "41",
-                              "value": "ola"
-                            },
-                            "children": []
-                          },
-                          {
-                            "kind": "MethodCall",
+                            "kind": "Parameters",
                             "attributes": {
                               "col": "24",
-                              "line": "41"
+                              "line": "20"
                             },
                             "children": [
                               {
-                                "kind": "Identifier",
+                                "kind": "Boolean",
                                 "attributes": {
-                                  "col": "23",
-                                  "line": "41",
-                                  "value": "facTest"
+                                  "col": "28",
+                                  "line": "20",
+                                  "value": "true"
                                 },
                                 "children": []
                               },
                               {
-                                "kind": "Identifier",
+                                "kind": "Integer",
                                 "attributes": {
-                                  "col": "24",
-                                  "line": "41",
-                                  "value": "get"
+                                  "col": "30",
+                                  "line": "20",
+                                  "value": "1"
                                 },
-                                "children": [
-                                  {
-                                    "kind": "Parameters",
-                                    "attributes": {
-                                      "col": "28",
-                                      "line": "41"
-                                    },
-                                    "children": [
-                                      {
-                                        "kind": "Integer",
-                                        "attributes": {
-                                          "col": "29",
-                                          "line": "41",
-                                          "value": "1"
-                                        },
-                                        "children": []
-                                      }
-                                    ]
-                                  }
-                                ]
+                                "children": []
                               }
                             ]
-                          }
-                        ]
-                      },
-                      {
-                        "kind": "MethodCall",
-                        "attributes": {
-                          "col": "36",
-                          "line": "41"
-                        },
-                        "children": [
-                          {
-                            "kind": "Identifier",
-                            "attributes": {
-                              "col": "35",
-                              "line": "41",
-                              "value": "var1"
-                            },
-                            "children": []
-                          },
-                          {
-                            "kind": "Identifier",
-                            "attributes": {
-                              "col": "36",
-                              "line": "41",
-                              "value": "length"
-                            },
-                            "children": []
                           }
                         ]
                       }

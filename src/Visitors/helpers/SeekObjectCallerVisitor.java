@@ -15,10 +15,8 @@ import java.util.List;
 
 public class SeekObjectCallerVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Symbol> {
     private Symbol symbol;
-    private final List<JmmNode> nodeList;
 
     public SeekObjectCallerVisitor() {
-        this.nodeList = new ArrayList<>();
         addVisit("Identifier", this::dealWithIdentifier);
         addVisit("This", this::dealWithIdentifier);
         setDefaultVisit(this::defaultVisit);

@@ -1,5 +1,7 @@
 package Visitors;
 
+import Symbols.MethodSymbol;
+import Visitors.helpers.SeekMethodParametersVisitor;
 import Visitors.helpers.SeekObjectCallerVisitor;
 import Visitors.helpers.data_helpers.SecondVisitorHelper;
 import pt.up.fe.comp.jmm.JmmNode;
@@ -9,6 +11,8 @@ import pt.up.fe.comp.jmm.ast.PreorderJmmVisitor;
 import pt.up.fe.comp.jmm.report.Report;
 import pt.up.fe.comp.jmm.report.ReportType;
 import pt.up.fe.comp.jmm.report.Stage;
+
+import java.util.List;
 
 public class ThirdVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boolean> {
 
@@ -83,7 +87,23 @@ public class ThirdVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boolea
             secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.get("line")), "This object don't contains this method"));
             return true;
         }
+        MethodSymbol method = secondVisitorHelper.getSymbolTableIml().getMethodsHashmap().get(methodName);
 
+        SeekMethodParametersVisitor seekMethodParametersVisitor = new SeekMethodParametersVisitor();
+        seekMethodParametersVisitor.visit(node, secondVisitorHelper);
+
+        List<Type> listParameters = seekMethodParametersVisitor.getParameters();
+
+        if (listParameters.size() != method.getParameters().size()) {
+            secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.get("line")), "Method invocation with the wrong number of parameters"));
+            return true;
+        }
+
+        for (int i = 0; i < listParameters.size(); i++) {
+            if (listParameters.get(i) != method.getParameters().get(i).getType()) {
+                secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.get("line")), "Type of the parameters don't match function arguments"));
+            }
+        }
 
         return true;
     }
