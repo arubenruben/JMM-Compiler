@@ -17,10 +17,9 @@ class Fac extends Parent {
 
     public static void main(String[] args) {
            Fac facTest;
+           /*
+           this.noExists();
 
-            this.noExists();
-
-            /*
            ImportClass.returnArray();
            ImportClass1.returnArray();
            ola3+ola.length1();
@@ -38,8 +37,11 @@ class Fac extends Parent {
            ola3+ola1+ola;
            1+2+3+4*5+6/false;
            1+2+3+4*5+6/2;
+           */
            ola+facTest.get(1)+var1.length;
+           /*
            true+true+ola+ola;
+
            ola+ola+ola+true;
 
            true && true && 1;

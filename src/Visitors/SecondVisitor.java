@@ -40,14 +40,25 @@ public class SecondVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boole
         if (typeRight == null)
             return true;
 
-        if (!typeLeft.equals(typeRight))
+        if (typeLeft.equals(secondVisitorHelper.getSymbolTableIml().getVariableThis().getType())) {
+            secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.get("line")), "Attempt to do a math operation using the this variable. This can only be used to access class methods"));
+            return true;
+        }
+
+        if (!typeLeft.equals(typeRight)) {
             secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.get("line")), "Attempt to do a math operation under operands of different types"));
+            return true;
+        }
 
-        if (typeLeft.isArray())
+        if (typeLeft.isArray()) {
             secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.get("line")), "Left operand could not be an array pointer. Use the syntax array[index] to access and array"));
+            return true;
+        }
 
-        if (typeLeft.isArray())
+        if (typeRight.isArray()) {
             secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.get("line")), "Right operand could not be an array pointer. Use the syntax array[index] to access and array"));
+            return true;
+        }
         return true;
     }
 

@@ -74,6 +74,11 @@ public class ThirdVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boolea
                 return true;
             }
         }
+        //All objects contains length method in this grammar
+        if (methodName.equals("length"))
+            return true;
+
+
         if (!secondVisitorHelper.getSymbolTableIml().getMethodsHashmap().containsKey(methodName)) {
             secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.get("line")), "This object don't contains this method"));
             return true;

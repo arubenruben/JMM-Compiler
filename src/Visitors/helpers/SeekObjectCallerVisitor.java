@@ -52,7 +52,7 @@ public class SeekObjectCallerVisitor extends PreorderJmmVisitor<SecondVisitorHel
             return symbol;
 
         if (node.getKind().equals("This")) {
-            symbol = new Symbol(new Type("this", false), "this");
+            symbol = secondVisitorHelper.getSymbolTableIml().getVariableThis();
             return symbol;
         }
 
@@ -84,7 +84,7 @@ public class SeekObjectCallerVisitor extends PreorderJmmVisitor<SecondVisitorHel
             return symbol;
 
         if (node.getKind().equals("This")) {
-            symbol = new Symbol(new Type("this", false), "this");
+            symbol = secondVisitorHelper.getSymbolTableIml().getVariableThis();
             return symbol;
         }
 

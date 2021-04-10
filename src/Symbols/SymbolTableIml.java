@@ -14,6 +14,7 @@ public class SymbolTableIml implements SymbolTable {
 
     private String className;
     private String superName;
+    private final Symbol variableThis;
     private final List<String> imports;
     private final Map<String, JmmNode> nodeMap;
 
@@ -27,6 +28,7 @@ public class SymbolTableIml implements SymbolTable {
         this.methodsHashmap = new HashMap<>();
         this.imports = new ArrayList<>();
         this.nodeMap = new HashMap<>();
+        this.variableThis = new Symbol(new Type("this", false), "this");
     }
 
 
@@ -85,6 +87,7 @@ public class SymbolTableIml implements SymbolTable {
     }
 
     public Symbol lookup(String variableName, String currentMethodName) {
+
         MethodSymbol methodSymbol = methodsHashmap.get(currentMethodName);
 
         for (Symbol symbol : methodSymbol.getVariables().keySet()) {
@@ -134,5 +137,9 @@ public class SymbolTableIml implements SymbolTable {
 
     public Map<String, JmmNode> getNodeMap() {
         return nodeMap;
+    }
+
+    public Symbol getVariableThis() {
+        return variableThis;
     }
 }
