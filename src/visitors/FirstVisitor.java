@@ -1,8 +1,8 @@
-package Visitors;
+package visitors;
 
-import Symbols.MethodSymbol;
-import Visitors.helpers.MethodBodyVisitor;
-import Visitors.helpers.data_helpers.VisitorDataHelper;
+import symbols.MethodSymbol;
+import visitors.helpers.MethodBodyVisitor;
+import visitors.helpers.data_helpers.VisitorDataHelper;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import pt.up.fe.comp.jmm.JmmNode;

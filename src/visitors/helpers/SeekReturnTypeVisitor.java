@@ -1,7 +1,7 @@
-package Visitors.helpers;
+package visitors.helpers;
 
-import Symbols.MethodSymbol;
-import Visitors.helpers.data_helpers.SecondVisitorHelper;
+import symbols.MethodSymbol;
+import visitors.helpers.data_helpers.SecondVisitorHelper;
 import pt.up.fe.comp.jmm.JmmNode;
 import pt.up.fe.comp.jmm.analysis.table.Symbol;
 import pt.up.fe.comp.jmm.analysis.table.Type;

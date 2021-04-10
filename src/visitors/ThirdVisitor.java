@@ -1,9 +1,9 @@
-package Visitors;
+package visitors;
 
-import Symbols.MethodSymbol;
-import Visitors.helpers.SeekMethodParametersVisitor;
-import Visitors.helpers.SeekObjectCallerVisitor;
-import Visitors.helpers.data_helpers.SecondVisitorHelper;
+import symbols.MethodSymbol;
+import visitors.helpers.SeekMethodParametersVisitor;
+import visitors.helpers.SeekObjectCallerVisitor;
+import visitors.helpers.data_helpers.SecondVisitorHelper;
 import pt.up.fe.comp.jmm.JmmNode;
 import pt.up.fe.comp.jmm.analysis.table.Symbol;
 import pt.up.fe.comp.jmm.analysis.table.Type;

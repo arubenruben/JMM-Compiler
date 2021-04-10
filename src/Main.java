@@ -1,9 +1,9 @@
-import Symbols.SymbolTableIml;
-import Visitors.FirstVisitor;
-import Visitors.SecondVisitor;
-import Visitors.ThirdVisitor;
-import Visitors.helpers.data_helpers.SecondVisitorHelper;
-import Visitors.helpers.data_helpers.VisitorDataHelper;
+import symbols.SymbolTableIml;
+import visitors.FirstVisitor;
+import visitors.SecondVisitor;
+import visitors.ThirdVisitor;
+import visitors.helpers.data_helpers.SecondVisitorHelper;
+import visitors.helpers.data_helpers.VisitorDataHelper;
 import pt.up.fe.comp.TestUtils;
 import pt.up.fe.comp.jmm.JmmNode;
 import pt.up.fe.comp.jmm.JmmParser;

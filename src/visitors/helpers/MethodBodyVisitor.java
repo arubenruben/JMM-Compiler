@@ -1,6 +1,6 @@
-package Visitors.helpers;
+package visitors.helpers;
 
-import Symbols.MethodSymbol;
+import symbols.MethodSymbol;
 import pt.up.fe.comp.jmm.JmmNode;
 import pt.up.fe.comp.jmm.analysis.table.Symbol;
 import pt.up.fe.comp.jmm.analysis.table.Type;

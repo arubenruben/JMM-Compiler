@@ -1,6 +1,6 @@
-package Visitors.helpers.data_helpers;
+package visitors.helpers.data_helpers;
 
-import Symbols.SymbolTableIml;
+import symbols.SymbolTableIml;
 import pt.up.fe.comp.jmm.report.Report;
 
 import java.util.List;
