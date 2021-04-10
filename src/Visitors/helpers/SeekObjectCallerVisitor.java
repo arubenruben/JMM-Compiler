@@ -3,6 +3,7 @@ package Visitors.helpers;
 import Visitors.helpers.data_helpers.SecondVisitorHelper;
 import pt.up.fe.comp.jmm.JmmNode;
 import pt.up.fe.comp.jmm.analysis.table.Symbol;
+import pt.up.fe.comp.jmm.analysis.table.Type;
 import pt.up.fe.comp.jmm.ast.AJmmVisitor;
 import pt.up.fe.comp.jmm.ast.PreorderJmmVisitor;
 import pt.up.fe.comp.jmm.report.Report;
@@ -19,8 +20,10 @@ public class SeekObjectCallerVisitor extends PreorderJmmVisitor<SecondVisitorHel
     public SeekObjectCallerVisitor() {
         this.nodeList = new ArrayList<>();
         addVisit("Identifier", this::dealWithIdentifier);
+        addVisit("This", this::dealWithIdentifier);
         setDefaultVisit(this::defaultVisit);
     }
+
 
     protected Symbol dealWithIdentifier(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
         if (symbol != null)
@@ -48,6 +51,11 @@ public class SeekObjectCallerVisitor extends PreorderJmmVisitor<SecondVisitorHel
         if (symbol != null)
             return symbol;
 
+        if (node.getKind().equals("This")) {
+            symbol = new Symbol(new Type("this", false), "this");
+            return symbol;
+        }
+
         symbol = secondVisitorHelper.getSymbolTableIml().lookup(node.get("value"), secondVisitorHelper.getCurrentMethodName());
 
         if (symbol == null)
@@ -60,6 +68,11 @@ public class SeekObjectCallerVisitor extends PreorderJmmVisitor<SecondVisitorHel
         if (symbol != null)
             return symbol;
 
+        if (node.getKind().equals("This")) {
+            secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.get("line")), "This is not an array"));
+            return symbol;
+        }
+
         symbol = secondVisitorHelper.getSymbolTableIml().lookup(node.get("value"), secondVisitorHelper.getCurrentMethodName());
 
         return symbol;
@@ -69,6 +82,11 @@ public class SeekObjectCallerVisitor extends PreorderJmmVisitor<SecondVisitorHel
     protected Symbol dealWithMethodCall(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
         if (symbol != null)
             return symbol;
+
+        if (node.getKind().equals("This")) {
+            symbol = new Symbol(new Type("this", false), "this");
+            return symbol;
+        }
 
         symbol = secondVisitorHelper.getSymbolTableIml().lookup(node.get("value"), secondVisitorHelper.getCurrentMethodName());
 

@@ -35,6 +35,17 @@ public class SymbolTableIml implements SymbolTable {
         return imports;
     }
 
+    public List<String> getImportedClasses() {
+        List<String> importedClasses = new ArrayList<>();
+
+        for (String importStr : imports) {
+            String[] result = importStr.split("\\.");
+            importedClasses.add(result[result.length - 1]);
+        }
+
+        return importedClasses;
+    }
+
     @Override
     public String getClassName() {
         return className;

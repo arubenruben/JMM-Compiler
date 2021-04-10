@@ -1,5 +1,6 @@
 import io.io.jota.aiou;
 import ruben.amorim;
+import utils.ImportClass;
 
 class Fac extends Parent {
     int[] var1;
@@ -17,10 +18,13 @@ class Fac extends Parent {
     public static void main(String[] args) {
            Fac facTest;
 
-           ola3+ola.length1();
+            this.noExists();
 
-           facTest.returnArray1();
             /*
+           ImportClass.returnArray();
+           ImportClass1.returnArray();
+           ola3+ola.length1();
+           this+1;
            var3[true]+ola;
            facTest=new Fac();
            ola=2;
