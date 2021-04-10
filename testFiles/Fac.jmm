@@ -1,53 +1,7 @@
-import io.io.jota.aiou;
-import ruben.amorim;
-import utils.ImportClass;
-
-class Fac extends Parent {
-    int[] var1;
-    int[] var2;
-    int ola;
-    int ola2;
-
-    public int get(int number){
-        return number;
-    }
-    public int[] returnArray(){
-        return var1;
-    }
-
-    public static void main(String[] args) {
-           Fac facTest;
-           facTest.get(true,1);
-           /*
-
-           ImportClass.returnArray();
-           ImportClass1.returnArray();
-           ola3+ola.length1();
-           this+1;
-           var3[true]+ola;
-           facTest=new Fac();
-           ola=2;
-           var1[2]=3;
-           var21[2]+var31[3];
-           facTest.get(1)+facTest.get(1);
-           ola[facTest.returnArray()]+var1[true];
-
-           var1[1]+var3[3];
-           var1+var2;
-           ola3+ola1+ola;
-           1+2+3+4*5+6/false;
-           1+2+3+4*5+6/2;
-           ola+facTest.get(1)+var1.length;
-
-
-           true+true+ola+ola;
-
-           ola+ola+ola+true;
-
-           true && true && 1;
-           !1 && true;
-           ola+ola+ola+true;
-           ola+ola+ola+ola;
-           */
+class T {
+    public static void main(String[] a) { 
+        int i;
+        i = 0.length;
+        i = i.length;
     }
 }

@@ -79,9 +79,13 @@ public class ThirdVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boolea
             }
         }
         //All objects contains length method in this grammar
-        if (methodName.equals("length"))
+        if (!symbol.getType().isArray() && methodName.equals("length")){
+            secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.get("line")), "Only arrays have length method"));
             return true;
+        }
 
+        else if (symbol.getType().isArray() && methodName.equals("length"))
+            return true;
 
         if (!secondVisitorHelper.getSymbolTableIml().getMethodsHashmap().containsKey(methodName)) {
             secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.get("line")), "This object don't contains this method"));
