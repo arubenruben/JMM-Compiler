@@ -1,5 +1,11 @@
 package visitors;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import pt.up.fe.comp.jmm.JmmNode;
+import pt.up.fe.comp.jmm.analysis.table.Symbol;
+import pt.up.fe.comp.jmm.analysis.table.Type;
+import pt.up.fe.comp.jmm.ast.PreorderJmmVisitor;
 import pt.up.fe.comp.jmm.report.Report;
 import pt.up.fe.comp.jmm.report.ReportType;
 import pt.up.fe.comp.jmm.report.Stage;
@@ -7,12 +13,6 @@ import symbols.MethodSymbol;
 import visitors.helpers.MethodBodyVisitor;
 import visitors.helpers.data_helpers.MethodBodyDataHelper;
 import visitors.helpers.data_helpers.VisitorDataHelper;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import pt.up.fe.comp.jmm.JmmNode;
-import pt.up.fe.comp.jmm.analysis.table.Symbol;
-import pt.up.fe.comp.jmm.analysis.table.Type;
-import pt.up.fe.comp.jmm.ast.PreorderJmmVisitor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,7 +68,7 @@ public class FirstVisitor extends PreorderJmmVisitor<VisitorDataHelper, Boolean>
         //If not a primitive it must be imported
         if (!variableType.equals("int") && !variableType.equals("boolean") && !variableType.equals(visitorDataHelper.getSymbolTableIml().getClassName()) && !variableType.equals(visitorDataHelper.getSymbolTableIml().getSuper())) {
             if (!visitorDataHelper.getSymbolTableIml().getImportedClasses().contains(variableType)) {
-                visitorDataHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.get("line")), "This object type don't exist. Try to import it."));
+                visitorDataHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.get("line")),Integer.parseInt(node.get("col")), "This object type don't exist. Try to import it."));
                 return true;
             }
         }

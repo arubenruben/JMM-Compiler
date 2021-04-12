@@ -1,20 +1,12 @@
-import symbols.SymbolTableIml;
-import visitors.FirstVisitor;
-import visitors.SecondVisitor;
-import visitors.ThirdVisitor;
-import visitors.helpers.data_helpers.SecondVisitorHelper;
-import visitors.helpers.data_helpers.VisitorDataHelper;
 import pt.up.fe.comp.TestUtils;
-import pt.up.fe.comp.jmm.JmmNode;
 import pt.up.fe.comp.jmm.JmmParser;
 import pt.up.fe.comp.jmm.JmmParserResult;
-import pt.up.fe.comp.jmm.analysis.JmmAnalysis;
 import pt.up.fe.comp.jmm.analysis.JmmSemanticsResult;
-import pt.up.fe.comp.jmm.ast.AJmmVisitor;
 import pt.up.fe.comp.jmm.report.Report;
 import pt.up.fe.comp.jmm.report.ReportType;
 import pt.up.fe.comp.jmm.report.Stage;
 import pt.up.fe.specs.util.SpecsIo;
+import stages.AnalysisStage;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -25,43 +17,9 @@ import java.util.List;
 import java.util.Scanner;
 
 
-public class Main implements JmmParser, JmmAnalysis {
+public class Main implements JmmParser {
 
-
-    public static void main(String[] args) {
-        String code;
-        Main main = new Main();
-        JmmParserResult parserResult;
-
-        if (args[0].contains("fail"))
-            throw new RuntimeException("It's supposed to fail");
-
-
-        System.out.println("Executing with args: " + Arrays.toString(args));
-
-        code = SpecsIo.read(args[0]);
-
-        parserResult = main.parse(code);
-
-        Utils.printReports(parserResult.getReports());
-
-        if (parserResult.getRootNode() != null)
-            writeToFile(parserResult.toJson(), "results/ast.txt");
-
-        if (parserResult.getRootNode() == null)
-            return;
-
-        if (TestUtils.getNumReports(parserResult.getReports(), ReportType.ERROR) > 0)
-            return;
-
-        JmmSemanticsResult semanticsResults = main.semanticAnalysis(parserResult);
-
-        Utils.printSymbolTable(semanticsResults.getSymbolTable());
-        Utils.printReports(semanticsResults.getReports());
-
-    }
-
-
+    @Override
     public JmmParserResult parse(String jmmCode) {
         //TODO: Check if this is only a error given out by the idea
         List<Report> reports = new ArrayList<>();
@@ -87,28 +45,35 @@ public class Main implements JmmParser, JmmAnalysis {
         }
     }
 
-    public JmmSemanticsResult semanticAnalysis(JmmParserResult parserResult) {
 
-        // Convert Simple node to JmmNodeIml
-        JmmNode node = parserResult.getRootNode().sanitize();
+    public static void main(String[] args) {
+        String code;
+        JmmParserResult parserResult;
 
-        SymbolTableIml symbolTable = new SymbolTableIml();
-        List<Report> reportList = new ArrayList<>(parserResult.getReports());
+        if (args[0].contains("fail"))
+            throw new RuntimeException("It's supposed to fail");
 
-        AJmmVisitor<VisitorDataHelper, Boolean> firstVisitor = new FirstVisitor();
-        firstVisitor.visit(node, new VisitorDataHelper(symbolTable, reportList));
+        System.out.println("Executing with args: " + Arrays.toString(args));
 
-        for (String methodName : symbolTable.getMethodsHashmap().keySet()) {
-            AJmmVisitor<SecondVisitorHelper, Boolean> secondVisitor = new SecondVisitor();
-            secondVisitor.visit(symbolTable.getNodeMap().get(methodName), new SecondVisitorHelper(methodName, symbolTable, reportList));
-        }
-        for (String methodName : symbolTable.getMethodsHashmap().keySet()) {
-            AJmmVisitor<SecondVisitorHelper, Boolean> thirdVisitor = new ThirdVisitor();
-            thirdVisitor.visit(symbolTable.getNodeMap().get(methodName), new SecondVisitorHelper(methodName, symbolTable, reportList));
-        }
+        code = SpecsIo.read(args[0]);
 
+        parserResult = new Main().parse(code);
 
-        return new JmmSemanticsResult(node, symbolTable, reportList);
+        Utils.printReports(parserResult.getReports());
+
+        if (parserResult.getRootNode() != null)
+            writeToFile(parserResult.toJson(), "results/ast.txt");
+
+        if (parserResult.getRootNode() == null)
+            return;
+
+        if (TestUtils.getNumReports(parserResult.getReports(), ReportType.ERROR) > 0)
+            return;
+
+        JmmSemanticsResult semanticsResults = new AnalysisStage().semanticAnalysis(parserResult);
+
+        Utils.printSymbolTable(semanticsResults.getSymbolTable());
+        Utils.printReports(semanticsResults.getReports());
 
     }
 

@@ -1,17 +1,15 @@
 package visitors.helpers;
 
-import pt.up.fe.comp.jmm.report.Report;
-import pt.up.fe.comp.jmm.report.ReportType;
-import pt.up.fe.comp.jmm.report.Stage;
-import symbols.MethodSymbol;
-import visitors.helpers.data_helpers.SecondVisitorHelper;
 import pt.up.fe.comp.jmm.JmmNode;
 import pt.up.fe.comp.jmm.analysis.table.Symbol;
 import pt.up.fe.comp.jmm.analysis.table.Type;
 import pt.up.fe.comp.jmm.ast.PreorderJmmVisitor;
+import symbols.MethodSymbol;
+import visitors.helpers.data_helpers.SecondVisitorHelper;
 
 public class SeekReturnTypeVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Type> {
     private Type type;
+    private boolean mustFail = false;
 
     public SeekReturnTypeVisitor() {
         addVisit("ArrayAccess", this::dealWithArrayAccess);
@@ -26,7 +24,7 @@ public class SeekReturnTypeVisitor extends PreorderJmmVisitor<SecondVisitorHelpe
     }
 
     protected Type dealWithArrayAccess(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
-        if (type != null)
+        if (type != null || mustFail)
             return type;
 
         type = new Type("int", false);
@@ -36,7 +34,7 @@ public class SeekReturnTypeVisitor extends PreorderJmmVisitor<SecondVisitorHelpe
 
     protected Type dealWithMethodCall(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
 
-        if (type != null)
+        if (type != null || mustFail)
             return type;
 
         if (node.getChildren().get(1).getKind().equals("Identifier")) {
@@ -47,8 +45,10 @@ public class SeekReturnTypeVisitor extends PreorderJmmVisitor<SecondVisitorHelpe
 
             MethodSymbol method = secondVisitorHelper.getSymbolTableIml().getMethodsHashmap().get(node.getChildren().get(1).get("value"));
 
-            if (method == null)
+            if (method == null) {
+                mustFail = true;
                 return type;
+            }
 
             type = method.getType();
         }
@@ -57,7 +57,7 @@ public class SeekReturnTypeVisitor extends PreorderJmmVisitor<SecondVisitorHelpe
     }
 
     protected Type dealWithInteger(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
-        if (type != null)
+        if (type != null || mustFail)
             return type;
 
         type = new Type("int", false);
@@ -66,7 +66,7 @@ public class SeekReturnTypeVisitor extends PreorderJmmVisitor<SecondVisitorHelpe
     }
 
     protected Type dealWithBoolean(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
-        if (type != null)
+        if (type != null || mustFail)
             return type;
 
         type = new Type("boolean", false);
@@ -75,7 +75,7 @@ public class SeekReturnTypeVisitor extends PreorderJmmVisitor<SecondVisitorHelpe
     }
 
     protected Type dealWithThis(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
-        if (type != null)
+        if (type != null || mustFail)
             return type;
 
         type = new Type("this", false);
@@ -84,13 +84,15 @@ public class SeekReturnTypeVisitor extends PreorderJmmVisitor<SecondVisitorHelpe
     }
 
     protected Type dealWithIdentifier(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
-        if (type != null)
+        if (type != null || mustFail)
             return type;
 
         Symbol symbol = secondVisitorHelper.getSymbolTableIml().lookup(node.get("value"), secondVisitorHelper.getCurrentMethodName());
 
-        if (symbol == null)
+        if (symbol == null) {
+            mustFail = true;
             return type;
+        }
 
         type = symbol.getType();
 
@@ -98,7 +100,7 @@ public class SeekReturnTypeVisitor extends PreorderJmmVisitor<SecondVisitorHelpe
     }
 
     protected Type dealWithNewArray(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
-        if (type != null)
+        if (type != null || mustFail)
             return type;
 
         type = new Type(node.get("value"), node.get("isArray").equals("true"));
@@ -107,7 +109,7 @@ public class SeekReturnTypeVisitor extends PreorderJmmVisitor<SecondVisitorHelpe
     }
 
     private Type dealWithNewObject(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
-        if (type != null)
+        if (type != null || mustFail)
             return type;
 
         if (node.get("value").equals(secondVisitorHelper.getSymbolTableIml().getClassName())) {

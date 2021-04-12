@@ -1,6 +1,5 @@
 import org.junit.Test;
 import pt.up.fe.comp.TestUtils;
-import pt.up.fe.comp.jmm.JmmParserResult;
 import pt.up.fe.comp.jmm.analysis.JmmSemanticsResult;
 import pt.up.fe.specs.util.SpecsIo;
 
@@ -24,10 +23,53 @@ public class SemanticTest {
     }
 
     @Test
+    public void testFindMaximum() {
+        testFile("fixtures/public/FindMaximum.jmm", false);
+    }
+
+    @Test
+    public void testHelloWorld() {
+        testFile("fixtures/public/HelloWorld.jmm", false);
+    }
+
+    @Test
+    public void testLazySort() {
+        testFile("fixtures/public/Lazysort.jmm", true);
+    }
+
+    @Test
+    public void testLife() {
+        testFile("fixtures/public/Life.jmm", false);
+    }
+
+    @Test
     public void testMonteCarloPi() {
         testFile("fixtures/public/MonteCarloPi.jmm", false);
     }
 
+
+    /*TODO:Allow method overload
+    @Test
+    public void testQuickSort() {
+        testFile("fixtures/public/QuickSort.jmm", true);
+    }
+
+     */
+
+    @Test
+    public void testSimple() {
+        testFile("fixtures/public/Simple.jmm", false);
+    }
+
+    @Test
+    public void testTicTacToe() {
+        testFile("fixtures/public/TicTacToe.jmm", false);
+    }
+
+    @Test
+    public void testWhileAndIF() {
+        testFile("fixtures/public/WhileAndIF.jmm", false);
+    }
 
     @Test
     public void testArrayIndex() {
@@ -71,12 +113,12 @@ public class SemanticTest {
 
     @Test
     public void testNotDefineVarAssignment() {
-        testFile("fixtures/public/fail/semantic/var_undef.jmm", true);
+        testFile("fixtures/public/fail/semantic/var_undef.jmm", false);
     }
 
     @Test
     public void testNotAssignedVariable() {
-        testFile("fixtures/public/fail/semantic/varNotInit.jmm", true);
+        testFile("fixtures/public/fail/semantic/varNotInit.jmm", false);
     }
 
 

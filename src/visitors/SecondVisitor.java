@@ -1,13 +1,13 @@
 package visitors;
 
-import visitors.helpers.SeekReturnTypeVisitor;
-import visitors.helpers.data_helpers.SecondVisitorHelper;
 import pt.up.fe.comp.jmm.JmmNode;
 import pt.up.fe.comp.jmm.analysis.table.Type;
 import pt.up.fe.comp.jmm.ast.PreorderJmmVisitor;
 import pt.up.fe.comp.jmm.report.Report;
 import pt.up.fe.comp.jmm.report.ReportType;
 import pt.up.fe.comp.jmm.report.Stage;
+import visitors.helpers.SeekReturnTypeVisitor;
+import visitors.helpers.data_helpers.SecondVisitorHelper;
 
 
 public class SecondVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boolean> {
@@ -47,22 +47,22 @@ public class SecondVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boole
             return true;
 
         if (typeLeft.equals(secondVisitorHelper.getSymbolTableIml().getVariableThis().getType())) {
-            secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.get("line")), "Attempt to do a math operation using the this variable. This can only be used to access class methods"));
+            secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.get("line")),Integer.parseInt(node.get("col")), "Attempt to do a math operation using the this variable. This can only be used to access class methods"));
             return true;
         }
 
         if (!typeLeft.equals(typeRight)) {
-            secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.get("line")), "Attempt to do a math operation under operands of different types"));
+            secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.get("line")),Integer.parseInt(node.get("col")), "Attempt to do a math operation under operands of different types"));
             return true;
         }
 
         if (typeLeft.isArray()) {
-            secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.get("line")), "Left operand could not be an array pointer. Use the syntax array[index] to access and array"));
+            secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.get("line")),Integer.parseInt(node.get("col")), "Left operand could not be an array pointer. Use the syntax array[index] to access and array"));
             return true;
         }
 
         if (typeRight.isArray()) {
-            secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.get("line")), "Right operand could not be an array pointer. Use the syntax array[index] to access and array"));
+            secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.get("line")),Integer.parseInt(node.get("col")), "Right operand could not be an array pointer. Use the syntax array[index] to access and array"));
             return true;
         }
         return true;
@@ -85,12 +85,12 @@ public class SecondVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boole
             return true;
 
         if (!typeLeft.isArray()) {
-            secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.get("line")), "Try to array access in non array type. You can only perform array access on arrays"));
+            secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.get("line")),Integer.parseInt(node.get("col")), "Try to array access in non array type. You can only perform array access on arrays"));
             return false;
         }
 
         if (!typeRight.isArray() && !typeRight.getName().equals("int")) {
-            secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.get("line")), "Index in array access must be of type integer"));
+            secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.get("line")),Integer.parseInt(node.get("col")), "Index in array access must be of type integer"));
             return false;
         }
 
@@ -98,7 +98,7 @@ public class SecondVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boole
     }
 
     protected Boolean dealWithBooleanOperation(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
-
+    /*
         SeekReturnTypeVisitor seekReturnTypeVisitorLeft = new SeekReturnTypeVisitor();
         SeekReturnTypeVisitor seekReturnTypeVisitorRight = new SeekReturnTypeVisitor();
 
@@ -148,7 +148,9 @@ public class SecondVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boole
 
         }
 
+     */
         return true;
+
     }
 
     protected Boolean dealWithAssignment(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
@@ -169,7 +171,8 @@ public class SecondVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boole
             return true;
 
         if (!typeLeft.equals(typeRight)) {
-            secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.get("line")), "Try to assign operands of different types"));
+            System.out.println(typeLeft.toString() + " Direita" + typeRight.toString());
+            secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.get("line")),Integer.parseInt(node.get("col")), "Try to assign operands of different types"));
             return true;
         }
 
@@ -182,13 +185,11 @@ public class SecondVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boole
         JmmNode conditionNode = node.getChildren().get(0).getChildren().get(0);
         String nodeType = conditionNode.getKind();
 
-        if(nodeType.equals("Boolean")){
+        if (nodeType.equals("Boolean")) {
             return true;
-        }
-        else if(nodeType.equals("And") || nodeType.equals("Not") || nodeType.equals("Less")){
-            dealWithBooleanOperation(conditionNode,secondVisitorHelper);
-        }
-        else if(nodeType.equals("Add") || nodeType.equals("Sub") || nodeType.equals("Mult") || nodeType.equals("Div")){
+        } else if (nodeType.equals("And") || nodeType.equals("Not") || nodeType.equals("Less")) {
+            dealWithBooleanOperation(conditionNode, secondVisitorHelper);
+        } else if (nodeType.equals("Add") || nodeType.equals("Sub") || nodeType.equals("Mult") || nodeType.equals("Div")) {
             System.err.println("If or While statement is not a boolean");
         }
         return true;

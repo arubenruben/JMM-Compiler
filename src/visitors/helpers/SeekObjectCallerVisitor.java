@@ -1,20 +1,34 @@
 package visitors.helpers;
 
-import visitors.helpers.data_helpers.SecondVisitorHelper;
 import pt.up.fe.comp.jmm.JmmNode;
 import pt.up.fe.comp.jmm.analysis.table.Symbol;
 import pt.up.fe.comp.jmm.ast.PreorderJmmVisitor;
 import pt.up.fe.comp.jmm.report.Report;
 import pt.up.fe.comp.jmm.report.ReportType;
 import pt.up.fe.comp.jmm.report.Stage;
+import visitors.helpers.data_helpers.SecondVisitorHelper;
 
 public class SeekObjectCallerVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Symbol> {
     private Symbol symbol;
 
     public SeekObjectCallerVisitor() {
+        addVisit("Not", this::dealWithUnaryOperator);
         addVisit("Identifier", this::dealWithIdentifier);
         addVisit("This", this::dealWithIdentifier);
         setDefaultVisit(this::defaultVisit);
+    }
+
+    private Symbol dealWithUnaryOperator(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
+        if (symbol != null)
+            return symbol;
+
+        if (node.getChildren().get(0).getKind().equals("Identifier"))
+            return dealWithVariable(node.getChildren().get(0), secondVisitorHelper);
+
+        if (node.getChildren().get(0).getKind().equals("This"))
+            return dealWithVariable(node.getChildren().get(0), secondVisitorHelper);
+
+        return symbol;
     }
 
 
@@ -52,7 +66,7 @@ public class SeekObjectCallerVisitor extends PreorderJmmVisitor<SecondVisitorHel
         symbol = secondVisitorHelper.getSymbolTableIml().lookup(node.get("value"), secondVisitorHelper.getCurrentMethodName());
 
         if (symbol == null)
-            secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.get("line")), "Non declared variable"));
+            secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.get("line")), Integer.parseInt(node.get("col")), "Non declared variable"));
 
         return symbol;
     }
@@ -62,7 +76,7 @@ public class SeekObjectCallerVisitor extends PreorderJmmVisitor<SecondVisitorHel
             return symbol;
 
         if (node.getKind().equals("This")) {
-            secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.get("line")), "This is not an array"));
+            secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.get("line")), Integer.parseInt(node.get("col")), "This is not an array"));
             return symbol;
         }
 

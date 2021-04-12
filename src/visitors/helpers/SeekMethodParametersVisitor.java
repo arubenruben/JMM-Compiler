@@ -1,9 +1,9 @@
 package visitors.helpers;
 
-import visitors.helpers.data_helpers.SecondVisitorHelper;
 import pt.up.fe.comp.jmm.JmmNode;
 import pt.up.fe.comp.jmm.analysis.table.Type;
 import pt.up.fe.comp.jmm.ast.PreorderJmmVisitor;
+import visitors.helpers.data_helpers.SecondVisitorHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,9 +19,10 @@ public class SeekMethodParametersVisitor extends PreorderJmmVisitor<SecondVisito
 
     protected Boolean dealWithParameters(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
 
-        SeekReturnTypeVisitor seekReturnTypeVisitor = new SeekReturnTypeVisitor();
 
         for (JmmNode childNode : node.getChildren()) {
+
+            SeekReturnTypeVisitor seekReturnTypeVisitor = new SeekReturnTypeVisitor();
 
             seekReturnTypeVisitor.visit(childNode, secondVisitorHelper);
             Type type = seekReturnTypeVisitor.getType();

@@ -5,6 +5,7 @@ import pt.up.fe.comp.jmm.JmmNode;
 import pt.up.fe.comp.jmm.JmmParserResult;
 import pt.up.fe.comp.jmm.analysis.JmmAnalysis;
 import pt.up.fe.comp.jmm.analysis.JmmSemanticsResult;
+import pt.up.fe.comp.jmm.ast.AJmmVisitor;
 import pt.up.fe.comp.jmm.ast.examples.ExamplePostorderVisitor;
 import pt.up.fe.comp.jmm.ast.examples.ExamplePreorderVisitor;
 import pt.up.fe.comp.jmm.ast.examples.ExamplePrintVariables;
@@ -12,52 +13,42 @@ import pt.up.fe.comp.jmm.ast.examples.ExampleVisitor;
 import pt.up.fe.comp.jmm.report.Report;
 import pt.up.fe.comp.jmm.report.ReportType;
 import pt.up.fe.comp.jmm.report.Stage;
+import symbols.SymbolTableIml;
+import visitors.FirstVisitor;
+import visitors.SecondVisitor;
+import visitors.ThirdVisitor;
+import visitors.helpers.data_helpers.SecondVisitorHelper;
+import visitors.helpers.data_helpers.VisitorDataHelper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 public class AnalysisStage implements JmmAnalysis {
 
     @Override
     public JmmSemanticsResult semanticAnalysis(JmmParserResult parserResult) {
 
-        if (TestUtils.getNumReports(parserResult.getReports(), ReportType.ERROR) > 0) {
-            var errorReport = new Report(ReportType.ERROR, Stage.SEMANTIC, -1,
-                    "Started semantic analysis but there are errors from previous stage");
-            return new JmmSemanticsResult(parserResult, null, Arrays.asList(errorReport));
+        // Convert Simple node to JmmNodeIml
+        JmmNode node = parserResult.getRootNode().sanitize();
+
+        SymbolTableIml symbolTable = new SymbolTableIml();
+        List<Report> reportList = new ArrayList<>(parserResult.getReports());
+
+        AJmmVisitor<VisitorDataHelper, Boolean> firstVisitor = new FirstVisitor();
+        firstVisitor.visit(node, new VisitorDataHelper(symbolTable, reportList));
+
+        for (String methodName : symbolTable.getMethodsHashmap().keySet()) {
+            AJmmVisitor<SecondVisitorHelper, Boolean> secondVisitor = new SecondVisitor();
+            secondVisitor.visit(symbolTable.getNodeMap().get(methodName), new SecondVisitorHelper(methodName, symbolTable, reportList));
+        }
+        for (String methodName : symbolTable.getMethodsHashmap().keySet()) {
+            AJmmVisitor<SecondVisitorHelper, Boolean> thirdVisitor = new ThirdVisitor();
+            thirdVisitor.visit(symbolTable.getNodeMap().get(methodName), new SecondVisitorHelper(methodName, symbolTable, reportList));
         }
 
-        if (parserResult.getRootNode() == null) {
-            var errorReport = new Report(ReportType.ERROR, Stage.SEMANTIC, -1,
-                    "Started semantic analysis but AST root node is null");
-            return new JmmSemanticsResult(parserResult, null, Arrays.asList(errorReport));
-        }
-
-        JmmNode node = parserResult.getRootNode();
-
-        System.out.println("Dump tree with Visitor where you control tree traversal");
-        ExampleVisitor visitor = new ExampleVisitor("Identifier", "id");
-        System.out.println(visitor.visit(node, ""));
-
-        System.out.println("Dump tree with Visitor that automatically performs preorder tree traversal");
-        var preOrderVisitor = new ExamplePreorderVisitor("Identifier", "id");
-        System.out.println(preOrderVisitor.visit(node, ""));
-
-        System.out.println(
-                "Create histogram of node kinds with Visitor that automatically performs postorder tree traversal");
-        var postOrderVisitor = new ExamplePostorderVisitor();
-        var kindCount = new HashMap<String, Integer>();
-        postOrderVisitor.visit(node, kindCount);
-        System.out.println("Kinds count: " + kindCount + "\n");
-
-        System.out.println(
-                "Print variables name and line, and their corresponding parent with Visitor that automatically performs preorder tree traversal");
-        var varPrinter = new ExamplePrintVariables("Variable", "name", "line");
-        varPrinter.visit(node, null);
-
-        // No Symbol Table being calculated yet
-        return new JmmSemanticsResult(parserResult, null, new ArrayList<>());
+        return new JmmSemanticsResult(node, symbolTable, reportList);
 
     }
 
