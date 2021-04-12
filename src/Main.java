@@ -2,11 +2,13 @@ import pt.up.fe.comp.TestUtils;
 import pt.up.fe.comp.jmm.JmmParser;
 import pt.up.fe.comp.jmm.JmmParserResult;
 import pt.up.fe.comp.jmm.analysis.JmmSemanticsResult;
+import pt.up.fe.comp.jmm.ollir.JmmOptimization;
 import pt.up.fe.comp.jmm.report.Report;
 import pt.up.fe.comp.jmm.report.ReportType;
 import pt.up.fe.comp.jmm.report.Stage;
 import pt.up.fe.specs.util.SpecsIo;
 import stages.AnalysisStage;
+import stages.OptimizationStage;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -75,6 +77,10 @@ public class Main implements JmmParser {
         Utils.printSymbolTable(semanticsResults.getSymbolTable());
         Utils.printReports(semanticsResults.getReports());
 
+        // It is expected that the Optimize class can be instantiated without arguments
+        JmmOptimization optimization = new OptimizationStage();
+
+        optimization.toOllir(semanticsResults);
     }
 
 

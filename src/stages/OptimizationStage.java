@@ -2,9 +2,13 @@ package stages;
 
 import pt.up.fe.comp.jmm.JmmNode;
 import pt.up.fe.comp.jmm.analysis.JmmSemanticsResult;
+import pt.up.fe.comp.jmm.ast.examples.ExamplePreorderVisitor;
 import pt.up.fe.comp.jmm.ollir.JmmOptimization;
 import pt.up.fe.comp.jmm.ollir.OllirResult;
 import pt.up.fe.comp.jmm.report.Report;
+import symbols.SymbolTableIml;
+import visitors.OllirVisitor;
+import visitors.helpers.data_helpers.VisitorDataHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,12 +34,18 @@ public class OptimizationStage implements JmmOptimization {
         JmmNode node = semanticsResult.getRootNode();
 
         // Convert the AST to a String containing the equivalent OLLIR code
-        String ollirCode = ""; // Convert node ...
+        OllirVisitor ollirVisitor = new OllirVisitor(semanticsResult.getSymbolTable());
+        String ollirCode = ollirVisitor.visit(node, "");
+
+        System.out.println("\nOLLIR CODE\n");
+
+        System.out.println(ollirCode);
 
         // More reports from this stage
         List<Report> reports = new ArrayList<>();
 
-        return new OllirResult(semanticsResult, ollirCode, reports);
+        // Fac {} must be replaced by ollirCode
+        return new OllirResult(semanticsResult, "Fac { }", reports);
     }
 
     @Override
