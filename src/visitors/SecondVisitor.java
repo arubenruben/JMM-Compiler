@@ -6,6 +6,7 @@ import pt.up.fe.comp.jmm.ast.PreorderJmmVisitor;
 import pt.up.fe.comp.jmm.report.Report;
 import pt.up.fe.comp.jmm.report.ReportType;
 import pt.up.fe.comp.jmm.report.Stage;
+import utils.ReportsUtils;
 import visitors.helpers.SeekReturnTypeVisitor;
 import visitors.helpers.data_helpers.SecondVisitorHelper;
 
@@ -47,22 +48,22 @@ public class SecondVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boole
             return true;
 
         if (typeLeft.equals(secondVisitorHelper.getSymbolTableIml().getVariableThis().getType())) {
-            secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.get("line")),Integer.parseInt(node.get("col")), "Attempt to do a math operation using the this variable. This can only be used to access class methods"));
+            secondVisitorHelper.getReportList().add(ReportsUtils.reportEntryError(Stage.SEMANTIC, "Attempt to do a math operation using the this variable. This can only be used to access class methods", Integer.parseInt(node.get("line")), Integer.parseInt(node.get("col"))));
             return true;
         }
 
         if (!typeLeft.equals(typeRight)) {
-            secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.get("line")),Integer.parseInt(node.get("col")), "Attempt to do a math operation under operands of different types"));
+            secondVisitorHelper.getReportList().add(ReportsUtils.reportEntryError(Stage.SEMANTIC, "Attempt to do a math operation under operands of different types", Integer.parseInt(node.get("line")), Integer.parseInt(node.get("col"))));
             return true;
         }
 
         if (typeLeft.isArray()) {
-            secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.get("line")),Integer.parseInt(node.get("col")), "Left operand could not be an array pointer. Use the syntax array[index] to access and array"));
+            secondVisitorHelper.getReportList().add(ReportsUtils.reportEntryError(Stage.SEMANTIC, "Left operand could not be an array pointer. Use the syntax array[index] to access and array", Integer.parseInt(node.get("line")), Integer.parseInt(node.get("col"))));
             return true;
         }
 
         if (typeRight.isArray()) {
-            secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.get("line")),Integer.parseInt(node.get("col")), "Right operand could not be an array pointer. Use the syntax array[index] to access and array"));
+            secondVisitorHelper.getReportList().add(ReportsUtils.reportEntryError(Stage.SEMANTIC, "Right operand could not be an array pointer. Use the syntax array[index] to access and array", Integer.parseInt(node.get("line")), Integer.parseInt(node.get("col"))));
             return true;
         }
         return true;
@@ -85,12 +86,12 @@ public class SecondVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boole
             return true;
 
         if (!typeLeft.isArray()) {
-            secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.get("line")),Integer.parseInt(node.get("col")), "Try to array access in non array type. You can only perform array access on arrays"));
+            secondVisitorHelper.getReportList().add(ReportsUtils.reportEntryError(Stage.SEMANTIC, "Try to array access in non array type. You can only perform array access on arrays", Integer.parseInt(node.get("line")), Integer.parseInt(node.get("col"))));
             return false;
         }
 
         if (!typeRight.isArray() && !typeRight.getName().equals("int")) {
-            secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.get("line")),Integer.parseInt(node.get("col")), "Index in array access must be of type integer"));
+            secondVisitorHelper.getReportList().add(ReportsUtils.reportEntryError(Stage.SEMANTIC, "Index in array access must be of type integer", Integer.parseInt(node.get("line")), Integer.parseInt(node.get("col"))));
             return false;
         }
 
@@ -171,7 +172,7 @@ public class SecondVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boole
             return true;
 
         if (!typeLeft.equals(typeRight)) {
-            secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.get("line")),Integer.parseInt(node.get("col")), "Try to assign operands of different types"));
+            secondVisitorHelper.getReportList().add(ReportsUtils.reportEntryError(Stage.SEMANTIC, "Try to assign operands of different types", Integer.parseInt(node.get("line")), Integer.parseInt(node.get("col"))));
             return true;
         }
 

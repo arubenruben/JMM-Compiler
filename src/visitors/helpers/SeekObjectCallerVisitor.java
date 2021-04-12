@@ -6,6 +6,7 @@ import pt.up.fe.comp.jmm.ast.PreorderJmmVisitor;
 import pt.up.fe.comp.jmm.report.Report;
 import pt.up.fe.comp.jmm.report.ReportType;
 import pt.up.fe.comp.jmm.report.Stage;
+import utils.ReportsUtils;
 import visitors.helpers.data_helpers.SecondVisitorHelper;
 
 public class SeekObjectCallerVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Symbol> {
@@ -76,7 +77,7 @@ public class SeekObjectCallerVisitor extends PreorderJmmVisitor<SecondVisitorHel
             return symbol;
 
         if (node.getKind().equals("This")) {
-            secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.get("line")), Integer.parseInt(node.get("col")), "This is not an array"));
+            secondVisitorHelper.getReportList().add(ReportsUtils.reportEntryError(Stage.SEMANTIC, "This is not an array", Integer.parseInt(node.get("line")), Integer.parseInt(node.get("col"))));
             return symbol;
         }
 

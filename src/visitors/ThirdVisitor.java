@@ -8,6 +8,7 @@ import pt.up.fe.comp.jmm.report.Report;
 import pt.up.fe.comp.jmm.report.ReportType;
 import pt.up.fe.comp.jmm.report.Stage;
 import symbols.MethodSymbol;
+import utils.ReportsUtils;
 import visitors.helpers.SeekMethodParametersVisitor;
 import visitors.helpers.SeekObjectCallerVisitor;
 import visitors.helpers.SeekReturnTypeVisitor;
@@ -50,7 +51,7 @@ public class ThirdVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boolea
         Symbol symbol = seekObjectCallerVisitor.getSymbol();
 
         if (symbol == null)
-            secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.get("line")), Integer.parseInt(node.get("col")), "Non declared array"));
+            secondVisitorHelper.getReportList().add(ReportsUtils.reportEntryError(Stage.SEMANTIC, "Non declared array", Integer.parseInt(node.get("line")), Integer.parseInt(node.get("col"))));
 
 
         return true;
@@ -70,7 +71,7 @@ public class ThirdVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boolea
         Symbol symbol = seekObjectCallerVisitor.getSymbol();
 
         if (symbol == null) {
-            secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.get("line")), Integer.parseInt(node.get("col")), "Non declared object"));
+            secondVisitorHelper.getReportList().add(ReportsUtils.reportEntryError(Stage.SEMANTIC, "Non declared object", Integer.parseInt(node.get("line")), Integer.parseInt(node.get("col"))));
             return true;
         }
         if (symbol.equals(new Symbol(new Type("this", false), "this"))) {
@@ -81,13 +82,13 @@ public class ThirdVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boolea
         }
         //All objects contains length method in this grammar
         if (!symbol.getType().isArray() && methodName.equals("length")) {
-            secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.get("line")), Integer.parseInt(node.get("col")), "Only arrays have length method"));
+            secondVisitorHelper.getReportList().add(ReportsUtils.reportEntryError(Stage.SEMANTIC, "Only arrays have length method", Integer.parseInt(node.get("line")), Integer.parseInt(node.get("col"))));
             return true;
         } else if (symbol.getType().isArray() && methodName.equals("length"))
             return true;
 
         if (!secondVisitorHelper.getSymbolTableIml().getMethodsHashmap().containsKey(methodName)) {
-            secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.get("line")), Integer.parseInt(node.get("col")), "This object don't contains this method"));
+            secondVisitorHelper.getReportList().add(ReportsUtils.reportEntryError(Stage.SEMANTIC, "This object don't contains this method", Integer.parseInt(node.get("line")), Integer.parseInt(node.get("col"))));
             return true;
         }
         MethodSymbol method = secondVisitorHelper.getSymbolTableIml().getMethodsHashmap().get(methodName);
@@ -98,13 +99,13 @@ public class ThirdVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boolea
         List<Type> listParameters = seekMethodParametersVisitor.getParameters();
 
         if (listParameters.size() != method.getParameters().size()) {
-            secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.get("line")), Integer.parseInt(node.get("col")), "Method invocation with the wrong number of parameters"));
+            secondVisitorHelper.getReportList().add(ReportsUtils.reportEntryError(Stage.SEMANTIC, "Method invocation with the wrong number of parameters", Integer.parseInt(node.get("line")), Integer.parseInt(node.get("col"))));
             return true;
         }
 
         for (int i = 0; i < listParameters.size(); i++) {
             if (!listParameters.get(i).equals(method.getParameters().get(i).getType())) {
-                secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.get("line")), Integer.parseInt(node.get("col")), "Type of the parameters don't match function arguments"));
+                secondVisitorHelper.getReportList().add(ReportsUtils.reportEntryError(Stage.SEMANTIC, "Type of the parameters don't match function arguments", Integer.parseInt(node.get("line")), Integer.parseInt(node.get("col"))));
                 return true;
             }
         }
@@ -119,7 +120,7 @@ public class ThirdVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boolea
         Type type = seekReturnTypeVisitor.getType();
 
         if (type != null && !type.equals(new Type("int", false))) {
-            secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.get("line")), Integer.parseInt(node.get("col")), "The initialization of an array requires the index parameter to be of type int"));
+            secondVisitorHelper.getReportList().add(ReportsUtils.reportEntryError(Stage.SEMANTIC, "The initialization of an array requires the index parameter to be of type int", Integer.parseInt(node.get("line")), Integer.parseInt(node.get("col"))));
             return true;
         }
 
@@ -137,7 +138,7 @@ public class ThirdVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boolea
             return true;
 
 
-        secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.get("line")), Integer.parseInt(node.get("col")), "The initialization of non unknown object"));
+        secondVisitorHelper.getReportList().add(ReportsUtils.reportEntryError(Stage.SEMANTIC, "The initialization of non unknown object", Integer.parseInt(node.get("line")), Integer.parseInt(node.get("col"))));
 
         return true;
     }

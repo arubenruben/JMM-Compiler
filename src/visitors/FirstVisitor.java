@@ -10,6 +10,7 @@ import pt.up.fe.comp.jmm.report.Report;
 import pt.up.fe.comp.jmm.report.ReportType;
 import pt.up.fe.comp.jmm.report.Stage;
 import symbols.MethodSymbol;
+import utils.ReportsUtils;
 import visitors.helpers.MethodBodyVisitor;
 import visitors.helpers.data_helpers.MethodBodyDataHelper;
 import visitors.helpers.data_helpers.VisitorDataHelper;
@@ -68,7 +69,7 @@ public class FirstVisitor extends PreorderJmmVisitor<VisitorDataHelper, Boolean>
         //If not a primitive it must be imported
         if (!variableType.equals("int") && !variableType.equals("boolean") && !variableType.equals(visitorDataHelper.getSymbolTableIml().getClassName()) && !variableType.equals(visitorDataHelper.getSymbolTableIml().getSuper())) {
             if (!visitorDataHelper.getSymbolTableIml().getImportedClasses().contains(variableType)) {
-                visitorDataHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.get("line")),Integer.parseInt(node.get("col")), "This object type don't exist. Try to import it."));
+                visitorDataHelper.getReportList().add(ReportsUtils.reportEntryError(Stage.SEMANTIC, "This object type don't exist. Try to import it.", Integer.parseInt(node.get("line")), Integer.parseInt(node.get("col"))));
                 return true;
             }
         }

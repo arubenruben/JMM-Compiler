@@ -11,7 +11,7 @@ public class SemanticTest {
         result = TestUtils.analyse(TestUtils.parse(code));
 
         if (result.getReports().size() > 0) {
-            System.out.println("\n\nTest file name: " + filePath.split("/")[filePath.split("/").length - 1]);
+            System.out.println("Test file name: " + filePath.split("/")[filePath.split("/").length - 1]);
             Utils.printReports(result.getReports());
         }
 
