@@ -171,7 +171,6 @@ public class SecondVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boole
             return true;
 
         if (!typeLeft.equals(typeRight)) {
-            System.out.println(typeLeft.toString() + " Direita" + typeRight.toString());
             secondVisitorHelper.getReportList().add(new Report(ReportType.ERROR, Stage.SEMANTIC, Integer.parseInt(node.get("line")),Integer.parseInt(node.get("col")), "Try to assign operands of different types"));
             return true;
         }

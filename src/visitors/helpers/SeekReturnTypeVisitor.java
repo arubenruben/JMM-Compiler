@@ -78,7 +78,7 @@ public class SeekReturnTypeVisitor extends PreorderJmmVisitor<SecondVisitorHelpe
         if (type != null || mustFail)
             return type;
 
-        type = new Type("this", false);
+        type = new Type(secondVisitorHelper.getSymbolTableIml().getClassName(), false);
 
         return type;
     }
