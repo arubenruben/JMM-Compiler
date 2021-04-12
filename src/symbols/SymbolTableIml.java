@@ -17,9 +17,7 @@ public class SymbolTableIml implements SymbolTable {
     private final Symbol variableThis;
     private final List<String> imports;
     private final Map<String, JmmNode> nodeMap;
-
     private final Map<String, MethodSymbol> methodsHashmap;
-
     private final Map<Symbol, String> hashMapClassFields;
 
 
@@ -31,12 +29,6 @@ public class SymbolTableIml implements SymbolTable {
         this.variableThis = new Symbol(new Type("this", false), "this");
     }
 
-
-    @Override
-    public List<String> getImports() {
-        return imports;
-    }
-
     public List<String> getImportedClasses() {
         List<String> importedClasses = new ArrayList<>();
 
@@ -46,44 +38,6 @@ public class SymbolTableIml implements SymbolTable {
         }
 
         return importedClasses;
-    }
-
-    @Override
-    public String getClassName() {
-        return className;
-    }
-
-    @Override
-    public String getSuper() {
-        return superName;
-    }
-
-    @Override
-    public List<Symbol> getFields() {
-        return null;
-    }
-
-    @Override
-    public List<String> getMethods() {
-        return null;
-    }
-
-
-    @Override
-    public Type getReturnType(String methodName) {
-        return methodsHashmap.containsKey(methodName) ? methodsHashmap.get(methodName).getType() : null;
-    }
-
-    @Override
-    public List<Symbol> getParameters(String methodName) {
-        return methodsHashmap.containsKey(methodName) ? methodsHashmap.get(methodName).getParameters() : null;
-
-    }
-
-    @Override
-    public List<Symbol> getLocalVariables(String methodName) {
-        //return methodsHashmap.containsKey(methodName) ? methodsHashmap.get(methodName).getVariables() : null;
-        return null;
     }
 
     public Symbol lookup(String variableName, String currentMethodName) {
@@ -117,16 +71,6 @@ public class SymbolTableIml implements SymbolTable {
         this.className = className;
     }
 
-    @Override
-    public String toString() {
-        return "ClassName='" + className + '\'' + "\n" +
-                "superName='" + superName + '\'' + "\n" +
-                "imports=" + imports + "\n" +
-                "fields=" + hashMapClassFields.toString() + "\n" +
-                "methods=" + methodsHashmap.toString() + "\n" +
-                '}';
-    }
-
     public Map<String, MethodSymbol> getMethodsHashmap() {
         return methodsHashmap;
     }
@@ -142,4 +86,45 @@ public class SymbolTableIml implements SymbolTable {
     public Symbol getVariableThis() {
         return variableThis;
     }
+
+    @Override
+    public List<String> getImports() {
+        return imports;
+    }
+
+    @Override
+    public String getClassName() {
+        return className;
+    }
+
+    @Override
+    public String getSuper() {
+        return superName;
+    }
+
+    @Override
+    public List<Symbol> getFields() {
+        return new ArrayList<>(hashMapClassFields.keySet());
+    }
+
+    @Override
+    public List<String> getMethods() {
+        return new ArrayList<>(methodsHashmap.keySet());
+    }
+
+    @Override
+    public Type getReturnType(String methodName) {
+        return methodsHashmap.get(methodName).getType();
+    }
+
+    @Override
+    public List<Symbol> getParameters(String methodName) {
+        return methodsHashmap.get(methodName).getParameters();
+    }
+
+    @Override
+    public List<Symbol> getLocalVariables(String methodName) {
+        return new ArrayList<>(methodsHashmap.get(methodName).getVariables().keySet());
+    }
+
 }
