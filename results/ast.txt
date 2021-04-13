@@ -7,61 +7,98 @@
     },
     "children": [
       {
+        "kind": "ImportPath",
+        "attributes": {
+          "col": "8",
+          "line": "1",
+          "value": "[io]"
+        },
+        "children": []
+      },
+      {
         "kind": "Class",
         "attributes": {
           "col": "1",
-          "line": "1",
-          "value": "Fac"
+          "line": "2",
+          "value": "Life"
         },
         "children": [
           {
             "kind": "ClassMethod",
             "attributes": {
               "col": "12",
-              "line": "2",
-              "value": "main"
+              "line": "5",
+              "value": "eq"
             },
             "children": [
               {
                 "kind": "Type",
                 "attributes": {
                   "col": "12",
-                  "line": "2",
+                  "line": "5",
                   "isArray": "false",
-                  "value": "void"
+                  "value": "boolean"
                 },
                 "children": []
               },
               {
                 "kind": "Parameters",
                 "attributes": {
-                  "col": "29",
-                  "line": "2"
+                  "col": "23",
+                  "line": "5"
                 },
                 "children": [
                   {
                     "kind": "Parameter",
                     "attributes": {
-                      "col": "37",
-                      "line": "2"
+                      "col": "27",
+                      "line": "5"
                     },
                     "children": [
                       {
                         "kind": "Type",
                         "attributes": {
-                          "col": "29",
-                          "line": "2",
-                          "isArray": "true",
-                          "value": "String"
+                          "col": "23",
+                          "line": "5",
+                          "isArray": "false",
+                          "value": "int"
                         },
                         "children": []
                       },
                       {
                         "kind": "Identifier",
                         "attributes": {
-                          "col": "37",
-                          "line": "2",
-                          "value": "args"
+                          "col": "27",
+                          "line": "5",
+                          "value": "a"
+                        },
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "Parameter",
+                    "attributes": {
+                      "col": "34",
+                      "line": "5"
+                    },
+                    "children": [
+                      {
+                        "kind": "Type",
+                        "attributes": {
+                          "col": "30",
+                          "line": "5",
+                          "isArray": "false",
+                          "value": "int"
+                        },
+                        "children": []
+                      },
+                      {
+                        "kind": "Identifier",
+                        "attributes": {
+                          "col": "34",
+                          "line": "5",
+                          "value": "b"
                         },
                         "children": []
                       }
@@ -72,97 +109,325 @@
               {
                 "kind": "Body",
                 "attributes": {
-                  "col": "8",
-                  "line": "3"
+                  "col": "3",
+                  "line": "6"
                 },
                 "children": [
                   {
-                    "kind": "VarDeclaration",
+                    "kind": "Add",
                     "attributes": {
-                      "col": "8",
-                      "line": "3",
-                      "value": "f"
-                    },
-                    "children": [
-                      {
-                        "kind": "Type",
-                        "attributes": {
-                          "col": "8",
-                          "line": "3",
-                          "isArray": "false",
-                          "value": "Fac"
-                        },
-                        "children": []
-                      }
-                    ]
-                  },
-                  {
-                    "kind": "Not",
-                    "attributes": {
-                      "col": "9",
-                      "line": "11"
+                      "col": "5",
+                      "line": "6"
                     },
                     "children": [
                       {
                         "kind": "Integer",
                         "attributes": {
-                          "col": "10",
-                          "line": "11",
-                          "value": "1"
+                          "col": "4",
+                          "line": "6",
+                          "value": "3"
                         },
                         "children": []
+                      },
+                      {
+                        "kind": "Mult",
+                        "attributes": {
+                          "col": "7",
+                          "line": "6"
+                        },
+                        "children": [
+                          {
+                            "kind": "Integer",
+                            "attributes": {
+                              "col": "6",
+                              "line": "6",
+                              "value": "4"
+                            },
+                            "children": []
+                          },
+                          {
+                            "kind": "Integer",
+                            "attributes": {
+                              "col": "8",
+                              "line": "6",
+                              "value": "5"
+                            },
+                            "children": []
+                          }
+                        ]
                       }
                     ]
-                  },
+                  }
+                ]
+              },
+              {
+                "kind": "Return",
+                "attributes": {
+                  "col": "44",
+                  "line": "7"
+                },
+                "children": [
                   {
-                    "kind": "Not",
+                    "kind": "And",
                     "attributes": {
-                      "col": "9",
-                      "line": "12"
+                      "col": "29",
+                      "line": "7"
                     },
                     "children": [
                       {
-                        "kind": "Boolean",
+                        "kind": "MethodCall",
                         "attributes": {
-                          "col": "13",
-                          "line": "12",
-                          "value": "true"
+                          "col": "17",
+                          "line": "7"
                         },
-                        "children": []
+                        "children": [
+                          {
+                            "kind": "Not",
+                            "attributes": {
+                              "col": "12",
+                              "line": "7"
+                            },
+                            "children": [
+                              {
+                                "kind": "This",
+                                "attributes": {
+                                  "col": "16",
+                                  "line": "7",
+                                  "value": "this"
+                                },
+                                "children": []
+                              }
+                            ]
+                          },
+                          {
+                            "kind": "Identifier",
+                            "attributes": {
+                              "col": "17",
+                              "line": "7",
+                              "value": "lt"
+                            },
+                            "children": [
+                              {
+                                "kind": "Parameters",
+                                "attributes": {
+                                  "col": "20",
+                                  "line": "7"
+                                },
+                                "children": [
+                                  {
+                                    "kind": "Identifier",
+                                    "attributes": {
+                                      "col": "21",
+                                      "line": "7",
+                                      "value": "a"
+                                    },
+                                    "children": []
+                                  },
+                                  {
+                                    "kind": "Identifier",
+                                    "attributes": {
+                                      "col": "24",
+                                      "line": "7",
+                                      "value": "b"
+                                    },
+                                    "children": []
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "kind": "MethodCall",
+                        "attributes": {
+                          "col": "35",
+                          "line": "7"
+                        },
+                        "children": [
+                          {
+                            "kind": "Not",
+                            "attributes": {
+                              "col": "30",
+                              "line": "7"
+                            },
+                            "children": [
+                              {
+                                "kind": "This",
+                                "attributes": {
+                                  "col": "34",
+                                  "line": "7",
+                                  "value": "this"
+                                },
+                                "children": []
+                              }
+                            ]
+                          },
+                          {
+                            "kind": "Identifier",
+                            "attributes": {
+                              "col": "35",
+                              "line": "7",
+                              "value": "lt"
+                            },
+                            "children": [
+                              {
+                                "kind": "Parameters",
+                                "attributes": {
+                                  "col": "38",
+                                  "line": "7"
+                                },
+                                "children": [
+                                  {
+                                    "kind": "Identifier",
+                                    "attributes": {
+                                      "col": "39",
+                                      "line": "7",
+                                      "value": "b"
+                                    },
+                                    "children": []
+                                  },
+                                  {
+                                    "kind": "Identifier",
+                                    "attributes": {
+                                      "col": "42",
+                                      "line": "7",
+                                      "value": "a"
+                                    },
+                                    "children": []
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
                       }
                     ]
-                  },
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "kind": "ClassMethod",
+            "attributes": {
+              "col": "12",
+              "line": "10",
+              "value": "lt"
+            },
+            "children": [
+              {
+                "kind": "Type",
+                "attributes": {
+                  "col": "12",
+                  "line": "10",
+                  "isArray": "false",
+                  "value": "boolean"
+                },
+                "children": []
+              },
+              {
+                "kind": "Parameters",
+                "attributes": {
+                  "col": "23",
+                  "line": "10"
+                },
+                "children": [
                   {
-                    "kind": "Not",
+                    "kind": "Parameter",
                     "attributes": {
-                      "col": "9",
-                      "line": "13"
+                      "col": "27",
+                      "line": "10"
                     },
                     "children": [
                       {
-                        "kind": "Boolean",
+                        "kind": "Type",
                         "attributes": {
-                          "col": "14",
-                          "line": "13",
-                          "value": "false"
+                          "col": "23",
+                          "line": "10",
+                          "isArray": "false",
+                          "value": "int"
+                        },
+                        "children": []
+                      },
+                      {
+                        "kind": "Identifier",
+                        "attributes": {
+                          "col": "27",
+                          "line": "10",
+                          "value": "a"
                         },
                         "children": []
                       }
                     ]
                   },
                   {
-                    "kind": "Not",
+                    "kind": "Parameter",
                     "attributes": {
-                      "col": "9",
-                      "line": "14"
+                      "col": "34",
+                      "line": "10"
+                    },
+                    "children": [
+                      {
+                        "kind": "Type",
+                        "attributes": {
+                          "col": "30",
+                          "line": "10",
+                          "isArray": "false",
+                          "value": "int"
+                        },
+                        "children": []
+                      },
+                      {
+                        "kind": "Identifier",
+                        "attributes": {
+                          "col": "34",
+                          "line": "10",
+                          "value": "b"
+                        },
+                        "children": []
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "Body",
+                "attributes": {
+                  "col": "3",
+                  "line": "11"
+                },
+                "children": []
+              },
+              {
+                "kind": "Return",
+                "attributes": {
+                  "col": "17",
+                  "line": "11"
+                },
+                "children": [
+                  {
+                    "kind": "Less",
+                    "attributes": {
+                      "col": "15",
+                      "line": "11"
                     },
                     "children": [
                       {
                         "kind": "Identifier",
                         "attributes": {
-                          "col": "10",
-                          "line": "14",
-                          "value": "f"
+                          "col": "13",
+                          "line": "11",
+                          "value": "a"
+                        },
+                        "children": []
+                      },
+                      {
+                        "kind": "Identifier",
+                        "attributes": {
+                          "col": "16",
+                          "line": "11",
+                          "value": "b"
                         },
                         "children": []
                       }

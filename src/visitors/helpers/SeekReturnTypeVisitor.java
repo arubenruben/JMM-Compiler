@@ -51,10 +51,7 @@ public class SeekReturnTypeVisitor extends PreorderJmmVisitor<SecondVisitorHelpe
                 mustFail = true;
                 return type;
             }
-
-
             type = method.getType();
-
         }
 
         return type;
