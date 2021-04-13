@@ -20,7 +20,9 @@ public class SeekReturnTypeVisitor extends PreorderJmmVisitor<SecondVisitorHelpe
         addVisit("Identifier", this::dealWithIdentifier);
         addVisit("NewArray", this::dealWithNewArray);
         addVisit("NewObject", this::dealWithNewObject);
-
+        addVisit("Less", this::dealWithBooleanOperands);
+        addVisit("Not", this::dealWithBooleanOperands);
+        addVisit("And", this::dealWithBooleanOperands);
         setDefaultVisit(this::defaultVisit);
     }
 
@@ -51,7 +53,10 @@ public class SeekReturnTypeVisitor extends PreorderJmmVisitor<SecondVisitorHelpe
                 mustFail = true;
                 return type;
             }
+
+
             type = method.getType();
+
         }
 
         return type;
