@@ -128,6 +128,26 @@ public class SecondVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boole
     }
 
     protected Boolean dealWithLess(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
+        SeekReturnTypeVisitor seekReturnTypeVisitorLeft = new SeekReturnTypeVisitor();
+        SeekReturnTypeVisitor seekReturnTypeVisitorRight = new SeekReturnTypeVisitor();
+
+
+        seekReturnTypeVisitorLeft.visit(node.getChildren().get(0), secondVisitorHelper);
+        Type typeLeft = seekReturnTypeVisitorLeft.getType();
+
+        if (!typeLeft.getName().equals("int") || typeLeft.isArray()) {
+            secondVisitorHelper.getReportList().add(ReportsUtils.reportEntryError(Stage.SEMANTIC, "Less Operators demand that left operand be an integer", Integer.parseInt(node.get("line")), Integer.parseInt(node.get("col"))));
+            return false;
+        }
+
+        seekReturnTypeVisitorRight.visit(node.getChildren().get(1), secondVisitorHelper);
+        Type typeRight = seekReturnTypeVisitorRight.getType();
+
+        if (!typeRight.getName().equals("int") || typeRight.isArray()) {
+            secondVisitorHelper.getReportList().add(ReportsUtils.reportEntryError(Stage.SEMANTIC, "Less Operators demand that right operand be an integer", Integer.parseInt(node.get("line")), Integer.parseInt(node.get("col"))));
+            return false;
+        }
+
         return true;
     }
 

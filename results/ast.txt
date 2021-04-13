@@ -93,11 +93,119 @@
                         "children": []
                       },
                       {
+                        "kind": "Boolean",
+                        "attributes": {
+                          "col": "18",
+                          "line": "3",
+                          "value": "true"
+                        },
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "Less",
+                    "attributes": {
+                      "col": "10",
+                      "line": "4"
+                    },
+                    "children": [
+                      {
+                        "kind": "Integer",
+                        "attributes": {
+                          "col": "9",
+                          "line": "4",
+                          "value": "1"
+                        },
+                        "children": []
+                      },
+                      {
+                        "kind": "Integer",
+                        "attributes": {
+                          "col": "11",
+                          "line": "4",
+                          "value": "1"
+                        },
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "Less",
+                    "attributes": {
+                      "col": "10",
+                      "line": "5"
+                    },
+                    "children": [
+                      {
+                        "kind": "Integer",
+                        "attributes": {
+                          "col": "9",
+                          "line": "5",
+                          "value": "1"
+                        },
+                        "children": []
+                      },
+                      {
+                        "kind": "Boolean",
+                        "attributes": {
+                          "col": "14",
+                          "line": "5",
+                          "value": "true"
+                        },
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "Less",
+                    "attributes": {
+                      "col": "14",
+                      "line": "6"
+                    },
+                    "children": [
+                      {
+                        "kind": "Boolean",
+                        "attributes": {
+                          "col": "13",
+                          "line": "6",
+                          "value": "false"
+                        },
+                        "children": []
+                      },
+                      {
                         "kind": "Integer",
                         "attributes": {
                           "col": "15",
-                          "line": "3",
-                          "value": "1"
+                          "line": "6",
+                          "value": "2"
+                        },
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "Less",
+                    "attributes": {
+                      "col": "14",
+                      "line": "7"
+                    },
+                    "children": [
+                      {
+                        "kind": "Boolean",
+                        "attributes": {
+                          "col": "13",
+                          "line": "7",
+                          "value": "false"
+                        },
+                        "children": []
+                      },
+                      {
+                        "kind": "Boolean",
+                        "attributes": {
+                          "col": "19",
+                          "line": "7",
+                          "value": "false"
                         },
                         "children": []
                       }
