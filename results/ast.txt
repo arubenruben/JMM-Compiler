@@ -77,53 +77,37 @@
                 },
                 "children": [
                   {
-                    "kind": "And",
+                    "kind": "VarDeclaration",
                     "attributes": {
-                      "col": "14",
-                      "line": "3"
+                      "col": "8",
+                      "line": "3",
+                      "value": "f"
                     },
                     "children": [
                       {
-                        "kind": "Boolean",
+                        "kind": "Type",
                         "attributes": {
-                          "col": "12",
+                          "col": "8",
                           "line": "3",
-                          "value": "true"
-                        },
-                        "children": []
-                      },
-                      {
-                        "kind": "Boolean",
-                        "attributes": {
-                          "col": "18",
-                          "line": "3",
-                          "value": "true"
+                          "isArray": "false",
+                          "value": "Fac"
                         },
                         "children": []
                       }
                     ]
                   },
                   {
-                    "kind": "Less",
+                    "kind": "Not",
                     "attributes": {
-                      "col": "10",
-                      "line": "4"
+                      "col": "9",
+                      "line": "11"
                     },
                     "children": [
                       {
                         "kind": "Integer",
                         "attributes": {
-                          "col": "9",
-                          "line": "4",
-                          "value": "1"
-                        },
-                        "children": []
-                      },
-                      {
-                        "kind": "Integer",
-                        "attributes": {
-                          "col": "11",
-                          "line": "4",
+                          "col": "10",
+                          "line": "11",
                           "value": "1"
                         },
                         "children": []
@@ -131,81 +115,54 @@
                     ]
                   },
                   {
-                    "kind": "Less",
+                    "kind": "Not",
                     "attributes": {
-                      "col": "10",
-                      "line": "5"
+                      "col": "9",
+                      "line": "12"
                     },
                     "children": [
                       {
-                        "kind": "Integer",
+                        "kind": "Boolean",
                         "attributes": {
-                          "col": "9",
-                          "line": "5",
-                          "value": "1"
+                          "col": "13",
+                          "line": "12",
+                          "value": "true"
                         },
                         "children": []
-                      },
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "Not",
+                    "attributes": {
+                      "col": "9",
+                      "line": "13"
+                    },
+                    "children": [
                       {
                         "kind": "Boolean",
                         "attributes": {
                           "col": "14",
-                          "line": "5",
-                          "value": "true"
+                          "line": "13",
+                          "value": "false"
                         },
                         "children": []
                       }
                     ]
                   },
                   {
-                    "kind": "Less",
+                    "kind": "Not",
                     "attributes": {
-                      "col": "14",
-                      "line": "6"
+                      "col": "9",
+                      "line": "14"
                     },
                     "children": [
                       {
-                        "kind": "Boolean",
+                        "kind": "Identifier",
                         "attributes": {
-                          "col": "13",
-                          "line": "6",
-                          "value": "false"
-                        },
-                        "children": []
-                      },
-                      {
-                        "kind": "Integer",
-                        "attributes": {
-                          "col": "15",
-                          "line": "6",
-                          "value": "2"
-                        },
-                        "children": []
-                      }
-                    ]
-                  },
-                  {
-                    "kind": "Less",
-                    "attributes": {
-                      "col": "14",
-                      "line": "7"
-                    },
-                    "children": [
-                      {
-                        "kind": "Boolean",
-                        "attributes": {
-                          "col": "13",
-                          "line": "7",
-                          "value": "false"
-                        },
-                        "children": []
-                      },
-                      {
-                        "kind": "Boolean",
-                        "attributes": {
-                          "col": "19",
-                          "line": "7",
-                          "value": "false"
+                          "col": "10",
+                          "line": "14",
+                          "value": "f"
                         },
                         "children": []
                       }

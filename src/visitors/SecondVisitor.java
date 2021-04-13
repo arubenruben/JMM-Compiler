@@ -124,6 +124,15 @@ public class SecondVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boole
     }
 
     protected Boolean dealWithNot(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
+        SeekReturnTypeVisitor seekReturnType = new SeekReturnTypeVisitor();
+
+        seekReturnType.visit(node.getChildren().get(0), secondVisitorHelper);
+        Type type = seekReturnType.getType();
+
+        if (!type.getName().equals("boolean") || type.isArray()) {
+            secondVisitorHelper.getReportList().add(ReportsUtils.reportEntryError(Stage.SEMANTIC, "Not Operator demand that the expression result in a boolean", Integer.parseInt(node.get("line")), Integer.parseInt(node.get("col"))));
+            return false;
+        }
         return true;
     }
 
