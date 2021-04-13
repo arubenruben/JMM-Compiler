@@ -99,7 +99,7 @@ public class SecondVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boole
     }
 
     protected Boolean dealWithBooleanOperation(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
-    /*
+
         SeekReturnTypeVisitor seekReturnTypeVisitorLeft = new SeekReturnTypeVisitor();
         SeekReturnTypeVisitor seekReturnTypeVisitorRight = new SeekReturnTypeVisitor();
 
@@ -107,12 +107,13 @@ public class SecondVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boole
         seekReturnTypeVisitorLeft.visit(node.getChildren().get(0), secondVisitorHelper);
         Type TypeLeft = seekReturnTypeVisitorLeft.getType();
 
-        seekReturnTypeVisitorRight.visit(node.getChildren().get(1), secondVisitorHelper);
 
-        Type TypeRight = seekReturnTypeVisitorRight.getType();
 
         if (node.getKind().equals("And"))
         {
+            seekReturnTypeVisitorRight.visit(node.getChildren().get(1), secondVisitorHelper);
+
+            Type TypeRight = seekReturnTypeVisitorRight.getType();
 
             System.out.println(!TypeLeft.getName().equals("boolean"));
             System.out.println(!TypeRight.getName().equals("boolean"));
@@ -138,6 +139,10 @@ public class SecondVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boole
         }
         else if(node.getKind().equals("Less")){
 
+            seekReturnTypeVisitorRight.visit(node.getChildren().get(1), secondVisitorHelper);
+
+            Type TypeRight = seekReturnTypeVisitorRight.getType();
+
             if (TypeLeft == null)
                 System.err.println("Left child is null");
 
@@ -149,7 +154,7 @@ public class SecondVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boole
 
         }
 
-     */
+
         return true;
 
     }
