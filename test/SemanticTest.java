@@ -121,5 +121,56 @@ public class SemanticTest {
         testFile("fixtures/public/fail/semantic/varNotInit.jmm", false);
     }
 
+    //Custom Tests
+    @Test
+    public void testDifferentOperandTypes() {
+        testFile("custom/semantic/type_verification/test_op_same_type.jmm", true);
+    }
 
+    @Test
+    public void testDirectArrayOperations() {
+        testFile("custom/semantic/type_verification/test_direct_array_ops.jmm", true);
+    }
+
+    @Test
+    public void testDirectIntegerArrayAccess() {
+        testFile("custom/semantic/type_verification/test_array_access.jmm", true);
+    }
+
+    @Test
+    public void testArrayIndex1() {
+        testFile("custom/semantic/type_verification/test_array_access_index.jmm", true);
+    }
+
+    @Test
+    public void testAssigmentOk() {
+        testFile("custom/semantic/type_verification/test_assignment_ok.jmm", false);
+    }
+
+    @Test
+    public void testAssigmentFail() {
+        testFile("custom/semantic/type_verification/test_assignment_fail.jmm", true);
+    }
+
+    @Test
+    public void testTarget1() {
+        testFile("custom/semantic/method_verification/test_existence_target.jmm", true);
+    }
+
+    @Test
+    public void testTarget2() {
+        testFile("custom/semantic/method_verification/test_existence_target_with_super.jmm", false);
+    }
+    @Test
+    public void testTargetWithImport() {
+        testFile("custom/semantic/method_verification/test_existence_import.jmm", false);
+    }
+    @Test
+    public void testMethodParameters() {
+        testFile("custom/semantic/method_verification/test_parameters_number.jmm", true);
+    }
+    @Test
+    public void testNumberParameters() {
+        testFile("custom/semantic/method_verification/test_number_parameters.jmm", true);
+    }
 }

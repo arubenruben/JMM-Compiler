@@ -2,6 +2,7 @@ package visitors.helpers;
 
 import pt.up.fe.comp.jmm.JmmNode;
 import pt.up.fe.comp.jmm.analysis.table.Symbol;
+import pt.up.fe.comp.jmm.analysis.table.Type;
 import pt.up.fe.comp.jmm.ast.PreorderJmmVisitor;
 import pt.up.fe.comp.jmm.report.Report;
 import pt.up.fe.comp.jmm.report.ReportType;
@@ -9,19 +10,26 @@ import pt.up.fe.comp.jmm.report.Stage;
 import utils.ReportsUtils;
 import visitors.helpers.data_helpers.SecondVisitorHelper;
 
+import java.util.List;
+
 public class SeekObjectCallerVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Symbol> {
-    private Symbol symbol;
+    protected Symbol symbol;
 
     public SeekObjectCallerVisitor() {
         addVisit("Not", this::dealWithUnaryOperator);
         addVisit("Identifier", this::dealWithIdentifier);
         addVisit("This", this::dealWithIdentifier);
+        addVisit("NewObject", this::dealWithNewObject);
+        addVisit("NewArray", this::dealWithNewArray);
         setDefaultVisit(this::defaultVisit);
     }
 
-    private Symbol dealWithUnaryOperator(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
+    protected Symbol dealWithUnaryOperator(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
         if (symbol != null)
             return symbol;
+
+        if (node.getParent().getKind().equals("MethodCall"))
+            return dealWithMethodCall(node.getChildren().get(0), secondVisitorHelper);
 
         if (node.getChildren().get(0).getKind().equals("Identifier"))
             return dealWithVariable(node.getChildren().get(0), secondVisitorHelper);
@@ -96,7 +104,34 @@ public class SeekObjectCallerVisitor extends PreorderJmmVisitor<SecondVisitorHel
             return symbol;
         }
 
+        //Test if it is an Imported Class
+        if (secondVisitorHelper.getSymbolTableIml().getImportedClasses().contains(node.get("value"))) {
+            symbol = new Symbol(new Type(node.get("value"), false), "");
+            return symbol;
+        }
+
         symbol = secondVisitorHelper.getSymbolTableIml().lookup(node.get("value"), secondVisitorHelper.getCurrentMethodName());
+
+        return symbol;
+    }
+
+
+    protected Symbol dealWithNewObject(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
+        List<String> importedClasses = secondVisitorHelper.getSymbolTableIml().getImportedClasses();
+
+        if (importedClasses.contains(node.get("value")) || secondVisitorHelper.getSymbolTableIml().getClassName().equals(node.get("value"))) {
+            symbol = new Symbol(new Type(node.get("value"), false), "");
+            return symbol;
+        }
+
+        return symbol;
+    }
+
+    protected Symbol dealWithNewArray(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
+        if (symbol != null)
+            return symbol;
+
+        symbol = new Symbol(new Type(node.get("value"), node.get("isArray").equals("true")), "");
 
         return symbol;
     }

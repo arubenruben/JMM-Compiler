@@ -62,10 +62,6 @@ public class ThirdVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boolea
 
         SeekObjectCallerVisitor seekObjectCallerVisitor = new SeekObjectCallerVisitor();
 
-        //Test if it is an Imported Class
-        if (node.getChildren().get(0).getKind().equals("Identifier") && secondVisitorHelper.getSymbolTableIml().getImportedClasses().contains(node.getChildren().get(0).get("value")))
-            return true;
-
         seekObjectCallerVisitor.visit(node.getChildren().get(0), secondVisitorHelper);
 
         Symbol symbol = seekObjectCallerVisitor.getSymbol();
@@ -74,6 +70,10 @@ public class ThirdVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boolea
             secondVisitorHelper.getReportList().add(ReportsUtils.reportEntryError(Stage.SEMANTIC, "Non declared object", Integer.parseInt(node.get("line")), Integer.parseInt(node.get("col"))));
             return true;
         }
+        //Imported Class
+        if (secondVisitorHelper.getSymbolTableIml().getImportedClasses().contains(symbol.getType().getName()))
+            return true;
+
         if (symbol.equals(new Symbol(new Type("this", false), "this"))) {
             //A class that extends something is to assumes the method exists always
             if (secondVisitorHelper.getSymbolTableIml().getSuper() != null) {
@@ -138,7 +138,7 @@ public class ThirdVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boolea
             return true;
 
 
-        secondVisitorHelper.getReportList().add(ReportsUtils.reportEntryError(Stage.SEMANTIC, "The initialization of non unknown object", Integer.parseInt(node.get("line")), Integer.parseInt(node.get("col"))));
+        secondVisitorHelper.getReportList().add(ReportsUtils.reportEntryError(Stage.SEMANTIC, "The initialization of unknown object", Integer.parseInt(node.get("line")), Integer.parseInt(node.get("col"))));
 
         return true;
     }

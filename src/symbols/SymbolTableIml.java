@@ -127,4 +127,16 @@ public class SymbolTableIml implements SymbolTable {
         return new ArrayList<>(methodsHashmap.get(methodName).getVariables().keySet());
     }
 
+    @Override
+    public String toString() {
+        return "SymbolTableIml{" +
+                "className='" + className + '\'' +
+                ", superName='" + superName + '\'' +
+                ", variableThis=" + variableThis +
+                ", imports=" + imports +
+                ", nodeMap=" + nodeMap +
+                ", methodsHashmap=" + methodsHashmap +
+                ", hashMapClassFields=" + hashMapClassFields +
+                '}';
+    }
 }

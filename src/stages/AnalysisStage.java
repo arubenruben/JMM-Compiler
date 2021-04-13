@@ -47,7 +47,6 @@ public class AnalysisStage implements JmmAnalysis {
             AJmmVisitor<SecondVisitorHelper, Boolean> thirdVisitor = new ThirdVisitor();
             thirdVisitor.visit(symbolTable.getNodeMap().get(methodName), new SecondVisitorHelper(methodName, symbolTable, reportList));
         }
-
         return new JmmSemanticsResult(node, symbolTable, reportList);
 
     }
