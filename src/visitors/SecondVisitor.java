@@ -187,19 +187,21 @@ public class SecondVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boole
 
 
     protected Boolean dealWithConditionOperation(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
-/*
+
         JmmNode conditionNode = node.getChildren().get(0).getChildren().get(0);
         String nodeType = conditionNode.getKind();
 
         if (nodeType.equals("Boolean")) {
             return true;
-        } else if (nodeType.equals("And") || nodeType.equals("Not") || nodeType.equals("Less")) {
-            dealWithBooleanOperation(conditionNode, secondVisitorHelper);
+        } else if (nodeType.equals("And")) {
+            dealWithAnd(conditionNode, secondVisitorHelper);
+        } else if (nodeType.equals("Not")) {
+            dealWithNot(conditionNode, secondVisitorHelper);
+        } else if (nodeType.equals("Less")) {
+            dealWithLess(conditionNode, secondVisitorHelper);
         } else if (nodeType.equals("Add") || nodeType.equals("Sub") || nodeType.equals("Mult") || nodeType.equals("Div")) {
             secondVisitorHelper.getReportList().add(ReportsUtils.reportEntryError(Stage.SEMANTIC, "Attempt to do a condition operation without a valid condition", Integer.parseInt(node.get("line")), Integer.parseInt(node.get("col"))));
         }
-
- */
         return true;
     }
 
