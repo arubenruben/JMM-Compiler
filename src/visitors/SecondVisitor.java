@@ -21,15 +21,16 @@ public class SecondVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boole
         addVisit("ArrayAccess", this::dealWithArrayAccess);
         addVisit("Assignment", this::dealWithAssignment);
 
-        addVisit("And", this::dealWithBooleanOperation);
-        addVisit("Not", this::dealWithBooleanOperation);
-        addVisit("Less", this::dealWithBooleanOperation);
+        addVisit("Not", this::dealWithNot);
+        addVisit("And", this::dealWithAnd);
+        addVisit("Less", this::dealWithLess);
 
         addVisit("If", this::dealWithConditionOperation);
         addVisit("While", this::dealWithConditionOperation);
 
         setDefaultVisit(this::defaultVisit);
     }
+
 
     protected Boolean dealWithMathOperation(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
         SeekReturnTypeVisitor seekReturnTypeVisitorLeft = new SeekReturnTypeVisitor();
@@ -98,62 +99,36 @@ public class SecondVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boole
         return true;
     }
 
-    protected Boolean dealWithBooleanOperation(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
-
+    protected Boolean dealWithAnd(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
         SeekReturnTypeVisitor seekReturnTypeVisitorLeft = new SeekReturnTypeVisitor();
         SeekReturnTypeVisitor seekReturnTypeVisitorRight = new SeekReturnTypeVisitor();
 
 
         seekReturnTypeVisitorLeft.visit(node.getChildren().get(0), secondVisitorHelper);
-        Type TypeLeft = seekReturnTypeVisitorLeft.getType();
+        Type typeLeft = seekReturnTypeVisitorLeft.getType();
 
-
-        if (node.getKind().equals("And"))
-        {
-            seekReturnTypeVisitorRight.visit(node.getChildren().get(1), secondVisitorHelper);
-
-            Type TypeRight = seekReturnTypeVisitorRight.getType();
-
-
-            if (TypeLeft == null)
-                return true;
-
-            if (TypeRight == null)
-                return true;
-
-            else if ((!TypeLeft.getName().equals("boolean")) || (!TypeRight.getName().equals("boolean")))
-                secondVisitorHelper.getReportList().add(ReportsUtils.reportEntryError(Stage.SEMANTIC, "Attempt to use the '&&' operator with non-boolean operands", Integer.parseInt(node.get("line")), Integer.parseInt(node.get("col"))));
-
-        }
-        else if(node.getKind().equals("Not")){
-
-            if (TypeLeft == null)
-                return true;
-
-            else if ((!TypeLeft.getName().equals("boolean")))
-                secondVisitorHelper.getReportList().add(ReportsUtils.reportEntryError(Stage.SEMANTIC, "Attempt to use the '!' operator with a non-boolean operand", Integer.parseInt(node.get("line")), Integer.parseInt(node.get("col"))));
-
-        }
-        else if(node.getKind().equals("Less")){
-
-            seekReturnTypeVisitorRight.visit(node.getChildren().get(1), secondVisitorHelper);
-
-            Type TypeRight = seekReturnTypeVisitorRight.getType();
-
-            if (TypeLeft == null)
-                return true;
-
-            if (TypeRight == null)
-                return true;
-
-            else if ((!TypeLeft.getName().equals("int")) || (!TypeRight.getName().equals("int")))
-                secondVisitorHelper.getReportList().add(ReportsUtils.reportEntryError(Stage.SEMANTIC, "Attempt to use the '<' operator with non-boolean operands", Integer.parseInt(node.get("line")), Integer.parseInt(node.get("col"))));
-
+        if (!typeLeft.getName().equals("boolean") || typeLeft.isArray()) {
+            secondVisitorHelper.getReportList().add(ReportsUtils.reportEntryError(Stage.SEMANTIC, "And Operators demand that left operand be a boolean expression", Integer.parseInt(node.get("line")), Integer.parseInt(node.get("col"))));
+            return false;
         }
 
+        seekReturnTypeVisitorRight.visit(node.getChildren().get(1), secondVisitorHelper);
+        Type typeRight = seekReturnTypeVisitorRight.getType();
+
+        if (!typeRight.getName().equals("boolean") || typeRight.isArray()) {
+            secondVisitorHelper.getReportList().add(ReportsUtils.reportEntryError(Stage.SEMANTIC, "And Operators demand that right operand be a boolean expression", Integer.parseInt(node.get("line")), Integer.parseInt(node.get("col"))));
+            return false;
+        }
 
         return true;
+    }
 
+    protected Boolean dealWithNot(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
+        return true;
+    }
+
+    protected Boolean dealWithLess(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
+        return true;
     }
 
     protected Boolean dealWithAssignment(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
@@ -183,7 +158,7 @@ public class SecondVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boole
 
 
     protected Boolean dealWithConditionOperation(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
-
+/*
         JmmNode conditionNode = node.getChildren().get(0).getChildren().get(0);
         String nodeType = conditionNode.getKind();
 
@@ -194,6 +169,8 @@ public class SecondVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boole
         } else if (nodeType.equals("Add") || nodeType.equals("Sub") || nodeType.equals("Mult") || nodeType.equals("Div")) {
             secondVisitorHelper.getReportList().add(ReportsUtils.reportEntryError(Stage.SEMANTIC, "Attempt to do a condition operation without a valid condition", Integer.parseInt(node.get("line")), Integer.parseInt(node.get("col"))));
         }
+
+ */
         return true;
     }
 
