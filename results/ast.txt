@@ -175,16 +175,16 @@
                     },
                     "children": [
                       {
-                        "kind": "MethodCall",
+                        "kind": "Not",
                         "attributes": {
-                          "col": "17",
+                          "col": "12",
                           "line": "7"
                         },
                         "children": [
                           {
-                            "kind": "Not",
+                            "kind": "MethodCall",
                             "attributes": {
-                              "col": "12",
+                              "col": "17",
                               "line": "7"
                             },
                             "children": [
@@ -196,41 +196,41 @@
                                   "value": "this"
                                 },
                                 "children": []
-                              }
-                            ]
-                          },
-                          {
-                            "kind": "Identifier",
-                            "attributes": {
-                              "col": "17",
-                              "line": "7",
-                              "value": "lt"
-                            },
-                            "children": [
+                              },
                               {
-                                "kind": "Parameters",
+                                "kind": "Identifier",
                                 "attributes": {
-                                  "col": "20",
-                                  "line": "7"
+                                  "col": "17",
+                                  "line": "7",
+                                  "value": "lt"
                                 },
                                 "children": [
                                   {
-                                    "kind": "Identifier",
+                                    "kind": "Parameters",
                                     "attributes": {
-                                      "col": "21",
-                                      "line": "7",
-                                      "value": "a"
+                                      "col": "20",
+                                      "line": "7"
                                     },
-                                    "children": []
-                                  },
-                                  {
-                                    "kind": "Identifier",
-                                    "attributes": {
-                                      "col": "24",
-                                      "line": "7",
-                                      "value": "b"
-                                    },
-                                    "children": []
+                                    "children": [
+                                      {
+                                        "kind": "Identifier",
+                                        "attributes": {
+                                          "col": "21",
+                                          "line": "7",
+                                          "value": "a"
+                                        },
+                                        "children": []
+                                      },
+                                      {
+                                        "kind": "Identifier",
+                                        "attributes": {
+                                          "col": "24",
+                                          "line": "7",
+                                          "value": "b"
+                                        },
+                                        "children": []
+                                      }
+                                    ]
                                   }
                                 ]
                               }
@@ -239,16 +239,16 @@
                         ]
                       },
                       {
-                        "kind": "MethodCall",
+                        "kind": "Not",
                         "attributes": {
-                          "col": "35",
+                          "col": "30",
                           "line": "7"
                         },
                         "children": [
                           {
-                            "kind": "Not",
+                            "kind": "MethodCall",
                             "attributes": {
-                              "col": "30",
+                              "col": "35",
                               "line": "7"
                             },
                             "children": [
@@ -260,41 +260,41 @@
                                   "value": "this"
                                 },
                                 "children": []
-                              }
-                            ]
-                          },
-                          {
-                            "kind": "Identifier",
-                            "attributes": {
-                              "col": "35",
-                              "line": "7",
-                              "value": "lt"
-                            },
-                            "children": [
+                              },
                               {
-                                "kind": "Parameters",
+                                "kind": "Identifier",
                                 "attributes": {
-                                  "col": "38",
-                                  "line": "7"
+                                  "col": "35",
+                                  "line": "7",
+                                  "value": "lt"
                                 },
                                 "children": [
                                   {
-                                    "kind": "Identifier",
+                                    "kind": "Parameters",
                                     "attributes": {
-                                      "col": "39",
-                                      "line": "7",
-                                      "value": "b"
+                                      "col": "38",
+                                      "line": "7"
                                     },
-                                    "children": []
-                                  },
-                                  {
-                                    "kind": "Identifier",
-                                    "attributes": {
-                                      "col": "42",
-                                      "line": "7",
-                                      "value": "a"
-                                    },
-                                    "children": []
+                                    "children": [
+                                      {
+                                        "kind": "Identifier",
+                                        "attributes": {
+                                          "col": "39",
+                                          "line": "7",
+                                          "value": "b"
+                                        },
+                                        "children": []
+                                      },
+                                      {
+                                        "kind": "Identifier",
+                                        "attributes": {
+                                          "col": "42",
+                                          "line": "7",
+                                          "value": "a"
+                                        },
+                                        "children": []
+                                      }
+                                    ]
                                   }
                                 ]
                               }

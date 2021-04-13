@@ -321,7 +321,7 @@ void MultDivExpression()#void:{}
      <DIV>  ExpressionLevel15Priority() #Div(2))*
 }
 void ExpressionLevel15Priority()#void:{}{
-    ExpressionLevel16Priority() ArrayExpression()
+    ExpressionLevel16Priority() ArrayExpression() | <NOT> ExpressionLevel15Priority() #Not
 }
 void ArrayExpression()#void:{}{
     (ArrayAccess())*
@@ -352,7 +352,7 @@ void MethodParameter() #void:{}
 
 void ExpressionLevel17Priority()#void:{}
 {
-    Terminal() | <LPAR> {this.numberOfPars++;} Expression()<RPAR> {this.numberOfPars--;}  | <NOT> ExpressionLevel17Priority() #Not
+    Terminal() | <LPAR> {this.numberOfPars++;} Expression()<RPAR> {this.numberOfPars--;}
 }
 
 void Terminal()#void:{Token t;}
