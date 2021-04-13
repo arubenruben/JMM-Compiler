@@ -270,7 +270,7 @@ void WhileStatement()#While: {}
     }
     Statement()
 }
-//According to https://introcs.cs.princeton
+//According to https://introcs.cs.princeton.edu/java/11precedence/
 void Expression() #void :{}
 {
     ExpressionLevel1Priority()
