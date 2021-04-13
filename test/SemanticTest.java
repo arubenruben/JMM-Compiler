@@ -161,16 +161,34 @@ public class SemanticTest {
     public void testTarget2() {
         testFile("custom/semantic/method_verification/test_existence_target_with_super.jmm", false);
     }
+
     @Test
     public void testTargetWithImport() {
         testFile("custom/semantic/method_verification/test_existence_import.jmm", false);
     }
+
     @Test
     public void testMethodParameters() {
         testFile("custom/semantic/method_verification/test_parameters_number.jmm", true);
     }
+
     @Test
     public void testNumberParameters() {
         testFile("custom/semantic/method_verification/test_number_parameters.jmm", true);
+    }
+
+    @Test
+    public void testConditionWithArrayOK() {
+        testFile("custom/semantic/type_verification/test_condition_with_array_ok.jmm", false);
+    }
+
+    @Test
+    public void testConditionWithArrayFail() {
+        testFile("custom/semantic/type_verification/test_condition_with_array_fail.jmm", true);
+    }
+
+    @Test
+    public void testConditionPrecedence() {
+        testFile("custom/semantic/type_verification/test_condition_precedence.jmm", false);
     }
 }
