@@ -19,14 +19,14 @@
         "kind": "Class",
         "attributes": {
           "col": "1",
-          "line": "2",
-          "value": "Turing"
+          "line": "3",
+          "value": "Fac"
         },
         "children": [
           {
-            "kind": "VarDeclaration",
+            "kind": "ClassMethod",
             "attributes": {
-              "col": "5",
+              "col": "12",
               "line": "4",
               "value": "a"
             },
@@ -34,7 +34,7 @@
               {
                 "kind": "Type",
                 "attributes": {
-                  "col": "5",
+                  "col": "12",
                   "line": "4",
                   "isArray": "false",
                   "value": "int"

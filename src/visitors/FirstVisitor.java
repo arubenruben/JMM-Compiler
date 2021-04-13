@@ -80,7 +80,7 @@ public class FirstVisitor extends PreorderJmmVisitor<VisitorDataHelper, Boolean>
         );
         Symbol fieldSymbol = new Symbol(nodeType, variableName);
 
-        visitorDataHelper.getSymbolTableIml().getHashMapClassFields().put(fieldSymbol, "");
+        visitorDataHelper.getSymbolTableIml().getClassFields().put(fieldSymbol.getName(), fieldSymbol);
 
         return true;
 
@@ -95,7 +95,7 @@ public class FirstVisitor extends PreorderJmmVisitor<VisitorDataHelper, Boolean>
 
         MethodSymbol methodSymbol = new MethodSymbol(
                 new Type(node.getChildren().get(0).get("value"), node.getChildren().get(0).get("isArray").equals("true")),
-                node.get("value"));
+                node.get("value"), node);
 
         for (JmmNode parameter : parameterBlock.getChildren()) {
             JmmNode nodeType = parameter.getChildren().get(0);
@@ -107,8 +107,6 @@ public class FirstVisitor extends PreorderJmmVisitor<VisitorDataHelper, Boolean>
         methodSymbol.setParameters(parameters);
 
         visitorDataHelper.getSymbolTableIml().getMethodsHashmap().put(methodSymbol.getName(), methodSymbol);
-
-        visitorDataHelper.getSymbolTableIml().getNodeMap().put(methodSymbol.getName(), node);
 
         MethodBodyVisitor methodBodyVisitor = new MethodBodyVisitor();
 
