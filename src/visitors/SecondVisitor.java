@@ -108,33 +108,30 @@ public class SecondVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boole
         Type TypeLeft = seekReturnTypeVisitorLeft.getType();
 
 
-
         if (node.getKind().equals("And"))
         {
             seekReturnTypeVisitorRight.visit(node.getChildren().get(1), secondVisitorHelper);
 
             Type TypeRight = seekReturnTypeVisitorRight.getType();
 
-            System.out.println(!TypeLeft.getName().equals("boolean"));
-            System.out.println(!TypeRight.getName().equals("boolean"));
 
             if (TypeLeft == null)
-                System.err.println("Left child is null");
+                return true;
 
             if (TypeRight == null)
-                System.err.println("Right child is null");
+                return true;
 
             else if ((!TypeLeft.getName().equals("boolean")) || (!TypeRight.getName().equals("boolean")))
-                System.err.println("One or more elements are not boooleans");
+                secondVisitorHelper.getReportList().add(ReportsUtils.reportEntryError(Stage.SEMANTIC, "Attempt to use the '&&' operator with non-boolean operands", Integer.parseInt(node.get("line")), Integer.parseInt(node.get("col"))));
 
         }
         else if(node.getKind().equals("Not")){
 
             if (TypeLeft == null)
-                System.err.println("Left child is null");
+                return true;
 
             else if ((!TypeLeft.getName().equals("boolean")))
-                System.err.println("One or more elements are not booleans");
+                secondVisitorHelper.getReportList().add(ReportsUtils.reportEntryError(Stage.SEMANTIC, "Attempt to use the '!' operator with a non-boolean operand", Integer.parseInt(node.get("line")), Integer.parseInt(node.get("col"))));
 
         }
         else if(node.getKind().equals("Less")){
@@ -144,13 +141,13 @@ public class SecondVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boole
             Type TypeRight = seekReturnTypeVisitorRight.getType();
 
             if (TypeLeft == null)
-                System.err.println("Left child is null");
+                return true;
 
             if (TypeRight == null)
-                System.err.println("Right child is null");
+                return true;
 
             else if ((!TypeLeft.getName().equals("int")) || (!TypeRight.getName().equals("int")))
-                System.err.println("The *less* operation is not being used between integers");
+                secondVisitorHelper.getReportList().add(ReportsUtils.reportEntryError(Stage.SEMANTIC, "Attempt to use the '<' operator with non-boolean operands", Integer.parseInt(node.get("line")), Integer.parseInt(node.get("col"))));
 
         }
 
@@ -195,7 +192,7 @@ public class SecondVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boole
         } else if (nodeType.equals("And") || nodeType.equals("Not") || nodeType.equals("Less")) {
             dealWithBooleanOperation(conditionNode, secondVisitorHelper);
         } else if (nodeType.equals("Add") || nodeType.equals("Sub") || nodeType.equals("Mult") || nodeType.equals("Div")) {
-            System.err.println("If or While statement is not a boolean");
+            secondVisitorHelper.getReportList().add(ReportsUtils.reportEntryError(Stage.SEMANTIC, "Attempt to do a condition operation without a valid condition", Integer.parseInt(node.get("line")), Integer.parseInt(node.get("col"))));
         }
         return true;
     }

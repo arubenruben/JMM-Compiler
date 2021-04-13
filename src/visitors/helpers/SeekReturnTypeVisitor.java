@@ -20,6 +20,9 @@ public class SeekReturnTypeVisitor extends PreorderJmmVisitor<SecondVisitorHelpe
         addVisit("Identifier", this::dealWithIdentifier);
         addVisit("NewArray", this::dealWithNewArray);
         addVisit("NewObject", this::dealWithNewObject);
+        addVisit("Less", this::dealWithBooleanOperands);
+        addVisit("Not", this::dealWithBooleanOperands);
+        addVisit("And", this::dealWithBooleanOperands);
         setDefaultVisit(this::defaultVisit);
     }
 
@@ -31,6 +34,8 @@ public class SeekReturnTypeVisitor extends PreorderJmmVisitor<SecondVisitorHelpe
 
         return type;
     }
+
+
 
     protected Type dealWithMethodCall(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
 
@@ -50,7 +55,9 @@ public class SeekReturnTypeVisitor extends PreorderJmmVisitor<SecondVisitorHelpe
                 return type;
             }
 
+
             type = method.getType();
+
         }
 
         return type;
@@ -88,6 +95,7 @@ public class SeekReturnTypeVisitor extends PreorderJmmVisitor<SecondVisitorHelpe
             return type;
 
         Symbol symbol = secondVisitorHelper.getSymbolTableIml().lookup(node.get("value"), secondVisitorHelper.getCurrentMethodName());
+
 
         if (symbol == null) {
             mustFail = true;
@@ -127,6 +135,17 @@ public class SeekReturnTypeVisitor extends PreorderJmmVisitor<SecondVisitorHelpe
 
         return type;
     }
+
+    protected Type dealWithBooleanOperands(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
+        if (type != null || mustFail)
+            return type;
+
+        type = new Type("boolean", false);
+
+        return type;
+    }
+
+
 
     protected Type defaultVisit(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
 
