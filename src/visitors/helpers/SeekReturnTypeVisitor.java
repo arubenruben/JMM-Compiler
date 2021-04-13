@@ -36,7 +36,6 @@ public class SeekReturnTypeVisitor extends PreorderJmmVisitor<SecondVisitorHelpe
     }
 
 
-
     protected Type dealWithMethodCall(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
 
         if (type != null || mustFail)
@@ -144,7 +143,6 @@ public class SeekReturnTypeVisitor extends PreorderJmmVisitor<SecondVisitorHelpe
 
         return type;
     }
-
 
 
     protected Type defaultVisit(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
