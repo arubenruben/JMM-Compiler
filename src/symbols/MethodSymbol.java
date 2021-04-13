@@ -1,5 +1,6 @@
 package symbols;
 
+import pt.up.fe.comp.jmm.JmmNode;
 import pt.up.fe.comp.jmm.analysis.table.Symbol;
 import pt.up.fe.comp.jmm.analysis.table.Type;
 
@@ -11,14 +12,14 @@ import java.util.Map;
 public class MethodSymbol extends Symbol {
 
     private List<Symbol> parameters;
+    private final JmmNode node;
+    private final Map<String, Symbol> localVariables;
 
-    //TODO:Maybe an hashmap to store the values directly
-    private Map<Symbol, String> variables;
-
-    public MethodSymbol(Type returnType, String name) {
+    public MethodSymbol(Type returnType, String name, JmmNode node) {
         super(returnType, name);
+        this.node = node;
         this.parameters = new ArrayList<>();
-        this.variables = new HashMap<>();
+        this.localVariables = new HashMap<>();
     }
 
     public List<Symbol> getParameters() {
@@ -29,20 +30,20 @@ public class MethodSymbol extends Symbol {
         this.parameters = parameters;
     }
 
-    public Map<Symbol, String> getVariables() {
-        return variables;
-    }
-
-    public void setVariables(Map<Symbol, String> variables) {
-        this.variables = variables;
-    }
-
     @Override
     public String toString() {
         return "Symbols.MethodSymbol{" +
                 "return type" + getType() +
                 "parameters=" + parameters +
-                ", variables=" + variables.toString() +
+                ", variables=" + localVariables.toString() +
                 '}';
+    }
+
+    public JmmNode getNode() {
+        return node;
+    }
+
+    public Map<String, Symbol> getLocalVariables() {
+        return localVariables;
     }
 }

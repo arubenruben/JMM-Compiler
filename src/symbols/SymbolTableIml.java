@@ -16,16 +16,14 @@ public class SymbolTableIml implements SymbolTable {
     private String superName;
     private final Symbol variableThis;
     private final List<String> imports;
-    private final Map<String, JmmNode> nodeMap;
     private final Map<String, MethodSymbol> methodsHashmap;
-    private final Map<Symbol, String> hashMapClassFields;
+    private final Map<String, Symbol> classFields;
 
 
     public SymbolTableIml() {
-        this.hashMapClassFields = new HashMap<>();
+        this.classFields = new HashMap<>();
         this.methodsHashmap = new HashMap<>();
         this.imports = new ArrayList<>();
-        this.nodeMap = new HashMap<>();
         this.variableThis = new Symbol(new Type("this", false), "this");
     }
 
@@ -44,21 +42,19 @@ public class SymbolTableIml implements SymbolTable {
 
         MethodSymbol methodSymbol = methodsHashmap.get(currentMethodName);
 
-        for (Symbol symbol : methodSymbol.getVariables().keySet()) {
-            //Exists a local variable with that name
-            if (symbol.getName().equals(variableName))
-                return symbol;
+        if (methodSymbol.getLocalVariables().containsKey(variableName)) {
+            return methodSymbol.getLocalVariables().get(variableName);
         }
+
+        //Exists a method parameter variable with that name
         for (Symbol symbol : methodSymbol.getParameters()) {
-            //Exists a method parameter variable with that name
             if (symbol.getName().equals(variableName))
                 return symbol;
         }
-        for (Symbol symbol : hashMapClassFields.keySet()) {
-            //Exists a class Field variable with that name
-            if (symbol.getName().equals(variableName))
-                return symbol;
-        }
+        //Exists a class Field variable with that name
+        if (classFields.containsKey(variableName))
+            return classFields.get(variableName);
+
         return null;
 
     }
@@ -73,14 +69,6 @@ public class SymbolTableIml implements SymbolTable {
 
     public Map<String, MethodSymbol> getMethodsHashmap() {
         return methodsHashmap;
-    }
-
-    public Map<Symbol, String> getHashMapClassFields() {
-        return hashMapClassFields;
-    }
-
-    public Map<String, JmmNode> getNodeMap() {
-        return nodeMap;
     }
 
     public Symbol getVariableThis() {
@@ -104,7 +92,7 @@ public class SymbolTableIml implements SymbolTable {
 
     @Override
     public List<Symbol> getFields() {
-        return new ArrayList<>(hashMapClassFields.keySet());
+        return new ArrayList<>(classFields.values());
     }
 
     @Override
@@ -124,7 +112,7 @@ public class SymbolTableIml implements SymbolTable {
 
     @Override
     public List<Symbol> getLocalVariables(String methodName) {
-        return new ArrayList<>(methodsHashmap.get(methodName).getVariables().keySet());
+        return new ArrayList<>(methodsHashmap.get(methodName).getLocalVariables().values());
     }
 
     @Override
@@ -134,9 +122,12 @@ public class SymbolTableIml implements SymbolTable {
                 ", superName='" + superName + '\'' +
                 ", variableThis=" + variableThis +
                 ", imports=" + imports +
-                ", nodeMap=" + nodeMap +
                 ", methodsHashmap=" + methodsHashmap +
-                ", hashMapClassFields=" + hashMapClassFields +
+                ", hashMapClassFields=" + classFields +
                 '}';
+    }
+
+    public Map<String, Symbol> getClassFields() {
+        return classFields;
     }
 }

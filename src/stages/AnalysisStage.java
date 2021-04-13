@@ -41,11 +41,11 @@ public class AnalysisStage implements JmmAnalysis {
 
         for (String methodName : symbolTable.getMethodsHashmap().keySet()) {
             AJmmVisitor<SecondVisitorHelper, Boolean> secondVisitor = new SecondVisitor();
-            secondVisitor.visit(symbolTable.getNodeMap().get(methodName), new SecondVisitorHelper(methodName, symbolTable, reportList));
+            secondVisitor.visit(symbolTable.getMethodsHashmap().get(methodName).getNode(), new SecondVisitorHelper(methodName, symbolTable, reportList));
         }
         for (String methodName : symbolTable.getMethodsHashmap().keySet()) {
             AJmmVisitor<SecondVisitorHelper, Boolean> thirdVisitor = new ThirdVisitor();
-            thirdVisitor.visit(symbolTable.getNodeMap().get(methodName), new SecondVisitorHelper(methodName, symbolTable, reportList));
+            thirdVisitor.visit(symbolTable.getMethodsHashmap().get(methodName).getNode(), new SecondVisitorHelper(methodName, symbolTable, reportList));
         }
         return new JmmSemanticsResult(node, symbolTable, reportList);
 

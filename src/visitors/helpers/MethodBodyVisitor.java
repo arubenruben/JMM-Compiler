@@ -29,8 +29,8 @@ public class MethodBodyVisitor extends PreorderJmmVisitor<MethodBodyDataHelper, 
             }
         }
 
-        methodBodyDataHelper.getMethodSymbol().getVariables().put(
-                new Symbol(new Type(variableType, node.getChildren().get(0).get("isArray").equals("true")), node.get("value")), ""
+        methodBodyDataHelper.getMethodSymbol().getLocalVariables().put(node.get("value"),
+                new Symbol(new Type(variableType, node.getChildren().get(0).get("isArray").equals("true")), node.get("value"))
         );
 
         return true;
