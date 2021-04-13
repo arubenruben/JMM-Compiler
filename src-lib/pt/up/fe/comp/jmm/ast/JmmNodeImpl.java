@@ -1,12 +1,17 @@
 package pt.up.fe.comp.jmm.ast;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
 import pt.up.fe.comp.jmm.JmmNode;
 import pt.up.fe.specs.util.SpecsCheck;
-
-import java.util.*;
-import java.util.stream.Collectors;
 
 public class JmmNodeImpl implements JmmNode {
 
@@ -45,7 +50,7 @@ public class JmmNodeImpl implements JmmNode {
     public String get(String attribute) {
         var value = this.attributes.get(attribute);
 
-        SpecsCheck.checkNotNull(value, () -> "Node " + getKind() + " does not contain attribute '" + attribute + "'");
+        SpecsCheck.checkNotNull(value, () -> "Node " + toString() + " does not contain attribute '" + attribute + "'");
 
         return value;
     }
