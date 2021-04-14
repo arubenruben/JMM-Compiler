@@ -8,7 +8,7 @@ class Fac {
     int[] b;
 
     public boolean returnBoolean(){
-        if(true){
+        if(!true&&true){
 
         }
         else {

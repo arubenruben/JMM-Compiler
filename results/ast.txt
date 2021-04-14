@@ -129,20 +129,47 @@
                         },
                         "children": [
                           {
-                            "kind": "Boolean",
+                            "kind": "And",
                             "attributes": {
-                              "col": "16",
-                              "line": "11",
-                              "value": "true"
+                              "col": "19",
+                              "line": "11"
                             },
-                            "children": []
+                            "children": [
+                              {
+                                "kind": "Not",
+                                "attributes": {
+                                  "col": "13",
+                                  "line": "11"
+                                },
+                                "children": [
+                                  {
+                                    "kind": "Boolean",
+                                    "attributes": {
+                                      "col": "17",
+                                      "line": "11",
+                                      "value": "true"
+                                    },
+                                    "children": []
+                                  }
+                                ]
+                              },
+                              {
+                                "kind": "Boolean",
+                                "attributes": {
+                                  "col": "23",
+                                  "line": "11",
+                                  "value": "true"
+                                },
+                                "children": []
+                              }
+                            ]
                           }
                         ]
                       },
                       {
                         "kind": "Then",
                         "attributes": {
-                          "col": "17",
+                          "col": "24",
                           "line": "11"
                         },
                         "children": []
