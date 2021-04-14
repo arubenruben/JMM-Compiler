@@ -11,18 +11,19 @@ import pt.up.fe.comp.jmm.report.Report;
 import symbols.MethodSymbol;
 import symbols.SymbolTableIml;
 import visitors.OllirMethodVisitor;
+import visitors.helpers.data_helpers.VisitorOllirDataHelper;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Copyright 2021 SPeCS.
- * 
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
  * the License. You may obtain a copy of the License at
- * 
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ * <p>
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License. under the License.
@@ -36,7 +37,6 @@ public class OptimizationStage implements JmmOptimization {
         JmmNode node = semanticsResult.getRootNode();
 
         // Convert the AST to a String containing the equivalent OLLIR code
-        OllirMethodVisitor ollirMethodVisitor = new OllirMethodVisitor(semanticsResult.getSymbolTable());
         String ollirCode = ollirCodeString((SymbolTableIml) semanticsResult.getSymbolTable());
 
         System.out.println(ollirCode);
@@ -49,15 +49,16 @@ public class OptimizationStage implements JmmOptimization {
     }
 
 
-    private String ollirCodeString(SymbolTableIml symbolTable){
+    private String ollirCodeString(SymbolTableIml symbolTable) {
         StringBuilder code = new StringBuilder();
 
         // Create class declaration
         code.append(symbolTable.getClassName()).append(" {\n\n");
 
         // Create global variable declaration
-        for (Symbol variable: symbolTable.getFields()) {
-            code.append("\t").append(dealWithClassField(variable)).append("\n");;
+        for (Symbol variable : symbolTable.getFields()) {
+            code.append("\t").append(dealWithClassField(variable)).append("\n");
+            ;
         }
 
         code.append("\n");
@@ -70,9 +71,9 @@ public class OptimizationStage implements JmmOptimization {
 
         // Create method declaration and body
         OllirMethodVisitor ollirMethodVisitor = new OllirMethodVisitor(symbolTable);
-        for (MethodSymbol method : symbolTable.getMethodsHashmap().values()){
+        for (MethodSymbol method : symbolTable.getMethodsHashmap().values()) {
             code.append("\n\t").append(dealWithMethodHeader(method)).append(" {\n");
-            code.append(ollirMethodVisitor.visit(method.getNode(), "")).append("\n");
+            code.append(ollirMethodVisitor.visit(method.getNode(), new VisitorOllirDataHelper(symbolTable, new ArrayList<>(), ""))).append("))").append("\n");
             code.append("\t").append("}\n");
         }
 
@@ -82,23 +83,23 @@ public class OptimizationStage implements JmmOptimization {
     }
 
 
-    private String dealWithMethodHeader(MethodSymbol method){
+    private String dealWithMethodHeader(MethodSymbol method) {
         StringBuilder stringBuilder = new StringBuilder();
 
 
         stringBuilder.append(".method public ");
 
-        if(method.getName().equals("main")){
+        if (method.getName().equals("main")) {
             stringBuilder.append("static ");
         }
 
         stringBuilder.append(method.getName()).append(" (");
 
-        for(int i = 0; i < method.getParameters().size(); i++){
+        for (int i = 0; i < method.getParameters().size(); i++) {
 
             stringBuilder.append(dealWithField(method.getParameters().get(i)));
 
-            if(i != method.getParameters().size() - 1){
+            if (i != method.getParameters().size() - 1) {
                 stringBuilder.append(", ");
             }
         }
@@ -108,7 +109,7 @@ public class OptimizationStage implements JmmOptimization {
         return stringBuilder.toString();
     }
 
-    private String dealWithClassField(Symbol variable){
+    private String dealWithClassField(Symbol variable) {
         return ".field protected " +
                 dealWithField(variable);
     }
@@ -121,7 +122,7 @@ public class OptimizationStage implements JmmOptimization {
     private String dealWithFieldType(Type type) {
         StringBuilder stringBuilder = new StringBuilder();
 
-        if(type.isArray())
+        if (type.isArray())
             stringBuilder.append(".array");
 
         switch (type.getName()) {
@@ -133,7 +134,6 @@ public class OptimizationStage implements JmmOptimization {
 
         return stringBuilder.toString();
     }
-
 
 
     @Override

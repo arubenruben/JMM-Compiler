@@ -129,36 +129,45 @@
                         },
                         "children": [
                           {
-                            "kind": "And",
+                            "kind": "Boolean",
                             "attributes": {
-                              "col": "19",
-                              "line": "11"
+                              "col": "16",
+                              "line": "11",
+                              "value": "true"
+                            },
+                            "children": []
+                          }
+                        ]
+                      },
+                      {
+                        "kind": "Then",
+                        "attributes": {
+                          "col": "17",
+                          "line": "11"
+                        },
+                        "children": [
+                          {
+                            "kind": "Assignment",
+                            "attributes": {
+                              "col": "21",
+                              "line": "12"
                             },
                             "children": [
                               {
-                                "kind": "Not",
+                                "kind": "Identifier",
                                 "attributes": {
-                                  "col": "13",
-                                  "line": "11"
+                                  "col": "20",
+                                  "line": "12",
+                                  "value": "num_aux"
                                 },
-                                "children": [
-                                  {
-                                    "kind": "Boolean",
-                                    "attributes": {
-                                      "col": "17",
-                                      "line": "11",
-                                      "value": "true"
-                                    },
-                                    "children": []
-                                  }
-                                ]
+                                "children": []
                               },
                               {
-                                "kind": "Boolean",
+                                "kind": "Integer",
                                 "attributes": {
-                                  "col": "23",
-                                  "line": "11",
-                                  "value": "true"
+                                  "col": "22",
+                                  "line": "12",
+                                  "value": "1"
                                 },
                                 "children": []
                               }
@@ -167,20 +176,40 @@
                         ]
                       },
                       {
-                        "kind": "Then",
-                        "attributes": {
-                          "col": "24",
-                          "line": "11"
-                        },
-                        "children": []
-                      },
-                      {
                         "kind": "Else",
                         "attributes": {
                           "col": "14",
                           "line": "14"
                         },
-                        "children": []
+                        "children": [
+                          {
+                            "kind": "Assignment",
+                            "attributes": {
+                              "col": "21",
+                              "line": "15"
+                            },
+                            "children": [
+                              {
+                                "kind": "Identifier",
+                                "attributes": {
+                                  "col": "20",
+                                  "line": "15",
+                                  "value": "num_aux"
+                                },
+                                "children": []
+                              },
+                              {
+                                "kind": "Integer",
+                                "attributes": {
+                                  "col": "22",
+                                  "line": "15",
+                                  "value": "1"
+                                },
+                                "children": []
+                              }
+                            ]
+                          }
+                        ]
                       }
                     ]
                   }

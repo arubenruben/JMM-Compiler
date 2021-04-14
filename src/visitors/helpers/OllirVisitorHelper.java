@@ -15,18 +15,18 @@ public class OllirVisitorHelper {
     public String visit(JmmNode node) {
         StringBuilder stringBuilder = new StringBuilder();
         switch (node.getKind()) {
+            case "Not" -> stringBuilder.append(dealWithNot(node));
             case "Less" -> stringBuilder.append(dealWithLess(node));
             case "And" -> stringBuilder.append(dealWithAnd(node));
             case "Boolean" -> stringBuilder.append(dealWithBoolean(node));
             case "Integer" -> stringBuilder.append(dealWithInteger(node));
-            case "Not" -> stringBuilder.append(dealWithNot(node));
             case "MethodCall" -> stringBuilder.append(dealWithMethodCall(node));
             case "ArrayAccess" -> stringBuilder.append(dealWithArrayAccess(node));
+            case "Assignment" -> stringBuilder.append(dealWithAssignment(node));
         }
 
         return stringBuilder.toString();
     }
-
 
     protected String dealWithLess(JmmNode node) {
         return visit(node.getChildren().get(0)) +
@@ -70,4 +70,13 @@ public class OllirVisitorHelper {
         return null;
     }
 
+    protected String dealWithAssignment(JmmNode node) {
+        return visit(node.getChildren().get(0)) +
+                " := " +
+                visit(node.getChildren().get(1)) + ";";
+    }
+
+    protected String dealWithVariable(JmmNode node) {
+        return null;
+    }
 }

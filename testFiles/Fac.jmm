@@ -8,11 +8,11 @@ class Fac {
     int[] b;
 
     public boolean returnBoolean(){
-        if(!true&&true){
-
+        if(true){
+            num_aux=1;
         }
         else {
-
+            num_aux=1;
         }
         return true;
     }
