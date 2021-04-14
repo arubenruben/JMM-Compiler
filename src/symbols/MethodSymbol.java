@@ -32,10 +32,10 @@ public class MethodSymbol extends Symbol {
 
     @Override
     public String toString() {
-        return "Symbols.MethodSymbol{" +
-                "return type" + getType() +
-                "parameters=" + parameters +
-                ", variables=" + localVariables.toString() +
+        return "\n\t\t\t" + "Symbols.MethodSymbol{" +
+                "\n\t\t\t\t" + "return type=" + getType() +
+                "\n\t\t\t\t" + "parameters=" + parameters +
+                "\n\t\t\t\t" + "variables=" + localVariables.toString() +
                 '}';
     }
 

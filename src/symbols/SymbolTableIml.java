@@ -117,14 +117,40 @@ public class SymbolTableIml implements SymbolTable {
 
     @Override
     public String toString() {
-        return "SymbolTableIml{" +
-                "className='" + className + '\'' +
-                ", superName='" + superName + '\'' +
-                ", variableThis=" + variableThis +
-                ", imports=" + imports +
-                ", methodsHashmap=" + methodsHashmap +
-                ", hashMapClassFields=" + classFields +
+        return "SymbolTableIml{" + '\n' +
+                '\t' + "className='" + className + "\n" +
+                "\t" + "superName='" + superName + '\n' +
+                "\t" + "variableThis=" + variableThis + '\n' +
+                "\t" + "imports=" + imports + '\n' +
+                "\t" + "methodsHashmap" + "\n" + methodsPrint() + '\n' +
+                "\t" + "hashMapClassFields=" + "\n" + ClassFieldsPrint() + '\n' +
                 '}';
+    }
+
+    public String methodsPrint(){
+
+        String return_string= "";
+
+        for (Map.Entry<String, MethodSymbol> entry : methodsHashmap.entrySet()) {
+
+            return_string = return_string.concat("\t\t" + entry.getKey() + ":" + entry.getValue().toString() + '\n');
+        }
+
+        System.out.println("A" + return_string);
+        return return_string;
+    }
+
+    public String ClassFieldsPrint(){
+
+        String return_string= "";
+
+        for (Map.Entry<String, Symbol> entry : classFields.entrySet()) {
+
+            return_string = return_string.concat("\t\t" + entry.getKey() + ":" + entry.getValue().toString() + '\n');
+        }
+
+        System.out.println("A" + return_string);
+        return return_string;
     }
 
     public Map<String, Symbol> getClassFields() {

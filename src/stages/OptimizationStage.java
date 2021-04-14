@@ -121,7 +121,7 @@ public class OptimizationStage implements JmmOptimization {
 
     private String dealWithFieldType(Type type) {
         StringBuilder stringBuilder = new StringBuilder();
-
+    /*
         if (type.isArray())
             stringBuilder.append(".array");
 
@@ -131,7 +131,7 @@ public class OptimizationStage implements JmmOptimization {
             case "void" -> stringBuilder.append(".V");
             default -> stringBuilder.append(".").append(type.getName());
         }
-
+        */
         return stringBuilder.toString();
     }
 

@@ -17,11 +17,6 @@ public class Symbol {
         return name;
     }
 
-    @Override
-    public String toString() {
-        return "Symbol [type=" + type + ", name=" + name + "]";
-    }
-
     /* (non-Javadoc)
      * @see java.lang.Object#hashCode()
      */
@@ -59,4 +54,11 @@ public class Symbol {
         return true;
     }
 
+    @Override
+    public String toString() {
+        return "Symbol{" +
+                "type=" + type +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

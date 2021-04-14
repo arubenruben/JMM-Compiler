@@ -14,7 +14,7 @@ public class OllirVisitorHelper {
 
     public String visit(JmmNode node) {
         StringBuilder stringBuilder = new StringBuilder();
-        switch (node.getKind()) {
+        /*switch (node.getKind()) {
             case "Not" -> stringBuilder.append(dealWithNot(node));
             case "Less" -> stringBuilder.append(dealWithLess(node));
             case "And" -> stringBuilder.append(dealWithAnd(node));
@@ -23,7 +23,7 @@ public class OllirVisitorHelper {
             case "MethodCall" -> stringBuilder.append(dealWithMethodCall(node));
             case "ArrayAccess" -> stringBuilder.append(dealWithArrayAccess(node));
             case "Assignment" -> stringBuilder.append(dealWithAssignment(node));
-        }
+        }*/
 
         return stringBuilder.toString();
     }
