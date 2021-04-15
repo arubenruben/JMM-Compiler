@@ -136,7 +136,6 @@ public class SymbolTableIml implements SymbolTable {
             return_string = return_string.concat("\t\t" + entry.getKey() + ":" + entry.getValue().toString() + '\n');
         }
 
-        System.out.println("A" + return_string);
         return return_string;
     }
 
@@ -149,7 +148,6 @@ public class SymbolTableIml implements SymbolTable {
             return_string = return_string.concat("\t\t" + entry.getKey() + ":" + entry.getValue().toString() + '\n');
         }
 
-        System.out.println("A" + return_string);
         return return_string;
     }
 

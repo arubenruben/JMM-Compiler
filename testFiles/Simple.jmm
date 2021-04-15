@@ -1,0 +1,13 @@
+import io.language.MyObject;
+
+class simple{
+
+     int a;
+     int[] b;
+     boolean c;
+     MyObject e;
+
+     public int init(MyObject f, int g, boolean h){
+        return 0;
+     }
+}

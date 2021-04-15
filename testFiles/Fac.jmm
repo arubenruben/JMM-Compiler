@@ -9,6 +9,7 @@ class TicTacToe {
   int movesmade;
   int[] pieces;
 
+
   // Initializes a Tic Tac Toe object.
   public boolean init() {
     row0 = new int[3];

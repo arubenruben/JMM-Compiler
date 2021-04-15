@@ -37,15 +37,35 @@ public class OptimizationStage implements JmmOptimization {
         JmmNode node = semanticsResult.getRootNode();
 
         // Convert the AST to a String containing the equivalent OLLIR code
-        String ollirCode = ollirCodeString((SymbolTableIml) semanticsResult.getSymbolTable());
+        /*String ollirCode = ollirCodeString((SymbolTableIml) semanticsResult.getSymbolTable());
 
-        System.out.println(ollirCode);
+        System.out.println(ollirCode);*/
+
+        String ollirCode = "myClass {\n" +
+                ".construct myClass().V {\n" +
+                "invokespecial(this, \"<init>\").V;\n" +
+                "}\n" +
+                ".method public sum(A.array.i32).i32 {\n" +
+                "sum.i32 :=.i32 0.i32;\n" +
+                "i.i32 :=.i32 0.i32;\n" +
+                "Loop:\n" +
+                "t1.i32 :=.i32 arraylength($1.A.array.i32).i32;\n" +
+                "if (i.i32 >=.i32 t1.i32) goto End;\n" +
+                "t2.i32 :=.i32 $1.A[i.i32].i32;\n" +
+                "sum.i32 :=.i32 sum.i32 +.i32 t2.i32;\n" +
+                "i.i32 :=.i32 i.i32 +.i32 1.i32;\n" +
+                "goto Loop;\n" +
+                "End:\n" +
+                "ret.i32 sum.i32;\n" +
+                "}\n" +
+                "}";
+
 
         // More reports from this stage
         List<Report> reports = new ArrayList<>();
 
         // Fac {} must be replaced by ollirCode
-        return new OllirResult(semanticsResult, "Fac { }", reports);
+        return new OllirResult(semanticsResult, ollirCode, reports);
     }
 
 
