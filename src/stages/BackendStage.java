@@ -46,6 +46,8 @@ public class BackendStage implements JasminBackend {
             // Convert the OLLIR to a String containing the equivalent Jasmin code
             String jasminCode = dealWithClass(); // Convert node ...
 
+            System.out.println(jasminCode);
+
             // More reports from this stage
             List<Report> reports = new ArrayList<>();
 
@@ -248,9 +250,14 @@ public class BackendStage implements JasminBackend {
                 // Type of method invocation
                 stringBuilder.append("\t").append(OllirAccesser.getCallInvocation(callInstruction).toString()).append(" ");
 
-                // function name
-                stringBuilder.append(dealWithType(firstArg.getType())).append(".");
+                //TODO check if this is the correct wat to do it
+                if (callType == CallType.invokestatic) {
+                    stringBuilder.append(firstArg.getName()).append(".");
+                } else {
+                    stringBuilder.append(dealWithType(firstArg.getType())).append(".");
+                }
 
+                // function name
                 // for some reason the function comes with as a string like ""functionName""
                 LiteralElement secondArg = (LiteralElement) callInstruction.getSecondArg();
                 stringBuilder.append(stripChars(secondArg.getLiteral(), "\"")).append("(");
@@ -429,11 +436,14 @@ public class BackendStage implements JasminBackend {
                     stringBuilder.append("I");
                 }
             }
-            case OBJECTREF -> {
+            case OBJECTREF, CLASS -> {
                 ClassType classType = (ClassType) type;
 
                 for(String string : symbolTable.getImports()) {
                     List<String> tokens = Arrays.asList(string.split("\\.").clone());
+
+                    if(tokens.size() == 0)
+                        tokens.add(string);
 
                     if (!tokens.contains(classType.getName()))
                         continue;
@@ -441,8 +451,6 @@ public class BackendStage implements JasminBackend {
                     stringBuilder.append(string);
                     break;
                 }
-            }
-            case CLASS -> {
             }
             case STRING -> {
                 stringBuilder.append("LJava/Lang/String");

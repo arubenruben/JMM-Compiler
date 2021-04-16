@@ -42,34 +42,14 @@ public class OptimizationStage implements JmmOptimization {
         System.out.println(ollirCode);*/
 
 
-        String ollirCode = "myClass {\n" +
-                ".construct myClass().V {\n" +
+        String ollirCode = "HelloWorld {\n" +
+                ".construct HelloWorld().V {\n" +
                 "invokespecial(this, \"<init>\").V;\n" +
                 "}\n" +
                 ".method public static main(args.array.String).V {\n" +
+                "invokestatic(ioPlus, \"printHelloWorld\").V;\n" +
                 "}\n" +
-                ".method public sum0().i32{\n" +
-                "ret.i32 0.i32;\n" +
-                "}\n" +
-                ".method public sum(A.array.i32).i32 {\n" +
-                "aux1.Fac :=.Fac new(Fac).Fac;\n" +
-                "invokespecial(aux1.Fac,\"<init>\").V;\n" +
-                "a.i32 :=.i32 0.i32;\n"  +
-                "aux2.i32 :=.i32 invokevirtual(aux1.Fac, \"sum0\", 1.i32, aux1.Fac, 2.i32).i32;\n" +
-                "sum.i32 :=.i32 0.i32;\n" +
-                "i.i32 :=.i32 0.i32;\n" +
-                "Loop:\n" +
-                "t1.i32 :=.i32 arraylength($1.A.array.i32).i32;\n" +
-                "if (i.i32 >=.i32 t1.i32) goto End;\n" +
-                "t2.i32 :=.i32 $1.A[i.i32].i32;\n" +
-                "sum.i32 :=.i32 sum.i32 +.i32 t2.i32;\n" +
-                "i.i32 :=.i32 i.i32 +.i32 1.i32;\n" +
-                "goto Loop;\n" +
-                "End:\n" +
-                "ret.i32 sum.i32;\n" +
-                "}\n" +
-                "}";
-
+                "}\n";
 
         // More reports from this stage
         List<Report> reports = new ArrayList<>();
