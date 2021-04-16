@@ -165,7 +165,6 @@ public class BackendStage implements JasminBackend {
         StringBuilder stringBuilder = new StringBuilder();
 
         switch (instruction.getInstType()){
-
             case ASSIGN -> {
                 AssignInstruction assignInstruction = (AssignInstruction) instruction;
                 stringBuilder.append(dealWithAssignInstruction(method, assignInstruction));
@@ -175,16 +174,24 @@ public class BackendStage implements JasminBackend {
                 stringBuilder.append(dealWithCallInstruction(method, callInstruction));
             }
             case GOTO -> {
+                GotoInstruction gotoInstruction = (GotoInstruction) instruction;
+                stringBuilder.append(dealWithGotoInstruction(method,gotoInstruction));
             }
             case BRANCH -> {
+                CondBranchInstruction condBranchInstruction = (CondBranchInstruction) instruction;
+                stringBuilder.append(dealWithCondBranchInstruction(method, condBranchInstruction));
             }
             case RETURN -> {
                 ReturnInstruction returnInstruction = (ReturnInstruction) instruction;
                 stringBuilder.append(dealWithReturnInstruction(method, returnInstruction));
             }
             case PUTFIELD -> {
+                PutFieldInstruction putFieldInstruction = (PutFieldInstruction)  instruction;
+                stringBuilder.append(dealWithPutFieldInstruction(method, putFieldInstruction));
             }
             case GETFIELD -> {
+                GetFieldInstruction getFieldInstruction = (GetFieldInstruction)  instruction;
+                stringBuilder.append(dealWithGetFieldInstruction(method, getFieldInstruction));
             }
             case UNARYOPER -> {
                 UnaryOpInstruction unaryOpInstruction = (UnaryOpInstruction) instruction;
@@ -208,20 +215,7 @@ public class BackendStage implements JasminBackend {
 
         Instruction rhs = assignInstruction.getRhs();
 
-        switch (rhs.getInstType()) {
-            case CALL -> {
-                CallInstruction callInstruction = (CallInstruction) rhs;
-                stringBuilder.append(dealWithCallInstruction(method, callInstruction));
-            }
-            case NOPER -> {
-                SingleOpInstruction singleOpInstruction = (SingleOpInstruction) rhs;
-                stringBuilder.append(dealWithSingleOpInstruction(method, singleOpInstruction));
-            }
-            case BINARYOPER -> {
-                BinaryOpInstruction binaryOpInstruction = (BinaryOpInstruction) rhs;
-                stringBuilder.append(dealWithBinaryOpInstruction(method, binaryOpInstruction));
-            }
-        }
+        stringBuilder.append(dealWithInstruction(method, rhs));
 
         // store call value
         Operand dest = (Operand) assignInstruction.getDest();
