@@ -1,4 +1,5 @@
 import io.language.MyObject;
+import io.Fac;
 
 class simple{
 
@@ -8,6 +9,7 @@ class simple{
      MyObject e;
 
      public int init(MyObject f, int g, boolean h){
+        a = g;
         return 0;
      }
 }

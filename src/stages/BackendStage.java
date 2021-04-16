@@ -31,11 +31,11 @@ import java.util.Objects;
 public class BackendStage implements JasminBackend {
 
     private SymbolTable symbolTable;
-
+    private ClassUnit ollirClass;
     @Override
     public JasminResult toJasmin(OllirResult ollirResult) {
         symbolTable = ollirResult.getSymbolTable();
-        ClassUnit ollirClass = ollirResult.getOllirClass();
+        ollirClass = ollirResult.getOllirClass();
         try {
 
             // Example of what you can do with the OLLIR class
@@ -46,7 +46,7 @@ public class BackendStage implements JasminBackend {
             ollirClass.show(); // print to console main information about the input OLLIR
 
             // Convert the OLLIR to a String containing the equivalent Jasmin code
-            String jasminCode = dealWithClass(ollirClass); // Convert node ...
+            String jasminCode = dealWithClass(); // Convert node ...
 
             // More reports from this stage
             List<Report> reports = new ArrayList<>();
@@ -60,17 +60,19 @@ public class BackendStage implements JasminBackend {
 
     }
 
-    private String dealWithClass(ClassUnit classUnit){
+    // Function to deal with a class
+
+    private String dealWithClass(){
         StringBuilder stringBuilder = new StringBuilder();
 
         // Deal with class declaration
         stringBuilder.append(".class ");
 
         // access-spec
-        stringBuilder.append(dealWithAccessSpec(classUnit.getClassAccessModifier(), classUnit.isStaticClass(), classUnit.isFinalClass()));
+        stringBuilder.append(dealWithAccessSpec(ollirClass.getClassAccessModifier(), ollirClass.isStaticClass(), ollirClass.isFinalClass()));
 
         // class name
-        stringBuilder.append(classUnit.getClassName()).append("\n");
+        stringBuilder.append(ollirClass.getClassName()).append("\n");
 
         // Deal with super
         stringBuilder.append(Objects.requireNonNullElse(symbolTable.getSuper(), ".super java.lang.object")).append("\n");
@@ -78,19 +80,25 @@ public class BackendStage implements JasminBackend {
         stringBuilder.append("\n");
 
         // Deal with class field declaration
-        for(Field field : classUnit.getFields()){
+        for(Field field : ollirClass.getFields()){
             stringBuilder.append(dealWithClassField(field)).append("\n");
         }
 
         stringBuilder.append("\n");
 
         // Deal with methods
-        for (Method method: classUnit.getMethods()){
+        for (Method method: ollirClass.getMethods()){
+            if(method.isConstructMethod()){
+                stringBuilder.append(dealWithConstructorMethod()).append("\n\n");
+                continue;
+            }
             stringBuilder.append(dealWithMethod(method)).append("\n\n");
         }
 
         return stringBuilder.toString();
     }
+
+    // Function to deal with the class fields
 
     private String dealWithClassField(Field field){
         StringBuilder stringBuilder = new StringBuilder();
@@ -109,6 +117,16 @@ public class BackendStage implements JasminBackend {
         return stringBuilder.toString();
     }
 
+    // Functions to deal with a class method's declaration
+
+    private String dealWithConstructorMethod(){
+        return """
+                .method public <init>()V
+                    aload_0
+                    invokespecial java/lang/Object/<init>()V
+                    return
+                .end method""";
+     }
 
     private String dealWithMethod(Method method){
         StringBuilder stringBuilder = new StringBuilder();
@@ -119,13 +137,7 @@ public class BackendStage implements JasminBackend {
         stringBuilder.append(dealWithAccessSpec(method.getMethodAccessModifier(), method.isStaticMethod(), method.isFinalMethod()));
 
         // method-spec (name(parameters)returnType)
-        if(method.isConstructMethod()){
-            stringBuilder.append("<init>");
-        }
-        else {
-            stringBuilder.append(method.getMethodName());
-        }
-
+        stringBuilder.append(method.getMethodName());
         stringBuilder.append("(");
 
         // method parameters
@@ -136,11 +148,11 @@ public class BackendStage implements JasminBackend {
         stringBuilder.append(")").append(dealWithType(method.getReturnType())).append("\n");
 
         // limits
-        stringBuilder.append(".limit stack 99\n").append(".limit locals 99\n");
+        stringBuilder.append("\t.limit stack 99\n").append("\t.limit locals 99\n\n");
 
-        // instructions
+        // Deal with method instructions
         for(Instruction instruction : method.getInstructions()){
-            stringBuilder.append(dealWithInstruction(instruction)).append("\n");
+            stringBuilder.append(dealWithInstruction(method, instruction)).append("\n");
         }
 
         // method end
@@ -149,23 +161,29 @@ public class BackendStage implements JasminBackend {
         return stringBuilder.toString();
     }
 
+    // Functions to deal with each type of instructions
 
-    private String dealWithInstruction(Instruction instruction){
+    private String dealWithInstruction(Method method, Instruction instruction){
         StringBuilder stringBuilder = new StringBuilder();
 
         switch (instruction.getInstType()){
 
             case ASSIGN -> {
+                AssignInstruction assignInstruction = (AssignInstruction) instruction;
+                stringBuilder.append(dealWithAssignInstruction(method, assignInstruction));
+            }
 
-            }
             case CALL -> {
+                CallInstruction callInstruction = (CallInstruction) instruction;
+                stringBuilder.append(dealWithCallInstruction(method, callInstruction));
             }
+
             case GOTO -> {
             }
             case BRANCH -> {
             }
             case RETURN -> {
-                stringBuilder.append("return");
+                stringBuilder.append("\n\treturn\n");
             }
             case PUTFIELD -> {
             }
@@ -182,7 +200,128 @@ public class BackendStage implements JasminBackend {
         return stringBuilder.toString();
     }
 
+    private String dealWithAssignInstruction(Method method, AssignInstruction assignInstruction){
+        StringBuilder stringBuilder = new StringBuilder();
 
+        Instruction rhs = assignInstruction.getRhs();
+
+        switch (rhs.getInstType()) {
+            case CALL -> {
+                CallInstruction callInstruction = (CallInstruction) rhs;
+                stringBuilder.append(dealWithCallInstruction(method, callInstruction));
+            }
+            case NOPER -> {
+
+            }
+            case BINARYOPER -> {
+
+            }
+        }
+
+        // store call value
+        Operand dest = (Operand) assignInstruction.getDest();
+        stringBuilder.append("\tastore_").append(getVarVirtualRegister(method, dest.getName())).append("\n");
+
+        return stringBuilder.toString();
+    }
+
+    private String dealWithCallInstruction(Method method, CallInstruction callInstruction){
+        StringBuilder stringBuilder = new StringBuilder();
+
+        Operand firstArg = (Operand) callInstruction.getFirstArg();
+        int virtualRegister = getVarVirtualRegister(method, firstArg.getName());
+
+        CallType callType = OllirAccesser.getCallInvocation(callInstruction);
+
+        switch (callType){
+            case invokestatic, invokevirtual -> {
+
+                // push into the stack the reference of the object
+                if(callType == CallType.invokevirtual)
+                    stringBuilder.append("\taload_").append(virtualRegister).append("\n");
+
+                // push into the stack the method parameters
+                for(Element parameterElement : callInstruction.getListOfOperands()){
+
+                    if(!parameterElement.isLiteral()){
+                        Operand parameterOperand = (Operand) parameterElement;
+                        stringBuilder.append("\taload_").append(getVarVirtualRegister(method, parameterOperand.getName())).append("\n");
+                        continue;
+                    }
+                    LiteralElement parameterLiteral = (LiteralElement) parameterElement;
+                    stringBuilder.append("\ticonst_").append(parameterLiteral.getLiteral()).append("\n");
+                }
+
+                // Type of method invocation
+                stringBuilder.append("\t").append(OllirAccesser.getCallInvocation(callInstruction).toString()).append(" ");
+
+                // function name
+                stringBuilder.append(dealWithType(firstArg.getType())).append(".");
+
+                // for some reason the function comes with as a string like ""functionName""
+                LiteralElement secondArg = (LiteralElement) callInstruction.getSecondArg();
+                stringBuilder.append(stripChars(secondArg.getLiteral(), "\"")).append("(");
+
+                // function parameters
+                for(Element element : callInstruction.getListOfOperands()){
+                    stringBuilder.append(dealWithType(element.getType())).append(";");
+                }
+
+                stringBuilder.append(")");
+
+                // function return type
+                stringBuilder.append(dealWithType(callInstruction.getReturnType())).append("\n");
+            }
+            case invokespecial -> {
+
+                // load value
+                stringBuilder.append("\taload_").append(virtualRegister).append("\n");
+
+                // dup value
+                stringBuilder.append("\tdup\n");
+
+                // Type of method invocation
+                stringBuilder.append("\t").append(OllirAccesser.getCallInvocation(callInstruction).toString()).append(" ");
+
+                // function name
+                LiteralElement secondArg = (LiteralElement) callInstruction.getSecondArg();
+                stringBuilder.append(secondArg.getLiteral().toString()).append("(");
+
+                stringBuilder.append(")");
+
+                // function return type
+                stringBuilder.append(dealWithType(callInstruction.getReturnType())).append("\n");
+
+                // store value
+                stringBuilder.append("\tastore_").append(getVarVirtualRegister(method, firstArg.getName())).append("\n");
+            }
+            case NEW -> {
+                if(OllirAccesser.getCallInvocation(callInstruction) == CallType.NEW) {
+
+                    Operand newOperand = (Operand) callInstruction.getFirstArg();
+
+                    stringBuilder.append("\tnew ").append(newOperand.getName()).append("\n");
+                }
+            }
+            case arraylength -> {
+            }
+            case ldc -> {
+            }
+        }
+        return stringBuilder.toString();
+    }
+
+    private String dealWithReturnInstruction(Method method, ReturnInstruction returnInstruction){
+        return "";
+    }
+
+    private String dealWithBinaryOpInstruction(Method method, BinaryOpInstruction binaryOpInstruction){
+        return "";
+    }
+
+    private String dealWithNoperInstruction(Method method, Instruction instruction){
+        return "";
+    }
 
     private String dealWithAccessSpec(AccessModifiers modifier, boolean staticField, boolean finalField){
         StringBuilder stringBuilder = new StringBuilder();
@@ -247,6 +386,30 @@ public class BackendStage implements JasminBackend {
         return stringBuilder.toString();
     }
 
+    // Auxiliary functions to get information from the var table of each method
 
+    private int getVarVirtualRegister(Method method, String var){
+        return OllirAccesser.getVarTable(method).get(var).getVirtualReg();
+    }
+
+    private VarScope getVarScope(Method method, String var){
+        return OllirAccesser.getVarTable(method).get(var).getScope();
+    }
+    
+    private Type getVarType(Method method, String var){
+        return OllirAccesser.getVarTable(method).get(var).getVarType();
+    }
+
+    // Auxiliary functions string operations
+
+    public static String stripChars(String input, String strip) {
+        StringBuilder result = new StringBuilder();
+        for (char c : input.toCharArray()) {
+            if (strip.indexOf(c) == -1) {
+                result.append(c);
+            }
+        }
+        return result.toString();
+    }
 
 }
