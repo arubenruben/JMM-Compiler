@@ -10,6 +10,7 @@ import pt.up.fe.comp.jmm.report.Report;
 import pt.up.fe.comp.jmm.report.Stage;
 
 import java.io.File;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -183,7 +184,8 @@ public class BackendStage implements JasminBackend {
             case BRANCH -> {
             }
             case RETURN -> {
-                stringBuilder.append("\n\treturn\n");
+                ReturnInstruction returnInstruction = (ReturnInstruction) instruction;
+                stringBuilder.append(dealWithReturnInstruction(method, returnInstruction));
             }
             case PUTFIELD -> {
             }
@@ -242,14 +244,7 @@ public class BackendStage implements JasminBackend {
 
                 // push into the stack the method parameters
                 for(Element parameterElement : callInstruction.getListOfOperands()){
-
-                    if(!parameterElement.isLiteral()){
-                        Operand parameterOperand = (Operand) parameterElement;
-                        stringBuilder.append("\taload_").append(getVarVirtualRegister(method, parameterOperand.getName())).append("\n");
-                        continue;
-                    }
-                    LiteralElement parameterLiteral = (LiteralElement) parameterElement;
-                    stringBuilder.append("\ticonst_").append(parameterLiteral.getLiteral()).append("\n");
+                    dealWithElementPush(method, parameterElement);
                 }
 
                 // Type of method invocation
@@ -311,8 +306,29 @@ public class BackendStage implements JasminBackend {
         return stringBuilder.toString();
     }
 
+    private String dealWithElementPush(Method method, Element element){
+        StringBuilder stringBuilder = new StringBuilder();
+
+        if(element.isLiteral()){
+            LiteralElement parameterLiteral = (LiteralElement) element;
+            stringBuilder.append("\ticonst_").append(parameterLiteral.getLiteral()).append("\n");
+            return stringBuilder.toString();
+        }
+
+        Operand parameterOperand = (Operand) element;
+        stringBuilder.append("\t").append(dealWithLoadReturnType(parameterOperand.getType()));
+        stringBuilder.append("load_").append(getVarVirtualRegister(method, parameterOperand.getName())).append("\n");
+        return stringBuilder.toString();
+    }
+
     private String dealWithReturnInstruction(Method method, ReturnInstruction returnInstruction){
-        return "";
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append(dealWithElementPush(method, returnInstruction.getOperand()));
+
+        stringBuilder.append("\t").append(dealWithLoadReturnType(returnInstruction.getOperand().getType()));
+        stringBuilder.append("return\n");
+        return stringBuilder.toString();
     }
 
     private String dealWithBinaryOpInstruction(Method method, BinaryOpInstruction binaryOpInstruction){
@@ -339,6 +355,18 @@ public class BackendStage implements JasminBackend {
             stringBuilder.append("final ");
 
         return stringBuilder.toString();
+    }
+
+    private String dealWithLoadReturnType(Type type){
+        switch (type.getTypeOfElement()){
+            case INT32, BOOLEAN -> {
+                return "i";
+            }
+            case ARRAYREF, OBJECTREF, CLASS, THIS, STRING -> {
+                return "a";
+            }
+        }
+        return "a";
     }
 
     private String dealWithType(Type type){

@@ -46,6 +46,8 @@ public class OptimizationStage implements JmmOptimization {
                 ".construct myClass().V {\n" +
                 "invokespecial(this, \"<init>\").V;\n" +
                 "}\n" +
+                ".method public static main(args.array.String).V {\n" +
+                "}\n" +
                 ".method public sum0().i32{\n" +
                 "ret.i32 0.i32;\n" +
                 "}\n" +
