@@ -1,7 +1,6 @@
 package stages;
 
 import org.specs.comp.ollir.*;
-import pt.up.fe.comp.jmm.analysis.table.Symbol;
 import pt.up.fe.comp.jmm.analysis.table.SymbolTable;
 import pt.up.fe.comp.jmm.jasmin.JasminBackend;
 import pt.up.fe.comp.jmm.jasmin.JasminResult;
@@ -9,8 +8,6 @@ import pt.up.fe.comp.jmm.ollir.OllirResult;
 import pt.up.fe.comp.jmm.report.Report;
 import pt.up.fe.comp.jmm.report.Stage;
 
-import java.io.File;
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -173,12 +170,10 @@ public class BackendStage implements JasminBackend {
                 AssignInstruction assignInstruction = (AssignInstruction) instruction;
                 stringBuilder.append(dealWithAssignInstruction(method, assignInstruction));
             }
-
             case CALL -> {
                 CallInstruction callInstruction = (CallInstruction) instruction;
                 stringBuilder.append(dealWithCallInstruction(method, callInstruction));
             }
-
             case GOTO -> {
             }
             case BRANCH -> {
@@ -192,10 +187,16 @@ public class BackendStage implements JasminBackend {
             case GETFIELD -> {
             }
             case UNARYOPER -> {
+                UnaryOpInstruction unaryOpInstruction = (UnaryOpInstruction) instruction;
+                stringBuilder.append(dealWithUnaryOpInstruction(method, unaryOpInstruction));
             }
             case BINARYOPER -> {
+                BinaryOpInstruction binaryOpInstruction = (BinaryOpInstruction) instruction;
+                stringBuilder.append(dealWithBinaryOpInstruction(method, binaryOpInstruction));
             }
             case NOPER -> {
+                SingleOpInstruction singleOpInstruction = (SingleOpInstruction) instruction;
+                stringBuilder.append(dealWithSingleOpInstruction(method, singleOpInstruction));
             }
         }
 
@@ -213,16 +214,19 @@ public class BackendStage implements JasminBackend {
                 stringBuilder.append(dealWithCallInstruction(method, callInstruction));
             }
             case NOPER -> {
-
+                SingleOpInstruction singleOpInstruction = (SingleOpInstruction) rhs;
+                stringBuilder.append(dealWithSingleOpInstruction(method, singleOpInstruction));
             }
             case BINARYOPER -> {
-
+                BinaryOpInstruction binaryOpInstruction = (BinaryOpInstruction) rhs;
+                stringBuilder.append(dealWithBinaryOpInstruction(method, binaryOpInstruction));
             }
         }
 
         // store call value
         Operand dest = (Operand) assignInstruction.getDest();
-        stringBuilder.append("\tastore_").append(getVarVirtualRegister(method, dest.getName())).append("\n");
+        stringBuilder.append("\t").append(dealWithStoreLoadReturnType(dest.getType()));
+        stringBuilder.append("store_").append(getVarVirtualRegister(method, dest.getName())).append("\n");
 
         return stringBuilder.toString();
     }
@@ -244,7 +248,7 @@ public class BackendStage implements JasminBackend {
 
                 // push into the stack the method parameters
                 for(Element parameterElement : callInstruction.getListOfOperands()){
-                    dealWithElementPush(method, parameterElement);
+                    stringBuilder.append(dealWithElementPush(method, parameterElement));
                 }
 
                 // Type of method invocation
@@ -306,6 +310,49 @@ public class BackendStage implements JasminBackend {
         return stringBuilder.toString();
     }
 
+    //TODO
+    private String dealWithGotoInstruction(Method method, GotoInstruction gotoInstruction){
+        return "";
+    }
+
+    //TODO
+    private String dealWithCondBranchInstruction(Method method, CondBranchInstruction condBranchInstruction){
+        return "";
+    }
+
+    private String dealWithReturnInstruction(Method method, ReturnInstruction returnInstruction){
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append(dealWithElementPush(method, returnInstruction.getOperand()));
+
+        stringBuilder.append("\t").append(dealWithStoreLoadReturnType(returnInstruction.getOperand().getType()));
+        stringBuilder.append("return\n");
+        return stringBuilder.toString();
+    }
+
+    //TODO
+    private String dealWithPutFieldInstruction(Method method, PutFieldInstruction putFieldInstruction){
+        return "";
+    }
+
+    //TODO
+    private String dealWithGetFieldInstruction(Method method, GetFieldInstruction getFieldInstruction){
+        return "";
+    }
+
+    //TODO
+    private String dealWithUnaryOpInstruction(Method method, UnaryOpInstruction unaryOpInstruction){
+        return "";
+    }
+
+    private String dealWithBinaryOpInstruction(Method method, BinaryOpInstruction binaryOpInstruction){
+        return "";
+    }
+
+    private String dealWithSingleOpInstruction(Method method, SingleOpInstruction instruction){
+        return dealWithElementPush(method, instruction.getSingleOperand());
+    }
+
     private String dealWithElementPush(Method method, Element element){
         StringBuilder stringBuilder = new StringBuilder();
 
@@ -316,27 +363,9 @@ public class BackendStage implements JasminBackend {
         }
 
         Operand parameterOperand = (Operand) element;
-        stringBuilder.append("\t").append(dealWithLoadReturnType(parameterOperand.getType()));
+        stringBuilder.append("\t").append(dealWithStoreLoadReturnType(parameterOperand.getType()));
         stringBuilder.append("load_").append(getVarVirtualRegister(method, parameterOperand.getName())).append("\n");
         return stringBuilder.toString();
-    }
-
-    private String dealWithReturnInstruction(Method method, ReturnInstruction returnInstruction){
-        StringBuilder stringBuilder = new StringBuilder();
-
-        stringBuilder.append(dealWithElementPush(method, returnInstruction.getOperand()));
-
-        stringBuilder.append("\t").append(dealWithLoadReturnType(returnInstruction.getOperand().getType()));
-        stringBuilder.append("return\n");
-        return stringBuilder.toString();
-    }
-
-    private String dealWithBinaryOpInstruction(Method method, BinaryOpInstruction binaryOpInstruction){
-        return "";
-    }
-
-    private String dealWithNoperInstruction(Method method, Instruction instruction){
-        return "";
     }
 
     private String dealWithAccessSpec(AccessModifiers modifier, boolean staticField, boolean finalField){
@@ -357,7 +386,7 @@ public class BackendStage implements JasminBackend {
         return stringBuilder.toString();
     }
 
-    private String dealWithLoadReturnType(Type type){
+    private String dealWithStoreLoadReturnType(Type type){
         switch (type.getTypeOfElement()){
             case INT32, BOOLEAN -> {
                 return "i";
@@ -368,7 +397,7 @@ public class BackendStage implements JasminBackend {
         }
         return "a";
     }
-
+    
     private String dealWithType(Type type){
         StringBuilder stringBuilder = new StringBuilder();
         switch (type.getTypeOfElement()){
