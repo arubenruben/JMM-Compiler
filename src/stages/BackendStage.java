@@ -340,7 +340,30 @@ public class BackendStage implements JasminBackend {
     }
 
     private String dealWithBinaryOpInstruction(Method method, BinaryOpInstruction binaryOpInstruction){
-        return "";
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append(dealWithElementPush(method, binaryOpInstruction.getLeftOperand()));
+        stringBuilder.append(dealWithElementPush(method, binaryOpInstruction.getRightOperand()));
+
+
+        Operation operation = binaryOpInstruction.getUnaryOperation();
+
+        switch (operation.getOpType()){
+            case ADD -> {
+                stringBuilder.append("\tiadd\n");
+            }
+            case SUB -> {
+                stringBuilder.append("\tisub\n");
+            }
+            case MUL -> {
+                stringBuilder.append("\timul\n");
+            }
+            case DIV -> {
+                stringBuilder.append("\tidiv\n");
+            }
+        }
+
+        return stringBuilder.toString();
     }
 
     private String dealWithSingleOpInstruction(Method method, SingleOpInstruction instruction){
