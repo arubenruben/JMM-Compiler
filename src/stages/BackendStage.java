@@ -150,10 +150,18 @@ public class BackendStage implements JasminBackend {
         // limits
         stringBuilder.append("\t.limit stack 99\n").append("\t.limit locals 99\n\n");
 
+        boolean returnInstruction = false;
+
         // Deal with method instructions
         for(Instruction instruction : method.getInstructions()){
             stringBuilder.append(dealWithInstruction(method, instruction)).append("\n");
+            if(instruction.getInstType() == InstructionType.RETURN)
+                returnInstruction = true;
         }
+
+        //TODO see if we can do this or if have to check if the return type of the method is void
+        if(!returnInstruction)
+            stringBuilder.append("\treturn\n");
 
         // method end
         stringBuilder.append(".end method");
