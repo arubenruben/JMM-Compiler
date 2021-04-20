@@ -19,7 +19,6 @@ import org.specs.comp.ollir.ClassUnit;
 import org.specs.comp.ollir.OllirAccesser;
 import org.specs.comp.ollir.parser.OllirParser;
 import org.specs.comp.ollir.parser.ParseException;
-
 import pt.up.fe.specs.util.SpecsIo;
 
 public class OllirUtils {

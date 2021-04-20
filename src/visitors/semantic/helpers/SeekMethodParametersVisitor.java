@@ -1,9 +1,9 @@
-package visitors.helpers;
+package visitors.semantic.helpers;
 
 import pt.up.fe.comp.jmm.JmmNode;
 import pt.up.fe.comp.jmm.analysis.table.Type;
 import pt.up.fe.comp.jmm.ast.PreorderJmmVisitor;
-import visitors.helpers.data_helpers.SecondVisitorHelper;
+import visitors.semantic.helpers.data_helpers.SecondVisitorHelper;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,28 +1,19 @@
 package stages;
 
-import pt.up.fe.comp.TestUtils;
 import pt.up.fe.comp.jmm.JmmNode;
 import pt.up.fe.comp.jmm.JmmParserResult;
 import pt.up.fe.comp.jmm.analysis.JmmAnalysis;
 import pt.up.fe.comp.jmm.analysis.JmmSemanticsResult;
 import pt.up.fe.comp.jmm.ast.AJmmVisitor;
-import pt.up.fe.comp.jmm.ast.examples.ExamplePostorderVisitor;
-import pt.up.fe.comp.jmm.ast.examples.ExamplePreorderVisitor;
-import pt.up.fe.comp.jmm.ast.examples.ExamplePrintVariables;
-import pt.up.fe.comp.jmm.ast.examples.ExampleVisitor;
 import pt.up.fe.comp.jmm.report.Report;
-import pt.up.fe.comp.jmm.report.ReportType;
-import pt.up.fe.comp.jmm.report.Stage;
 import symbols.SymbolTableIml;
-import visitors.FirstVisitor;
-import visitors.SecondVisitor;
-import visitors.ThirdVisitor;
-import visitors.helpers.data_helpers.SecondVisitorHelper;
-import visitors.helpers.data_helpers.VisitorDataHelper;
+import visitors.semantic.FirstVisitor;
+import visitors.semantic.SecondVisitor;
+import visitors.semantic.ThirdVisitor;
+import visitors.semantic.helpers.data_helpers.SecondVisitorHelper;
+import visitors.semantic.helpers.data_helpers.VisitorDataHelper;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 public class AnalysisStage implements JmmAnalysis {
