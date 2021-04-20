@@ -9,7 +9,6 @@ import pt.up.fe.comp.jmm.ollir.OllirResult;
 import pt.up.fe.comp.jmm.report.Report;
 import symbols.MethodSymbol;
 import symbols.SymbolTableIml;
-import visitors.ollir.SeekStatementsVisitor;
 import visitors.ollir.SethiUllman;
 
 import java.util.ArrayList;
@@ -116,17 +115,18 @@ public class OptimizationStage implements JmmOptimization {
     private String dealWithMethodBody(MethodSymbol method) {
         StringBuilder stringBuilder = new StringBuilder();
         JmmNode methodBodyNode = method.getNode().getChildren().get(2);
-        SeekStatementsVisitor statementsVisitor = new SeekStatementsVisitor();
-        statementsVisitor.visit(methodBodyNode);
 
-        List<JmmNode> statements = statementsVisitor.getNodes();
-
-        for (JmmNode node : statements) {
+        for (JmmNode node : methodBodyNode.getChildren()) {
             if (node.getKind().equals("While")) {
                 stringBuilder.append("Loop:\n");
                 SethiUllman.firstStep(node.getChildren().get(0));
                 SethiUllman.secondStep(node.getChildren().get(0).getChildren().get(0), stringBuilder);
                 stringBuilder.append(dealWithWhile(node));
+                stringBuilder.append("\t\tBody:\n");
+
+                stringBuilder.append("\t\tEndLoop:\n");
+            } else if (node.getKind().equals("Assignment")) {
+                System.out.println(node);
             }
         }
 
@@ -138,7 +138,6 @@ public class OptimizationStage implements JmmOptimization {
     private String dealWithWhile(JmmNode node) {
         JmmNode whileCondition = node.getChildren().get(0).getChildren().get(0);
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("\tBody:\n");
 
         if (Integer.parseInt(whileCondition.get("registers")) > 1) {
 
@@ -156,7 +155,6 @@ public class OptimizationStage implements JmmOptimization {
             stringBuilder.append(" goto Body;\n");
         }
 
-        stringBuilder.append("\t\tEndLoop:\n");
 
         return stringBuilder.toString();
     }

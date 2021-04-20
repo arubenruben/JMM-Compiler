@@ -250,45 +250,54 @@
                         ]
                       },
                       {
-                        "kind": "Assignment",
+                        "kind": "Body",
                         "attributes": {
-                          "col": "15",
-                          "line": "16"
+                          "col": "39",
+                          "line": "15"
                         },
                         "children": [
                           {
-                            "kind": "Identifier",
+                            "kind": "Assignment",
                             "attributes": {
-                              "col": "14",
-                              "line": "16",
-                              "value": "i"
-                            },
-                            "children": []
-                          },
-                          {
-                            "kind": "Add",
-                            "attributes": {
-                              "col": "17",
+                              "col": "15",
                               "line": "16"
                             },
                             "children": [
                               {
                                 "kind": "Identifier",
                                 "attributes": {
-                                  "col": "16",
+                                  "col": "14",
                                   "line": "16",
                                   "value": "i"
                                 },
                                 "children": []
                               },
                               {
-                                "kind": "Integer",
+                                "kind": "Add",
                                 "attributes": {
-                                  "col": "18",
-                                  "line": "16",
-                                  "value": "1"
+                                  "col": "17",
+                                  "line": "16"
                                 },
-                                "children": []
+                                "children": [
+                                  {
+                                    "kind": "Identifier",
+                                    "attributes": {
+                                      "col": "16",
+                                      "line": "16",
+                                      "value": "i"
+                                    },
+                                    "children": []
+                                  },
+                                  {
+                                    "kind": "Integer",
+                                    "attributes": {
+                                      "col": "18",
+                                      "line": "16",
+                                      "value": "1"
+                                    },
+                                    "children": []
+                                  }
+                                ]
                               }
                             ]
                           }
