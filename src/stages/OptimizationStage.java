@@ -147,9 +147,9 @@ public class OptimizationStage implements JmmOptimization {
             stringBuilder.append(whileCondition.getChildren().get(0).get("result"));
 
             if (whileCondition.getKind().equals("And")) {
-                stringBuilder.append(" && ");
+                stringBuilder.append(" &&.bool ");
             } else
-                stringBuilder.append(" >= ");
+                stringBuilder.append(" >=.i32 ");
 
             stringBuilder.append(whileCondition.getChildren().get(1).get("result"));
             stringBuilder.append(")");

@@ -203,23 +203,41 @@
                               {
                                 "kind": "Less",
                                 "attributes": {
-                                  "col": "32",
+                                  "col": "35",
                                   "line": "15"
                                 },
                                 "children": [
                                   {
-                                    "kind": "Identifier",
+                                    "kind": "ArrayAccess",
                                     "attributes": {
                                       "col": "30",
-                                      "line": "15",
-                                      "value": "i"
+                                      "line": "15"
                                     },
-                                    "children": []
+                                    "children": [
+                                      {
+                                        "kind": "Identifier",
+                                        "attributes": {
+                                          "col": "29",
+                                          "line": "15",
+                                          "value": "A"
+                                        },
+                                        "children": []
+                                      },
+                                      {
+                                        "kind": "Identifier",
+                                        "attributes": {
+                                          "col": "31",
+                                          "line": "15",
+                                          "value": "i"
+                                        },
+                                        "children": []
+                                      }
+                                    ]
                                   },
                                   {
                                     "kind": "Identifier",
                                     "attributes": {
-                                      "col": "33",
+                                      "col": "36",
                                       "line": "15",
                                       "value": "T"
                                     },

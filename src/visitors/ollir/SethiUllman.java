@@ -52,6 +52,12 @@ public class SethiUllman {
         if (node.getKind().equals("This"))
             node.put("registers", "0");
 
+        if (node.getKind().equals("ArrayAccess")) {
+            node.put("registers", "1");
+            node.getChildren().get(0).put("registers", "0");
+            node.getChildren().get(1).put("registers", "0");
+        }
+
     }
 
     private static void fillNonTerminalValue(JmmNode node) {
@@ -81,7 +87,7 @@ public class SethiUllman {
 
         registers = new ArrayList<>();
 
-        for (int i = 1; i <= numberRegistersRequired; i++)
+        for (int i = 1; i <= 100; i++)
             registers.add(i);
 
 
@@ -94,9 +100,8 @@ public class SethiUllman {
 
     private static void codeDismember(JmmNode node, StringBuilder stringBuilder) {
 
-        if (Integer.parseInt(node.get("registers")) == 1) {
-            int register = registers.remove(0);
-            dismemberHelper(node, register, stringBuilder);
+        if (node.getNumChildren() == 0) {
+            node.put("result", node.get("value"));
             return;
         }
 
@@ -107,25 +112,40 @@ public class SethiUllman {
             codeDismember(node.getChildren().get(1), stringBuilder);
             codeDismember(node.getChildren().get(0), stringBuilder);
         }
+
+        if (Integer.parseInt(node.get("registers")) == 1) {
+            int register = registers.remove(0);
+            dismemberHelper(node, register, stringBuilder);
+        }
     }
 
     private static void dismemberHelper(JmmNode node, int registerUsed, StringBuilder stringBuilder) {
 
         if (node.getKind().equals("Less")) {
-            stringBuilder
-                    .append("\t\t")
-                    .append("t")
-                    .append(registerUsed)
-                    .append(".bool")
-                    .append(" :=")
-                    .append(".bool ")
-                    .append(node.getChildren().get(0).get("value"))
-                    .append(" .i32")
-                    .append(" < ")
-                    .append(node.getChildren().get(1).get("value"))
-                    .append(" .i32;");
+            stringBuilder.append("\t\t");
+            stringBuilder.append("t");
+            stringBuilder.append(registerUsed);
+            stringBuilder.append(".bool");
+            stringBuilder.append(" :=");
+            stringBuilder.append(".bool ");
+            stringBuilder.append(node.getChildren().get(0).get("result"));
+            stringBuilder.append(" < ");
+            stringBuilder.append(node.getChildren().get(1).get("result"));
 
             node.put("result", "t" + registerUsed + ".bool");
+        } else if (node.getKind().equals("ArrayAccess")) {
+            stringBuilder.append("\t\t");
+            stringBuilder.append("t");
+            stringBuilder.append(registerUsed);
+            stringBuilder.append(".i32");
+            stringBuilder.append(" :=");
+            stringBuilder.append(".i32 ");
+            stringBuilder.append(node.getChildren().get(0).get("result"));
+            stringBuilder.append("[");
+            stringBuilder.append(node.getChildren().get(1).get("result"));
+            stringBuilder.append("]");
+            stringBuilder.append(".i32;");
+            node.put("result", "t" + registerUsed + ".i32");
         }
         stringBuilder.append("\n");
 
