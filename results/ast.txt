@@ -275,25 +275,115 @@
                               {
                                 "kind": "Add",
                                 "attributes": {
-                                  "col": "17",
+                                  "col": "27",
                                   "line": "16"
                                 },
                                 "children": [
                                   {
-                                    "kind": "Identifier",
+                                    "kind": "Add",
                                     "attributes": {
-                                      "col": "16",
-                                      "line": "16",
-                                      "value": "i"
+                                      "col": "25",
+                                      "line": "16"
                                     },
-                                    "children": []
+                                    "children": [
+                                      {
+                                        "kind": "Add",
+                                        "attributes": {
+                                          "col": "23",
+                                          "line": "16"
+                                        },
+                                        "children": [
+                                          {
+                                            "kind": "Add",
+                                            "attributes": {
+                                              "col": "21",
+                                              "line": "16"
+                                            },
+                                            "children": [
+                                              {
+                                                "kind": "Add",
+                                                "attributes": {
+                                                  "col": "19",
+                                                  "line": "16"
+                                                },
+                                                "children": [
+                                                  {
+                                                    "kind": "Add",
+                                                    "attributes": {
+                                                      "col": "17",
+                                                      "line": "16"
+                                                    },
+                                                    "children": [
+                                                      {
+                                                        "kind": "Identifier",
+                                                        "attributes": {
+                                                          "col": "16",
+                                                          "line": "16",
+                                                          "value": "i"
+                                                        },
+                                                        "children": []
+                                                      },
+                                                      {
+                                                        "kind": "Integer",
+                                                        "attributes": {
+                                                          "col": "18",
+                                                          "line": "16",
+                                                          "value": "1"
+                                                        },
+                                                        "children": []
+                                                      }
+                                                    ]
+                                                  },
+                                                  {
+                                                    "kind": "Integer",
+                                                    "attributes": {
+                                                      "col": "20",
+                                                      "line": "16",
+                                                      "value": "2"
+                                                    },
+                                                    "children": []
+                                                  }
+                                                ]
+                                              },
+                                              {
+                                                "kind": "Integer",
+                                                "attributes": {
+                                                  "col": "22",
+                                                  "line": "16",
+                                                  "value": "3"
+                                                },
+                                                "children": []
+                                              }
+                                            ]
+                                          },
+                                          {
+                                            "kind": "Integer",
+                                            "attributes": {
+                                              "col": "24",
+                                              "line": "16",
+                                              "value": "3"
+                                            },
+                                            "children": []
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "kind": "Integer",
+                                        "attributes": {
+                                          "col": "26",
+                                          "line": "16",
+                                          "value": "2"
+                                        },
+                                        "children": []
+                                      }
+                                    ]
                                   },
                                   {
                                     "kind": "Integer",
                                     "attributes": {
-                                      "col": "18",
+                                      "col": "29",
                                       "line": "16",
-                                      "value": "1"
+                                      "value": "12"
                                     },
                                     "children": []
                                   }

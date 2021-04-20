@@ -78,12 +78,82 @@ public class OptimizationStage implements JmmOptimization {
 
         for (MethodSymbol method : symbolTable.getMethodsHashmap().values()) {
             code.append("\t").append(dealWithMethodHeader(method)).append(" {\n");
-            code.append("\t").append(dealWithMethodBody(method));
+            code.append(dealWithBody(method.getNode().getChildren().get(2)));
             code.append("\t").append("}\n");
         }
         code.append("\n}\n");
 
         return code.toString();
+    }
+
+    private String dealWithBody(JmmNode bodyNode) {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        for (JmmNode child : bodyNode.getChildren()) {
+            switch (child.getKind()) {
+                case "While":
+                    stringBuilder.append(dealWithWhile(child));
+                    break;
+                case "Assignment":
+                    stringBuilder.append(dealWithAssignment(child));
+                    break;
+            }
+        }
+
+        return stringBuilder.toString();
+    }
+
+    private String dealWithWhile(JmmNode node) {
+        JmmNode whileCondition = node.getChildren().get(0).getChildren().get(0);
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append("\tLoop:\n");
+
+        SethiUllman.firstStep(whileCondition);
+        SethiUllman.secondStep(whileCondition, stringBuilder);
+
+        if (Integer.parseInt(whileCondition.get("registers")) > 1) {
+            stringBuilder.append("\t\t");
+            stringBuilder.append("if(");
+            stringBuilder.append(whileCondition.getChildren().get(0).get("result"));
+
+            if (whileCondition.getKind().equals("And")) {
+                stringBuilder.append(" &&.bool ");
+            } else
+                stringBuilder.append(" >=.i32 ");
+
+            stringBuilder.append(whileCondition.getChildren().get(1).get("result"));
+            stringBuilder.append(")");
+            stringBuilder.append(" goto Body;\n");
+            stringBuilder.append("\t\tgoto EndLoop;\n");
+
+            stringBuilder.append("\tBody:\n");
+            stringBuilder.append("\t");
+            stringBuilder.append(dealWithBody(node.getChildren().get(1)));
+
+        }
+        stringBuilder.append("\tEndLoop:\n");
+
+
+        return stringBuilder.toString();
+    }
+
+    private String dealWithAssignment(JmmNode node) {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        SethiUllman.firstStep(node.getChildren().get(1));
+        SethiUllman.secondStep(node.getChildren().get(1), stringBuilder);
+        stringBuilder.append("\t\t");
+        stringBuilder.append(node.getChildren().get(0).get("value"));
+        stringBuilder.append(":=");
+        stringBuilder.append(node.getChildren().get(1).getChildren().get(0).get("result"));
+        stringBuilder.append("+");
+        stringBuilder.append(node.getChildren().get(1).getChildren().get(1).get("result"));
+
+
+        stringBuilder.append("\n");
+
+        return stringBuilder.toString();
     }
 
     private String dealWithMethodHeader(MethodSymbol method) {
@@ -108,53 +178,6 @@ public class OptimizationStage implements JmmOptimization {
         }
 
         stringBuilder.append(")").append(dealWithFieldType(method.getType()));
-
-        return stringBuilder.toString();
-    }
-
-    private String dealWithMethodBody(MethodSymbol method) {
-        StringBuilder stringBuilder = new StringBuilder();
-        JmmNode methodBodyNode = method.getNode().getChildren().get(2);
-
-        for (JmmNode node : methodBodyNode.getChildren()) {
-            if (node.getKind().equals("While")) {
-                stringBuilder.append("Loop:\n");
-                SethiUllman.firstStep(node.getChildren().get(0));
-                SethiUllman.secondStep(node.getChildren().get(0).getChildren().get(0), stringBuilder);
-                stringBuilder.append(dealWithWhile(node));
-                stringBuilder.append("\t\tBody:\n");
-
-                stringBuilder.append("\t\tEndLoop:\n");
-            } else if (node.getKind().equals("Assignment")) {
-                System.out.println(node);
-            }
-        }
-
-        stringBuilder.append("\n");
-
-        return stringBuilder.toString();
-    }
-
-    private String dealWithWhile(JmmNode node) {
-        JmmNode whileCondition = node.getChildren().get(0).getChildren().get(0);
-        StringBuilder stringBuilder = new StringBuilder();
-
-        if (Integer.parseInt(whileCondition.get("registers")) > 1) {
-
-            stringBuilder.append("\t\t");
-            stringBuilder.append("if(");
-            stringBuilder.append(whileCondition.getChildren().get(0).get("result"));
-
-            if (whileCondition.getKind().equals("And")) {
-                stringBuilder.append(" &&.bool ");
-            } else
-                stringBuilder.append(" >=.i32 ");
-
-            stringBuilder.append(whileCondition.getChildren().get(1).get("result"));
-            stringBuilder.append(")");
-            stringBuilder.append(" goto Body;\n");
-        }
-
 
         return stringBuilder.toString();
     }

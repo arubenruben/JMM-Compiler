@@ -8,13 +8,7 @@ import java.util.List;
 public class SethiUllman {
     private static List<Integer> registers;
 
-    public static int firstStep(JmmNode node) {
-        treeFilling(node);
-        return 0;
-    }
-
-    private static void treeFilling(JmmNode node) {
-
+    public static void firstStep(JmmNode node) {
         //Terminal
         if (isTerminal(node)) {
             fillTerminalValue(node);
@@ -22,11 +16,9 @@ public class SethiUllman {
         }
 
         for (JmmNode child : node.getChildren())
-            treeFilling(child);
-
+            firstStep(child);
 
         fillNonTerminalValue(node);
-
     }
 
     private static boolean isTerminal(JmmNode node) {
@@ -90,8 +82,7 @@ public class SethiUllman {
         for (int i = 1; i <= 100; i++)
             registers.add(i);
 
-
-        if (numberRegistersRequired > 1) {
+        if (numberRegistersRequired > 0) {
             codeDismember(node.getChildren().get(0), stringBuilder);
             codeDismember(node.getChildren().get(1), stringBuilder);
         }
@@ -146,7 +137,20 @@ public class SethiUllman {
             stringBuilder.append("]");
             stringBuilder.append(".i32;");
             node.put("result", "t" + registerUsed + ".i32");
+        } else if (node.getKind().equals("Add")) {
+            stringBuilder.append("\t");
+            stringBuilder.append("t");
+            stringBuilder.append(registerUsed);
+            stringBuilder.append(".i32");
+            stringBuilder.append(" :=");
+            stringBuilder.append(".i32 ");
+            stringBuilder.append(node.getChildren().get(0).get("result"));
+            stringBuilder.append("+");
+            stringBuilder.append(node.getChildren().get(1).get("result"));
+            stringBuilder.append(".i32;");
+            node.put("result", "t" + registerUsed + ".i32");
         }
+
         stringBuilder.append("\n");
 
     }
