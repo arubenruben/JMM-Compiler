@@ -149,7 +149,32 @@ public class SethiUllman {
             stringBuilder.append(node.getChildren().get(1).get("result"));
             stringBuilder.append(".i32;");
             node.put("result", "t" + registerUsed + ".i32");
+        } else if (node.getKind().equals("Mul")) {
+            stringBuilder.append("\t");
+            stringBuilder.append("t");
+            stringBuilder.append(registerUsed);
+            stringBuilder.append(".i32");
+            stringBuilder.append(" :=");
+            stringBuilder.append(".i32 ");
+            stringBuilder.append(node.getChildren().get(0).get("result"));
+            stringBuilder.append("*");
+            stringBuilder.append(node.getChildren().get(1).get("result"));
+            stringBuilder.append(".i32;");
+            node.put("result", "t" + registerUsed + ".i32");
+        } else if (node.getKind().equals("Div")) {
+            stringBuilder.append("\t");
+            stringBuilder.append("t");
+            stringBuilder.append(registerUsed);
+            stringBuilder.append(".i32");
+            stringBuilder.append(" :=");
+            stringBuilder.append(".i32 ");
+            stringBuilder.append(node.getChildren().get(0).get("result"));
+            stringBuilder.append("/");
+            stringBuilder.append(node.getChildren().get(1).get("result"));
+            stringBuilder.append(".i32;");
+            node.put("result", "t" + registerUsed + ".i32");
         }
+
 
         stringBuilder.append("\n");
 

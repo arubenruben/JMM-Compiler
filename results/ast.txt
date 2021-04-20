@@ -167,92 +167,20 @@
                         },
                         "children": [
                           {
-                            "kind": "And",
+                            "kind": "Boolean",
                             "attributes": {
-                              "col": "27",
-                              "line": "15"
+                              "col": "20",
+                              "line": "15",
+                              "value": "true"
                             },
-                            "children": [
-                              {
-                                "kind": "Less",
-                                "attributes": {
-                                  "col": "21",
-                                  "line": "15"
-                                },
-                                "children": [
-                                  {
-                                    "kind": "Identifier",
-                                    "attributes": {
-                                      "col": "19",
-                                      "line": "15",
-                                      "value": "i"
-                                    },
-                                    "children": []
-                                  },
-                                  {
-                                    "kind": "Identifier",
-                                    "attributes": {
-                                      "col": "22",
-                                      "line": "15",
-                                      "value": "N"
-                                    },
-                                    "children": []
-                                  }
-                                ]
-                              },
-                              {
-                                "kind": "Less",
-                                "attributes": {
-                                  "col": "35",
-                                  "line": "15"
-                                },
-                                "children": [
-                                  {
-                                    "kind": "ArrayAccess",
-                                    "attributes": {
-                                      "col": "30",
-                                      "line": "15"
-                                    },
-                                    "children": [
-                                      {
-                                        "kind": "Identifier",
-                                        "attributes": {
-                                          "col": "29",
-                                          "line": "15",
-                                          "value": "A"
-                                        },
-                                        "children": []
-                                      },
-                                      {
-                                        "kind": "Identifier",
-                                        "attributes": {
-                                          "col": "31",
-                                          "line": "15",
-                                          "value": "i"
-                                        },
-                                        "children": []
-                                      }
-                                    ]
-                                  },
-                                  {
-                                    "kind": "Identifier",
-                                    "attributes": {
-                                      "col": "36",
-                                      "line": "15",
-                                      "value": "T"
-                                    },
-                                    "children": []
-                                  }
-                                ]
-                              }
-                            ]
+                            "children": []
                           }
                         ]
                       },
                       {
                         "kind": "Body",
                         "attributes": {
-                          "col": "39",
+                          "col": "22",
                           "line": "15"
                         },
                         "children": [
