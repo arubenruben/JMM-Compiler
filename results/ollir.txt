@@ -230,28 +230,50 @@
                             {
                               "kind": "Less",
                               "attributes": {
-                                "result": "t2.bool",
-                                "col": "32",
+                                "result": "t3.bool",
+                                "col": "35",
                                 "line": "16",
                                 "registers": "1"
                               },
                               "children": [
                                 {
-                                  "kind": "Identifier",
+                                  "kind": "ArrayAccess",
                                   "attributes": {
-                                    "result": "i",
+                                    "result": "t2.i32",
                                     "col": "30",
                                     "line": "16",
-                                    "registers": "0",
-                                    "value": "i"
+                                    "registers": "1"
                                   },
-                                  "children": []
+                                  "children": [
+                                    {
+                                      "kind": "Identifier",
+                                      "attributes": {
+                                        "result": "A",
+                                        "col": "29",
+                                        "line": "16",
+                                        "registers": "0",
+                                        "value": "A"
+                                      },
+                                      "children": []
+                                    },
+                                    {
+                                      "kind": "Integer",
+                                      "attributes": {
+                                        "result": "2",
+                                        "col": "31",
+                                        "line": "16",
+                                        "registers": "0",
+                                        "value": "2"
+                                      },
+                                      "children": []
+                                    }
+                                  ]
                                 },
                                 {
                                   "kind": "Identifier",
                                   "attributes": {
                                     "result": "T",
-                                    "col": "33",
+                                    "col": "36",
                                     "line": "16",
                                     "registers": "0",
                                     "value": "T"
@@ -267,7 +289,7 @@
                     {
                       "kind": "Body",
                       "attributes": {
-                        "col": "36",
+                        "col": "39",
                         "line": "16"
                       },
                       "children": [

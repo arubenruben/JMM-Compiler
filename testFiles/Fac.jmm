@@ -13,7 +13,7 @@ class Fac {
     public boolean check(int[] A, int N, int T) {
         int i;
         boolean all;
-        while ((i < N) && (i < T)) {
+        while ((i < N) && (A[2] < T)) {
             i=i/1/2/3*3-2+12;
         }
         if(i<N){

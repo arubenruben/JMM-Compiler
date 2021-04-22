@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SethiUllman {
-    private static List<Integer> registersAvaiable;
+    private static List<Integer> registersAvailable;
 
     public static void firstStep(JmmNode node) {
         //Terminal
@@ -24,10 +24,10 @@ public class SethiUllman {
     public static String secondStep(JmmNode node) {
         StringBuilder code = new StringBuilder();
 
-        registersAvaiable = new ArrayList<>();
+        registersAvailable = new ArrayList<>();
 
         for (int i = 1; i <= 100; i++)
-            registersAvaiable.add(i);
+            registersAvailable.add(i);
 
         for (JmmNode child : node.getChildren())
             code.append(codeDismember(child));
@@ -48,8 +48,8 @@ public class SethiUllman {
         if (node.getNumChildren() == 0)
             return true;
 
-        if (node.getKind().equals("ArrayAccess"))//|| node.getKind().equals("NewArray") || node.getKind().equals("NewObject"))
-            return true;
+        //if (node.getKind().equals("NewArray") || node.getKind().equals("NewObject"))
+        //  return true;
 
         return false;
     }
@@ -57,16 +57,8 @@ public class SethiUllman {
     private static void fillTerminalValue(JmmNode node) {
 
         switch (node.getKind()) {
-            case "Identifier":
-            case "Boolean":
-            case "Integer":
-                node.put("registers", "0");
-                break;
-            default:
-                System.err.println("Not implemented yet");
-                break;
-            //case "This":
-            //  break;
+            case "Identifier", "Boolean", "Integer", "This" -> node.put("registers", "0");
+            default -> System.err.println("Not implemented yet");
         }
 
     }
@@ -111,7 +103,7 @@ public class SethiUllman {
         }
         //Is never the root. Only childs could be dismembered
         if (Integer.parseInt(node.get("registers")) >= 1)
-            code.append(dismemberHelper(node, registersAvaiable.remove(0)));
+            code.append(dismemberHelper(node, registersAvailable.remove(0)));
 
         return code.toString();
     }
@@ -196,6 +188,21 @@ public class SethiUllman {
                 code.append(node.getChildren().get(1).get("result"));
                 code.append(".i32;");
                 code.append("\n");
+            }
+            case "ArrayAccess" -> {
+                node.put("result", "t" + registerUsed + ".i32");
+                code.append("t");
+                code.append(registerUsed);
+                code.append(".i32");
+                code.append(" :=");
+                code.append(".i32 ");
+                code.append(node.getChildren().get(0).get("result"));
+                code.append("[");
+                code.append(node.getChildren().get(1).get("result"));
+                code.append("]");
+                code.append(".i32;");
+                code.append("\n");
+
             }
         }
 

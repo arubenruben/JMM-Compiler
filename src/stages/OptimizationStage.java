@@ -216,6 +216,11 @@ public class OptimizationStage implements JmmOptimization {
         code.append(node.getChildren().get(0).get("value"));
         code.append(":=");
 
+        code.append(node.getChildren().get(1).get("result"));
+
+        if (node.getChildren().get(1).getNumChildren() < 2)
+            return code.toString();
+
         switch (node.getChildren().get(1).getKind()) {
             case "Add" -> code.append("+");
             case "Sub" -> code.append("-");
@@ -225,7 +230,7 @@ public class OptimizationStage implements JmmOptimization {
             case "Less" -> code.append("<");
         }
 
-        code.append(node.getChildren().get(1).get("result"));
+        code.append(node.getChildren().get(1).getChildren().get(1).get("result"));
 
         code.append("\n");
 

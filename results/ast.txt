@@ -223,23 +223,41 @@
                               {
                                 "kind": "Less",
                                 "attributes": {
-                                  "col": "32",
+                                  "col": "35",
                                   "line": "16"
                                 },
                                 "children": [
                                   {
-                                    "kind": "Identifier",
+                                    "kind": "ArrayAccess",
                                     "attributes": {
                                       "col": "30",
-                                      "line": "16",
-                                      "value": "i"
+                                      "line": "16"
                                     },
-                                    "children": []
+                                    "children": [
+                                      {
+                                        "kind": "Identifier",
+                                        "attributes": {
+                                          "col": "29",
+                                          "line": "16",
+                                          "value": "A"
+                                        },
+                                        "children": []
+                                      },
+                                      {
+                                        "kind": "Integer",
+                                        "attributes": {
+                                          "col": "31",
+                                          "line": "16",
+                                          "value": "2"
+                                        },
+                                        "children": []
+                                      }
+                                    ]
                                   },
                                   {
                                     "kind": "Identifier",
                                     "attributes": {
-                                      "col": "33",
+                                      "col": "36",
                                       "line": "16",
                                       "value": "T"
                                     },
@@ -254,7 +272,7 @@
                       {
                         "kind": "Body",
                         "attributes": {
-                          "col": "36",
+                          "col": "39",
                           "line": "16"
                         },
                         "children": [
