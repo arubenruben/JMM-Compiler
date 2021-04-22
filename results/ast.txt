@@ -203,41 +203,23 @@
                               {
                                 "kind": "Less",
                                 "attributes": {
-                                  "col": "35",
+                                  "col": "32",
                                   "line": "15"
                                 },
                                 "children": [
                                   {
-                                    "kind": "ArrayAccess",
+                                    "kind": "Identifier",
                                     "attributes": {
                                       "col": "30",
-                                      "line": "15"
+                                      "line": "15",
+                                      "value": "i"
                                     },
-                                    "children": [
-                                      {
-                                        "kind": "Identifier",
-                                        "attributes": {
-                                          "col": "29",
-                                          "line": "15",
-                                          "value": "A"
-                                        },
-                                        "children": []
-                                      },
-                                      {
-                                        "kind": "Identifier",
-                                        "attributes": {
-                                          "col": "31",
-                                          "line": "15",
-                                          "value": "i"
-                                        },
-                                        "children": []
-                                      }
-                                    ]
+                                    "children": []
                                   },
                                   {
                                     "kind": "Identifier",
                                     "attributes": {
-                                      "col": "36",
+                                      "col": "33",
                                       "line": "15",
                                       "value": "T"
                                     },
@@ -252,7 +234,7 @@
                       {
                         "kind": "Body",
                         "attributes": {
-                          "col": "39",
+                          "col": "36",
                           "line": "15"
                         },
                         "children": [
@@ -280,35 +262,35 @@
                                 },
                                 "children": [
                                   {
-                                    "kind": "Add",
+                                    "kind": "Sub",
                                     "attributes": {
                                       "col": "25",
                                       "line": "16"
                                     },
                                     "children": [
                                       {
-                                        "kind": "Add",
+                                        "kind": "Mult",
                                         "attributes": {
                                           "col": "23",
                                           "line": "16"
                                         },
                                         "children": [
                                           {
-                                            "kind": "Add",
+                                            "kind": "Div",
                                             "attributes": {
                                               "col": "21",
                                               "line": "16"
                                             },
                                             "children": [
                                               {
-                                                "kind": "Add",
+                                                "kind": "Div",
                                                 "attributes": {
                                                   "col": "19",
                                                   "line": "16"
                                                 },
                                                 "children": [
                                                   {
-                                                    "kind": "Add",
+                                                    "kind": "Div",
                                                     "attributes": {
                                                       "col": "17",
                                                       "line": "16"

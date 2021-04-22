@@ -83,6 +83,7 @@ public class Main implements JmmParser {
 
         OllirResult ollirResult = optimization.toOllir(semanticsResults);
 
+
         //System.out.println(ollirResult);
 
         //JasminBackend backend = new BackendStage();

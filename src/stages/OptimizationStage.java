@@ -6,62 +6,49 @@ import pt.up.fe.comp.jmm.analysis.table.Symbol;
 import pt.up.fe.comp.jmm.analysis.table.Type;
 import pt.up.fe.comp.jmm.ollir.JmmOptimization;
 import pt.up.fe.comp.jmm.ollir.OllirResult;
-import pt.up.fe.comp.jmm.report.Report;
 import symbols.MethodSymbol;
 import symbols.SymbolTableIml;
 import visitors.ollir.SethiUllman;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-/**
- * Copyright 2021 SPeCS.
- * <p>
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
- * the License. You may obtain a copy of the License at
- * <p>
- * http://www.apache.org/licenses/LICENSE-2.0
- * <p>
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
- * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations under the License. under the License.
- */
 
 public class OptimizationStage implements JmmOptimization {
 
     @Override
     public OllirResult toOllir(JmmSemanticsResult semanticsResult) {
 
-        JmmNode node = semanticsResult.getRootNode();
-
         // Convert the AST to a String containing the equivalent OLLIR code
         String ollirCode = ollirCodeString((SymbolTableIml) semanticsResult.getSymbolTable());
 
         System.out.println(ollirCode);
 
-        /*
-        String ollirCode = "HelloWorld {\n" +
-                ".construct HelloWorld().V {\n" +
-                "invokespecial(this, \"<init>\").V;\n" +
-                "}\n" +
-                ".method public static main(args.array.String).V {\n" +
-                "invokestatic(ioPlus, \"printHelloWorld\").V;\n" +
-                "}\n" +
-                "}\n";
+        writeToFile(semanticsResult.getRootNode().toJson(), "results/ollir.txt");
 
-         */
-
-        // More reports from this stage
-        List<Report> reports = new ArrayList<>();
-
-        // Fac {} must be replaced by ollirCode
-        return new OllirResult(semanticsResult, ollirCode, reports);
+        return new OllirResult(semanticsResult, ollirCode, new ArrayList<>());
     }
-
 
     private String ollirCodeString(SymbolTableIml symbolTable) {
         StringBuilder code = new StringBuilder();
 
+        code.append(dealWithClassHeaders(symbolTable));
+
+        for (MethodSymbol method : symbolTable.getMethodsHashmap().values()) {
+            final JmmNode methodBody = method.getNode().getChildren().get(2);
+            code.append("\t").append(dealWithMethodHeader(method)).append(" {\n");
+            //TODO:Insert the \t using split and replace
+            code.append(dealWithBody(methodBody));
+            code.append("\t").append("}\n");
+        }
+        code.append("\n}\n");
+
+        return code.toString();
+    }
+
+    private String dealWithClassHeaders(SymbolTableIml symbolTable) {
+        StringBuilder code = new StringBuilder();
         // Create class declaration
         code.append(symbolTable.getClassName()).append(" {\n");
 
@@ -75,93 +62,11 @@ public class OptimizationStage implements JmmOptimization {
                 .append("\t\t").append("invokespecial(this, \"<init>\").V;\n")
                 .append("\t").append("}\n");
 
-
-        for (MethodSymbol method : symbolTable.getMethodsHashmap().values()) {
-            code.append("\t").append(dealWithMethodHeader(method)).append(" {\n");
-            code.append(dealWithBody(method.getNode().getChildren().get(2)));
-            code.append("\t").append("}\n");
-        }
-        code.append("\n}\n");
-
         return code.toString();
-    }
-
-    private String dealWithBody(JmmNode bodyNode) {
-        StringBuilder stringBuilder = new StringBuilder();
-
-        for (JmmNode child : bodyNode.getChildren()) {
-            switch (child.getKind()) {
-                case "While":
-                    stringBuilder.append(dealWithWhile(child));
-                    break;
-                case "Assignment":
-                    stringBuilder.append(dealWithAssignment(child));
-                    break;
-            }
-        }
-
-        return stringBuilder.toString();
-    }
-
-    private String dealWithWhile(JmmNode node) {
-        JmmNode whileCondition = node.getChildren().get(0).getChildren().get(0);
-        StringBuilder stringBuilder = new StringBuilder();
-
-        stringBuilder.append("\tLoop:\n");
-
-        SethiUllman.firstStep(whileCondition);
-        SethiUllman.secondStep(whileCondition, stringBuilder);
-
-        stringBuilder.append("\t\t");
-        stringBuilder.append("if(");
-
-        if (Integer.parseInt(whileCondition.get("registers")) > 1) {
-            stringBuilder.append(whileCondition.getChildren().get(0).get("result"));
-        }
-
-        if (whileCondition.getKind().equals("And")) {
-            stringBuilder.append(" &&.bool ");
-        } else
-            stringBuilder.append(" >=.i32 ");
-        if (Integer.parseInt(whileCondition.get("registers")) > 1) {
-            stringBuilder.append(whileCondition.getChildren().get(1).get("result"));
-        }
-
-        stringBuilder.append(")");
-        stringBuilder.append(" goto Body;\n");
-        stringBuilder.append("\t\tgoto EndLoop;\n");
-
-        stringBuilder.append("\tBody:\n");
-        stringBuilder.append("\t");
-        stringBuilder.append(dealWithBody(node.getChildren().get(1)));
-
-        stringBuilder.append("\tEndLoop:\n");
-
-
-        return stringBuilder.toString();
-    }
-
-    private String dealWithAssignment(JmmNode node) {
-        StringBuilder stringBuilder = new StringBuilder();
-
-        SethiUllman.firstStep(node.getChildren().get(1));
-        SethiUllman.secondStep(node.getChildren().get(1), stringBuilder);
-        stringBuilder.append("\t\t");
-        stringBuilder.append(node.getChildren().get(0).get("value"));
-        stringBuilder.append(":=");
-        stringBuilder.append(node.getChildren().get(1).getChildren().get(0).get("result"));
-        stringBuilder.append("+");
-        stringBuilder.append(node.getChildren().get(1).getChildren().get(1).get("result"));
-
-
-        stringBuilder.append("\n");
-
-        return stringBuilder.toString();
     }
 
     private String dealWithMethodHeader(MethodSymbol method) {
         StringBuilder stringBuilder = new StringBuilder();
-
 
         stringBuilder.append(".method public ");
 
@@ -183,6 +88,82 @@ public class OptimizationStage implements JmmOptimization {
         stringBuilder.append(")").append(dealWithFieldType(method.getType()));
 
         return stringBuilder.toString();
+    }
+
+    private String dealWithBody(JmmNode bodyNode) {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        for (JmmNode child : bodyNode.getChildren()) {
+            switch (child.getKind()) {
+                case "While" -> stringBuilder.append(dealWithWhile(child));
+                case "Assignment" -> stringBuilder.append(dealWithAssignment(child));
+            }
+        }
+
+        return stringBuilder.toString();
+    }
+
+    private String dealWithWhile(JmmNode node) {
+        StringBuilder code = new StringBuilder();
+
+        final JmmNode whileCondition = node.getChildren().get(0).getChildren().get(0);
+
+        code.append(dealWithWhileCondition(whileCondition));
+
+        code.append("Body:\n");
+
+        code.append(dealWithBody(node.getChildren().get(1)));
+
+        code.append("EndLoop:\n");
+
+
+        return code.toString();
+    }
+
+    private String dealWithWhileCondition(JmmNode node) {
+        StringBuilder code = new StringBuilder();
+
+        code.append("Loop:\n");
+
+        SethiUllman.firstStep(node);
+        code.append(SethiUllman.secondStep(node));
+
+        code.append("if(");
+        code.append(node.getChildren().get(0).get("result"));
+
+        if (node.getKind().equals("And"))
+            code.append("&&.bool");
+        else
+            code.append(">=.i32");
+
+        code.append(node.getChildren().get(1).get("result"));
+
+        code.append(")goto Body;\n");
+        code.append("goto EndLoop;\n");
+
+        return code.toString();
+    }
+
+    private String dealWithAssignment(JmmNode node) {
+        StringBuilder code = new StringBuilder();
+
+        SethiUllman.firstStep(node.getChildren().get(1));
+        code.append(SethiUllman.secondStep(node.getChildren().get(1)));
+        code.append(node.getChildren().get(0).get("value"));
+        code.append(":=");
+        code.append(node.getChildren().get(1).getChildren().get(0).get("result"));
+
+        switch (node.getChildren().get(1).getKind()) {
+            case "Add" -> code.append("+");
+            case "Sub" -> code.append("-");
+            case "Mul" -> code.append("*");
+            case "Div" -> code.append("/");
+        }
+        code.append(node.getChildren().get(1).getChildren().get(1).get("result"));
+
+        code.append("\n");
+
+        return code.toString();
     }
 
     private String dealWithClassField(Symbol variable) {
@@ -211,6 +192,16 @@ public class OptimizationStage implements JmmOptimization {
         return stringBuilder.toString();
     }
 
+    public static void writeToFile(String content, String path) {
+        try {
+            FileWriter myWriter = new FileWriter(path);
+            myWriter.write(content);
+            myWriter.close();
+        } catch (IOException e) {
+            System.out.println("An error occurred writing to file");
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public JmmSemanticsResult optimize(JmmSemanticsResult semanticsResult) {

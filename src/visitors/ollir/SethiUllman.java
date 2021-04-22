@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SethiUllman {
-    private static List<Integer> registers;
+    private static List<Integer> registersAvaiable;
 
     public static void firstStep(JmmNode node) {
         //Terminal
@@ -21,33 +21,43 @@ public class SethiUllman {
         fillNonTerminalValue(node);
     }
 
+    public static String secondStep(JmmNode node) {
+        StringBuilder code = new StringBuilder();
+
+        registersAvaiable = new ArrayList<>();
+
+        for (int i = 1; i <= 100; i++)
+            registersAvaiable.add(i);
+
+        for (JmmNode child : node.getChildren())
+            code.append(codeDismember(child));
+
+        return code.toString();
+    }
+
     private static boolean isTerminal(JmmNode node) {
         if (node.getNumChildren() == 0)
             return true;
 
-        if (node.getKind().equals("ArrayAccess") || node.getKind().equals("NewArray") || node.getKind().equals("NewObject"))
+        if (node.getKind().equals("ArrayAccess"))//|| node.getKind().equals("NewArray") || node.getKind().equals("NewObject"))
             return true;
 
         return false;
     }
 
     private static void fillTerminalValue(JmmNode node) {
-        if (node.getKind().equals("Identifier"))
-            node.put("registers", "0");
 
-        if (node.getKind().equals("Integer"))
-            node.put("registers", "0");
-
-        if (node.getKind().equals("Boolean"))
-            node.put("registers", "0");
-
-        if (node.getKind().equals("This"))
-            node.put("registers", "0");
-
-        if (node.getKind().equals("ArrayAccess")) {
-            node.put("registers", "1");
-            node.getChildren().get(0).put("registers", "0");
-            node.getChildren().get(1).put("registers", "0");
+        switch (node.getKind()) {
+            case "Identifier":
+            case "Boolean":
+            case "Integer":
+                node.put("registers", "0");
+                break;
+            default:
+                System.err.println("Not implemented yet");
+                break;
+            //case "This":
+            //  break;
         }
 
     }
@@ -73,110 +83,113 @@ public class SethiUllman {
 
     }
 
-    public static void secondStep(JmmNode node, StringBuilder stringBuilder) {
-
-        int numberRegistersRequired = Integer.parseInt(node.get("registers"));
-
-        registers = new ArrayList<>();
-
-        for (int i = 1; i <= 100; i++)
-            registers.add(i);
-
-        if (numberRegistersRequired > 0) {
-            codeDismember(node.getChildren().get(0), stringBuilder);
-            codeDismember(node.getChildren().get(1), stringBuilder);
-        }
-
-    }
-
-    private static void codeDismember(JmmNode node, StringBuilder stringBuilder) {
+    ///Step 1 helpers - Step 2 helpers
+    ///----------------------------------------///
+    private static String codeDismember(JmmNode node) {
+        StringBuilder code = new StringBuilder();
 
         if (node.getNumChildren() == 0) {
             node.put("result", node.get("value"));
-            return;
+            return code.toString();
         }
 
         if (Integer.parseInt(node.getChildren().get(0).get("registers")) >= Integer.parseInt(node.getChildren().get(1).get("registers"))) {
-            codeDismember(node.getChildren().get(0), stringBuilder);
-            codeDismember(node.getChildren().get(1), stringBuilder);
+            code.append(codeDismember(node.getChildren().get(0)));
+            code.append(codeDismember(node.getChildren().get(1)));
         } else {
-            codeDismember(node.getChildren().get(1), stringBuilder);
-            codeDismember(node.getChildren().get(0), stringBuilder);
+            code.append(codeDismember(node.getChildren().get(1)));
+            code.append(codeDismember(node.getChildren().get(0)));
         }
+        //Is never the root. Only childs could be dismembered
+        if (Integer.parseInt(node.get("registers")) >= 1)
+            code.append(dismemberHelper(node, registersAvaiable.remove(0)));
 
-        if (Integer.parseInt(node.get("registers")) == 1) {
-            int register = registers.remove(0);
-            dismemberHelper(node, register, stringBuilder);
-        }
+        return code.toString();
     }
 
-    private static void dismemberHelper(JmmNode node, int registerUsed, StringBuilder stringBuilder) {
+    private static String dismemberHelper(JmmNode node, int registerUsed) {
+        StringBuilder code = new StringBuilder();
 
-        if (node.getKind().equals("Less")) {
-            stringBuilder.append("\t\t");
-            stringBuilder.append("t");
-            stringBuilder.append(registerUsed);
-            stringBuilder.append(".bool");
-            stringBuilder.append(" :=");
-            stringBuilder.append(".bool ");
-            stringBuilder.append(node.getChildren().get(0).get("result"));
-            stringBuilder.append(" < ");
-            stringBuilder.append(node.getChildren().get(1).get("result"));
-
-            node.put("result", "t" + registerUsed + ".bool");
-        } else if (node.getKind().equals("ArrayAccess")) {
-            stringBuilder.append("\t\t");
-            stringBuilder.append("t");
-            stringBuilder.append(registerUsed);
-            stringBuilder.append(".i32");
-            stringBuilder.append(" :=");
-            stringBuilder.append(".i32 ");
-            stringBuilder.append(node.getChildren().get(0).get("result"));
-            stringBuilder.append("[");
-            stringBuilder.append(node.getChildren().get(1).get("result"));
-            stringBuilder.append("]");
-            stringBuilder.append(".i32;");
-            node.put("result", "t" + registerUsed + ".i32");
-        } else if (node.getKind().equals("Add")) {
-            stringBuilder.append("\t");
-            stringBuilder.append("t");
-            stringBuilder.append(registerUsed);
-            stringBuilder.append(".i32");
-            stringBuilder.append(" :=");
-            stringBuilder.append(".i32 ");
-            stringBuilder.append(node.getChildren().get(0).get("result"));
-            stringBuilder.append("+");
-            stringBuilder.append(node.getChildren().get(1).get("result"));
-            stringBuilder.append(".i32;");
-            node.put("result", "t" + registerUsed + ".i32");
-        } else if (node.getKind().equals("Mul")) {
-            stringBuilder.append("\t");
-            stringBuilder.append("t");
-            stringBuilder.append(registerUsed);
-            stringBuilder.append(".i32");
-            stringBuilder.append(" :=");
-            stringBuilder.append(".i32 ");
-            stringBuilder.append(node.getChildren().get(0).get("result"));
-            stringBuilder.append("*");
-            stringBuilder.append(node.getChildren().get(1).get("result"));
-            stringBuilder.append(".i32;");
-            node.put("result", "t" + registerUsed + ".i32");
-        } else if (node.getKind().equals("Div")) {
-            stringBuilder.append("\t");
-            stringBuilder.append("t");
-            stringBuilder.append(registerUsed);
-            stringBuilder.append(".i32");
-            stringBuilder.append(" :=");
-            stringBuilder.append(".i32 ");
-            stringBuilder.append(node.getChildren().get(0).get("result"));
-            stringBuilder.append("/");
-            stringBuilder.append(node.getChildren().get(1).get("result"));
-            stringBuilder.append(".i32;");
-            node.put("result", "t" + registerUsed + ".i32");
+        String kind = node.getKind();
+        switch (kind) {
+            case "Less" -> {
+                node.put("result", "t" + registerUsed + ".bool");
+                code.append("t");
+                code.append(registerUsed);
+                code.append(".bool");
+                code.append(" :=");
+                code.append(".bool ");
+                code.append(node.getChildren().get(0).get("result"));
+                code.append(" < ");
+                code.append(node.getChildren().get(1).get("result"));
+                code.append("\n");
+            }
+            case "And" -> {
+                node.put("result", "t" + registerUsed + ".bool");
+                code.append("t");
+                code.append(registerUsed);
+                code.append(".bool");
+                code.append(" :=");
+                code.append(".bool ");
+                code.append(node.getChildren().get(0).get("result"));
+                code.append(" && ");
+                code.append(node.getChildren().get(1).get("result"));
+                code.append("\n");
+            }
+            case "Add" -> {
+                node.put("result", "t" + registerUsed + ".i32");
+                code.append("t");
+                code.append(registerUsed);
+                code.append(".i32");
+                code.append(" :=");
+                code.append(".i32 ");
+                code.append(node.getChildren().get(0).get("result"));
+                code.append("+");
+                code.append(node.getChildren().get(1).get("result"));
+                code.append(".i32;");
+                code.append("\n");
+            }
+            case "Sub" -> {
+                node.put("result", "t" + registerUsed + ".i32");
+                code.append("t");
+                code.append(registerUsed);
+                code.append(".i32");
+                code.append(" :=");
+                code.append(".i32 ");
+                code.append(node.getChildren().get(0).get("result"));
+                code.append("-");
+                code.append(node.getChildren().get(1).get("result"));
+                code.append(".i32;");
+                code.append("\n");
+            }
+            case "Mult" -> {
+                node.put("result", "t" + registerUsed + ".i32");
+                code.append("t");
+                code.append(registerUsed);
+                code.append(".i32");
+                code.append(" :=");
+                code.append(".i32 ");
+                code.append(node.getChildren().get(0).get("result"));
+                code.append("*");
+                code.append(node.getChildren().get(1).get("result"));
+                code.append(".i32;");
+                code.append("\n");
+            }
+            case "Div" -> {
+                node.put("result", "t" + registerUsed + ".i32");
+                code.append("t");
+                code.append(registerUsed);
+                code.append(".i32");
+                code.append(" :=");
+                code.append(".i32 ");
+                code.append(node.getChildren().get(0).get("result"));
+                code.append("/");
+                code.append(node.getChildren().get(1).get("result"));
+                code.append(".i32;");
+                code.append("\n");
+            }
         }
 
-
-        stringBuilder.append("\n");
-
+        return code.toString();
     }
 }
