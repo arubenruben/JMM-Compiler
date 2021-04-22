@@ -32,6 +32,15 @@ public class SethiUllman {
         for (JmmNode child : node.getChildren())
             code.append(codeDismember(child));
 
+        if (node.getNumChildren() == 0) {
+            node.put("result", node.get("value"));
+            return code.toString();
+        }
+
+        if (!node.getAttributes().contains("result"))
+            node.put("result", node.getChildren().get(0).get("result"));
+
+
         return code.toString();
     }
 
