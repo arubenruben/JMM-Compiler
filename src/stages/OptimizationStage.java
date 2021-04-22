@@ -108,13 +108,28 @@ public class OptimizationStage implements JmmOptimization {
 
         final JmmNode whileCondition = node.getChildren().get(0).getChildren().get(0);
 
-        code.append(dealWithWhileCondition(whileCondition));
+        final String conditionStringRaw = dealWithWhileCondition(whileCondition);
 
-        code.append("Body:\n");
+        StringBuilder conditionStringParsed = new StringBuilder();
+        code.append("\t\tLoop:\n");
+        for (String str : conditionStringRaw.split("\n"))
+            conditionStringParsed.append("\t\t ").append(str).append("\n");
 
-        code.append(dealWithBody(node.getChildren().get(1)));
+        code.append(conditionStringParsed.toString());
 
-        code.append("EndLoop:\n");
+
+        final String bodyStringRaw = dealWithBody(node.getChildren().get(1));
+
+        StringBuilder bodyStringParsed = new StringBuilder();
+
+        bodyStringParsed.append("\t\t").append("Body:").append("\n");
+
+        for (String str : bodyStringRaw.split("\n"))
+            bodyStringParsed.append("\t\t ").append(str).append("\n");
+
+        code.append(bodyStringParsed.toString());
+
+        code.append("\t\tEndLoop:\n");
 
 
         return code.toString();
@@ -122,8 +137,6 @@ public class OptimizationStage implements JmmOptimization {
 
     private String dealWithWhileCondition(JmmNode node) {
         StringBuilder code = new StringBuilder();
-
-        code.append("Loop:\n");
 
         SethiUllman.firstStep(node);
         code.append(SethiUllman.secondStep(node));
@@ -138,7 +151,7 @@ public class OptimizationStage implements JmmOptimization {
 
         code.append(node.getChildren().get(1).get("result"));
 
-        code.append(")goto Body;\n");
+        code.append(") goto Body;\n");
         code.append("goto EndLoop;\n");
 
         return code.toString();
