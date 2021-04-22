@@ -12,7 +12,7 @@ class Fac {
 
     public boolean check(int[] A, int N, int T) {
         int i;
-        while (true) {
+        while ((i < N) && (A[i] < T)) {
             i=i+1+2+3+3+2+12;
         }
        return true;

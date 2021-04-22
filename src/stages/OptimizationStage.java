@@ -112,26 +112,29 @@ public class OptimizationStage implements JmmOptimization {
         SethiUllman.firstStep(whileCondition);
         SethiUllman.secondStep(whileCondition, stringBuilder);
 
+        stringBuilder.append("\t\t");
+        stringBuilder.append("if(");
+
         if (Integer.parseInt(whileCondition.get("registers")) > 1) {
-            stringBuilder.append("\t\t");
-            stringBuilder.append("if(");
             stringBuilder.append(whileCondition.getChildren().get(0).get("result"));
-
-            if (whileCondition.getKind().equals("And")) {
-                stringBuilder.append(" &&.bool ");
-            } else
-                stringBuilder.append(" >=.i32 ");
-
-            stringBuilder.append(whileCondition.getChildren().get(1).get("result"));
-            stringBuilder.append(")");
-            stringBuilder.append(" goto Body;\n");
-            stringBuilder.append("\t\tgoto EndLoop;\n");
-
-            stringBuilder.append("\tBody:\n");
-            stringBuilder.append("\t");
-            stringBuilder.append(dealWithBody(node.getChildren().get(1)));
-
         }
+
+        if (whileCondition.getKind().equals("And")) {
+            stringBuilder.append(" &&.bool ");
+        } else
+            stringBuilder.append(" >=.i32 ");
+        if (Integer.parseInt(whileCondition.get("registers")) > 1) {
+            stringBuilder.append(whileCondition.getChildren().get(1).get("result"));
+        }
+
+        stringBuilder.append(")");
+        stringBuilder.append(" goto Body;\n");
+        stringBuilder.append("\t\tgoto EndLoop;\n");
+
+        stringBuilder.append("\tBody:\n");
+        stringBuilder.append("\t");
+        stringBuilder.append(dealWithBody(node.getChildren().get(1)));
+
         stringBuilder.append("\tEndLoop:\n");
 
 
