@@ -8,7 +8,20 @@ import java.util.List;
 public class SethiUllman {
     private static List<Integer> registersAvailable;
 
+    public static void initializeRegisters() {
+
+        registersAvailable = new ArrayList<>();
+
+        for (int i = 1; i <= 100; i++)
+            registersAvailable.add(i);
+    }
+
+
     public static void firstStep(JmmNode node) {
+
+        if (registersAvailable == null)
+            initializeRegisters();
+
         //Terminal
         if (isTerminal(node)) {
             fillTerminalValue(node);
@@ -24,11 +37,6 @@ public class SethiUllman {
     public static String secondStep(JmmNode node) {
         StringBuilder code = new StringBuilder();
 
-        registersAvailable = new ArrayList<>();
-
-        for (int i = 1; i <= 100; i++)
-            registersAvailable.add(i);
-
         for (JmmNode child : node.getChildren())
             code.append(codeDismember(child));
 
@@ -38,7 +46,7 @@ public class SethiUllman {
         }
 
         if (!node.getAttributes().contains("result"))
-            node.put("result", node.getChildren().get(0).get("result"));
+            code.append(dismemberHelper(node));
 
 
         return code.toString();
@@ -95,22 +103,26 @@ public class SethiUllman {
             return code.toString();
         }
 
-        if (Integer.parseInt(node.getChildren().get(0).get("registers")) >= Integer.parseInt(node.getChildren().get(1).get("registers"))) {
-            code.append(codeDismember(node.getChildren().get(0)));
-            code.append(codeDismember(node.getChildren().get(1)));
-        } else {
-            code.append(codeDismember(node.getChildren().get(1)));
-            code.append(codeDismember(node.getChildren().get(0)));
+        if (!node.getKind().equals("MethodCall")) {
+            if (Integer.parseInt(node.getChildren().get(0).get("registers")) >= Integer.parseInt(node.getChildren().get(1).get("registers"))) {
+                code.append(codeDismember(node.getChildren().get(0)));
+                code.append(codeDismember(node.getChildren().get(1)));
+            } else {
+                code.append(codeDismember(node.getChildren().get(1)));
+                code.append(codeDismember(node.getChildren().get(0)));
+            }
         }
+
         //Is never the root. Only childs could be dismembered
         if (Integer.parseInt(node.get("registers")) >= 1)
-            code.append(dismemberHelper(node, registersAvailable.remove(0)));
+            code.append(dismemberHelper(node));
 
         return code.toString();
     }
 
-    private static String dismemberHelper(JmmNode node, int registerUsed) {
+    private static String dismemberHelper(JmmNode node) {
         StringBuilder code = new StringBuilder();
+        int registerUsed = registersAvailable.remove(0);
 
         switch (node.getKind()) {
             case "Less" -> {
@@ -205,6 +217,8 @@ public class SethiUllman {
             }
             case "MethodCall" -> {
                 node.put("result", "t" + registerUsed + ".i32");
+                node.getChildren().get(0).put("result", node.getChildren().get(0).get("value"));
+
                 if (node.getChildren().get(1).get("value").equals("length")) {
                     code.append("t");
                     code.append(registerUsed);
@@ -217,6 +231,25 @@ public class SethiUllman {
                     code.append(".i32");
                     code.append(")");
                     code.append(".i32;");
+                    code.append("\n");
+                } else {
+                    for (JmmNode parameter : node.getChildren().get(1).getChildren().get(0).getChildren()) {
+                        registersAvailable.remove(0);
+                        SethiUllman.firstStep(parameter);
+                        code.append(SethiUllman.secondStep(parameter));
+                    }
+                    code.append("t");
+                    code.append(registerUsed);
+                    code.append(".i32");
+                    code.append(" :=");
+                    code.append(".i32 ");
+                    code.append("invokestatic(");
+                    code.append(node.getChildren().get(0).get("result"));
+
+                    for (JmmNode parameter : node.getChildren().get(1).getChildren().get(0).getChildren())
+                        code.append(",").append(parameter.get("result"));
+
+                    code.append(").V;");
                     code.append("\n");
                 }
             }

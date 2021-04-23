@@ -10,6 +10,7 @@ import pt.up.fe.comp.jmm.report.Stage;
 import pt.up.fe.specs.util.SpecsIo;
 import stages.AnalysisStage;
 import stages.OptimizationStage;
+import visitors.ollir.SethiUllman;
 
 import java.io.FileWriter;
 import java.io.IOException;

@@ -23,7 +23,6 @@ public class OptimizationStage implements JmmOptimization {
 
         // Convert the AST to a String containing the equivalent OLLIR code
         String ollirCode = ollirCodeString((SymbolTableIml) semanticsResult.getSymbolTable());
-
         System.out.println(ollirCode);
 
         writeToFile(semanticsResult.getRootNode().toJson(), "results/ollir.txt");
@@ -147,7 +146,6 @@ public class OptimizationStage implements JmmOptimization {
 
     private String dealWithIf(JmmNode node) {
         StringBuilder code = new StringBuilder();
-        final String offset = "\t\t";
 
         final JmmNode conditionNode = node.getChildren().get(0).getChildren().get(0);
         final JmmNode thenNode = node.getChildren().get(1);
@@ -156,7 +154,7 @@ public class OptimizationStage implements JmmOptimization {
         SethiUllman.firstStep(conditionNode);
         code.append(SethiUllman.secondStep(conditionNode));
 
-        code.append(offset + "if(");
+        code.append("if(");
         code.append(conditionNode.getChildren().get(0).get("result"));
 
         if (conditionNode.getKind().equals("And"))
@@ -172,22 +170,22 @@ public class OptimizationStage implements JmmOptimization {
         String bodyStringRaw = dealWithBody(thenNode);
 
         for (String str : bodyStringRaw.split("\n"))
-            bodyStringParsed.append("\t\t ").append(str).append("\n");
+            bodyStringParsed.append("\t").append(str).append("\n");
 
         code.append(bodyStringParsed.toString());
 
-        code.append(offset + " goto endif;\n");
-        code.append(offset + "else:\n");
+        code.append(" goto endif;\n");
+        code.append("else:\n");
 
         StringBuilder elseBodyStringParsed = new StringBuilder();
         String elseBodyStringRaw = dealWithBody(elseNode);
 
         for (String str : elseBodyStringRaw.split("\n"))
-            elseBodyStringParsed.append("\t\t ").append(str).append("\n");
+            elseBodyStringParsed.append("\t").append(str).append("\n");
 
         code.append(elseBodyStringParsed.toString());
 
-        code.append(offset + "endif:\n");
+        code.append("endif:\n");
 
         code.append("\n");
 
@@ -250,8 +248,30 @@ public class OptimizationStage implements JmmOptimization {
     }
 
     private String dealWithMethodCall(JmmNode node) {
-        SethiUllman.firstStep(node);
-        return SethiUllman.secondStep(node);
+        StringBuilder code = new StringBuilder();
+
+        SethiUllman.firstStep(node.getChildren().get(0));
+        code.append(SethiUllman.secondStep(node.getChildren().get(0)));
+
+        for (JmmNode parameter : node.getChildren().get(1).getChildren().get(0).getChildren()) {
+            SethiUllman.firstStep(parameter);
+            code.append(SethiUllman.secondStep(parameter));
+        }
+
+        code.append("invokestatic(");
+        code.append(node.getChildren().get(0).get("result"));
+        code.append(",");
+        code.append(node.getChildren().get(1).get("value"));
+
+        for (JmmNode parameter : node.getChildren().get(1).getChildren().get(0).getChildren()) {
+            code.append(",");
+            code.append(parameter.get("result"));
+        }
+
+
+        code.append(").V");
+
+        return code.toString();
     }
 
     private String dealWithClassField(Symbol variable) {
