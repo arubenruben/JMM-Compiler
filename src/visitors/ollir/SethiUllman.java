@@ -16,8 +16,12 @@ public class SethiUllman {
             registersAvailable.add(i);
     }
 
+    public static String run(JmmNode node) {
+        firstStep(node);
+        return secondStep(node);
+    }
 
-    public static void firstStep(JmmNode node) {
+    private static void firstStep(JmmNode node) {
 
         if (registersAvailable == null)
             initializeRegisters();
@@ -34,7 +38,7 @@ public class SethiUllman {
         fillNonTerminalValue(node);
     }
 
-    public static String secondStep(JmmNode node) {
+    private static String secondStep(JmmNode node) {
         StringBuilder code = new StringBuilder();
 
         if (node.getKind().equals("MethodCall") || node.getKind().equals("NewArray")) {
@@ -124,159 +128,70 @@ public class SethiUllman {
         switch (node.getKind()) {
             case "Less" -> {
                 node.put("result", "t" + registerUsed + ".bool");
-                code.append("t");
-                code.append(registerUsed);
-                code.append(".bool");
-                code.append(":=");
-                code.append(".bool ");
-                code.append(node.getChildren().get(0).get("result"));
-                code.append(" < ");
-                code.append(node.getChildren().get(1).get("result"));
-                code.append("\n");
+                code.append("t").append(registerUsed).append(".bool").append(":=");
+                code.append(".bool ").append(node.getChildren().get(0).get("result")).append(" < ").append(node.getChildren().get(1).get("result"));
             }
             case "And" -> {
                 node.put("result", "t" + registerUsed + ".bool");
-                code.append("t");
-                code.append(registerUsed);
-                code.append(".bool");
-                code.append(":=");
-                code.append(".bool ");
-                code.append(node.getChildren().get(0).get("result"));
-                code.append(" && ");
-                code.append(node.getChildren().get(1).get("result"));
-                code.append("\n");
+                code.append("t").append(registerUsed).append(".bool").append(":=");
+                code.append(".bool ").append(node.getChildren().get(0).get("result")).append(" && ").append(node.getChildren().get(1).get("result"));
             }
             case "Add" -> {
                 node.put("result", "t" + registerUsed + ".i32");
-                code.append("t");
-                code.append(registerUsed);
-                code.append(".i32");
-                code.append(":=");
-                code.append(".i32 ");
-                code.append(node.getChildren().get(0).get("result"));
-                code.append("+");
-                code.append(node.getChildren().get(1).get("result"));
-                code.append(".i32;");
-                code.append("\n");
+                code.append("t").append(registerUsed).append(".i32").append(":=");
+                code.append(".i32 ").append(node.getChildren().get(0).get("result")).append("+").append(node.getChildren().get(1).get("result")).append(".i32;");
             }
             case "Sub" -> {
                 node.put("result", "t" + registerUsed + ".i32");
-                code.append("t");
-                code.append(registerUsed);
-                code.append(".i32");
-                code.append(":=");
-                code.append(".i32 ");
-                code.append(node.getChildren().get(0).get("result"));
-                code.append("-");
-                code.append(node.getChildren().get(1).get("result"));
-                code.append(".i32;");
-                code.append("\n");
+                code.append("t").append(registerUsed).append(".i32").append(":=");
+                code.append(".i32 ").append(node.getChildren().get(0).get("result")).append("-").append(node.getChildren().get(1).get("result")).append(".i32;");
             }
             case "Mult" -> {
                 node.put("result", "t" + registerUsed + ".i32");
-                code.append("t");
-                code.append(registerUsed);
-                code.append(".i32");
-                code.append(":=");
-                code.append(".i32 ");
-                code.append(node.getChildren().get(0).get("result"));
-                code.append("*");
-                code.append(node.getChildren().get(1).get("result"));
-                code.append(".i32;");
-                code.append("\n");
+                code.append("t").append(registerUsed).append(".i32").append(":=");
+                code.append(".i32 ").append(node.getChildren().get(0).get("result")).append("*").append(node.getChildren().get(1).get("result")).append(".i32;");
             }
             case "Div" -> {
                 node.put("result", "t" + registerUsed + ".i32");
-                code.append("t");
-                code.append(registerUsed);
-                code.append(".i32");
-                code.append(":=");
-                code.append(".i32 ");
-                code.append(node.getChildren().get(0).get("result"));
-                code.append("/");
-                code.append(node.getChildren().get(1).get("result"));
-                code.append(".i32;");
-                code.append("\n");
+                code.append("t").append(registerUsed).append(".i32").append(":=");
+                code.append(".i32 ").append(node.getChildren().get(0).get("result")).append("/").append(node.getChildren().get(1).get("result")).append(".i32;");
             }
             case "ArrayAccess" -> {
                 node.put("result", "t" + registerUsed + ".i32");
-                code.append("t");
-                code.append(registerUsed);
-                code.append(".i32");
-                code.append(":=");
-                code.append(".i32 ");
-                code.append(node.getChildren().get(0).get("result"));
-                code.append("[");
-                code.append(node.getChildren().get(1).get("result"));
-                code.append("]");
-                code.append(".i32;");
-                code.append("\n");
+                code.append("t").append(registerUsed).append(".i32").append(":=");
+                code.append(".i32 ").append(node.getChildren().get(0).get("result")).append("[").append(node.getChildren().get(1).get("result")).append("]").append(".i32;");
             }
             case "MethodCall" -> {
                 node.put("result", "t" + registerUsed + ".i32");
 
-                SethiUllman.firstStep(node.getChildren().get(0));
-                code.append(SethiUllman.secondStep(node.getChildren().get(0)));
+                code.append(SethiUllman.run(node.getChildren().get(0)));
 
                 if (node.getChildren().get(1).get("value").equals("length")) {
-                    code.append("t");
-                    code.append(registerUsed);
-                    code.append(".i32");
-                    code.append(":=");
-                    code.append(".i32 ");
-                    code.append("arraylength(");
-                    code.append(node.getChildren().get(0).get("result"));
-                    code.append(".array");
-                    code.append(".i32");
-                    code.append(")");
-                    code.append(".i32;");
-                    code.append("\n");
+                    code.append("t").append(registerUsed).append(".i32").append(":=");
+                    code.append(".i32 ").append("arraylength(").append(node.getChildren().get(0).get("result")).append(".array").append(".i32").append(")").append(".i32;");
                 } else {
                     for (JmmNode parameter : node.getChildren().get(1).getChildren().get(0).getChildren()) {
                         registersAvailable.remove(0);
-                        SethiUllman.firstStep(parameter);
-                        code.append(SethiUllman.secondStep(parameter));
+                        code.append(SethiUllman.run(parameter));
                     }
-                    code.append("t");
-                    code.append(registerUsed);
-                    code.append(".i32");
-                    code.append(":=");
-                    code.append(".i32 ");
-                    code.append("invokestatic(");
-                    code.append(node.getChildren().get(0).get("result"));
+                    code.append("t").append(registerUsed).append(".i32").append(":=");
+                    code.append(".i32 ").append("invokestatic(").append(node.getChildren().get(0).get("result"));
 
                     for (JmmNode parameter : node.getChildren().get(1).getChildren().get(0).getChildren())
                         code.append(",").append(parameter.get("result"));
 
                     code.append(").V;");
-                    code.append("\n");
                 }
             }
             case "NewObject" -> {
                 node.put("result", "t" + registerUsed + ".i32");
-                code.append("t");
-                code.append(registerUsed);
-                code.append(".");
-                code.append(node.get("value"));
-                code.append(":=.");
-                code.append(node.get("value"));
-                code.append(" new(");
-                code.append(node.get("value"));
-                code.append(").");
-                code.append(node.get("value"));
-                code.append(";");
+                code.append("t").append(registerUsed).append(".").append(node.get("value")).append(":=.");
+                code.append(node.get("value")).append(" new(").append(node.get("value")).append(").").append(node.get("value")).append(";");
                 code.append("\n");
-                code.append("invokespecial(");
-                code.append("t");
-                code.append(registerUsed);
-                code.append(".");
-                code.append(node.get("value"));
-                code.append(", \"<init>\" ).v");
-                code.append(";");
-                code.append("\n");
+                code.append("invokespecial(").append("t").append(registerUsed).append(".").append(node.get("value")).append(", \"<init>\" ).v").append(";");
             }
         }
-
+        code.append("\n");
         return code.toString();
     }
 
