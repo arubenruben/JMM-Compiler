@@ -23,7 +23,7 @@ public class SethiUllman {
             initializeRegisters();
 
         //Terminal
-        if (isTerminal(node)) {
+        if (node.getNumChildren() == 0) {
             fillTerminalValue(node);
             return;
         }
@@ -37,10 +37,15 @@ public class SethiUllman {
     public static String secondStep(JmmNode node) {
         StringBuilder code = new StringBuilder();
 
-        for (JmmNode child : node.getChildren())
-            code.append(codeDismember(child));
+        if (node.getKind().equals("MethodCall") || node.getKind().equals("NewArray")) {
+            if (Integer.parseInt(node.get("registers")) >= 1)
+                code.append(dismemberHelper(node));
+        } else {
+            for (JmmNode child : node.getChildren())
+                code.append(codeDismember(child));
+        }
 
-        if (node.getNumChildren() == 0) {
+        if (node.getNumChildren() == 0 && !node.getKind().equals("NewObject")) {
             node.put("result", node.get("value"));
             return code.toString();
         }
@@ -52,20 +57,11 @@ public class SethiUllman {
         return code.toString();
     }
 
-    private static boolean isTerminal(JmmNode node) {
-        if (node.getNumChildren() == 0)
-            return true;
-
-        //if (node.getKind().equals("NewArray") || node.getKind().equals("NewObject"))
-        //  return true;
-
-        return false;
-    }
-
     private static void fillTerminalValue(JmmNode node) {
 
         switch (node.getKind()) {
             case "Identifier", "Boolean", "Integer", "This" -> node.put("registers", "0");
+            case "NewObject" -> node.put("registers", "1");
 
             default -> System.err.println("Not implemented yet");
         }
@@ -81,6 +77,7 @@ public class SethiUllman {
             node.put("registers", String.valueOf(leftChildValue));
             return;
         }
+
 
         int rightChildValue = Integer.parseInt(node.getChildren().get(1).get("registers"));
 
@@ -103,7 +100,7 @@ public class SethiUllman {
             return code.toString();
         }
 
-        if (!node.getKind().equals("MethodCall")) {
+        if (!node.getKind().equals("MethodCall") && !node.getKind().equals("NewArray")) {
             if (Integer.parseInt(node.getChildren().get(0).get("registers")) >= Integer.parseInt(node.getChildren().get(1).get("registers"))) {
                 code.append(codeDismember(node.getChildren().get(0)));
                 code.append(codeDismember(node.getChildren().get(1)));
@@ -130,7 +127,7 @@ public class SethiUllman {
                 code.append("t");
                 code.append(registerUsed);
                 code.append(".bool");
-                code.append(" :=");
+                code.append(":=");
                 code.append(".bool ");
                 code.append(node.getChildren().get(0).get("result"));
                 code.append(" < ");
@@ -142,7 +139,7 @@ public class SethiUllman {
                 code.append("t");
                 code.append(registerUsed);
                 code.append(".bool");
-                code.append(" :=");
+                code.append(":=");
                 code.append(".bool ");
                 code.append(node.getChildren().get(0).get("result"));
                 code.append(" && ");
@@ -154,7 +151,7 @@ public class SethiUllman {
                 code.append("t");
                 code.append(registerUsed);
                 code.append(".i32");
-                code.append(" :=");
+                code.append(":=");
                 code.append(".i32 ");
                 code.append(node.getChildren().get(0).get("result"));
                 code.append("+");
@@ -167,7 +164,7 @@ public class SethiUllman {
                 code.append("t");
                 code.append(registerUsed);
                 code.append(".i32");
-                code.append(" :=");
+                code.append(":=");
                 code.append(".i32 ");
                 code.append(node.getChildren().get(0).get("result"));
                 code.append("-");
@@ -180,7 +177,7 @@ public class SethiUllman {
                 code.append("t");
                 code.append(registerUsed);
                 code.append(".i32");
-                code.append(" :=");
+                code.append(":=");
                 code.append(".i32 ");
                 code.append(node.getChildren().get(0).get("result"));
                 code.append("*");
@@ -193,7 +190,7 @@ public class SethiUllman {
                 code.append("t");
                 code.append(registerUsed);
                 code.append(".i32");
-                code.append(" :=");
+                code.append(":=");
                 code.append(".i32 ");
                 code.append(node.getChildren().get(0).get("result"));
                 code.append("/");
@@ -206,7 +203,7 @@ public class SethiUllman {
                 code.append("t");
                 code.append(registerUsed);
                 code.append(".i32");
-                code.append(" :=");
+                code.append(":=");
                 code.append(".i32 ");
                 code.append(node.getChildren().get(0).get("result"));
                 code.append("[");
@@ -217,13 +214,15 @@ public class SethiUllman {
             }
             case "MethodCall" -> {
                 node.put("result", "t" + registerUsed + ".i32");
-                node.getChildren().get(0).put("result", node.getChildren().get(0).get("value"));
+
+                SethiUllman.firstStep(node.getChildren().get(0));
+                code.append(SethiUllman.secondStep(node.getChildren().get(0)));
 
                 if (node.getChildren().get(1).get("value").equals("length")) {
                     code.append("t");
                     code.append(registerUsed);
                     code.append(".i32");
-                    code.append(" :=");
+                    code.append(":=");
                     code.append(".i32 ");
                     code.append("arraylength(");
                     code.append(node.getChildren().get(0).get("result"));
@@ -241,7 +240,7 @@ public class SethiUllman {
                     code.append("t");
                     code.append(registerUsed);
                     code.append(".i32");
-                    code.append(" :=");
+                    code.append(":=");
                     code.append(".i32 ");
                     code.append("invokestatic(");
                     code.append(node.getChildren().get(0).get("result"));
@@ -252,6 +251,29 @@ public class SethiUllman {
                     code.append(").V;");
                     code.append("\n");
                 }
+            }
+            case "NewObject" -> {
+                node.put("result", "t" + registerUsed + ".i32");
+                code.append("t");
+                code.append(registerUsed);
+                code.append(".");
+                code.append(node.get("value"));
+                code.append(":=.");
+                code.append(node.get("value"));
+                code.append(" new(");
+                code.append(node.get("value"));
+                code.append(").");
+                code.append(node.get("value"));
+                code.append(";");
+                code.append("\n");
+                code.append("invokespecial(");
+                code.append("t");
+                code.append(registerUsed);
+                code.append(".");
+                code.append(node.get("value"));
+                code.append(", \"<init>\" ).v");
+                code.append(";");
+                code.append("\n");
             }
         }
 

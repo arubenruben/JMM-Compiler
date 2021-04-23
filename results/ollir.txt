@@ -121,7 +121,7 @@
                         {
                           "kind": "Less",
                           "attributes": {
-                            "result": "t5.bool",
+                            "result": "t4.bool",
                             "col": "19",
                             "line": "5",
                             "registers": "1"
@@ -221,7 +221,7 @@
                             {
                               "kind": "Mult",
                               "attributes": {
-                                "result": "t9.i32",
+                                "result": "t8.i32",
                                 "col": "29",
                                 "line": "8",
                                 "registers": "1"
@@ -241,7 +241,7 @@
                                 {
                                   "kind": "MethodCall",
                                   "attributes": {
-                                    "result": "t6.i32",
+                                    "result": "t5.i32",
                                     "col": "35",
                                     "line": "8",
                                     "registers": "1"
@@ -278,7 +278,7 @@
                                             {
                                               "kind": "Sub",
                                               "attributes": {
-                                                "result": "t8.i32",
+                                                "result": "t7.i32",
                                                 "col": "49",
                                                 "line": "8",
                                                 "registers": "1"
@@ -440,101 +440,56 @@
                           },
                           "children": [
                             {
-                              "kind": "Add",
+                              "kind": "MethodCall",
                               "attributes": {
-                                "result": "t4.i32",
-                                "col": "28",
+                                "result": "t1.i32",
+                                "col": "30",
                                 "line": "13",
                                 "registers": "1"
                               },
                               "children": [
                                 {
-                                  "kind": "Add",
+                                  "kind": "NewObject",
                                   "attributes": {
-                                    "result": "t3.i32",
-                                    "col": "26",
+                                    "result": "t2.i32",
+                                    "col": "24",
                                     "line": "13",
-                                    "registers": "1"
+                                    "registers": "1",
+                                    "value": "Fac"
+                                  },
+                                  "children": []
+                                },
+                                {
+                                  "kind": "Identifier",
+                                  "attributes": {
+                                    "col": "30",
+                                    "line": "13",
+                                    "registers": "0",
+                                    "value": "compFac"
                                   },
                                   "children": [
                                     {
-                                      "kind": "Add",
+                                      "kind": "Parameters",
                                       "attributes": {
-                                        "result": "t2.i32",
-                                        "col": "24",
+                                        "col": "38",
                                         "line": "13",
-                                        "registers": "1"
+                                        "registers": "0"
                                       },
                                       "children": [
                                         {
-                                          "kind": "Add",
-                                          "attributes": {
-                                            "result": "t1.i32",
-                                            "col": "22",
-                                            "line": "13",
-                                            "registers": "1"
-                                          },
-                                          "children": [
-                                            {
-                                              "kind": "Integer",
-                                              "attributes": {
-                                                "result": "1",
-                                                "col": "21",
-                                                "line": "13",
-                                                "registers": "0",
-                                                "value": "1"
-                                              },
-                                              "children": []
-                                            },
-                                            {
-                                              "kind": "Integer",
-                                              "attributes": {
-                                                "result": "1",
-                                                "col": "23",
-                                                "line": "13",
-                                                "registers": "0",
-                                                "value": "1"
-                                              },
-                                              "children": []
-                                            }
-                                          ]
-                                        },
-                                        {
                                           "kind": "Integer",
                                           "attributes": {
-                                            "result": "1",
-                                            "col": "25",
+                                            "result": "10",
+                                            "col": "40",
                                             "line": "13",
                                             "registers": "0",
-                                            "value": "1"
+                                            "value": "10"
                                           },
                                           "children": []
                                         }
                                       ]
-                                    },
-                                    {
-                                      "kind": "Integer",
-                                      "attributes": {
-                                        "result": "1",
-                                        "col": "27",
-                                        "line": "13",
-                                        "registers": "0",
-                                        "value": "1"
-                                      },
-                                      "children": []
                                     }
                                   ]
-                                },
-                                {
-                                  "kind": "Integer",
-                                  "attributes": {
-                                    "result": "1",
-                                    "col": "29",
-                                    "line": "13",
-                                    "registers": "0",
-                                    "value": "1"
-                                  },
-                                  "children": []
                                 }
                               ]
                             }
