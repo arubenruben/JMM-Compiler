@@ -41,6 +41,7 @@ public class SethiUllman {
     private static String secondStep(JmmNode node) {
         StringBuilder code = new StringBuilder();
 
+        //TODO:Problems
         if (node.getKind().equals("MethodCall") || node.getKind().equals("NewArray")) {
             if (Integer.parseInt(node.get("registers")) >= 1)
                 code.append(dismemberHelper(node));
@@ -48,12 +49,12 @@ public class SethiUllman {
             for (JmmNode child : node.getChildren())
                 code.append(codeDismember(child));
         }
-
+        //TODO:Problems
         if (node.getNumChildren() == 0 && !node.getKind().equals("NewObject")) {
             node.put("result", node.get("value"));
             return code.toString();
         }
-
+        //TODO:Problems
         if (!node.getAttributes().contains("result"))
             code.append(dismemberHelper(node));
 
@@ -62,26 +63,24 @@ public class SethiUllman {
     }
 
     private static void fillTerminalValue(JmmNode node) {
-
         switch (node.getKind()) {
             case "Identifier", "Boolean", "Integer", "This" -> node.put("registers", "0");
             case "NewObject" -> node.put("registers", "1");
 
             default -> System.err.println("Not implemented yet");
         }
-
     }
 
     private static void fillNonTerminalValue(JmmNode node) {
 
         int leftChildValue = Integer.parseInt(node.getChildren().get(0).get("registers"));
 
+        //TODO:Problems
         //For root
         if (node.getNumChildren() == 1) {
             node.put("registers", String.valueOf(leftChildValue));
             return;
         }
-
 
         int rightChildValue = Integer.parseInt(node.getChildren().get(1).get("registers"));
 
@@ -90,8 +89,6 @@ public class SethiUllman {
         else
             node.put("registers", String.valueOf(Math.max(leftChildValue, rightChildValue)));
 
-        return;
-
     }
 
     ///Step 1 helpers - Step 2 helpers
@@ -99,11 +96,13 @@ public class SethiUllman {
     private static String codeDismember(JmmNode node) {
         StringBuilder code = new StringBuilder();
 
+        //TODO:Problems
         if (node.getNumChildren() == 0) {
             node.put("result", node.get("value"));
             return code.toString();
         }
 
+        //TODO:Problems
         if (!node.getKind().equals("MethodCall") && !node.getKind().equals("NewArray")) {
             if (Integer.parseInt(node.getChildren().get(0).get("registers")) >= Integer.parseInt(node.getChildren().get(1).get("registers"))) {
                 code.append(codeDismember(node.getChildren().get(0)));
@@ -114,7 +113,7 @@ public class SethiUllman {
             }
         }
 
-        //Is never the root. Only childs could be dismembered
+        //TODO:Problems
         if (Integer.parseInt(node.get("registers")) >= 1)
             code.append(dismemberHelper(node));
 

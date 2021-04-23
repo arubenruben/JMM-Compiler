@@ -217,6 +217,7 @@ public class OptimizationStage implements JmmOptimization {
 
         code.append(node.getChildren().get(1).get("result"));
 
+        //TODO:Problems
         //Unary
         if (node.getChildren().get(1).getNumChildren() < 2)
             return code + "\n";
