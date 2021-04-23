@@ -39,8 +39,15 @@ public class OptimizationStage implements JmmOptimization {
         for (MethodSymbol method : symbolTable.getMethodsHashmap().values()) {
             final JmmNode methodBody = method.getNode().getChildren().get(2);
             code.append("\t").append(dealWithMethodHeader(method)).append(" {\n");
-            //TODO:Insert the \t using split and replace
-            code.append(dealWithBody(methodBody));
+
+            String stringBodyRaw = dealWithBody(methodBody);
+            StringBuilder stringBuilder = new StringBuilder();
+
+            for (String string : stringBodyRaw.split("\n"))
+                stringBuilder.append("\t\t").append(string).append("\n");
+
+            code.append(stringBuilder.toString());
+
             code.append("\t").append("}\n");
         }
         code.append("\n}\n");
@@ -92,18 +99,20 @@ public class OptimizationStage implements JmmOptimization {
     }
 
     private String dealWithBody(JmmNode bodyNode) {
-        StringBuilder stringBuilder = new StringBuilder();
+        StringBuilder code = new StringBuilder();
 
         for (JmmNode child : bodyNode.getChildren()) {
             switch (child.getKind()) {
-                case "While" -> stringBuilder.append(dealWithWhile(child));
-                case "If" -> stringBuilder.append(dealWithIf(child));
-                case "Assignment" -> stringBuilder.append(dealWithAssignment(child));
+                case "While" -> code.append(dealWithWhile(child));
+                case "If" -> code.append(dealWithIf(child));
+                case "Assignment" -> code.append(dealWithAssignment(child));
+                case "MethodCall" -> code.append(dealWithMethodCall(child));
             }
         }
 
-        return stringBuilder.toString();
+        return code.toString();
     }
+
 
     private String dealWithWhile(JmmNode node) {
         StringBuilder code = new StringBuilder();
@@ -113,9 +122,9 @@ public class OptimizationStage implements JmmOptimization {
         final String conditionStringRaw = dealWithWhileCondition(whileCondition);
 
         StringBuilder conditionStringParsed = new StringBuilder();
-        code.append("\t\tLoop:\n");
+        code.append("Loop:\n");
         for (String str : conditionStringRaw.split("\n"))
-            conditionStringParsed.append("\t\t ").append(str).append("\n");
+            conditionStringParsed.append("\t ").append(str).append("\n");
 
         code.append(conditionStringParsed.toString());
 
@@ -124,14 +133,14 @@ public class OptimizationStage implements JmmOptimization {
 
         StringBuilder bodyStringParsed = new StringBuilder();
 
-        bodyStringParsed.append("\t\t").append("Body:").append("\n");
+        bodyStringParsed.append("Body:").append("\n");
 
         for (String str : bodyStringRaw.split("\n"))
-            bodyStringParsed.append("\t\t ").append(str).append("\n");
+            bodyStringParsed.append("\t ").append(str).append("\n");
 
         code.append(bodyStringParsed.toString());
 
-        code.append("\t\tEndLoop:\n");
+        code.append("EndLoop:\n");
 
         return code.toString();
     }
@@ -210,16 +219,19 @@ public class OptimizationStage implements JmmOptimization {
     private String dealWithAssignment(JmmNode node) {
         StringBuilder code = new StringBuilder();
 
+        SethiUllman.firstStep(node.getChildren().get(0));
+        code.append(SethiUllman.secondStep(node.getChildren().get(0)));
+
         SethiUllman.firstStep(node.getChildren().get(1));
         code.append(SethiUllman.secondStep(node.getChildren().get(1)));
 
-        code.append(node.getChildren().get(0).get("value"));
+        code.append(node.getChildren().get(0).get("result"));
         code.append(":=");
 
         code.append(node.getChildren().get(1).get("result"));
 
         if (node.getChildren().get(1).getNumChildren() < 2)
-            return code.toString();
+            return code.toString() + "\n";
 
         switch (node.getChildren().get(1).getKind()) {
             case "Add" -> code.append("+");
@@ -235,6 +247,11 @@ public class OptimizationStage implements JmmOptimization {
         code.append("\n");
 
         return code.toString();
+    }
+
+    private String dealWithMethodCall(JmmNode node) {
+        SethiUllman.firstStep(node);
+        return SethiUllman.secondStep(node);
     }
 
     private String dealWithClassField(Symbol variable) {

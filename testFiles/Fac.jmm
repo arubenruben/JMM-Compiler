@@ -1,31 +1,13 @@
-class Fac {
-        /*
-    public int compFac(int num) {
-        int num_aux;
-        if (num < 1)
-            num_aux = 1;
-        else
-            num_aux = num * (this.compFac(num - 1));
-        return num_aux;
-    }
-        */
-
-    public boolean check(int[] A, int N, int T) {
+class myClass {
+    public int[] sum(int[] A, int[] B) {
+        int[] C;
         int i;
-        boolean all;
-        while ((i < N) && (A[2] < T)) {
-            i=i/1/2/3*3-2+12;
+        i=0;
+        //c = new int[A.length];
+        while (i < A.length) {
+            C[i] = A[i] + B[i];
+            i=i+1;
         }
-        if(i<N){
-            all=true;
-        }else{
-            all=false&&true;
-        }
-       return true;
+        return C;
     }
-    /*
-    public static void main(String[] args) {
-        io.println(new Fac().compFac(10));
-    }
-    */
 }

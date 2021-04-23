@@ -58,6 +58,7 @@ public class SethiUllman {
 
         switch (node.getKind()) {
             case "Identifier", "Boolean", "Integer", "This" -> node.put("registers", "0");
+
             default -> System.err.println("Not implemented yet");
         }
 
@@ -111,8 +112,7 @@ public class SethiUllman {
     private static String dismemberHelper(JmmNode node, int registerUsed) {
         StringBuilder code = new StringBuilder();
 
-        String kind = node.getKind();
-        switch (kind) {
+        switch (node.getKind()) {
             case "Less" -> {
                 node.put("result", "t" + registerUsed + ".bool");
                 code.append("t");
@@ -202,10 +202,27 @@ public class SethiUllman {
                 code.append("]");
                 code.append(".i32;");
                 code.append("\n");
-
+            }
+            case "MethodCall" -> {
+                node.put("result", "t" + registerUsed + ".i32");
+                if (node.getChildren().get(1).get("value").equals("length")) {
+                    code.append("t");
+                    code.append(registerUsed);
+                    code.append(".i32");
+                    code.append(" :=");
+                    code.append(".i32 ");
+                    code.append("arraylength(");
+                    code.append(node.getChildren().get(0).get("result"));
+                    code.append(".array");
+                    code.append(".i32");
+                    code.append(")");
+                    code.append(".i32;");
+                    code.append("\n");
+                }
             }
         }
 
         return code.toString();
     }
+
 }
