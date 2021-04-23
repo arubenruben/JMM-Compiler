@@ -2,6 +2,8 @@ package visitors.ollir;
 
 import pt.up.fe.comp.jmm.JmmNode;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +20,7 @@ public class SethiUllman {
 
     public static String run(JmmNode node) {
         firstStep(node);
+        writeToFile(node.toJson(), "results/ollir.txt");
         return secondStep(node);
     }
 
@@ -26,8 +29,7 @@ public class SethiUllman {
         if (registersAvailable == null)
             initializeRegisters();
 
-        //Terminal
-        if (node.getNumChildren() == 0) {
+        if (isTerminal(node)) {
             fillTerminalValue(node);
             return;
         }
@@ -41,30 +43,42 @@ public class SethiUllman {
     private static String secondStep(JmmNode node) {
         StringBuilder code = new StringBuilder();
 
-        //TODO:Problems
-        if (node.getKind().equals("MethodCall") || node.getKind().equals("NewArray")) {
-            if (Integer.parseInt(node.get("registers")) >= 1)
-                code.append(dismemberHelper(node));
-        } else {
-            for (JmmNode child : node.getChildren())
-                code.append(codeDismember(child));
-        }
-        //TODO:Problems
-        if (node.getNumChildren() == 0 && !node.getKind().equals("NewObject")) {
+        if (!canDismember(node)) {
             node.put("result", node.get("value"));
             return code.toString();
         }
-        //TODO:Problems
-        if (!node.getAttributes().contains("result"))
-            code.append(dismemberHelper(node));
 
+        if (node.getKind().equals("MethodCall")) {
+            code.append(dismemberMethodCall(node));
+            return code.toString();
+        }
+
+        for (JmmNode child : node.getChildren())
+            code.append(codeDismember(child));
+
+        code.append(dismemberHelper(node));
 
         return code.toString();
     }
 
+    private static boolean canDismember(JmmNode node) {
+        return switch (node.getKind()) {
+            case "Identifier", "This", "Boolean", "Integer", "NewObject" -> false;
+            default -> true;
+        };
+    }
+
+    private static boolean isTerminal(JmmNode node) {
+        return switch (node.getKind()) {
+            case "Identifier", "This", "Boolean", "Integer", "NewObject", "MethodCall" -> true;
+            default -> false;
+        };
+    }
+
     private static void fillTerminalValue(JmmNode node) {
+
         switch (node.getKind()) {
-            case "Identifier", "Boolean", "Integer", "This" -> node.put("registers", "0");
+            case "Identifier", "Boolean", "Integer", "This", "MethodCall" -> node.put("registers", "0");
             case "NewObject" -> node.put("registers", "1");
 
             default -> System.err.println("Not implemented yet");
@@ -75,7 +89,6 @@ public class SethiUllman {
 
         int leftChildValue = Integer.parseInt(node.getChildren().get(0).get("registers"));
 
-        //TODO:Problems
         //For root
         if (node.getNumChildren() == 1) {
             node.put("registers", String.valueOf(leftChildValue));
@@ -96,14 +109,20 @@ public class SethiUllman {
     private static String codeDismember(JmmNode node) {
         StringBuilder code = new StringBuilder();
 
-        //TODO:Problems
-        if (node.getNumChildren() == 0) {
+        if (isTerminal(node) && node.getAttributes().contains("value")) {
             node.put("result", node.get("value"));
+            return "";
+        }
+
+        if (node.getKind().equals("MethodCall")) {
+            code.append(dismemberMethodCall(node));
             return code.toString();
         }
 
-        //TODO:Problems
-        if (!node.getKind().equals("MethodCall") && !node.getKind().equals("NewArray")) {
+
+        if (node.getNumChildren() == 1) {
+            code.append(codeDismember(node.getChildren().get(0)));
+        } else if (node.getNumChildren() == 2) {
             if (Integer.parseInt(node.getChildren().get(0).get("registers")) >= Integer.parseInt(node.getChildren().get(1).get("registers"))) {
                 code.append(codeDismember(node.getChildren().get(0)));
                 code.append(codeDismember(node.getChildren().get(1)));
@@ -113,9 +132,54 @@ public class SethiUllman {
             }
         }
 
-        //TODO:Problems
         if (Integer.parseInt(node.get("registers")) >= 1)
             code.append(dismemberHelper(node));
+
+        return code.toString();
+    }
+
+    private static String dismemberMethodCall(JmmNode node) {
+        StringBuilder code = new StringBuilder();
+
+        code.append(SethiUllman.run(node.getChildren().get(0)));
+
+        if (node.getChildren().get(1).get("value").equals("length"))
+            code.append(dismemberLength(node));
+        else
+            code.append(dismemberMethodCallNonLength(node));
+
+        return code.toString();
+    }
+
+    private static String dismemberLength(JmmNode node) {
+        StringBuilder code = new StringBuilder();
+
+        int registerUsed = registersAvailable.remove(0);
+
+        code.append("t").append(registerUsed).append(".i32").append(":=");
+        code.append(".i32 ").append("arraylength(").append(node.getChildren().get(0).get("result")).append(".array").append(".i32").append(")").append(".i32;");
+
+        return code.toString();
+    }
+
+    private static String dismemberMethodCallNonLength(JmmNode node) {
+        StringBuilder code = new StringBuilder();
+        int registerUsed = registersAvailable.remove(0);
+
+        node.put("result", "t" + registerUsed + ".i32");
+
+        for (JmmNode parameter : node.getChildren().get(1).getChildren().get(0).getChildren()) {
+            registersAvailable.remove(0);
+            code.append(SethiUllman.run(parameter));
+        }
+        code.append("t").append(registerUsed).append(".i32").append(":=");
+        code.append(".i32 ").append("invokestatic(").append(node.getChildren().get(0).get("result"));
+
+        for (JmmNode parameter : node.getChildren().get(1).getChildren().get(0).getChildren())
+            code.append(",").append(parameter.get("result"));
+
+        code.append(").V;");
+        code.append("\n");
 
         return code.toString();
     }
@@ -160,28 +224,6 @@ public class SethiUllman {
                 code.append("t").append(registerUsed).append(".i32").append(":=");
                 code.append(".i32 ").append(node.getChildren().get(0).get("result")).append("[").append(node.getChildren().get(1).get("result")).append("]").append(".i32;");
             }
-            case "MethodCall" -> {
-                node.put("result", "t" + registerUsed + ".i32");
-
-                code.append(SethiUllman.run(node.getChildren().get(0)));
-
-                if (node.getChildren().get(1).get("value").equals("length")) {
-                    code.append("t").append(registerUsed).append(".i32").append(":=");
-                    code.append(".i32 ").append("arraylength(").append(node.getChildren().get(0).get("result")).append(".array").append(".i32").append(")").append(".i32;");
-                } else {
-                    for (JmmNode parameter : node.getChildren().get(1).getChildren().get(0).getChildren()) {
-                        registersAvailable.remove(0);
-                        code.append(SethiUllman.run(parameter));
-                    }
-                    code.append("t").append(registerUsed).append(".i32").append(":=");
-                    code.append(".i32 ").append("invokestatic(").append(node.getChildren().get(0).get("result"));
-
-                    for (JmmNode parameter : node.getChildren().get(1).getChildren().get(0).getChildren())
-                        code.append(",").append(parameter.get("result"));
-
-                    code.append(").V;");
-                }
-            }
             case "NewObject" -> {
                 node.put("result", "t" + registerUsed + ".i32");
                 code.append("t").append(registerUsed).append(".").append(node.get("value")).append(":=.");
@@ -194,4 +236,14 @@ public class SethiUllman {
         return code.toString();
     }
 
+    public static void writeToFile(String content, String path) {
+        try {
+            FileWriter myWriter = new FileWriter(path);
+            myWriter.write(content);
+            myWriter.close();
+        } catch (IOException e) {
+            System.out.println("An error occurred writing to file");
+            e.printStackTrace();
+        }
+    }
 }

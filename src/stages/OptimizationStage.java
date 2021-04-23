@@ -10,8 +10,6 @@ import symbols.MethodSymbol;
 import symbols.SymbolTableIml;
 import visitors.ollir.SethiUllman;
 
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class OptimizationStage implements JmmOptimization {
@@ -22,8 +20,6 @@ public class OptimizationStage implements JmmOptimization {
         // Convert the AST to a String containing the equivalent OLLIR code
         String ollirCode = ollirCodeString((SymbolTableIml) semanticsResult.getSymbolTable());
         System.out.println(ollirCode);
-
-        writeToFile(semanticsResult.getRootNode().toJson(), "results/ollir.txt");
 
         return new OllirResult(semanticsResult, ollirCode, new ArrayList<>());
     }
@@ -109,7 +105,6 @@ public class OptimizationStage implements JmmOptimization {
 
         return code.toString();
     }
-
 
     private String dealWithWhile(JmmNode node) {
         StringBuilder code = new StringBuilder();
@@ -215,12 +210,8 @@ public class OptimizationStage implements JmmOptimization {
 
         code.append(SethiUllman.run(node.getChildren().get(1)));
 
-        code.append(node.getChildren().get(1).get("result"));
-
-        //TODO:Problems
-        //Unary
-        if (node.getChildren().get(1).getNumChildren() < 2)
-            return code + "\n";
+        code.append(node.getChildren().get(0).get("result"));
+        code.append(" := ");
 
         switch (node.getChildren().get(1).getKind()) {
             case "Add" -> code.append("+");
@@ -231,7 +222,7 @@ public class OptimizationStage implements JmmOptimization {
             case "Less" -> code.append("<");
         }
 
-        code.append(node.getChildren().get(1).getChildren().get(1).get("result"));
+        code.append(node.getChildren().get(1).get("result"));
 
         code.append("\n");
 
@@ -280,17 +271,6 @@ public class OptimizationStage implements JmmOptimization {
         }
 
         return stringBuilder.toString();
-    }
-
-    public static void writeToFile(String content, String path) {
-        try {
-            FileWriter myWriter = new FileWriter(path);
-            myWriter.write(content);
-            myWriter.close();
-        } catch (IOException e) {
-            System.out.println("An error occurred writing to file");
-            e.printStackTrace();
-        }
     }
 
     @Override
