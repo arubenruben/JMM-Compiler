@@ -1,4 +1,4 @@
 digraph cfg {
 	begin [shape=Msquare];
 	end [shape=Msquare];
-	begin -> 0;}
+	begin -> 1;	1 -> end;}

@@ -75,7 +75,7 @@ public class BackendStage implements JasminBackend {
         stringBuilder.append(ollirClass.getClassName()).append("\n");
 
         // Deal with super
-        stringBuilder.append(Objects.requireNonNullElse(symbolTable.getSuper(), ".super java.lang.object")).append("\n");
+        stringBuilder.append(Objects.requireNonNullElse(symbolTable.getSuper(), ".super java.lang.Object")).append("\n");
 
         stringBuilder.append("\n");
 
@@ -437,7 +437,7 @@ public class BackendStage implements JasminBackend {
                 stringBuilder.append("[");
 
                 if(arrayType.getTypeOfElements() == ElementType.STRING){
-                    stringBuilder.append("LJava/Lang/String");
+                    stringBuilder.append("Ljava/lang/String");
                 }
                 else{
                     stringBuilder.append("I");

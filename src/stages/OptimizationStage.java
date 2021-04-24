@@ -28,12 +28,13 @@ public class OptimizationStage implements JmmOptimization {
 
 
         String ollirCode = "HelloWorld {\n" +
-                           ".construct HelloWorld().V {\n" +
-                           "invokespecial(this, \"<init>\").V;\n" +
-                           "}\n" +
-                           ".method public static main(args.array.String).V {\n" +
-                           "}\n" +
-                           "}\n";
+                ".construct HelloWorld().V {\n" +
+                "invokespecial(this, \"<init>\").V;\n" +
+                "}\n" +
+                ".method public static main(args.array.String).V {\n" +
+                "invokestatic(ioPlus, \"printHelloWorld\").V;\n" +
+                "}\n" +
+                "}\n";
 
         // More reports from this stage
         List<Report> reports = new ArrayList<>();
