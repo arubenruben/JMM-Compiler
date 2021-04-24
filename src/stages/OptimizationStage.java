@@ -50,7 +50,7 @@ public class OptimizationStage implements JmmOptimization {
 
             code.append(stringBuilder);
 
-            code.append("\t\t\t").append(dealWithReturn(method));
+            code.append("\t\t").append(dealWithReturn(method)).append("\n");
             code.append("\t}\n");
 
         }
@@ -313,10 +313,23 @@ public class OptimizationStage implements JmmOptimization {
                 code.append(SethiUllman.run(parameter));
         }
 
-        code.append("invokestatic(").append(node.getChildren().get(0).get("result")).append(",").append(node.getChildren().get(1).get("value"));
+        code.append("invokestatic(").append(node.getChildren().get(0).get("value")).append(",");
+
+        code.append("\"").append(node.getChildren().get(1).get("value")).append("\"");
+
         if (node.getChildren().get(1).getNumChildren() > 0) {
-            for (JmmNode parameter : node.getChildren().get(1).getChildren().get(0).getChildren())
-                code.append(",").append(parameter.get("result"));
+            for (JmmNode parameter : node.getChildren().get(1).getChildren().get(0).getChildren()) {
+
+                code.append(",");
+                if (parameter.getAttributes().contains("typePrefix"))
+                    code.append(parameter.get("typePrefix"));
+
+                code.append(parameter.get("result"));
+
+                if (parameter.getAttributes().contains("typeSuffix"))
+                    code.append(parameter.get("typeSuffix"));
+
+            }
         }
         code.append(").V;");
 
@@ -328,7 +341,7 @@ public class OptimizationStage implements JmmOptimization {
 
         JmmNode returnNode = methodSymbol.getNode().getChildren().get(methodSymbol.getNode().getChildren().size() - 1).getChildren().get(0);
 
-        if (!returnNode.getKind().equals("Return"))
+        if (!methodSymbol.getNode().getChildren().get(methodSymbol.getNode().getChildren().size() - 1).getKind().equals("Return"))
             return "";
 
         code.append(SethiUllman.run(returnNode));
