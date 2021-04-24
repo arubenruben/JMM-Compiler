@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class SethiUllman {
     private static List<Integer> registersAvailable;
@@ -57,7 +58,7 @@ public class SethiUllman {
             code.append(codeDismember(child));
 
 
-        if ((!node.getParent().getKind().equals("Assignment")))
+        if (!node.getParent().getKind().equals("Assignment") && !node.getParent().getKind().equals("Condition"))
             code.append(dismemberHelper(node));
 
         return code.toString();
@@ -65,7 +66,7 @@ public class SethiUllman {
 
     private static boolean canDismember(JmmNode node) {
         return switch (node.getKind()) {
-            case "Identifier", "This", "Boolean", "Integer", "NewObject" -> false;
+            case "Identifier", "This", "Boolean", "Integer" -> false;
             default -> true;
         };
     }
@@ -141,9 +142,7 @@ public class SethiUllman {
 
     private static String dismemberMethodCall(JmmNode node) {
         StringBuilder code = new StringBuilder();
-
-        code.append(SethiUllman.run(node.getChildren().get(0)));
-
+        
         if (node.getChildren().get(1).get("value").equals("length"))
             code.append(dismemberLength(node));
         else
@@ -154,11 +153,14 @@ public class SethiUllman {
 
     private static String dismemberLength(JmmNode node) {
         StringBuilder code = new StringBuilder();
-
         int registerUsed = registersAvailable.remove(0);
+
+        node.put("result", "t" + registerUsed + ".i32");
 
         code.append("t").append(registerUsed).append(".i32").append(":=");
         code.append(".i32 ").append("arraylength(").append(node.getChildren().get(0).get("result")).append(".array").append(".i32").append(")").append(".i32;");
+
+        code.append("\n");
 
         return code.toString();
     }
@@ -166,6 +168,8 @@ public class SethiUllman {
     private static String dismemberMethodCallNonLength(JmmNode node) {
         StringBuilder code = new StringBuilder();
         int registerUsed = registersAvailable.remove(0);
+
+        code.append(SethiUllman.run(node.getChildren().get(0)));
 
         node.put("result", "t" + registerUsed + ".i32");
 
