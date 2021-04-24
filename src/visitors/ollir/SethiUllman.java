@@ -92,6 +92,7 @@ public class SethiUllman {
                         Symbol iterator = symbolTable.getMethodsHashmap().get(currentMethod).getParameters().get(i);
                         if (iterator.getName().equals(node.get("value"))) {
                             typePrefix = "$" + i + ".";
+                            variable = iterator;
                             break;
                         }
                     }
@@ -505,7 +506,7 @@ public class SethiUllman {
                 if (node.getChildren().get(1).getAttributes().contains("typeSuffix"))
                     code.append(node.getChildren().get(1).get("typeSuffix"));
 
-                code.append("]").append(".i32;");
+                code.append("]").append(".i32");
             }
             case "NewObject" -> {
                 node.put("result", "t" + registerUsed);

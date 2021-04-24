@@ -123,7 +123,6 @@ public class OptimizationStage implements JmmOptimization {
 
         final JmmNode whileCondition = node.getChildren().get(0).getChildren().get(0);
 
-
         //Condition of while
         final String conditionStringRaw = dealWithWhileCondition(whileCondition);
 
@@ -236,7 +235,16 @@ public class OptimizationStage implements JmmOptimization {
         else
             code.append(" >=.i32 ");
 
-        code.append(node.getChildren().get(1).get("result")).append(") goto Body;\n");
+
+        if (node.getChildren().get(1).getAttributes().contains("typePrefix"))
+            code.append(node.getChildren().get(1).get("typePrefix"));
+
+        code.append(node.getChildren().get(1).get("result"));
+
+        if (node.getChildren().get(1).getAttributes().contains("typeSuffix"))
+            code.append(node.getChildren().get(1).get("typeSuffix"));
+
+        code.append(") goto Body;\n");
         code.append("goto EndLoop;\n");
 
         return code.toString();
