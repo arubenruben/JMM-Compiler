@@ -268,7 +268,7 @@ void WhileStatement()#While: {}
     catch (ParseException e) {
         handleWhileSyntaxError(e);
     }
-    Statement()
+    Statement()#Body
 }
 //According to https://introcs.cs.princeton.edu/java/11precedence/
 void Expression() #void :{}

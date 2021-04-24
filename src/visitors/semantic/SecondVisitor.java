@@ -1,14 +1,12 @@
-package visitors;
+package visitors.semantic;
 
 import pt.up.fe.comp.jmm.JmmNode;
 import pt.up.fe.comp.jmm.analysis.table.Type;
 import pt.up.fe.comp.jmm.ast.PreorderJmmVisitor;
-import pt.up.fe.comp.jmm.report.Report;
-import pt.up.fe.comp.jmm.report.ReportType;
 import pt.up.fe.comp.jmm.report.Stage;
 import utils.ReportsUtils;
-import visitors.helpers.SeekReturnTypeVisitor;
-import visitors.helpers.data_helpers.SecondVisitorHelper;
+import visitors.semantic.helpers.SeekReturnTypeVisitor;
+import visitors.semantic.helpers.data_helpers.SecondVisitorHelper;
 
 
 public class SecondVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boolean> {

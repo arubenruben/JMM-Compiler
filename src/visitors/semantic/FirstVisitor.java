@@ -1,4 +1,4 @@
-package visitors;
+package visitors.semantic;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -6,14 +6,12 @@ import pt.up.fe.comp.jmm.JmmNode;
 import pt.up.fe.comp.jmm.analysis.table.Symbol;
 import pt.up.fe.comp.jmm.analysis.table.Type;
 import pt.up.fe.comp.jmm.ast.PreorderJmmVisitor;
-import pt.up.fe.comp.jmm.report.Report;
-import pt.up.fe.comp.jmm.report.ReportType;
 import pt.up.fe.comp.jmm.report.Stage;
 import symbols.MethodSymbol;
 import utils.ReportsUtils;
-import visitors.helpers.MethodBodyVisitor;
-import visitors.helpers.data_helpers.MethodBodyDataHelper;
-import visitors.helpers.data_helpers.VisitorDataHelper;
+import visitors.semantic.helpers.MethodBodyVisitor;
+import visitors.semantic.helpers.data_helpers.MethodBodyDataHelper;
+import visitors.semantic.helpers.data_helpers.VisitorDataHelper;
 
 import java.util.ArrayList;
 import java.util.List;

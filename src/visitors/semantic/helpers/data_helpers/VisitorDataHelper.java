@@ -1,4 +1,4 @@
-package visitors.helpers.data_helpers;
+package visitors.semantic.helpers.data_helpers;
 
 import pt.up.fe.comp.jmm.report.Report;
 import symbols.SymbolTableIml;

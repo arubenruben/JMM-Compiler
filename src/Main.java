@@ -2,8 +2,6 @@ import pt.up.fe.comp.TestUtils;
 import pt.up.fe.comp.jmm.JmmParser;
 import pt.up.fe.comp.jmm.JmmParserResult;
 import pt.up.fe.comp.jmm.analysis.JmmSemanticsResult;
-import pt.up.fe.comp.jmm.jasmin.JasminBackend;
-import pt.up.fe.comp.jmm.jasmin.JasminResult;
 import pt.up.fe.comp.jmm.ollir.JmmOptimization;
 import pt.up.fe.comp.jmm.ollir.OllirResult;
 import pt.up.fe.comp.jmm.report.Report;
@@ -11,7 +9,6 @@ import pt.up.fe.comp.jmm.report.ReportType;
 import pt.up.fe.comp.jmm.report.Stage;
 import pt.up.fe.specs.util.SpecsIo;
 import stages.AnalysisStage;
-import stages.BackendStage;
 import stages.OptimizationStage;
 
 import java.io.FileWriter;
@@ -70,8 +67,10 @@ public class Main implements JmmParser {
         if (parserResult.getRootNode() != null)
             writeToFile(parserResult.toJson(), "results/ast.txt");
 
-        if (parserResult.getRootNode() == null)
+        if (parserResult.getRootNode() == null){
             return;
+        }
+
 
         if (TestUtils.getNumReports(parserResult.getReports(), ReportType.ERROR) > 0)
             return;
@@ -86,11 +85,14 @@ public class Main implements JmmParser {
 
         OllirResult ollirResult = optimization.toOllir(semanticsResults);
 
-        JasminBackend backend = new BackendStage();
 
-        JasminResult jasminResult = backend.toJasmin(ollirResult);
+        //System.out.println(ollirResult);
 
-        System.out.println(jasminResult.getJasminCode());
+        //JasminBackend backend = new BackendStage();
+
+        //JasminResult jasminResult = backend.toJasmin(ollirResult);
+
+        //System.out.println(jasminResult.getJasminCode());
     }
 
 
