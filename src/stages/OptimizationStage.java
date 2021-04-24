@@ -43,9 +43,11 @@ public class OptimizationStage implements JmmOptimization {
 
             code.append(stringBuilder);
 
-            code.append("\t").append("}\n");
+            code.append("\t\t\t").append(dealWithReturn(method));
+            code.append("\t}\n");
+
         }
-        code.append("\n}\n");
+        code.append("}");
 
         return code.toString();
     }
@@ -107,6 +109,7 @@ public class OptimizationStage implements JmmOptimization {
 
         return code.toString();
     }
+
 
     private String dealWithWhile(JmmNode node) {
         StringBuilder code = new StringBuilder();
@@ -292,6 +295,25 @@ public class OptimizationStage implements JmmOptimization {
 
         return code.toString();
     }
+
+    private String dealWithReturn(MethodSymbol methodSymbol) {
+        StringBuilder code = new StringBuilder();
+
+        JmmNode returnNode = methodSymbol.getNode().getChildren().get(methodSymbol.getNode().getChildren().size() - 1).getChildren().get(0);
+
+        code.append(SethiUllman.run(returnNode));
+
+        code.append("ret").append(returnNode.get("typeSuffix")).append(" ");
+
+        if (returnNode.getAttributes().contains("typePrefix"))
+            code.append(returnNode.get("typePrefix"));
+
+        code.append(returnNode.get("result")).append(returnNode.get("typeSuffix")).append(";");
+
+        code.append("\n");
+        return code.toString();
+    }
+
 
     private String dealWithClassField(Symbol variable) {
         return ".field protected " +
