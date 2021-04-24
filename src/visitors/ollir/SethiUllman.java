@@ -1,33 +1,36 @@
 package visitors.ollir;
 
 import pt.up.fe.comp.jmm.JmmNode;
+import pt.up.fe.comp.jmm.analysis.table.Symbol;
+import symbols.SymbolTableIml;
 
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SethiUllman {
-    private static List<Integer> registersAvailable;
 
-    public static void initializeRegisters() {
+    private static List<Integer> registersAvailable;
+    private static SymbolTableIml symbolTable;
+    private static String currentMethod;
+
+    public static void initialize(SymbolTableIml symbolTable, String currentMethod) {
+
+        SethiUllman.symbolTable = symbolTable;
+        SethiUllman.currentMethod = currentMethod;
 
         registersAvailable = new ArrayList<>();
 
         for (int i = 1; i <= 100; i++)
             registersAvailable.add(i);
+
     }
 
     public static String run(JmmNode node) {
         firstStep(node);
-        writeToFile(node.toJson(), "results/ollir.txt");
         return secondStep(node);
     }
 
     private static void firstStep(JmmNode node) {
-
-        if (registersAvailable == null)
-            initializeRegisters();
 
         if (isTerminal(node)) {
             fillTerminalValue(node);
@@ -44,7 +47,7 @@ public class SethiUllman {
         StringBuilder code = new StringBuilder();
 
         if (!canDismember(node)) {
-            node.put("result", node.get("value"));
+            fillNonDismember(node);
             return code.toString();
         }
 
@@ -70,9 +73,73 @@ public class SethiUllman {
         return code.toString();
     }
 
+    private static void fillNonDismember(JmmNode node) {
+        String typePrefix = "";
+        String typeSuffix = "";
+
+        switch (node.getKind()) {
+            case "Integer" -> typeSuffix = ".i32";
+            case "Boolean" -> typeSuffix = ".bool";
+            case "Identifier" -> {
+
+                Symbol variable = null;
+
+                if (symbolTable.getMethodsHashmap().get(currentMethod).getLocalVariables().containsKey(node.get("value")))
+                    variable = symbolTable.getMethodsHashmap().get(currentMethod).getLocalVariables().get(node.get("value"));
+
+                if (variable == null) {
+                    for (int i = 0; i < symbolTable.getMethodsHashmap().get(currentMethod).getParameters().size(); i++) {
+                        variable = symbolTable.getMethodsHashmap().get(currentMethod).getParameters().get(i);
+                        if (variable.getName().equals(node.get("value"))) {
+                            typePrefix = "$" + i + ".";
+                            break;
+                        }
+                    }
+                }
+
+                if (variable == null) {
+                    variable = symbolTable.getClassFields().get(node.get("value"));
+                }
+
+                if (variable == null)
+                    return;
+
+                if (variable.getType().getName().equals("int"))
+                    if (!variable.getType().isArray())
+                        typeSuffix = ".i32";
+                    else
+                        typeSuffix = ".array.i32";
+                else if (variable.getType().getName().equals("boolean"))
+                    typeSuffix = ".bool";
+                else
+                    typeSuffix = "." + variable.getType().getName();
+
+            }
+        }
+
+        node.put("typePrefix", typePrefix);
+        node.put("typeSuffix", typeSuffix);
+
+        node.put("result", node.get("value"));
+    }
+
     private static String rootNodeNotDismember(JmmNode node) {
         if ("ArrayAccess".equals(node.getKind())) {
-            node.put("result", node.getChildren().get(0).get("result") + "[" + node.getChildren().get(1).get("result") + "].i32");
+            StringBuilder code = new StringBuilder();
+            code.append(node.getChildren().get(0).get("result")).append("[");
+
+            if (node.getChildren().get(1).getAttributes().contains("typePrefix"))
+                code.append(node.getChildren().get(1).get("typePrefix"));
+
+            code.append(node.getChildren().get(1).get("result"));
+
+            if (node.getChildren().get(1).getAttributes().contains("typeSuffix"))
+                code.append(node.getChildren().get(1).get("typeSuffix"));
+
+            code.append("]");
+
+            node.put("typeSuffix", ".i32");
+            node.put("result", code.toString());
         }
         return "";
     }
@@ -126,7 +193,7 @@ public class SethiUllman {
         StringBuilder code = new StringBuilder();
 
         if (isTerminal(node) && node.getAttributes().contains("value")) {
-            node.put("result", node.get("value"));
+            fillNonDismember(node);
             return "";
         }
 
@@ -176,8 +243,20 @@ public class SethiUllman {
 
         SethiUllman.run(node.getChildren().get(0));
 
-        code.append("t").append(registerUsed).append(".i32").append(":=");
-        code.append(".i32 ").append("arraylength(").append(node.getChildren().get(0).get("result")).append(".array").append(".i32").append(")").append(".i32;");
+        code.append("t").append(registerUsed).append(".i32").append(" :=");
+        code.append(".i32 ").append("arraylength(");
+
+        if (node.getChildren().get(0).getAttributes().contains("typePrefix"))
+            code.append(node.getChildren().get(0).get("typePrefix"));
+
+        code.append(node.getChildren().get(0).get("result"));
+
+        if (node.getChildren().get(0).getAttributes().contains("typeSuffix"))
+            code.append(node.getChildren().get(0).get("typeSuffix"));
+
+        code.append(")").append(".i32;");
+
+        code.append("\n");
 
         return code.toString();
     }
@@ -188,13 +267,14 @@ public class SethiUllman {
 
         code.append(SethiUllman.run(node.getChildren().get(0)));
 
-        node.put("result", "t" + registerUsed + ".i32");
+        node.put("result", "t" + registerUsed);
+        node.put("typePrefix", ".i32");
 
         for (JmmNode parameter : node.getChildren().get(1).getChildren().get(0).getChildren()) {
             registersAvailable.remove(0);
             code.append(SethiUllman.run(parameter));
         }
-        code.append("t").append(registerUsed).append(".i32").append(":=");
+        code.append("t").append(registerUsed).append(".i32").append(" :=");
         code.append(".i32 ").append("invokestatic(").append(node.getChildren().get(0).get("result"));
 
         for (JmmNode parameter : node.getChildren().get(1).getChildren().get(0).getChildren())
@@ -206,15 +286,13 @@ public class SethiUllman {
         return code.toString();
     }
 
-
     private static String dismemberNewArray(JmmNode node) {
         StringBuilder code = new StringBuilder();
 
         code.append(SethiUllman.run(node.getChildren().get(0)));
 
-        node.put("result", "new(array," + node.getChildren().get(0).get("result") + ").array.i32");
-
-        code.append("\n");
+        node.put("result", "new(array," + node.getChildren().get(0).get("result") + ")");
+        node.put("typeSuffix", ".array.i32");
 
         return code.toString();
     }
@@ -225,60 +303,155 @@ public class SethiUllman {
 
         switch (node.getKind()) {
             case "Less" -> {
-                node.put("result", "t" + registerUsed + ".bool");
-                code.append("t").append(registerUsed).append(".bool").append(":=");
-                code.append(".bool ").append(node.getChildren().get(0).get("result")).append(" < ").append(node.getChildren().get(1).get("result"));
+                node.put("result", "t" + registerUsed);
+                node.put("typePrefix", ".bool");
+                code.append("t").append(registerUsed).append(".bool").append(" :=").append(".bool ");
+                code.append(node.getChildren().get(0).get("result")).append(" <.i32").append(node.getChildren().get(1).get("result"));
             }
             case "And" -> {
-                node.put("result", "t" + registerUsed + ".bool");
-                code.append("t").append(registerUsed).append(".bool").append(":=");
-                code.append(".bool ").append(node.getChildren().get(0).get("result")).append(" && ").append(node.getChildren().get(1).get("result"));
+                node.put("result", "t" + registerUsed);
+                node.put("typePrefix", ".bool");
+                code.append("t").append(registerUsed).append(".bool").append(" :=").append(".bool ");
+                if (node.getChildren().get(0).getAttributes().contains("typePrefix"))
+                    code.append(node.getChildren().get(0).get("typePrefix"));
+
+                code.append(node.getChildren().get(0).get("result"));
+
+                if (node.getChildren().get(0).getAttributes().contains("typeSuffix"))
+                    code.append(node.getChildren().get(0).get("typeSuffix"));
+
+
+                code.append("&&").append(".i32 ");
+
+                if (node.getChildren().get(1).getAttributes().contains("typePrefix"))
+                    code.append(node.getChildren().get(1).get("typePrefix"));
+
+                code.append(node.getChildren().get(1).get("result"));
+
+                if (node.getChildren().get(1).getAttributes().contains("typeSuffix"))
+                    code.append(node.getChildren().get(1).get("typeSuffix"));
             }
             case "Add" -> {
-                node.put("result", "t" + registerUsed + ".i32");
-                code.append("t").append(registerUsed).append(".i32").append(":=");
-                code.append(".i32 ").append(node.getChildren().get(0).get("result")).append("+").append(node.getChildren().get(1).get("result")).append(".i32;");
+                node.put("result", "t" + registerUsed);
+                node.put("typePrefix", ".i32");
+                code.append("t").append(registerUsed).append(".i32").append(" :=").append(".i32 ");
+
+                if (node.getChildren().get(0).getAttributes().contains("typePrefix"))
+                    code.append(node.getChildren().get(0).get("typePrefix"));
+
+                code.append(node.getChildren().get(0).get("result"));
+
+                if (node.getChildren().get(0).getAttributes().contains("typeSuffix"))
+                    code.append(node.getChildren().get(0).get("typeSuffix"));
+
+
+                code.append("+").append(".i32 ");
+
+                if (node.getChildren().get(1).getAttributes().contains("typePrefix"))
+                    code.append(node.getChildren().get(1).get("typePrefix"));
+
+                code.append(node.getChildren().get(1).get("result"));
+
+                if (node.getChildren().get(1).getAttributes().contains("typeSuffix"))
+                    code.append(node.getChildren().get(1).get("typeSuffix"));
             }
             case "Sub" -> {
-                node.put("result", "t" + registerUsed + ".i32");
-                code.append("t").append(registerUsed).append(".i32").append(":=");
-                code.append(".i32 ").append(node.getChildren().get(0).get("result")).append("-").append(node.getChildren().get(1).get("result")).append(".i32;");
+                node.put("result", "t" + registerUsed);
+                node.put("typePrefix", ".i32");
+                code.append("t").append(registerUsed).append(".i32").append(" :=").append(".i32 ");
+
+                if (node.getChildren().get(0).getAttributes().contains("typePrefix"))
+                    code.append(node.getChildren().get(0).get("typePrefix"));
+
+                code.append(node.getChildren().get(0).get("result"));
+
+                if (node.getChildren().get(0).getAttributes().contains("typeSuffix"))
+                    code.append(node.getChildren().get(0).get("typeSuffix"));
+
+
+                code.append("-").append(".i32 ");
+
+                if (node.getChildren().get(1).getAttributes().contains("typePrefix"))
+                    code.append(node.getChildren().get(1).get("typePrefix"));
+
+                code.append(node.getChildren().get(1).get("result"));
+
+                if (node.getChildren().get(1).getAttributes().contains("typeSuffix"))
+                    code.append(node.getChildren().get(1).get("typeSuffix"));
             }
             case "Mult" -> {
-                node.put("result", "t" + registerUsed + ".i32");
-                code.append("t").append(registerUsed).append(".i32").append(":=");
-                code.append(".i32 ").append(node.getChildren().get(0).get("result")).append("*").append(node.getChildren().get(1).get("result")).append(".i32;");
+                node.put("result", "t" + registerUsed);
+                node.put("typePrefix", ".i32");
+                code.append("t").append(registerUsed).append(".i32").append(" :=").append(".i32 ");
+
+                if (node.getChildren().get(0).getAttributes().contains("typePrefix"))
+                    code.append(node.getChildren().get(0).get("typePrefix"));
+
+                code.append(node.getChildren().get(0).get("result"));
+
+                if (node.getChildren().get(0).getAttributes().contains("typeSuffix"))
+                    code.append(node.getChildren().get(0).get("typeSuffix"));
+
+                code.append("*").append(".i32 ");
+
+                if (node.getChildren().get(1).getAttributes().contains("typePrefix"))
+                    code.append(node.getChildren().get(1).get("typePrefix"));
+
+                code.append(node.getChildren().get(1).get("result"));
+
+                if (node.getChildren().get(1).getAttributes().contains("typeSuffix"))
+                    code.append(node.getChildren().get(1).get("typeSuffix"));
+
             }
             case "Div" -> {
-                node.put("result", "t" + registerUsed + ".i32");
-                code.append("t").append(registerUsed).append(".i32").append(":=");
-                code.append(".i32 ").append(node.getChildren().get(0).get("result")).append("/").append(node.getChildren().get(1).get("result")).append(".i32;");
+                node.put("result", "t" + registerUsed);
+                node.put("typePrefix", ".i32");
+                code.append("t").append(registerUsed).append(".i32").append(" :=").append(".i32 ");
+                if (node.getChildren().get(0).getAttributes().contains("typePrefix"))
+                    code.append(node.getChildren().get(0).get("typePrefix"));
+
+                code.append(node.getChildren().get(0).get("result"));
+
+                if (node.getChildren().get(0).getAttributes().contains("typeSuffix"))
+                    code.append(node.getChildren().get(0).get("typeSuffix"));
+
+
+                code.append("/").append(".i32 ");
+
+                if (node.getChildren().get(1).getAttributes().contains("typePrefix"))
+                    code.append(node.getChildren().get(1).get("typePrefix"));
+
+                code.append(node.getChildren().get(1).get("result"));
+
+                if (node.getChildren().get(1).getAttributes().contains("typeSuffix"))
+                    code.append(node.getChildren().get(1).get("typeSuffix"));
             }
             case "ArrayAccess" -> {
-                node.put("result", "t" + registerUsed + ".i32");
-                code.append("t").append(registerUsed).append(".i32").append(":=");
-                code.append(".i32 ").append(node.getChildren().get(0).get("result")).append("[").append(node.getChildren().get(1).get("result")).append("]").append(".i32;");
+                node.put("result", "t" + registerUsed);
+                node.put("typeSuffix", ".i32");
+                code.append("t").append(registerUsed).append(".i32").append(" :=").append(".i32 ");
+                code.append(node.getChildren().get(0).get("result")).append("[");
+
+                if (node.getChildren().get(1).getAttributes().contains("typePrefix"))
+                    code.append(node.getChildren().get(1).get("typePrefix"));
+
+                code.append(node.getChildren().get(1).get("result"));
+
+                if (node.getChildren().get(1).getAttributes().contains("typeSuffix"))
+                    code.append(node.getChildren().get(1).get("typeSuffix"));
+
+                code.append("]").append(".i32;");
             }
             case "NewObject" -> {
-                node.put("result", "t" + registerUsed + ".i32");
-                code.append("t").append(registerUsed).append(".").append(node.get("value")).append(":=.");
+                node.put("result", "t" + registerUsed);
+                node.put("typeSuffix", node.get("value"));
+                code.append("t").append(registerUsed).append(".").append(node.get("value")).append(" :=.");
                 code.append(node.get("value")).append(" new(").append(node.get("value")).append(").").append(node.get("value")).append(";");
                 code.append("\n");
-                code.append("invokespecial(").append("t").append(registerUsed).append(".").append(node.get("value")).append(", \"<init>\" ).v").append(";");
+                code.append("invokespecial(").append("t").append(registerUsed).append(".").append(node.get("value")).append(",\"<init>\").V").append(";");
             }
         }
         code.append("\n");
         return code.toString();
-    }
-
-    public static void writeToFile(String content, String path) {
-        try {
-            FileWriter myWriter = new FileWriter(path);
-            myWriter.write(content);
-            myWriter.close();
-        } catch (IOException e) {
-            System.out.println("An error occurred writing to file");
-            e.printStackTrace();
-        }
     }
 }

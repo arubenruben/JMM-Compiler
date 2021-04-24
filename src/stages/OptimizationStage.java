@@ -16,7 +16,6 @@ public class OptimizationStage implements JmmOptimization {
 
     @Override
     public OllirResult toOllir(JmmSemanticsResult semanticsResult) {
-
         // Convert the AST to a String containing the equivalent OLLIR code
         String ollirCode = ollirCodeString((SymbolTableIml) semanticsResult.getSymbolTable());
         System.out.println(ollirCode);
@@ -30,6 +29,9 @@ public class OptimizationStage implements JmmOptimization {
         code.append(dealWithClassHeaders(symbolTable));
 
         for (MethodSymbol method : symbolTable.getMethodsHashmap().values()) {
+
+            SethiUllman.initialize((SymbolTableIml) symbolTable, method.getName());
+
             final JmmNode methodBody = method.getNode().getChildren().get(2);
             code.append("\t").append(dealWithMethodHeader(method)).append(" {\n");
 
@@ -153,9 +155,9 @@ public class OptimizationStage implements JmmOptimization {
         code.append("if(").append(conditionNode.getChildren().get(0).get("result"));
 
         if (conditionNode.getKind().equals("And"))
-            code.append("&&.bool");
+            code.append(" &&.bool ");
         else
-            code.append(">=.i32");
+            code.append(" >=.i32 ");
 
         code.append(conditionNode.getChildren().get(1).get("result")).append(")goto else;\n");
 
@@ -190,12 +192,21 @@ public class OptimizationStage implements JmmOptimization {
 
         code.append(SethiUllman.run(node));
 
-        code.append("if(").append(node.getChildren().get(0).get("result"));
+        code.append("if(");
+
+        if (node.getChildren().get(0).getAttributes().contains("typePrefix")) {
+            code.append(node.getChildren().get(0).get("typePrefix"));
+        }
+        code.append(node.getChildren().get(0).get("result"));
+
+        if (node.getChildren().get(0).getAttributes().contains("typeSuffix")) {
+            code.append(node.getChildren().get(0).get("typeSuffix"));
+        }
 
         if (node.getKind().equals("And"))
-            code.append("&&.bool");
+            code.append(" &&.bool ");
         else
-            code.append(">=.i32");
+            code.append(" >=.i32 ");
 
         code.append(node.getChildren().get(1).get("result")).append(") goto Body;\n");
         code.append("goto EndLoop;\n");
@@ -210,26 +221,55 @@ public class OptimizationStage implements JmmOptimization {
 
         code.append(SethiUllman.run(node.getChildren().get(1)));
 
+        if (node.getChildren().get(0).getAttributes().contains("typePrefix"))
+            code.append(node.getChildren().get(0).get("typePrefix"));
+
         code.append(node.getChildren().get(0).get("result"));
 
-        code.append(" := ");
+        if (node.getChildren().get(0).getAttributes().contains("typeSuffix"))
+            code.append(node.getChildren().get(0).get("typeSuffix"));
 
+        code.append(" :=").append(node.getChildren().get(0).get("typeSuffix")).append(" ");
 
-        if (node.getChildren().get(1).getAttributes().contains("result"))
+        if (node.getChildren().get(1).getAttributes().contains("result")) {
+            if (node.getChildren().get(1).getAttributes().contains("typePrefix"))
+                code.append(node.getChildren().get(1).get("typePrefix"));
+
             code.append(node.getChildren().get(1).get("result"));
-        else {
-            code.append(node.getChildren().get(1).getChildren().get(0).get("result"));
-            switch (node.getChildren().get(1).getKind()) {
-                case "Add" -> code.append("+");
-                case "Sub" -> code.append("-");
-                case "Mult" -> code.append("*");
-                case "Div" -> code.append("/");
-                case "And" -> code.append("&&");
-                case "Less" -> code.append("<");
-            }
-            code.append(node.getChildren().get(1).getChildren().get(1).get("result"));
-        }
 
+            if (node.getChildren().get(1).getAttributes().contains("typeSuffix"))
+                code.append(node.getChildren().get(1).get("typeSuffix"));
+
+
+        } else {
+
+            if (node.getChildren().get(1).getChildren().get(0).getAttributes().contains("typePrefix"))
+                code.append(node.getChildren().get(1).getChildren().get(1).get("typePrefix"));
+
+            code.append(node.getChildren().get(1).getChildren().get(0).get("result"));
+
+            if (node.getChildren().get(1).getChildren().get(0).getAttributes().contains("typeSuffix"))
+                code.append(node.getChildren().get(1).getChildren().get(0).get("typeSuffix"));
+
+
+            switch (node.getChildren().get(1).getKind()) {
+                case "Add" -> code.append(" +.i32 ");
+                case "Sub" -> code.append(" -.i32 ");
+                case "Mult" -> code.append(" *.i32 ");
+                case "Div" -> code.append(" /.i32 ");
+                case "And" -> code.append(" &&.bool ");
+                case "Less" -> code.append(" <.bool ");
+            }
+
+            if (node.getChildren().get(1).getChildren().get(1).getAttributes().contains("typePrefix"))
+                code.append(node.getChildren().get(1).getChildren().get(1).get("typePrefix"));
+
+            code.append(node.getChildren().get(1).getChildren().get(1).get("result"));
+
+            if (node.getChildren().get(1).getChildren().get(1).getAttributes().contains("typeSuffix"))
+                code.append(node.getChildren().get(1).getChildren().get(1).get("typeSuffix"));
+        }
+        code.append(";");
         code.append("\n");
 
         return code.toString();
