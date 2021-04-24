@@ -67,8 +67,10 @@ public class Main implements JmmParser {
         if (parserResult.getRootNode() != null)
             writeToFile(parserResult.toJson(), "results/ast.txt");
 
-        if (parserResult.getRootNode() == null)
+        if (parserResult.getRootNode() == null){
             return;
+        }
+
 
         if (TestUtils.getNumReports(parserResult.getReports(), ReportType.ERROR) > 0)
             return;

@@ -75,7 +75,7 @@ public class BackendStage implements JasminBackend {
         stringBuilder.append(ollirClass.getClassName()).append("\n");
 
         // Deal with super
-        stringBuilder.append(Objects.requireNonNullElse(symbolTable.getSuper(), ".super java.lang.object")).append("\n");
+        stringBuilder.append(Objects.requireNonNullElse(symbolTable.getSuper(), ".super java.lang.Object")).append("\n");
 
         stringBuilder.append("\n");
 
@@ -120,12 +120,11 @@ public class BackendStage implements JasminBackend {
     // Functions to deal with a class method's declaration
 
     private String dealWithConstructorMethod(){
-        return """
-                .method public <init>()V
-                    aload_0
-                    invokespecial java/lang/Object/<init>()V
-                    return
-                .end method""";
+        return ".method public <init>()V\n" +
+               "    aload_0\n" +
+               "    invokespecial java/lang/Object/<init>()V\n" +
+               "    return\n" +
+               ".end method";
      }
 
     private String dealWithMethod(Method method){
@@ -438,7 +437,7 @@ public class BackendStage implements JasminBackend {
                 stringBuilder.append("[");
 
                 if(arrayType.getTypeOfElements() == ElementType.STRING){
-                    stringBuilder.append("LJava/Lang/String");
+                    stringBuilder.append("Ljava/lang/String");
                 }
                 else{
                     stringBuilder.append("I");
