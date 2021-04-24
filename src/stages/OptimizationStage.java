@@ -6,22 +6,40 @@ import pt.up.fe.comp.jmm.analysis.table.Symbol;
 import pt.up.fe.comp.jmm.analysis.table.Type;
 import pt.up.fe.comp.jmm.ollir.JmmOptimization;
 import pt.up.fe.comp.jmm.ollir.OllirResult;
+import pt.up.fe.comp.jmm.report.Report;
 import symbols.MethodSymbol;
 import symbols.SymbolTableIml;
 import visitors.ollir.SethiUllman;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class OptimizationStage implements JmmOptimization {
 
     @Override
     public OllirResult toOllir(JmmSemanticsResult semanticsResult) {
 
-        // Convert the AST to a String containing the equivalent OLLIR code
-        String ollirCode = ollirCodeString((SymbolTableIml) semanticsResult.getSymbolTable());
-        System.out.println(ollirCode);
+        JmmNode node = semanticsResult.getRootNode();
 
-        return new OllirResult(semanticsResult, ollirCode, new ArrayList<>());
+        // Convert the AST to a String containing the equivalent OLLIR code
+        /*String ollirCode = ollirCodeString((SymbolTableIml) semanticsResult.getSymbolTable());
+
+        System.out.println(ollirCode);*/
+
+
+        String ollirCode = "HelloWorld {\n" +
+                           ".construct HelloWorld().V {\n" +
+                           "invokespecial(this, \"<init>\").V;\n" +
+                           "}\n" +
+                           ".method public static main(args.array.String).V {\n" +
+                           "}\n" +
+                           "}\n";
+
+        // More reports from this stage
+        List<Report> reports = new ArrayList<>();
+
+        // Fac {} must be replaced by ollirCode
+        return new OllirResult(semanticsResult, ollirCode, reports);
     }
 
     private String ollirCodeString(SymbolTableIml symbolTable) {

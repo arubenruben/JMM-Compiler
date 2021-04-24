@@ -120,12 +120,11 @@ public class BackendStage implements JasminBackend {
     // Functions to deal with a class method's declaration
 
     private String dealWithConstructorMethod(){
-        return """
-                .method public <init>()V
-                    aload_0
-                    invokespecial java/lang/Object/<init>()V
-                    return
-                .end method""";
+        return ".method public <init>()V\n" +
+               "    aload_0\n" +
+               "    invokespecial java/lang/Object/<init>()V\n" +
+               "    return\n" +
+               ".end method";
      }
 
     private String dealWithMethod(Method method){
