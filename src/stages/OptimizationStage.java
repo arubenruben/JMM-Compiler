@@ -211,6 +211,7 @@ public class OptimizationStage implements JmmOptimization {
         code.append(SethiUllman.run(node.getChildren().get(1)));
 
         code.append(node.getChildren().get(0).get("result"));
+
         code.append(" := ");
 
 

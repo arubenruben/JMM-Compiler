@@ -6,7 +6,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class SethiUllman {
     private static List<Integer> registersAvailable;
@@ -54,14 +53,28 @@ public class SethiUllman {
             return code.toString();
         }
 
+        if (node.getKind().equals("NewArray")) {
+            code.append(dismemberNewArray(node));
+            return code.toString();
+        }
+
         for (JmmNode child : node.getChildren())
             code.append(codeDismember(child));
 
 
         if (!node.getParent().getKind().equals("Assignment") && !node.getParent().getKind().equals("Condition"))
             code.append(dismemberHelper(node));
+        else
+            code.append(rootNodeNotDismember(node));
 
         return code.toString();
+    }
+
+    private static String rootNodeNotDismember(JmmNode node) {
+        if ("ArrayAccess".equals(node.getKind())) {
+            node.put("result", node.getChildren().get(0).get("result") + "[" + node.getChildren().get(1).get("result") + "].i32");
+        }
+        return "";
     }
 
     private static boolean canDismember(JmmNode node) {
@@ -122,6 +135,11 @@ public class SethiUllman {
             return code.toString();
         }
 
+        if (node.getKind().equals("NewArray")) {
+            code.append(dismemberNewArray(node));
+            return code.toString();
+        }
+
         if (node.getNumChildren() == 1) {
             code.append(codeDismember(node.getChildren().get(0)));
         } else if (node.getNumChildren() == 2) {
@@ -142,7 +160,7 @@ public class SethiUllman {
 
     private static String dismemberMethodCall(JmmNode node) {
         StringBuilder code = new StringBuilder();
-        
+
         if (node.getChildren().get(1).get("value").equals("length"))
             code.append(dismemberLength(node));
         else
@@ -154,13 +172,12 @@ public class SethiUllman {
     private static String dismemberLength(JmmNode node) {
         StringBuilder code = new StringBuilder();
         int registerUsed = registersAvailable.remove(0);
-
         node.put("result", "t" + registerUsed + ".i32");
+
+        SethiUllman.run(node.getChildren().get(0));
 
         code.append("t").append(registerUsed).append(".i32").append(":=");
         code.append(".i32 ").append("arraylength(").append(node.getChildren().get(0).get("result")).append(".array").append(".i32").append(")").append(".i32;");
-
-        code.append("\n");
 
         return code.toString();
     }
@@ -184,6 +201,19 @@ public class SethiUllman {
             code.append(",").append(parameter.get("result"));
 
         code.append(").V;");
+        code.append("\n");
+
+        return code.toString();
+    }
+
+
+    private static String dismemberNewArray(JmmNode node) {
+        StringBuilder code = new StringBuilder();
+
+        code.append(SethiUllman.run(node.getChildren().get(0)));
+
+        node.put("result", "new(array," + node.getChildren().get(0).get("result") + ").array.i32");
+
         code.append("\n");
 
         return code.toString();

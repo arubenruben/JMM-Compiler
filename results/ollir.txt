@@ -1,10 +1,30 @@
 {
-  "kind": "Integer",
+  "kind": "Add",
   "attributes": {
-    "col": "20",
-    "line": "7",
-    "registers": "0",
-    "value": "2"
+    "col": "21",
+    "line": "9",
+    "registers": "1"
   },
-  "children": []
+  "children": [
+    {
+      "kind": "Identifier",
+      "attributes": {
+        "col": "19",
+        "line": "9",
+        "registers": "0",
+        "value": "i"
+      },
+      "children": []
+    },
+    {
+      "kind": "Integer",
+      "attributes": {
+        "col": "22",
+        "line": "9",
+        "registers": "0",
+        "value": "1"
+      },
+      "children": []
+    }
+  ]
 }
