@@ -56,7 +56,9 @@ public class SethiUllman {
         for (JmmNode child : node.getChildren())
             code.append(codeDismember(child));
 
-        code.append(dismemberHelper(node));
+
+        if ((!node.getParent().getKind().equals("Assignment")))
+            code.append(dismemberHelper(node));
 
         return code.toString();
     }
@@ -118,7 +120,6 @@ public class SethiUllman {
             code.append(dismemberMethodCall(node));
             return code.toString();
         }
-
 
         if (node.getNumChildren() == 1) {
             code.append(codeDismember(node.getChildren().get(0)));

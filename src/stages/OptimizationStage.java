@@ -213,16 +213,21 @@ public class OptimizationStage implements JmmOptimization {
         code.append(node.getChildren().get(0).get("result"));
         code.append(" := ");
 
-        switch (node.getChildren().get(1).getKind()) {
-            case "Add" -> code.append("+");
-            case "Sub" -> code.append("-");
-            case "Mul" -> code.append("*");
-            case "Div" -> code.append("/");
-            case "And" -> code.append("&&");
-            case "Less" -> code.append("<");
-        }
 
-        code.append(node.getChildren().get(1).get("result"));
+        if (node.getChildren().get(1).getAttributes().contains("result"))
+            code.append(node.getChildren().get(1).get("result"));
+        else {
+            code.append(node.getChildren().get(1).getChildren().get(0).get("result"));
+            switch (node.getChildren().get(1).getKind()) {
+                case "Add" -> code.append("+");
+                case "Sub" -> code.append("-");
+                case "Mult" -> code.append("*");
+                case "Div" -> code.append("/");
+                case "And" -> code.append("&&");
+                case "Less" -> code.append("<");
+            }
+            code.append(node.getChildren().get(1).getChildren().get(1).get("result"));
+        }
 
         code.append("\n");
 
