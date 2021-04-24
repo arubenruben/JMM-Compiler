@@ -170,11 +170,21 @@ public class SethiUllman {
 
     private static void fillNonTerminalValue(JmmNode node) {
 
+        if (node.getNumChildren() == 0) {
+            node.put("registers", String.valueOf(0));
+            return;
+        }
+
         int leftChildValue = Integer.parseInt(node.getChildren().get(0).get("registers"));
 
-        //For root
-        if (node.getNumChildren() == 1) {
+        //For Unary
+        if (node.getNumChildren() == 1 && !node.getKind().equals("Not")) {
             node.put("registers", String.valueOf(leftChildValue));
+            return;
+        }
+        //Not is no longer Unary
+        else if (node.getKind().equals("Not")) {
+            node.put("registers", String.valueOf(leftChildValue + 1));
             return;
         }
 
@@ -268,17 +278,21 @@ public class SethiUllman {
         code.append(SethiUllman.run(node.getChildren().get(0)));
 
         node.put("result", "t" + registerUsed);
-        node.put("typePrefix", ".i32");
+        node.put("typeSuffix", ".i32");
 
-        for (JmmNode parameter : node.getChildren().get(1).getChildren().get(0).getChildren()) {
-            registersAvailable.remove(0);
-            code.append(SethiUllman.run(parameter));
+        if (node.getChildren().get(1).getNumChildren() > 0) {
+            for (JmmNode parameter : node.getChildren().get(1).getChildren().get(0).getChildren()) {
+                registersAvailable.remove(0);
+                code.append(SethiUllman.run(parameter));
+            }
         }
         code.append("t").append(registerUsed).append(".i32").append(" :=");
         code.append(".i32 ").append("invokestatic(").append(node.getChildren().get(0).get("result"));
 
-        for (JmmNode parameter : node.getChildren().get(1).getChildren().get(0).getChildren())
-            code.append(",").append(parameter.get("result"));
+        if (node.getChildren().get(1).getNumChildren() > 0) {
+            for (JmmNode parameter : node.getChildren().get(1).getChildren().get(0).getChildren())
+                code.append(",").append(parameter.get("result"));
+        }
 
         code.append(").V;");
         code.append("\n");
@@ -304,13 +318,13 @@ public class SethiUllman {
         switch (node.getKind()) {
             case "Less" -> {
                 node.put("result", "t" + registerUsed);
-                node.put("typePrefix", ".bool");
+                node.put("typeSuffix", ".bool");
                 code.append("t").append(registerUsed).append(".bool").append(" :=").append(".bool ");
                 code.append(node.getChildren().get(0).get("result")).append(" <.i32").append(node.getChildren().get(1).get("result"));
             }
             case "And" -> {
                 node.put("result", "t" + registerUsed);
-                node.put("typePrefix", ".bool");
+                node.put("typeSuffix", ".bool");
                 code.append("t").append(registerUsed).append(".bool").append(" :=").append(".bool ");
                 if (node.getChildren().get(0).getAttributes().contains("typePrefix"))
                     code.append(node.getChildren().get(0).get("typePrefix"));
@@ -331,9 +345,33 @@ public class SethiUllman {
                 if (node.getChildren().get(1).getAttributes().contains("typeSuffix"))
                     code.append(node.getChildren().get(1).get("typeSuffix"));
             }
+            case "Not" -> {
+                node.put("result", "t" + registerUsed);
+
+                node.put("typeSuffix", ".bool");
+                code.append("t").append(registerUsed).append(".bool").append(" :=").append(".bool ");
+
+                if (node.getChildren().get(0).getAttributes().contains("typePrefix"))
+                    code.append(node.getChildren().get(0).get("typePrefix"));
+
+                code.append(node.getChildren().get(0).get("result"));
+
+                if (node.getChildren().get(0).getAttributes().contains("typeSuffix"))
+                    code.append(node.getChildren().get(0).get("typeSuffix"));
+
+                code.append("!").append(".bool ");
+
+                if (node.getChildren().get(0).getAttributes().contains("typePrefix"))
+                    code.append(node.getChildren().get(0).get("typePrefix"));
+
+                code.append(node.getChildren().get(0).get("result"));
+
+                if (node.getChildren().get(0).getAttributes().contains("typeSuffix"))
+                    code.append(node.getChildren().get(0).get("typeSuffix"));
+            }
             case "Add" -> {
                 node.put("result", "t" + registerUsed);
-                node.put("typePrefix", ".i32");
+                node.put("typeSuffix", ".i32");
                 code.append("t").append(registerUsed).append(".i32").append(" :=").append(".i32 ");
 
                 if (node.getChildren().get(0).getAttributes().contains("typePrefix"))
@@ -357,7 +395,7 @@ public class SethiUllman {
             }
             case "Sub" -> {
                 node.put("result", "t" + registerUsed);
-                node.put("typePrefix", ".i32");
+                node.put("typeSuffix", ".i32");
                 code.append("t").append(registerUsed).append(".i32").append(" :=").append(".i32 ");
 
                 if (node.getChildren().get(0).getAttributes().contains("typePrefix"))
@@ -381,7 +419,7 @@ public class SethiUllman {
             }
             case "Mult" -> {
                 node.put("result", "t" + registerUsed);
-                node.put("typePrefix", ".i32");
+                node.put("typeSuffix", ".i32");
                 code.append("t").append(registerUsed).append(".i32").append(" :=").append(".i32 ");
 
                 if (node.getChildren().get(0).getAttributes().contains("typePrefix"))
@@ -405,7 +443,7 @@ public class SethiUllman {
             }
             case "Div" -> {
                 node.put("result", "t" + registerUsed);
-                node.put("typePrefix", ".i32");
+                node.put("typeSuffix", ".i32");
                 code.append("t").append(registerUsed).append(".i32").append(" :=").append(".i32 ");
                 if (node.getChildren().get(0).getAttributes().contains("typePrefix"))
                     code.append(node.getChildren().get(0).get("typePrefix"));
@@ -448,9 +486,10 @@ public class SethiUllman {
                 code.append("t").append(registerUsed).append(".").append(node.get("value")).append(" :=.");
                 code.append(node.get("value")).append(" new(").append(node.get("value")).append(").").append(node.get("value")).append(";");
                 code.append("\n");
-                code.append("invokespecial(").append("t").append(registerUsed).append(".").append(node.get("value")).append(",\"<init>\").V").append(";");
+                code.append("invokespecial(").append("t").append(registerUsed).append(".").append(node.get("value")).append(",\"<init>\").V");
             }
         }
+        code.append(";");
         code.append("\n");
         return code.toString();
     }
