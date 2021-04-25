@@ -1,5 +1,10 @@
 package pt.up.fe.comp;
 
+import java.io.IOException;
+import java.io.StringReader;
+import java.util.List;
+import java.util.Properties;
+
 import pt.up.fe.comp.jmm.JmmParser;
 import pt.up.fe.comp.jmm.JmmParserResult;
 import pt.up.fe.comp.jmm.analysis.JmmAnalysis;
@@ -11,11 +16,6 @@ import pt.up.fe.comp.jmm.ollir.OllirResult;
 import pt.up.fe.comp.jmm.report.Report;
 import pt.up.fe.comp.jmm.report.ReportType;
 import pt.up.fe.specs.util.SpecsIo;
-
-import java.io.IOException;
-import java.io.StringReader;
-import java.util.List;
-import java.util.Properties;
 
 public class TestUtils {
 
@@ -154,7 +154,8 @@ public class TestUtils {
                 .filter(report -> report.getType() == ReportType.ERROR)
                 .findFirst()
                 .ifPresent(report -> {
-                    throw new RuntimeException("Found at least one error report: " + report);
+                    throw new RuntimeException("Found at least one error report: " + report,
+                            report.getException().get());
                 });
     }
 
