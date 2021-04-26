@@ -346,12 +346,7 @@ public class BackendStage implements JasminBackend {
         Operand secondOperand = (Operand) putFieldInstruction.getSecondOperand();
         Operand thirdOperand = (Operand) putFieldInstruction.getThirdOperand();
 
-        if(firstOperand.getName().equals("this")){
-            stringBuilder.append("\t").append("aload_0\n");
-        }
-        else{
-            stringBuilder.append(dealWithElementPush(method, firstOperand));
-        }
+        stringBuilder.append(dealWithElementPush(method, firstOperand));
 
         if(thirdOperand != null){
             stringBuilder.append(dealWithElementPush(method, thirdOperand));
@@ -362,20 +357,13 @@ public class BackendStage implements JasminBackend {
         return stringBuilder.toString();
     }
 
-
     private String dealWithGetFieldInstruction(Method method, GetFieldInstruction getFieldInstruction){
         StringBuilder stringBuilder = new StringBuilder();
 
         Operand firstOperand = (Operand) getFieldInstruction.getFirstOperand();
         Operand secondOperand = (Operand) getFieldInstruction.getSecondOperand();
 
-        if(firstOperand.getName().equals("this")){
-            stringBuilder.append("\t").append("aload_0\n");
-        }
-        else{
-            stringBuilder.append(dealWithElementPush(method, firstOperand));
-        }
-
+        stringBuilder.append(dealWithElementPush(method, firstOperand));
         stringBuilder.append("\t").append("getfield ").append(dealWithType(secondOperand.getType())).append(" " + secondOperand.getName()).append("\n");
 
         return stringBuilder.toString();
