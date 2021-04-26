@@ -77,7 +77,7 @@ public class SethiUllman {
         if (!node.getParent().getKind().equals("Assignment") && !node.getParent().getKind().equals("Condition"))
             code.append(dismemberHelper(node));
         else
-            code.append(rootNodeNotDismember(node));
+            code.append(dismemberHelper(node));
 
         return code.toString();
     }
@@ -156,27 +156,6 @@ public class SethiUllman {
 
     }
 
-    private static String rootNodeNotDismember(JmmNode node) {
-        if (node.getKind().equals("ArrayAccess")) {
-            StringBuilder code = new StringBuilder();
-            code.append(node.getChildren().get(0).get("result")).append("[");
-
-            if (node.getChildren().get(1).getAttributes().contains("typePrefix"))
-                code.append(node.getChildren().get(1).get("typePrefix"));
-
-            code.append(node.getChildren().get(1).get("result"));
-
-            if (node.getChildren().get(1).getAttributes().contains("typeSuffix"))
-                code.append(node.getChildren().get(1).get("typeSuffix"));
-
-            code.append("]");
-
-            node.put("typeSuffix", ".i32");
-            node.put("result", code.toString());
-
-        }
-        return "";
-    }
 
     private static boolean canDismember(JmmNode node) {
         return switch (node.getKind()) {
@@ -308,8 +287,9 @@ public class SethiUllman {
     private static String dismemberMethodCallNonLength(JmmNode node) {
         if (symbolTable.getMethodsHashmap().containsKey(node.getChildren().get(1).get("value")))
             return dismemberMethodCallNonStatic(node);
-        else
-            return dismemberMethodCallStatic(node);
+        //else
+        //  return dismemberMethodCallStatic(node);
+        return "";
     }
 
     private static String dismemberMethodCallNonStatic(JmmNode node) {
@@ -369,25 +349,45 @@ public class SethiUllman {
         code.append("\n");
         return code.toString();
     }
-
+    /*
     private static String dismemberMethodCallStatic(JmmNode node) {
         StringBuilder code = new StringBuilder();
+
         int registerUsed = registersAvailable.remove(0);
 
         code.append(SethiUllman.run(node.getChildren().get(0)));
 
-        node.put("result", "t" + registerUsed);
-        node.put("typeSuffix", requiredType);
+        code.append("invokestatic(").append(node.getChildren().get(0).get("result")).append(",").append("\"").append(node.getChildren().get(1).get("value")).append("\"");
 
+        node.put("typeSuffix", ".V");
 
-        code.append(node.get("result")).append(" :=").append(node.get("typeSuffix")).append(" ");
-        code.append("invokestatic(").append(node.getChildren().get(0).get("result")).append("\"").append(node.getChildren().get(1).get("value")).append("\"");
+        if (node.getChildren().get(1).getNumChildren() > 0) {
+            for (JmmNode parameter : node.getChildren().get(1).getChildren().get(0).getChildren())
+                code.append(SethiUllman.run(parameter));
+        }
 
-        code.append(")").append(requiredType).append(";");
+        if (node.getChildren().get(1).getNumChildren() > 0) {
+            for (JmmNode parameter : node.getChildren().get(1).getChildren().get(0).getChildren()) {
+
+                code.append(", ");
+                if (parameter.getAttributes().contains("typePrefix"))
+                    code.append(parameter.get("typePrefix"));
+
+                code.append(parameter.get("result"));
+
+                if (parameter.getAttributes().contains("typeSuffix"))
+                    code.append(parameter.get("typeSuffix"));
+
+            }
+        }
+
+        code.append(")").append(node.get("typeSuffix")).append(";");
         code.append("\n");
 
         return code.toString();
     }
+
+     */
 
 
     private static String dismemberNewArray(JmmNode node) {
