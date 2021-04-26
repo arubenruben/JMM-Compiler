@@ -2,15 +2,20 @@ import io;
 
 class Fac {
     public int compFac(int num){
-        int num_aux;
-        if (num < 1)
-        num_aux = 1;
-        else
-        num_aux = num * (this.compFac(num-1));
-        return num_aux;
+        return num;
     }
     public static void main(String[] args){
-        io.println(new Fac().compFac(10));
+        int a;
+        bool b;
+        a = 10;
+
+        if(!(a < 10)){
+            a = 10;
+        }
+        else{
+
+        }
+        a = 10;
     }
 }
 

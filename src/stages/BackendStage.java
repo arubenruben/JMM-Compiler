@@ -318,9 +318,8 @@ public class BackendStage implements JasminBackend {
         return stringBuilder.toString();
     }
 
-    //TODO
     private String dealWithGotoInstruction(Method method, GotoInstruction gotoInstruction){
-        return "";
+        return "\tgoto " + gotoInstruction.getLabel() + "\n";
     }
 
     //TODO
@@ -338,19 +337,51 @@ public class BackendStage implements JasminBackend {
         return stringBuilder.toString();
     }
 
-    //TODO
+
     private String dealWithPutFieldInstruction(Method method, PutFieldInstruction putFieldInstruction){
-        return "";
+        StringBuilder stringBuilder = new StringBuilder();
+
+        Operand firstOperand = (Operand) putFieldInstruction.getFirstOperand();
+        Operand secondOperand = (Operand) putFieldInstruction.getSecondOperand();
+        Operand thirdOperand = (Operand) putFieldInstruction.getThirdOperand();
+
+        stringBuilder.append(dealWithElementPush(method, firstOperand));
+
+        if(thirdOperand != null){
+            stringBuilder.append(dealWithElementPush(method, thirdOperand));
+        }
+
+        stringBuilder.append("\t").append("putfield ").append(secondOperand.getName()).append(" ").append(dealWithType(secondOperand.getType())).append("\n");
+
+        return stringBuilder.toString();
     }
 
-    //TODO
     private String dealWithGetFieldInstruction(Method method, GetFieldInstruction getFieldInstruction){
-        return "";
-    }
+        StringBuilder stringBuilder = new StringBuilder();
 
-    //TODO
+        Operand firstOperand = (Operand) getFieldInstruction.getFirstOperand();
+        Operand secondOperand = (Operand) getFieldInstruction.getSecondOperand();
+
+        stringBuilder.append(dealWithElementPush(method, firstOperand));
+        stringBuilder.append("\t").append("getfield ").append(dealWithType(secondOperand.getType())).append(" " + secondOperand.getName()).append("\n");
+
+        return stringBuilder.toString();
+    }
+    
     private String dealWithUnaryOpInstruction(Method method, UnaryOpInstruction unaryOpInstruction){
-        return "";
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append(dealWithElementPush(method, unaryOpInstruction.getRightOperand()));
+
+        Operation operation = unaryOpInstruction.getUnaryOperation();
+
+        switch (operation.getOpType()){
+            case NOT -> {
+                stringBuilder.append("\tineg\n");
+            }
+        }
+
+        return stringBuilder.toString();
     }
 
     private String dealWithBinaryOpInstruction(Method method, BinaryOpInstruction binaryOpInstruction){
@@ -358,7 +389,6 @@ public class BackendStage implements JasminBackend {
 
         stringBuilder.append(dealWithElementPush(method, binaryOpInstruction.getLeftOperand()));
         stringBuilder.append(dealWithElementPush(method, binaryOpInstruction.getRightOperand()));
-
 
         Operation operation = binaryOpInstruction.getUnaryOperation();
 
@@ -374,6 +404,15 @@ public class BackendStage implements JasminBackend {
             }
             case DIV -> {
                 stringBuilder.append("\tidiv\n");
+            }
+            case AND -> {
+                stringBuilder.append("\tiand\n");
+            }
+            case LTH -> {
+
+            }
+            case GTE -> {
+
             }
         }
 
