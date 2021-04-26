@@ -2,6 +2,7 @@ package visitors.ollir;
 
 import pt.up.fe.comp.jmm.JmmNode;
 import pt.up.fe.comp.jmm.analysis.table.Symbol;
+import symbols.MethodSymbol;
 import symbols.SymbolTableIml;
 
 import java.util.ArrayList;
@@ -270,7 +271,7 @@ public class SethiUllman {
         int registerUsed = registersAvailable.remove(0);
         node.put("result", "t" + registerUsed + ".i32");
 
-        SethiUllman.run(node.getChildren().get(0));
+        code.append(SethiUllman.run(node.getChildren().get(0)));
 
         code.append("t").append(registerUsed).append(".i32").append(" :=");
         code.append(".i32 ").append("arraylength(");
@@ -291,13 +292,41 @@ public class SethiUllman {
     }
 
     private static String dismemberMethodCallNonLength(JmmNode node) {
+        if (symbolTable.getMethodsHashmap().containsKey(node.getChildren().get(1).get("value")))
+            return dismemberMethodCallNonStatic(node);
+        else
+            return dismemberMethodCallStatic(node);
+    }
+
+    private static String dismemberMethodCallNonStatic(JmmNode node) {
         StringBuilder code = new StringBuilder();
+
         int registerUsed = registersAvailable.remove(0);
 
+        MethodSymbol method = symbolTable.getMethodsHashmap().get(node.getChildren().get(1).get("value"));
         code.append(SethiUllman.run(node.getChildren().get(0)));
 
         node.put("result", "t" + registerUsed);
-        node.put("typeSuffix", ".i32");
+
+        switch (method.getType().getName()) {
+            case "int":
+                if (method.getType().isArray())
+                    node.put("typeSuffix", ".array.i32");
+                else
+                    node.put("typeSuffix", ".i32");
+                break;
+            case "boolean":
+                node.put("typeSuffix", ".bool");
+                break;
+            default:
+                node.put("typeSuffix", "." + method.getType().getName());
+                break;
+        }
+
+        code.append(node.get("result")).append(node.get("typeSuffix")).append(" :=").append(node.get("typeSuffix")).append(" ");
+
+        code.append("invokevirtual(").append(node.getChildren().get(0).get("result")).append(node.getChildren().get(0).get("typeSuffix")).append(", ");
+        code.append("\"").append(node.getChildren().get(1).get("value")).append("\"");
 
         if (node.getChildren().get(1).getNumChildren() > 0) {
             for (JmmNode parameter : node.getChildren().get(1).getChildren().get(0).getChildren()) {
@@ -305,13 +334,11 @@ public class SethiUllman {
                 code.append(SethiUllman.run(parameter));
             }
         }
-        code.append("t").append(registerUsed).append(".i32").append(" :=");
-        code.append(".i32 ").append("invokestatic(").append(node.getChildren().get(0).get("result"));
 
         if (node.getChildren().get(1).getNumChildren() > 0) {
             for (JmmNode parameter : node.getChildren().get(1).getChildren().get(0).getChildren()) {
 
-                code.append(",");
+                code.append(", ");
                 if (parameter.getAttributes().contains("typePrefix"))
                     code.append(parameter.get("typePrefix"));
 
@@ -323,11 +350,16 @@ public class SethiUllman {
             }
         }
 
-        code.append(").V;");
-        code.append("\n");
+        code.append(")").append(node.get("typeSuffix")).append(";");
 
+        code.append("\n");
         return code.toString();
     }
+
+    private static String dismemberMethodCallStatic(JmmNode node) {
+        return "";
+    }
+
 
     private static String dismemberNewArray(JmmNode node) {
         StringBuilder code = new StringBuilder();
@@ -528,7 +560,7 @@ public class SethiUllman {
             }
             case "NewObject" -> {
                 node.put("result", "t" + registerUsed);
-                node.put("typeSuffix", node.get("value"));
+                node.put("typeSuffix", "." + node.get("value"));
                 code.append("t").append(registerUsed).append(".").append(node.get("value")).append(" :=.");
                 code.append(node.get("value")).append(" new(").append(node.get("value")).append(").").append(node.get("value")).append(";");
                 code.append("\n");

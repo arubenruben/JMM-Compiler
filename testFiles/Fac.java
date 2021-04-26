@@ -1,15 +1,17 @@
-import io.language.MyObject;
-import io.Fac;
+import io;
 
-class simple {
+class Fac {
+    public int[] compFac(int num) {
+        return num;
+    }
 
-    int a;
-    int[] b;
-    boolean c;
-    MyObject e;
+    public Fac example(int num, boolean num2) {
+        return new Fac();
+    }
 
-    public int init(MyObject f, int g, boolean h) {
-        a = a + 1;
-        return a + 1;
+    public static void main(String[] args) {
+        int a;
+        a = this.compFac(10) + 10;
+        this.example(10, true);
     }
 }

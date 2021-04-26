@@ -361,21 +361,85 @@ public class OptimizationStage implements JmmOptimization {
     private String dealWithMethodCall(JmmNode node) {
         StringBuilder code = new StringBuilder();
 
+        //if (node.getChildren().get(1).get("value").equals("length"))
+        //code.append(dismemberLength(node));
+        //else
+        code.append(dismemberMethodCallNonLength(node));
+
+        return code.toString();
+    }
+    /*
+    private static String dismemberLength(JmmNode node) {
+        StringBuilder code = new StringBuilder();
+        int registerUsed = registersAvailable.remove(0);
+        node.put("result", "t" + registerUsed + ".i32");
+
         code.append(SethiUllman.run(node.getChildren().get(0)));
+
+        code.append("t").append(registerUsed).append(".i32").append(" :=");
+        code.append(".i32 ").append("arraylength(");
+
+        if (node.getChildren().get(0).getAttributes().contains("typePrefix"))
+            code.append(node.getChildren().get(0).get("typePrefix"));
+
+        code.append(node.getChildren().get(0).get("result"));
+
+        if (node.getChildren().get(0).getAttributes().contains("typeSuffix"))
+            code.append(node.getChildren().get(0).get("typeSuffix"));
+
+        code.append(")").append(".i32;");
+
+        code.append("\n");
+
+        return code.toString();
+    }
+
+     */
+
+    private String dismemberMethodCallNonLength(JmmNode node) {
+        if (symbolTable.getMethodsHashmap().containsKey(node.getChildren().get(1).get("value")))
+            return dismemberMethodCallNonStatic(node);
+        else
+            return dismemberMethodCallStatic(node);
+    }
+
+    private String dismemberMethodCallNonStatic(JmmNode node) {
+        StringBuilder code = new StringBuilder();
+
+        MethodSymbol method = symbolTable.getMethodsHashmap().get(node.getChildren().get(1).get("value"));
+        code.append(SethiUllman.run(node.getChildren().get(0)));
+
+
+        switch (method.getType().getName()) {
+            case "int":
+                if (method.getType().isArray())
+                    node.put("typeSuffix", ".array.i32");
+                else
+                    node.put("typeSuffix", ".i32");
+                break;
+            case "boolean":
+                node.put("typeSuffix", ".bool");
+                break;
+            default:
+                node.put("typeSuffix", "." + method.getType().getName());
+                break;
+        }
+
+
+        code.append("invokevirtual(").append(node.getChildren().get(0).get("result")).append(node.getChildren().get(0).get("typeSuffix")).append(", ");
+        code.append("\"").append(node.getChildren().get(1).get("value")).append("\"");
+
 
         if (node.getChildren().get(1).getNumChildren() > 0) {
             for (JmmNode parameter : node.getChildren().get(1).getChildren().get(0).getChildren())
                 code.append(SethiUllman.run(parameter));
         }
 
-        code.append("invokestatic(").append(node.getChildren().get(0).get("value")).append(",");
-
-        code.append("\"").append(node.getChildren().get(1).get("value")).append("\"");
 
         if (node.getChildren().get(1).getNumChildren() > 0) {
             for (JmmNode parameter : node.getChildren().get(1).getChildren().get(0).getChildren()) {
 
-                code.append(",");
+                code.append(", ");
                 if (parameter.getAttributes().contains("typePrefix"))
                     code.append(parameter.get("typePrefix"));
 
@@ -386,9 +450,16 @@ public class OptimizationStage implements JmmOptimization {
 
             }
         }
-        code.append(").V;");
+
+        code.append(")").append(node.get("typeSuffix")).append(";");
+
+        code.append("\n");
 
         return code.toString();
+    }
+
+    private String dismemberMethodCallStatic(JmmNode node) {
+        return "";
     }
 
     private String dealWithReturn(MethodSymbol methodSymbol) {
