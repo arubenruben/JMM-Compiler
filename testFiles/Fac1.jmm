@@ -3,10 +3,18 @@ import io.print;
 class myClass {
     int a;
     public static void main(String[] args) {
+        int b;
         a=10;
         io.print(a);
         a=20;
         io.print(a);
+        if(a < 10){
+            a = 30;
+        }
+        else{
+            a = 5;
+        }
+        b = 10;
     }
 }
 

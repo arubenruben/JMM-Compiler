@@ -317,10 +317,9 @@ public class BackendStage implements JasminBackend {
         }
         return stringBuilder.toString();
     }
-
-    //TODO
+    
     private String dealWithGotoInstruction(Method method, GotoInstruction gotoInstruction){
-        return "";
+        return "\tgoto " + gotoInstruction.getLabel() + "\n";
     }
 
     //TODO
