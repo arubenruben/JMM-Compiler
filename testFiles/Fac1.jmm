@@ -1,18 +1,15 @@
-import io;
+import io.print;
 
-class Fac {
-    public int compFac(int num){
-        int num_aux;
-        if (num < 1)
-        num_aux = 1;
-        else
-        num_aux = num * (this.compFac(num-1));
-        return num_aux;
-    }
-    public static void main(String[] args){
-        io.println(new Fac().compFac(10));
+class myClass {
+    int a;
+    public static void main(String[] args) {
+        a=10;
+        io.print(a);
+        a=20;
+        io.print(a);
     }
 }
+
 
 /*
 Fac {
