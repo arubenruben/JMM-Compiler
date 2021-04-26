@@ -9,7 +9,7 @@ import java.util.List;
 
 public class SethiUllman {
 
-    private static List<Integer> registersAvailable;
+    public static List<Integer> registersAvailable;
     private static SymbolTableIml symbolTable;
     private static String currentMethod;
 
@@ -47,7 +47,7 @@ public class SethiUllman {
         StringBuilder code = new StringBuilder();
 
         if (!canDismember(node)) {
-            fillNonDismember(node);
+            code.append(fillNonDismember(node));
             return code.toString();
         }
 
@@ -73,9 +73,10 @@ public class SethiUllman {
         return code.toString();
     }
 
-    private static void fillNonDismember(JmmNode node) {
+    private static String fillNonDismember(JmmNode node) {
         String typePrefix = "";
         String typeSuffix = "";
+        boolean isClassField = false;
 
         switch (node.getKind()) {
             case "Integer" -> typeSuffix = ".i32";
@@ -99,11 +100,15 @@ public class SethiUllman {
                 }
 
                 if (variable == null) {
-                    variable = symbolTable.getClassFields().get(node.get("value"));
+                    if (symbolTable.getClassFields().containsKey(node.get("value"))) {
+                        variable = symbolTable.getClassFields().get(node.get("value"));
+                        isClassField = true;
+                    }
                 }
 
+
                 if (variable == null)
-                    return;
+                    return "";
 
                 if (variable.getType().getName().equals("int"))
                     if (!variable.getType().isArray())
@@ -117,15 +122,27 @@ public class SethiUllman {
 
             }
         }
+        if (isClassField && !node.getParent().getKind().equals("Assignment")) {
+            int registerUsed = registersAvailable.remove(0);
 
-        node.put("typePrefix", typePrefix);
-        node.put("typeSuffix", typeSuffix);
+            node.put("result", "t" + registerUsed);
+            node.put("typePrefix", typePrefix);
+            node.put("typeSuffix", typeSuffix);
 
-        node.put("result", node.get("value"));
+            return node.get("result") + typeSuffix + " :=" + typeSuffix + " getfield(this, " + node.get("value") + typeSuffix + ")" + typeSuffix + ";" + "\n";
+
+        } else {
+            node.put("result", node.get("value"));
+            node.put("typePrefix", typePrefix);
+            node.put("typeSuffix", typeSuffix);
+        }
+        return "";
+
+
     }
 
     private static String rootNodeNotDismember(JmmNode node) {
-        if ("ArrayAccess".equals(node.getKind())) {
+        if (node.getKind().equals("ArrayAccess")) {
             StringBuilder code = new StringBuilder();
             code.append(node.getChildren().get(0).get("result")).append("[");
 
@@ -141,6 +158,7 @@ public class SethiUllman {
 
             node.put("typeSuffix", ".i32");
             node.put("result", code.toString());
+
         }
         return "";
     }
@@ -204,8 +222,8 @@ public class SethiUllman {
         StringBuilder code = new StringBuilder();
 
         if (isTerminal(node) && node.getAttributes().contains("value")) {
-            fillNonDismember(node);
-            return "";
+            code.append(fillNonDismember(node));
+            return code.toString();
         }
 
         if (node.getKind().equals("MethodCall")) {

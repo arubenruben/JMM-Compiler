@@ -15,10 +15,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OptimizationStage implements JmmOptimization {
+    private SymbolTableIml symbolTable;
+
 
     @Override
     public OllirResult toOllir(JmmSemanticsResult semanticsResult) {
         // Convert the AST to a String containing the equivalent OLLIR code
+        symbolTable = (SymbolTableIml) semanticsResult.getSymbolTable();
         String ollirCode = ollirCodeString((SymbolTableIml) semanticsResult.getSymbolTable());
 
         System.out.println(ollirCode);
@@ -252,22 +255,39 @@ public class OptimizationStage implements JmmOptimization {
 
     private String dealWithAssignment(JmmNode node) {
         StringBuilder code = new StringBuilder();
+        String leftSide = "";
 
         code.append(SethiUllman.run(node.getChildren().get(0)));
 
         code.append(SethiUllman.run(node.getChildren().get(1)));
 
-        if (node.getChildren().get(0).getAttributes().contains("typePrefix"))
-            code.append(node.getChildren().get(0).get("typePrefix"));
+        if (isSetter(node)) {
+            int registerUsed = SethiUllman.registersAvailable.remove(0);
 
-        code.append(node.getChildren().get(0).get("result"));
+            leftSide = "t" + registerUsed;
 
-        if (node.getChildren().get(0).getAttributes().contains("typeSuffix"))
-            code.append(node.getChildren().get(0).get("typeSuffix"));
+            code.append("t").append(registerUsed);
+
+            if (node.getChildren().get(0).getAttributes().contains("typeSuffix")) {
+                code.append(node.getChildren().get(0).get("typeSuffix"));
+                leftSide += node.getChildren().get(0).get("typeSuffix");
+            }
+
+        } else {
+
+            if (node.getChildren().get(0).getAttributes().contains("typePrefix"))
+                code.append(node.getChildren().get(0).get("typePrefix"));
+
+            code.append(node.getChildren().get(0).get("result"));
+
+            if (node.getChildren().get(0).getAttributes().contains("typeSuffix"))
+                code.append(node.getChildren().get(0).get("typeSuffix"));
+        }
 
         code.append(" :=").append(node.getChildren().get(0).get("typeSuffix")).append(" ");
 
         if (node.getChildren().get(1).getAttributes().contains("result")) {
+
             if (node.getChildren().get(1).getAttributes().contains("typePrefix"))
                 code.append(node.getChildren().get(1).get("typePrefix"));
 
@@ -276,11 +296,10 @@ public class OptimizationStage implements JmmOptimization {
             if (node.getChildren().get(1).getAttributes().contains("typeSuffix"))
                 code.append(node.getChildren().get(1).get("typeSuffix"));
 
-
         } else {
 
             if (node.getChildren().get(1).getChildren().get(0).getAttributes().contains("typePrefix"))
-                code.append(node.getChildren().get(1).getChildren().get(1).get("typePrefix"));
+                code.append(node.getChildren().get(1).getChildren().get(0).get("typePrefix"));
 
             code.append(node.getChildren().get(1).getChildren().get(0).get("result"));
 
@@ -308,7 +327,29 @@ public class OptimizationStage implements JmmOptimization {
         code.append(";");
         code.append("\n");
 
+        if (isSetter(node)) {
+            code.append("putfield(this, ");
+            code.append(node.getChildren().get(0).get("result"));
+
+            if (node.getChildren().get(0).getAttributes().contains("typeSuffix"))
+                code.append(node.getChildren().get(0).get("typeSuffix"));
+
+            code.append(", ").append(leftSide).append(").V;");
+
+            code.append("\n");
+        }
+
         return code.toString();
+    }
+
+
+    private boolean isSetter(JmmNode node) {
+
+        if (!node.getChildren().get(0).getKind().equals("Identifier"))
+            return false;
+
+        return symbolTable.getClassFields().containsKey(node.getChildren().get(0).get("result"));
+
     }
 
     private String dealWithMethodCall(JmmNode node) {
@@ -368,7 +409,7 @@ public class OptimizationStage implements JmmOptimization {
 
     private String dealWithClassField(Symbol variable) {
         return ".field protected " +
-                dealWithField(variable);
+                dealWithField(variable) + ";";
     }
 
     private String dealWithField(Symbol variable) {
