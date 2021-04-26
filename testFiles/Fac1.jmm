@@ -1,23 +1,23 @@
-import io.print;
+import io;
 
-class myClass {
-    int a;
-    public static void main(String[] args) {
-        int b;
-        a=10;
-        io.print(a);
-        a=20;
-        io.print(a);
-        if(a < 10){
-            a = 30;
+class Fac {
+    public int compFac(int num){
+        return num;
+    }
+    public static void main(String[] args){
+        int a;
+        bool b;
+        a = 10;
+
+        if(!(a < 10)){
+            a = 10;
         }
         else{
-            a = 5;
+
         }
-        b = 10;
+        a = 10;
     }
 }
-
 
 /*
 Fac {

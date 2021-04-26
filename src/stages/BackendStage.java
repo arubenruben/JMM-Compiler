@@ -317,7 +317,7 @@ public class BackendStage implements JasminBackend {
         }
         return stringBuilder.toString();
     }
-    
+
     private String dealWithGotoInstruction(Method method, GotoInstruction gotoInstruction){
         return "\tgoto " + gotoInstruction.getLabel() + "\n";
     }
@@ -367,10 +367,21 @@ public class BackendStage implements JasminBackend {
 
         return stringBuilder.toString();
     }
-
-    //TODO
+    
     private String dealWithUnaryOpInstruction(Method method, UnaryOpInstruction unaryOpInstruction){
-        return "";
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append(dealWithElementPush(method, unaryOpInstruction.getRightOperand()));
+
+        Operation operation = unaryOpInstruction.getUnaryOperation();
+
+        switch (operation.getOpType()){
+            case NOT -> {
+                stringBuilder.append("\tineg\n");
+            }
+        }
+
+        return stringBuilder.toString();
     }
 
     private String dealWithBinaryOpInstruction(Method method, BinaryOpInstruction binaryOpInstruction){
@@ -378,7 +389,6 @@ public class BackendStage implements JasminBackend {
 
         stringBuilder.append(dealWithElementPush(method, binaryOpInstruction.getLeftOperand()));
         stringBuilder.append(dealWithElementPush(method, binaryOpInstruction.getRightOperand()));
-
 
         Operation operation = binaryOpInstruction.getUnaryOperation();
 
@@ -394,6 +404,15 @@ public class BackendStage implements JasminBackend {
             }
             case DIV -> {
                 stringBuilder.append("\tidiv\n");
+            }
+            case AND -> {
+                stringBuilder.append("\tiand\n");
+            }
+            case LTH -> {
+
+            }
+            case GTE -> {
+
             }
         }
 

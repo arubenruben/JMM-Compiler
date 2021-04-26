@@ -11,7 +11,7 @@
         "attributes": {
           "col": "8",
           "line": "1",
-          "value": "[io, print]"
+          "value": "[io]"
         },
         "children": []
       },
@@ -20,26 +20,89 @@
         "attributes": {
           "col": "1",
           "line": "3",
-          "value": "myClass"
+          "value": "Fac"
         },
         "children": [
           {
-            "kind": "VarDeclaration",
+            "kind": "ClassMethod",
             "attributes": {
-              "col": "5",
+              "col": "12",
               "line": "4",
-              "value": "a"
+              "value": "compFac"
             },
             "children": [
               {
                 "kind": "Type",
                 "attributes": {
-                  "col": "5",
+                  "col": "12",
                   "line": "4",
                   "isArray": "false",
                   "value": "int"
                 },
                 "children": []
+              },
+              {
+                "kind": "Parameters",
+                "attributes": {
+                  "col": "24",
+                  "line": "4"
+                },
+                "children": [
+                  {
+                    "kind": "Parameter",
+                    "attributes": {
+                      "col": "28",
+                      "line": "4"
+                    },
+                    "children": [
+                      {
+                        "kind": "Type",
+                        "attributes": {
+                          "col": "24",
+                          "line": "4",
+                          "isArray": "false",
+                          "value": "int"
+                        },
+                        "children": []
+                      },
+                      {
+                        "kind": "Identifier",
+                        "attributes": {
+                          "col": "28",
+                          "line": "4",
+                          "value": "num"
+                        },
+                        "children": []
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "Body",
+                "attributes": {
+                  "col": "9",
+                  "line": "5"
+                },
+                "children": []
+              },
+              {
+                "kind": "Return",
+                "attributes": {
+                  "col": "19",
+                  "line": "5"
+                },
+                "children": [
+                  {
+                    "kind": "Identifier",
+                    "attributes": {
+                      "col": "19",
+                      "line": "5",
+                      "value": "num"
+                    },
+                    "children": []
+                  }
+                ]
               }
             ]
           },
@@ -47,7 +110,7 @@
             "kind": "ClassMethod",
             "attributes": {
               "col": "12",
-              "line": "5",
+              "line": "7",
               "value": "main"
             },
             "children": [
@@ -55,7 +118,7 @@
                 "kind": "Type",
                 "attributes": {
                   "col": "12",
-                  "line": "5",
+                  "line": "7",
                   "isArray": "false",
                   "value": "void"
                 },
@@ -65,21 +128,21 @@
                 "kind": "Parameters",
                 "attributes": {
                   "col": "29",
-                  "line": "5"
+                  "line": "7"
                 },
                 "children": [
                   {
                     "kind": "Parameter",
                     "attributes": {
                       "col": "38",
-                      "line": "5"
+                      "line": "7"
                     },
                     "children": [
                       {
                         "kind": "Type",
                         "attributes": {
                           "col": "29",
-                          "line": "5",
+                          "line": "7",
                           "isArray": "true",
                           "value": "String"
                         },
@@ -89,7 +152,7 @@
                         "kind": "Identifier",
                         "attributes": {
                           "col": "38",
-                          "line": "5",
+                          "line": "7",
                           "value": "args"
                         },
                         "children": []
@@ -102,22 +165,22 @@
                 "kind": "Body",
                 "attributes": {
                   "col": "9",
-                  "line": "6"
+                  "line": "8"
                 },
                 "children": [
                   {
                     "kind": "VarDeclaration",
                     "attributes": {
                       "col": "9",
-                      "line": "6",
-                      "value": "b"
+                      "line": "8",
+                      "value": "a"
                     },
                     "children": [
                       {
                         "kind": "Type",
                         "attributes": {
                           "col": "9",
-                          "line": "6",
+                          "line": "8",
                           "isArray": "false",
                           "value": "int"
                         },
@@ -126,109 +189,29 @@
                     ]
                   },
                   {
-                    "kind": "Assignment",
+                    "kind": "VarDeclaration",
                     "attributes": {
-                      "col": "11",
-                      "line": "7"
+                      "col": "9",
+                      "line": "9",
+                      "value": "b"
                     },
                     "children": [
                       {
-                        "kind": "Identifier",
+                        "kind": "Type",
                         "attributes": {
-                          "col": "10",
-                          "line": "7",
-                          "value": "a"
+                          "col": "9",
+                          "line": "9",
+                          "isArray": "false",
+                          "value": "bool"
                         },
                         "children": []
-                      },
-                      {
-                        "kind": "Integer",
-                        "attributes": {
-                          "col": "13",
-                          "line": "7",
-                          "value": "10"
-                        },
-                        "children": []
-                      }
-                    ]
-                  },
-                  {
-                    "kind": "MethodCall",
-                    "attributes": {
-                      "col": "12",
-                      "line": "8"
-                    },
-                    "children": [
-                      {
-                        "kind": "Identifier",
-                        "attributes": {
-                          "col": "11",
-                          "line": "8",
-                          "value": "io"
-                        },
-                        "children": []
-                      },
-                      {
-                        "kind": "Identifier",
-                        "attributes": {
-                          "col": "12",
-                          "line": "8",
-                          "value": "print"
-                        },
-                        "children": [
-                          {
-                            "kind": "Parameters",
-                            "attributes": {
-                              "col": "18",
-                              "line": "8"
-                            },
-                            "children": [
-                              {
-                                "kind": "Identifier",
-                                "attributes": {
-                                  "col": "19",
-                                  "line": "8",
-                                  "value": "a"
-                                },
-                                "children": []
-                              }
-                            ]
-                          }
-                        ]
                       }
                     ]
                   },
                   {
                     "kind": "Assignment",
                     "attributes": {
-                      "col": "11",
-                      "line": "9"
-                    },
-                    "children": [
-                      {
-                        "kind": "Identifier",
-                        "attributes": {
-                          "col": "10",
-                          "line": "9",
-                          "value": "a"
-                        },
-                        "children": []
-                      },
-                      {
-                        "kind": "Integer",
-                        "attributes": {
-                          "col": "13",
-                          "line": "9",
-                          "value": "20"
-                        },
-                        "children": []
-                      }
-                    ]
-                  },
-                  {
-                    "kind": "MethodCall",
-                    "attributes": {
-                      "col": "12",
+                      "col": "13",
                       "line": "10"
                     },
                     "children": [
@@ -237,37 +220,18 @@
                         "attributes": {
                           "col": "11",
                           "line": "10",
-                          "value": "io"
+                          "value": "a"
                         },
                         "children": []
                       },
                       {
-                        "kind": "Identifier",
+                        "kind": "Integer",
                         "attributes": {
-                          "col": "12",
+                          "col": "15",
                           "line": "10",
-                          "value": "print"
+                          "value": "10"
                         },
-                        "children": [
-                          {
-                            "kind": "Parameters",
-                            "attributes": {
-                              "col": "18",
-                              "line": "10"
-                            },
-                            "children": [
-                              {
-                                "kind": "Identifier",
-                                "attributes": {
-                                  "col": "19",
-                                  "line": "10",
-                                  "value": "a"
-                                },
-                                "children": []
-                              }
-                            ]
-                          }
-                        ]
+                        "children": []
                       }
                     ]
                   },
@@ -275,40 +239,49 @@
                     "kind": "If",
                     "attributes": {
                       "col": "9",
-                      "line": "11"
+                      "line": "12"
                     },
                     "children": [
                       {
                         "kind": "Condition",
                         "attributes": {
                           "col": "11",
-                          "line": "11"
+                          "line": "12"
                         },
                         "children": [
                           {
-                            "kind": "Less",
+                            "kind": "Not",
                             "attributes": {
-                              "col": "16",
-                              "line": "11"
+                              "col": "13",
+                              "line": "12"
                             },
                             "children": [
                               {
-                                "kind": "Identifier",
-                                "attributes": {
-                                  "col": "14",
-                                  "line": "11",
-                                  "value": "a"
-                                },
-                                "children": []
-                              },
-                              {
-                                "kind": "Integer",
+                                "kind": "Less",
                                 "attributes": {
                                   "col": "18",
-                                  "line": "11",
-                                  "value": "10"
+                                  "line": "12"
                                 },
-                                "children": []
+                                "children": [
+                                  {
+                                    "kind": "Identifier",
+                                    "attributes": {
+                                      "col": "16",
+                                      "line": "12",
+                                      "value": "a"
+                                    },
+                                    "children": []
+                                  },
+                                  {
+                                    "kind": "Integer",
+                                    "attributes": {
+                                      "col": "20",
+                                      "line": "12",
+                                      "value": "10"
+                                    },
+                                    "children": []
+                                  }
+                                ]
                               }
                             ]
                           }
@@ -317,22 +290,22 @@
                       {
                         "kind": "Then",
                         "attributes": {
-                          "col": "19",
-                          "line": "11"
+                          "col": "22",
+                          "line": "12"
                         },
                         "children": [
                           {
                             "kind": "Assignment",
                             "attributes": {
                               "col": "17",
-                              "line": "12"
+                              "line": "13"
                             },
                             "children": [
                               {
                                 "kind": "Identifier",
                                 "attributes": {
                                   "col": "15",
-                                  "line": "12",
+                                  "line": "13",
                                   "value": "a"
                                 },
                                 "children": []
@@ -341,8 +314,8 @@
                                 "kind": "Integer",
                                 "attributes": {
                                   "col": "19",
-                                  "line": "12",
-                                  "value": "30"
+                                  "line": "13",
+                                  "value": "10"
                                 },
                                 "children": []
                               }
@@ -354,37 +327,9 @@
                         "kind": "Else",
                         "attributes": {
                           "col": "13",
-                          "line": "14"
+                          "line": "15"
                         },
-                        "children": [
-                          {
-                            "kind": "Assignment",
-                            "attributes": {
-                              "col": "17",
-                              "line": "15"
-                            },
-                            "children": [
-                              {
-                                "kind": "Identifier",
-                                "attributes": {
-                                  "col": "15",
-                                  "line": "15",
-                                  "value": "a"
-                                },
-                                "children": []
-                              },
-                              {
-                                "kind": "Integer",
-                                "attributes": {
-                                  "col": "18",
-                                  "line": "15",
-                                  "value": "5"
-                                },
-                                "children": []
-                              }
-                            ]
-                          }
-                        ]
+                        "children": []
                       }
                     ]
                   },
@@ -392,15 +337,15 @@
                     "kind": "Assignment",
                     "attributes": {
                       "col": "13",
-                      "line": "17"
+                      "line": "18"
                     },
                     "children": [
                       {
                         "kind": "Identifier",
                         "attributes": {
                           "col": "11",
-                          "line": "17",
-                          "value": "b"
+                          "line": "18",
+                          "value": "a"
                         },
                         "children": []
                       },
@@ -408,7 +353,7 @@
                         "kind": "Integer",
                         "attributes": {
                           "col": "15",
-                          "line": "17",
+                          "line": "18",
                           "value": "10"
                         },
                         "children": []
