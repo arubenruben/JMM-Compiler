@@ -459,7 +459,40 @@ public class OptimizationStage implements JmmOptimization {
     }
 
     private String dismemberMethodCallStatic(JmmNode node) {
-        return "";
+
+        StringBuilder code = new StringBuilder();
+
+        code.append(SethiUllman.run(node.getChildren().get(0)));
+
+        code.append("invokestatic(").append(node.getChildren().get(0).get("result")).append(",").append("\"").append(node.getChildren().get(1).get("value")).append("\"");
+        
+        node.put("typeSuffix", ".V");
+
+        if (node.getChildren().get(1).getNumChildren() > 0) {
+            for (JmmNode parameter : node.getChildren().get(1).getChildren().get(0).getChildren())
+                code.append(SethiUllman.run(parameter));
+        }
+
+        if (node.getChildren().get(1).getNumChildren() > 0) {
+            for (JmmNode parameter : node.getChildren().get(1).getChildren().get(0).getChildren()) {
+
+                code.append(", ");
+                if (parameter.getAttributes().contains("typePrefix"))
+                    code.append(parameter.get("typePrefix"));
+
+                code.append(parameter.get("result"));
+
+                if (parameter.getAttributes().contains("typeSuffix"))
+                    code.append(parameter.get("typeSuffix"));
+
+            }
+        }
+
+        code.append(")").append(node.get("typeSuffix")).append(";");
+        code.append("\n");
+
+        return code.toString();
+
     }
 
     private String dealWithReturn(MethodSymbol methodSymbol) {

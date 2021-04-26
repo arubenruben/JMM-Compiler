@@ -13,6 +13,7 @@ public class SethiUllman {
     public static List<Integer> registersAvailable;
     private static SymbolTableIml symbolTable;
     private static String currentMethod;
+    private static String requiredType;
 
     public static void initialize(SymbolTableIml symbolTable, String currentMethod) {
 
@@ -27,8 +28,15 @@ public class SethiUllman {
     }
 
     public static String run(JmmNode node) {
+        requiredType = "";
         firstStep(node);
         return secondStep(node);
+    }
+
+    public static String run(JmmNode node, String typeRequired) {
+        requiredType = typeRequired;
+
+        return run(node);
     }
 
     private static void firstStep(JmmNode node) {
@@ -107,7 +115,13 @@ public class SethiUllman {
                     }
                 }
 
-
+                if (variable == null) {
+                    if (symbolTable.getImportedClasses().contains(node.get("value"))) {
+                        node.put("result", node.get("value"));
+                        node.put("typeSuffix", requiredType);
+                        return "";
+                    }
+                }
                 if (variable == null)
                     return "";
 
@@ -357,7 +371,22 @@ public class SethiUllman {
     }
 
     private static String dismemberMethodCallStatic(JmmNode node) {
-        return "";
+        StringBuilder code = new StringBuilder();
+        int registerUsed = registersAvailable.remove(0);
+
+        code.append(SethiUllman.run(node.getChildren().get(0)));
+
+        node.put("result", "t" + registerUsed);
+        node.put("typeSuffix", requiredType);
+
+
+        code.append(node.get("result")).append(" :=").append(node.get("typeSuffix")).append(" ");
+        code.append("invokestatic(").append(node.getChildren().get(0).get("result")).append("\"").append(node.getChildren().get(1).get("value")).append("\"");
+
+        code.append(")").append(requiredType).append(";");
+        code.append("\n");
+
+        return code.toString();
     }
 
 
