@@ -53,7 +53,13 @@ public class OptimizationStage implements JmmOptimization {
 
             code.append(stringBuilder);
 
-            code.append("\t\t").append(dealWithReturn(method)).append("\n");
+            stringBodyRaw = dealWithReturn(method);
+            stringBuilder = new StringBuilder();
+
+            for (String string : stringBodyRaw.split("\n"))
+                stringBuilder.append("\t\t").append(string).append("\n");
+
+            code.append(stringBuilder);
             code.append("\t}\n");
 
         }
