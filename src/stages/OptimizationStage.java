@@ -182,18 +182,29 @@ public class OptimizationStage implements JmmOptimization {
 
         if (conditionNode.getKind().equals("And"))
             code.append(" &&.bool ");
-        else
+        else if (conditionNode.getKind().equals("Less"))
             code.append(" >=.i32 ");
 
+        if (conditionNode.getKind().equals("Not")) {
+            code.append(" !.bool ");
+            if (conditionNode.getChildren().get(0).getAttributes().contains("typePrefix"))
+                code.append(conditionNode.getChildren().get(0).get("typePrefix"));
 
-        if (conditionNode.getChildren().get(1).getAttributes().contains("typePrefix"))
-            code.append(conditionNode.getChildren().get(1).get("typePrefix"));
+            code.append(conditionNode.getChildren().get(0).get("result"));
 
-        code.append(conditionNode.getChildren().get(1).get("result"));
+            if (conditionNode.getChildren().get(0).getAttributes().contains("typeSuffix"))
+                code.append(conditionNode.getChildren().get(0).get("typeSuffix"));
+        } else {
 
-        if (conditionNode.getChildren().get(1).getAttributes().contains("typeSuffix"))
-            code.append(conditionNode.getChildren().get(1).get("typeSuffix"));
+            if (conditionNode.getChildren().get(1).getAttributes().contains("typePrefix"))
+                code.append(conditionNode.getChildren().get(1).get("typePrefix"));
 
+            code.append(conditionNode.getChildren().get(1).get("result"));
+
+            if (conditionNode.getChildren().get(1).getAttributes().contains("typeSuffix"))
+                code.append(conditionNode.getChildren().get(1).get("typeSuffix"));
+
+        }
 
         code.append(")goto else;\n");
 

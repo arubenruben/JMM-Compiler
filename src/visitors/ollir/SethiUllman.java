@@ -152,8 +152,6 @@ public class SethiUllman {
             node.put("typeSuffix", typeSuffix);
         }
         return "";
-
-
     }
 
 
@@ -466,7 +464,7 @@ public class SethiUllman {
                 if (node.getChildren().get(0).getAttributes().contains("typeSuffix"))
                     code.append(node.getChildren().get(0).get("typeSuffix"));
 
-                code.append("!").append(".bool ");
+                code.append(" !.bool ");
 
                 if (node.getChildren().get(0).getAttributes().contains("typePrefix"))
                     code.append(node.getChildren().get(0).get("typePrefix"));
