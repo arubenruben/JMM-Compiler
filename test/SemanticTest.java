@@ -116,11 +116,6 @@ public class SemanticTest {
         testFile("fixtures/public/fail/semantic/var_undef.jmm", false);
     }
 
-    @Test
-    public void testNotAssignedVariable() {
-        testFile("fixtures/public/fail/semantic/varNotInit.jmm", false);
-    }
-
     //Custom Tests
     @Test
     public void testDifferentOperandTypes() {

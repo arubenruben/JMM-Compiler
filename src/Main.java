@@ -65,39 +65,37 @@ public class Main implements JmmParser {
 
         parserResult = new Main().parse(code);
 
-        Utils.printReports(parserResult.getReports());
-
-        if (parserResult.getRootNode() != null)
-            writeToFile(parserResult.toJson(), "results/ast.txt");
-
-        if (parserResult.getRootNode() == null){
+        if (TestUtils.getNumReports(parserResult.getReports(), ReportType.ERROR) > 0) {
+            Utils.printReports(parserResult.getReports());
             return;
         }
 
-
-        if (TestUtils.getNumReports(parserResult.getReports(), ReportType.ERROR) > 0)
+        if (parserResult.getRootNode() != null)
+            writeToFile(parserResult.toJson(), "results/ast.txt");
+        else
             return;
 
         JmmSemanticsResult semanticsResults = new AnalysisStage().semanticAnalysis(parserResult);
 
-       /* Utils.printSymbolTable(semanticsResults.getSymbolTable());
-        Utils.printReports(semanticsResults.getReports());*/
+        if (TestUtils.getNumReports(semanticsResults.getReports(), ReportType.ERROR) > 0) {
+            Utils.printReports(semanticsResults.getReports());
+            return;
+        }
 
-        // It is expected that the Optimize class can be instantiated without arguments
+        Utils.printSymbolTable(semanticsResults.getSymbolTable());
+
         JmmOptimization optimization = new OptimizationStage();
 
         OllirResult ollirResult = optimization.toOllir(semanticsResults);
 
-
-        //System.out.println(ollirResult);
+        System.out.println(ollirResult);
 
         JasminBackend backend = new BackendStage();
 
         JasminResult jasminResult = backend.toJasmin(ollirResult);
 
-        //System.out.println(jasminResult.getJasminCode());
+        System.out.println(jasminResult.getJasminCode());
     }
-
 
     public static void writeToFile(String content, String path) {
         try {
