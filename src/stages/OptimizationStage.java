@@ -23,8 +23,6 @@ public class OptimizationStage implements JmmOptimization {
         // Convert the AST to a String containing the equivalent OLLIR code
         symbolTable = (SymbolTableIml) semanticsResult.getSymbolTable();
 
-        SethiUllman.initialize(symbolTable);
-
         String ollirCode = ollirCodeString();
 
         System.out.println(ollirCode);
@@ -41,8 +39,10 @@ public class OptimizationStage implements JmmOptimization {
 
         code.append(dealWithClassHeaders());
 
-        for (MethodSymbol method : symbolTable.getMethodsHashmap().values())
+        for (MethodSymbol method : symbolTable.getMethodsHashmap().values()) {
+            SethiUllman.initialize(symbolTable, method.getName());
             code.append(dealWithMethod(method));
+        }
 
         code.append(dealWithFooter());
 
@@ -161,11 +161,11 @@ public class OptimizationStage implements JmmOptimization {
 
         SethiUllman.run(statement);
 
-        code.append(leftChild.get("result"));
+        code.append(leftChild.get("prefix")).append(leftChild.get("result")).append(leftChild.get("suffix"));
 
-        code.append(" :=").append(leftChild.get("suffix"));
+        code.append(" :=").append(leftChild.get("suffix")).append(" ");
 
-        code.append(rightChild.get("result")).append(";");
+        code.append(rightChild.get("prefix")).append(rightChild.get("result")).append(rightChild.get("suffix")).append(";");
 
         code.append("\n");
 
