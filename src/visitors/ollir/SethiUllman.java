@@ -62,11 +62,6 @@ public class SethiUllman {
     private static String secondStep(JmmNode node) {
         StringBuilder code = new StringBuilder();
 
-        //Fire dismember
-        if (canDismember(node)) {
-            code.append(dismember(node));
-            return code.toString();
-        }
         if (node.getNumChildren() == 0) {
             fillTerminalNonDismember(node);
             return code.toString();
@@ -83,6 +78,12 @@ public class SethiUllman {
         } else {
             code.append(secondStep(node.getChildren().get(1)));
             code.append(secondStep(node.getChildren().get(0)));
+        }
+
+        //Fire dismember
+        if (canDismember(node)) {
+            code.append(dismember(node));
+            return code.toString();
         }
 
         return code.toString();
@@ -111,18 +112,14 @@ public class SethiUllman {
         if (node.getKind().equals("MethodCall"))
             return true;
 
+        if (Integer.parseInt(node.get("registers")) == 1)
+            return true;
+
         if (Integer.parseInt(node.get("registers")) == 0)
             return false;
 
 
         return false;
-    }
-
-
-    private static String dismember(JmmNode node) {
-        StringBuilder code = new StringBuilder();
-
-        return code.toString();
     }
 
 
@@ -182,4 +179,37 @@ public class SethiUllman {
             return "." + variable.getType().getName();
 
     }
+
+    private static String dismember(JmmNode node) {
+
+        return switch (node.getKind()) {
+            case "Add" -> dismemberMath(node, "+");
+            case "Sub" -> dismemberMath(node, "-");
+            case "Mult" -> dismemberMath(node, "*");
+            case "Div" -> dismemberMath(node, "/");
+            default -> "";
+        };
+    }
+
+    private static String dismemberMath(JmmNode node, String operator) {
+        StringBuilder code = new StringBuilder();
+        final int registerUsed = registersAvailable.remove(0);
+        final JmmNode leftChild = node.getChildren().get(0);
+        final JmmNode rightChild = node.getChildren().get(1);
+
+        node.put("result", "t" + registerUsed);
+        node.put("suffix", ".i32");
+
+        code.append("t").append(registerUsed).append(".i32").append(" :=").append(".i32 ");
+
+        code.append(leftChild.get("prefix")).append(leftChild.get("result")).append(leftChild.get("suffix"));
+        code.append(" ").append(operator).append(".i32").append(" ");
+        code.append(rightChild.get("prefix")).append(rightChild.get("result")).append(rightChild.get("suffix"));
+
+        code.append(";");
+        code.append("\n");
+
+        return code.toString();
+    }
+    
 }

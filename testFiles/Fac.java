@@ -16,13 +16,13 @@ class Simple {
         int b;
         int c;
         Simple s;
-        a = 20;
-        b = 10;
+        a = 20 + 30 * 80 / 40 - 90;
+        //b = 10;
         //s = new Simple();
         //c = s.add(a, b);
-        io.println(c);
+        //io.println(c);
     }
-
+    /*
     public int constInstr() {
         int c;
         c = 0;
@@ -36,6 +36,8 @@ class Simple {
         c = 10;
         return c;
     }
+
+     */
 
 
 }

@@ -159,7 +159,8 @@ public class OptimizationStage implements JmmOptimization {
         final JmmNode leftChild = statement.getChildren().get(0);
         final JmmNode rightChild = statement.getChildren().get(1);
 
-        SethiUllman.run(statement);
+        code.append(SethiUllman.run(leftChild));
+        code.append(SethiUllman.run(rightChild));
 
         code.append(leftChild.get("prefix")).append(leftChild.get("result")).append(leftChild.get("suffix"));
 
