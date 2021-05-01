@@ -29,4 +29,13 @@ public class BackendTest {
     }
 
 
+    @Test
+    public void testMyClass2Ollir() {
+        var result = TestUtils.backend(SpecsIo.getResource("fixtures/public/HelloWorld.jmm"));
+        TestUtils.noErrors(result.getReports());
+
+        var output = result.run();
+    }
+
+
 }
