@@ -29,6 +29,15 @@ public class OptimizationStage implements JmmOptimization {
         // More reports from this stage
         List<Report> reports = new ArrayList<>();
 
+        ollirCode = "Fac{\n" +
+                "\t.construct Fac().V{\n" +
+                "\t\tinvokespecial(this, \"<init>\").V;\n" +
+                "\t}\n" +
+                "\t.method public static main (args.array.String).V {\n" +
+                "\t\ta1.array.i32 :=.array.i32 new(array, 4.i32).array.i32;\n" +
+                "\t\t\n" +
+                "\t}\n" +
+                "}";
         // Fac {} must be replaced by ollirCode
         return new OllirResult(semanticsResult, ollirCode, reports);
     }
