@@ -1,5 +1,6 @@
 package stages;
 
+import pt.up.fe.comp.jmm.JmmNode;
 import pt.up.fe.comp.jmm.analysis.JmmSemanticsResult;
 import pt.up.fe.comp.jmm.analysis.table.Symbol;
 import pt.up.fe.comp.jmm.analysis.table.Type;
@@ -8,6 +9,7 @@ import pt.up.fe.comp.jmm.ollir.OllirResult;
 import pt.up.fe.comp.jmm.report.Report;
 import symbols.MethodSymbol;
 import symbols.SymbolTableIml;
+import visitors.ollir.SethiUllman;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +22,9 @@ public class OptimizationStage implements JmmOptimization {
     public OllirResult toOllir(JmmSemanticsResult semanticsResult) {
         // Convert the AST to a String containing the equivalent OLLIR code
         symbolTable = (SymbolTableIml) semanticsResult.getSymbolTable();
+
+        SethiUllman.initialize(symbolTable);
+
         String ollirCode = ollirCodeString();
 
         System.out.println(ollirCode);
@@ -36,10 +41,8 @@ public class OptimizationStage implements JmmOptimization {
 
         code.append(dealWithClassHeaders());
 
-        for (MethodSymbol method : symbolTable.getMethodsHashmap().values()) {
+        for (MethodSymbol method : symbolTable.getMethodsHashmap().values())
             code.append(dealWithMethod(method));
-            code.append("\n");
-        }
 
         code.append(dealWithFooter());
 
@@ -78,15 +81,11 @@ public class OptimizationStage implements JmmOptimization {
 
         code.append("\t").append(dealWithMethodHeader(method));
 
-        code.append(dealWithMethodBody(method));
+        code.append(applyOffsetToString("\t\t", dealWithMethodBody(method)));
 
         code.append("\t").append(dealWithFooter());
 
-        return code.toString();
-    }
-
-    private String dealWithMethodBody(MethodSymbol method) {
-        StringBuilder code = new StringBuilder();
+        code.append("\n");
 
         return code.toString();
     }
@@ -118,6 +117,61 @@ public class OptimizationStage implements JmmOptimization {
         return code.toString();
     }
 
+    private String dealWithMethodBody(MethodSymbol method) {
+        StringBuilder code = new StringBuilder();
+        final JmmNode bodyNode = method.getNode().getChildren().get(2);
+
+        for (JmmNode statement : bodyNode.getChildren()) {
+            switch (statement.getKind()) {
+                case "While" -> code.append(dealWithWhile(statement));
+                case "If" -> code.append(dealWithIf(statement));
+                case "Assignment" -> code.append(dealWithAssignment(statement));
+                case "MethodCall" -> code.append(dealWithMethodCall(statement));
+            }
+        }
+        return code.toString();
+    }
+
+
+    private String dealWithWhile(JmmNode statement) {
+        StringBuilder code = new StringBuilder();
+
+        code.append("\n");
+        return code.toString();
+    }
+
+    private String dealWithIf(JmmNode statement) {
+        StringBuilder code = new StringBuilder();
+
+        code.append("\n");
+        return code.toString();
+    }
+
+    private String dealWithMethodCall(JmmNode statement) {
+        StringBuilder code = new StringBuilder();
+
+        code.append("\n");
+        return code.toString();
+    }
+
+    private String dealWithAssignment(JmmNode statement) {
+        StringBuilder code = new StringBuilder();
+        final JmmNode leftChild = statement.getChildren().get(0);
+        final JmmNode rightChild = statement.getChildren().get(1);
+
+        SethiUllman.run(statement);
+
+        code.append(leftChild.get("result"));
+
+        code.append(" :=").append(leftChild.get("suffix"));
+
+        code.append(rightChild.get("result")).append(";");
+
+        code.append("\n");
+
+        return code.toString();
+    }
+
     private String dealWithSymbol(Symbol symbol) {
         StringBuilder code = new StringBuilder();
         code.append(symbol.getName()).append(dealWithType(symbol.getType()));
@@ -142,5 +196,13 @@ public class OptimizationStage implements JmmOptimization {
         return "}";
     }
 
+    private String applyOffsetToString(String offset, String rawCode) {
+        StringBuilder code = new StringBuilder();
+
+        for (String str : rawCode.split("\n"))
+            code.append(offset).append(str).append("\n");
+
+        return code.toString();
+    }
 
 }
