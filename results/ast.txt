@@ -281,9 +281,29 @@
                 "kind": "Body",
                 "attributes": {
                   "col": "9",
-                  "line": "17"
+                  "line": "16"
                 },
                 "children": [
+                  {
+                    "kind": "VarDeclaration",
+                    "attributes": {
+                      "col": "9",
+                      "line": "16",
+                      "value": "a"
+                    },
+                    "children": [
+                      {
+                        "kind": "Type",
+                        "attributes": {
+                          "col": "9",
+                          "line": "16",
+                          "isArray": "false",
+                          "value": "int"
+                        },
+                        "children": []
+                      }
+                    ]
+                  },
                   {
                     "kind": "VarDeclaration",
                     "attributes": {
@@ -410,55 +430,55 @@
                       {
                         "kind": "Sub",
                         "attributes": {
-                          "col": "33",
+                          "col": "30",
                           "line": "22"
                         },
                         "children": [
                           {
                             "kind": "Add",
                             "attributes": {
-                              "col": "18",
+                              "col": "17",
                               "line": "22"
                             },
                             "children": [
                               {
-                                "kind": "Integer",
+                                "kind": "Identifier",
                                 "attributes": {
-                                  "col": "16",
+                                  "col": "15",
                                   "line": "22",
-                                  "value": "20"
+                                  "value": "a"
                                 },
                                 "children": []
                               },
                               {
                                 "kind": "Div",
                                 "attributes": {
-                                  "col": "28",
+                                  "col": "25",
                                   "line": "22"
                                 },
                                 "children": [
                                   {
                                     "kind": "Mult",
                                     "attributes": {
-                                      "col": "23",
+                                      "col": "21",
                                       "line": "22"
                                     },
                                     "children": [
                                       {
-                                        "kind": "Integer",
+                                        "kind": "Identifier",
                                         "attributes": {
-                                          "col": "21",
+                                          "col": "19",
                                           "line": "22",
-                                          "value": "30"
+                                          "value": "a"
                                         },
                                         "children": []
                                       },
                                       {
-                                        "kind": "Integer",
+                                        "kind": "Identifier",
                                         "attributes": {
-                                          "col": "26",
+                                          "col": "23",
                                           "line": "22",
-                                          "value": "80"
+                                          "value": "a"
                                         },
                                         "children": []
                                       }
@@ -467,7 +487,7 @@
                                   {
                                     "kind": "Integer",
                                     "attributes": {
-                                      "col": "31",
+                                      "col": "28",
                                       "line": "22",
                                       "value": "40"
                                     },
@@ -478,11 +498,11 @@
                             ]
                           },
                           {
-                            "kind": "Integer",
+                            "kind": "Identifier",
                             "attributes": {
-                              "col": "35",
+                              "col": "31",
                               "line": "22",
-                              "value": "90"
+                              "value": "a"
                             },
                             "children": []
                           }

@@ -2,6 +2,7 @@ package visitors.ollir;
 
 import pt.up.fe.comp.jmm.JmmNode;
 import pt.up.fe.comp.jmm.analysis.table.Symbol;
+import stages.OptimizationStage;
 import symbols.SymbolTableIml;
 
 import java.util.ArrayList;
@@ -62,7 +63,7 @@ public class SethiUllman {
     private static String secondStep(JmmNode node) {
         StringBuilder code = new StringBuilder();
 
-        if (node.getNumChildren() == 0) {
+        if (node.getNumChildren() == 0 && Integer.parseInt(node.get("registers")) == 0) {
             fillTerminalNonDismember(node);
             return code.toString();
         }
@@ -71,13 +72,14 @@ public class SethiUllman {
             code.append(secondStep(node.getChildren().get(0)));
             return code.toString();
         }
-
-        if (Integer.parseInt(node.getChildren().get(0).get("registers")) >= Integer.parseInt(node.getChildren().get(1).get("registers"))) {
-            code.append(secondStep(node.getChildren().get(0)));
-            code.append(secondStep(node.getChildren().get(1)));
-        } else {
-            code.append(secondStep(node.getChildren().get(1)));
-            code.append(secondStep(node.getChildren().get(0)));
+        if (node.getNumChildren() == 2) {
+            if (Integer.parseInt(node.getChildren().get(0).get("registers")) >= Integer.parseInt(node.getChildren().get(1).get("registers"))) {
+                code.append(secondStep(node.getChildren().get(0)));
+                code.append(secondStep(node.getChildren().get(1)));
+            } else {
+                code.append(secondStep(node.getChildren().get(1)));
+                code.append(secondStep(node.getChildren().get(0)));
+            }
         }
 
         //Fire dismember
@@ -112,7 +114,7 @@ public class SethiUllman {
         if (node.getKind().equals("MethodCall"))
             return true;
 
-        if (Integer.parseInt(node.get("registers")) == 1)
+        if (Integer.parseInt(node.get("registers")) >= 1)
             return true;
 
         if (Integer.parseInt(node.get("registers")) == 0)
@@ -132,9 +134,36 @@ public class SethiUllman {
 
     private static void fillTerminalValue(JmmNode node) {
         switch (node.getKind()) {
-            case "Identifier", "Boolean", "Integer", "This", "MethodCall" -> node.put("registers", "0");
+            case "Boolean", "Integer", "This", "MethodCall" -> node.put("registers", "0");
+            case "Identifier" -> {
+                if (isGetter(node))
+                    node.put("registers", "1");
+                else
+                    node.put("registers", "0");
+            }
             case "NewObject" -> node.put("registers", "1");
         }
+    }
+
+    private static boolean isGetter(JmmNode node) {
+        final String variableName = node.get("value");
+
+        if (node.getParent().getKind().equals("Assignment"))
+            return false;
+
+        if (!symbolTable.getClassFields().containsKey(variableName))
+            return false;
+
+
+        if (symbolTable.getMethodsHashmap().get(currentMethod).getLocalVariables().containsKey(variableName))
+            return false;
+
+        for (Symbol parameter : symbolTable.getMethodsHashmap().get(currentMethod).getParameters()) {
+            if (parameter.getName().equals(variableName))
+                return false;
+        }
+
+        return true;
     }
 
     private static String prefixSeeker(String variableName) {
@@ -190,6 +219,7 @@ public class SethiUllman {
             case "And" -> dismemberLogic(node, "&&");
             case "Less" -> dismemberLogic(node, "<");
             case "Not" -> dismemberLogic(node, "!");
+            case "Identifier" -> dismemberGetter(node);
             default -> "";
         };
     }
@@ -232,6 +262,24 @@ public class SethiUllman {
         code.append(rightChild.get("prefix")).append(rightChild.get("result")).append(rightChild.get("suffix"));
 
         code.append(";");
+        code.append("\n");
+        return code.toString();
+    }
+
+    private static String dismemberGetter(JmmNode node) {
+        StringBuilder code = new StringBuilder();
+
+        final String variableName = node.get("value");
+        final Symbol field = symbolTable.getClassFields().get(variableName);
+        final String suffix = OptimizationStage.dealWithType(field.getType());
+
+        final int registerUsed = registersAvailable.remove(0);
+
+        node.put("result", "t" + registerUsed);
+        node.put("suffix", suffix);
+
+        code.append("t").append(registerUsed).append(suffix).append(" :=").append(suffix).append(" ").append("getfield(this, ").append(field.getName()).append(suffix).append(")").append(suffix).append(";");
+
         code.append("\n");
         return code.toString();
     }

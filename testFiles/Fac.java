@@ -13,13 +13,13 @@ class Simple {
     }
 
     public static void main(String[] args) {
-        //int a;
+        int a;
         int b;
         int c;
         boolean d;
         Simple s;
         a = 2;
-        a = 20 + 30 * 80 / 40 - 90;
+        a = a + a * a / 40 - a;
         d = true && false && true;
         d = 1 < 4 + 5;
         a = 1;

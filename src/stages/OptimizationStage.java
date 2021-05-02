@@ -210,7 +210,7 @@ public class OptimizationStage implements JmmOptimization {
         return code.toString();
     }
 
-    private String dealWithType(Type type) {
+    public static String dealWithType(Type type) {
         StringBuilder code = new StringBuilder();
 
         switch (type.getName()) {
