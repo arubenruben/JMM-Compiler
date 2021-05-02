@@ -63,7 +63,7 @@ public class SethiUllman {
     private static String secondStep(JmmNode node) {
         StringBuilder code = new StringBuilder();
 
-        if (node.getNumChildren() == 0 && Integer.parseInt(node.get("registers")) == 0) {
+        if (isTerminal(node) && Integer.parseInt(node.get("registers")) == 0) {
             fillTerminalNonDismember(node);
             return code.toString();
         }
@@ -154,7 +154,6 @@ public class SethiUllman {
         if (!symbolTable.getClassFields().containsKey(variableName))
             return false;
 
-
         if (symbolTable.getMethodsHashmap().get(currentMethod).getLocalVariables().containsKey(variableName))
             return false;
 
@@ -164,6 +163,29 @@ public class SethiUllman {
         }
 
         return true;
+    }
+
+    public static boolean isMethodCallStatic(JmmNode node) {
+
+        final JmmNode leftChild = node.getChildren().get(0);
+        final String invokerName = leftChild.get("result");
+
+        if (!symbolTable.getImportedClasses().contains(invokerName))
+            return false;
+
+        if (symbolTable.getClassFields().containsKey(invokerName))
+            return false;
+
+        if (symbolTable.getMethodsHashmap().get(currentMethod).getLocalVariables().containsKey(invokerName))
+            return false;
+
+        for (Symbol parameter : symbolTable.getMethodsHashmap().get(currentMethod).getParameters()) {
+            if (parameter.getName().equals(invokerName))
+                return false;
+        }
+
+        return true;
+
     }
 
     private static String prefixSeeker(String variableName) {
@@ -196,6 +218,10 @@ public class SethiUllman {
 
         if (symbolTable.getClassFields().containsKey(variableName))
             variable = symbolTable.getClassFields().get(variableName);
+
+        //TODO:Because of imported methods. Refactor this
+        if (variable == null)
+            return "";
 
         if (variable.getType().getName().equals("int"))
             if (!variable.getType().isArray())

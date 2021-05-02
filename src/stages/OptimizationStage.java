@@ -153,7 +153,21 @@ public class OptimizationStage implements JmmOptimization {
     private String dealWithMethodCall(JmmNode statement) {
         StringBuilder code = new StringBuilder();
 
-        code.append("\n");
+        final JmmNode leftChild = statement.getChildren().get(0);
+        final JmmNode rightChild = statement.getChildren().get(1);
+
+        for (JmmNode parameter : rightChild.getChildren().get(0).getChildren())
+            code.append(SethiUllman.run(parameter));
+
+        code.append(SethiUllman.run(leftChild));
+
+        if (rightChild.get("value").equals("length"))
+            code.append(dealWithLengthCall(statement));
+        else if (SethiUllman.isMethodCallStatic(statement))
+            code.append(dealWithStaticMethodCall(statement));
+        else
+            code.append(dealWithNonStaticMethodCall(statement));
+
         return code.toString();
     }
 
@@ -232,6 +246,39 @@ public class OptimizationStage implements JmmOptimization {
 
         for (String str : rawCode.split("\n"))
             code.append(offset).append(str).append("\n");
+
+        return code.toString();
+    }
+
+    private String dealWithLengthCall(JmmNode node) {
+        StringBuilder code = new StringBuilder();
+        System.out.println("Length");
+
+        return code.toString();
+    }
+
+    private String dealWithStaticMethodCall(JmmNode node) {
+        StringBuilder code = new StringBuilder();
+
+        final JmmNode leftChild = node.getChildren().get(0);
+        final JmmNode rightChild = node.getChildren().get(1);
+
+        code.append("invokestatic(").append(leftChild.get("result")).append(", \"").append(rightChild.get("value")).append("\"");
+
+        for (JmmNode parameter : rightChild.getChildren().get(0).getChildren())
+            code.append(", ").append(parameter.get("prefix")).append(parameter.get("result")).append(parameter.get("suffix"));
+
+        code.append(").V");
+        code.append(";");
+        code.append("\n");
+
+        return code.toString();
+    }
+
+    private String dealWithNonStaticMethodCall(JmmNode node) {
+        StringBuilder code = new StringBuilder();
+
+        System.out.println("Non Static");
 
         return code.toString();
     }
