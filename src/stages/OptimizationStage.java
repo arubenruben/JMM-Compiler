@@ -277,8 +277,23 @@ public class OptimizationStage implements JmmOptimization {
 
     private String dealWithNonStaticMethodCall(JmmNode node) {
         StringBuilder code = new StringBuilder();
+        final JmmNode leftChild = node.getChildren().get(0);
+        final JmmNode rightChild = node.getChildren().get(1);
 
-        System.out.println("Non Static");
+        MethodSymbol method = symbolTable.getMethodsHashmap().get(rightChild.get("value"));
+
+        if (method == null)
+            return "";
+
+        code.append("invokevirtual(").append(leftChild.get("prefix")).append(leftChild.get("result")).append(leftChild.get("suffix")).append(", \"").append(rightChild.get("value")).append("\"");
+
+        for (JmmNode parameter : rightChild.getChildren().get(0).getChildren())
+            code.append(", ").append(parameter.get("prefix")).append(parameter.get("result")).append(parameter.get("suffix"));
+
+        code.append(")").append(dealWithType(method.getType()));
+
+        code.append(";");
+        code.append("\n");
 
         return code.toString();
     }
