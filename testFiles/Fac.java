@@ -15,8 +15,11 @@ class Simple {
         int a;
         int b;
         int c;
+        boolean d;
         Simple s;
         a = 20 + 30 * 80 / 40 - 90;
+        d = true && false && true;
+        d = 1 < 4 + 5;
         //b = 10;
         //s = new Simple();
         //c = s.add(a, b);

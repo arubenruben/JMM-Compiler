@@ -187,6 +187,9 @@ public class SethiUllman {
             case "Sub" -> dismemberMath(node, "-");
             case "Mult" -> dismemberMath(node, "*");
             case "Div" -> dismemberMath(node, "/");
+            case "And" -> dismemberLogic(node, "&&");
+            case "Less" -> dismemberLogic(node, "<");
+            case "Not" -> dismemberLogic(node, "!");
             default -> "";
         };
     }
@@ -211,5 +214,26 @@ public class SethiUllman {
 
         return code.toString();
     }
-    
+
+    private static String dismemberLogic(JmmNode node, String operator) {
+        StringBuilder code = new StringBuilder();
+        final int registerUsed = registersAvailable.remove(0);
+        final JmmNode leftChild = node.getChildren().get(0);
+        final JmmNode rightChild = node.getChildren().get(1);
+
+        node.put("result", "t" + registerUsed);
+        node.put("suffix", ".bool");
+
+        code.append("t").append(registerUsed).append(".bool").append(" :=").append(".bool ");
+
+
+        code.append(leftChild.get("prefix")).append(leftChild.get("result")).append(leftChild.get("suffix"));
+        code.append(" ").append(operator).append(".bool").append(" ");
+        code.append(rightChild.get("prefix")).append(rightChild.get("result")).append(rightChild.get("suffix"));
+
+        code.append(";");
+        code.append("\n");
+        return code.toString();
+    }
+
 }
