@@ -16,6 +16,7 @@ import java.util.List;
 
 public class OptimizationStage implements JmmOptimization {
     private SymbolTableIml symbolTable;
+    private MethodSymbol currentMethod;
 
 
     @Override
@@ -79,9 +80,11 @@ public class OptimizationStage implements JmmOptimization {
     private String dealWithMethod(MethodSymbol method) {
         StringBuilder code = new StringBuilder();
 
-        code.append("\t").append(dealWithMethodHeader(method));
+        currentMethod = method;
 
-        code.append(applyOffsetToString("\t\t", dealWithMethodBody(method)));
+        code.append("\t").append(dealWithMethodHeader());
+
+        code.append(applyOffsetToString("\t\t", dealWithMethodBody()));
 
         code.append("\t").append(dealWithFooter());
 
@@ -90,10 +93,10 @@ public class OptimizationStage implements JmmOptimization {
         return code.toString();
     }
 
-    private String dealWithMethodHeader(MethodSymbol method) {
+    private String dealWithMethodHeader() {
         StringBuilder code = new StringBuilder();
 
-        code.append(".method public ").append(method.getName()).append("(").append(dealWithMethodHeaderParameters(method.getParameters())).append(")").append(dealWithType(method.getType())).append(" ").append("{");
+        code.append(".method public ").append(currentMethod.getName()).append("(").append(dealWithMethodHeaderParameters(currentMethod.getParameters())).append(")").append(dealWithType(currentMethod.getType())).append(" ").append("{");
 
         code.append("\n");
 
@@ -117,9 +120,9 @@ public class OptimizationStage implements JmmOptimization {
         return code.toString();
     }
 
-    private String dealWithMethodBody(MethodSymbol method) {
+    private String dealWithMethodBody() {
         StringBuilder code = new StringBuilder();
-        final JmmNode bodyNode = method.getNode().getChildren().get(2);
+        final JmmNode bodyNode = currentMethod.getNode().getChildren().get(2);
 
         for (JmmNode statement : bodyNode.getChildren()) {
             switch (statement.getKind()) {
@@ -162,15 +165,43 @@ public class OptimizationStage implements JmmOptimization {
         code.append(SethiUllman.run(leftChild));
         code.append(SethiUllman.run(rightChild));
 
-        code.append(leftChild.get("prefix")).append(leftChild.get("result")).append(leftChild.get("suffix"));
+        if (isSetter(statement)) {
+            code.append("putfield(this,").append(" ").append(leftChild.get("result")).append(leftChild.get("suffix")).append(", ").append(rightChild.get("prefix")).append(rightChild.get("result")).append(rightChild.get("suffix")).append(").V").append(";");
+        } else {
 
-        code.append(" :=").append(leftChild.get("suffix")).append(" ");
+            code.append(leftChild.get("prefix")).append(leftChild.get("result")).append(leftChild.get("suffix"));
 
-        code.append(rightChild.get("prefix")).append(rightChild.get("result")).append(rightChild.get("suffix")).append(";");
+            code.append(" :=").append(leftChild.get("suffix")).append(" ");
+
+            code.append(rightChild.get("prefix")).append(rightChild.get("result")).append(rightChild.get("suffix")).append(";");
+
+        }
 
         code.append("\n");
 
         return code.toString();
+    }
+
+    private boolean isSetter(JmmNode statement) {
+        final JmmNode leftChild = statement.getChildren().get(0);
+
+        if (!leftChild.getKind().equals("Identifier"))
+            return false;
+
+        final String variableName = leftChild.get("value");
+
+        if (!symbolTable.getClassFields().containsKey(variableName))
+            return false;
+
+        if (symbolTable.getMethodsHashmap().get(currentMethod.getName()).getLocalVariables().containsKey(variableName))
+            return false;
+
+        for (Symbol parameter : symbolTable.getMethodsHashmap().get(currentMethod.getName()).getParameters()) {
+            if (parameter.getName().equals(variableName))
+                return false;
+        }
+
+        return true;
     }
 
     private String dealWithSymbol(Symbol symbol) {
@@ -191,7 +222,6 @@ public class OptimizationStage implements JmmOptimization {
 
         return code.toString();
     }
-
 
     private String dealWithFooter() {
         return "}";

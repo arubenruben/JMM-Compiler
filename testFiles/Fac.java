@@ -7,19 +7,23 @@ class Simple {
 
     public int add(int a, int b) {
         int c;
+        a = 10;
         //c = a + this.constInstr();
         return c;
     }
 
     public static void main(String[] args) {
-        int a;
+        //int a;
         int b;
         int c;
         boolean d;
         Simple s;
+        a = 2;
         a = 20 + 30 * 80 / 40 - 90;
         d = true && false && true;
         d = 1 < 4 + 5;
+        a = 1;
+        d = true;
         //b = 10;
         //s = new Simple();
         //c = s.add(a, b);
