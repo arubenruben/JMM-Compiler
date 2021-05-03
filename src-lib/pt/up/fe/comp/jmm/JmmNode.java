@@ -1,15 +1,16 @@
 package pt.up.fe.comp.jmm;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import pt.up.fe.comp.jmm.ast.JmmNodeImpl;
-import pt.up.fe.comp.jmm.ast.JmmSerializer;
-import pt.up.fe.specs.util.SpecsCollections;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import pt.up.fe.comp.jmm.ast.JmmNodeImpl;
+import pt.up.fe.comp.jmm.ast.JmmSerializer;
+import pt.up.fe.specs.util.SpecsCollections;
 
 /**
  * This interface represents a node in the Jmm AST.
@@ -113,6 +114,7 @@ public interface JmmNode {
 
     default String toJson() {
         Gson gson = new GsonBuilder()
+                .excludeFieldsWithoutExposeAnnotation()
                 .setPrettyPrinting()
                 .registerTypeAdapter(JmmNode.class, new JmmSerializer())
                 .create();
