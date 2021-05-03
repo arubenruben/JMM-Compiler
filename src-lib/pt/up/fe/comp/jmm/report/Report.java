@@ -1,9 +1,9 @@
 package pt.up.fe.comp.jmm.report;
 
+import java.util.Optional;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
-import java.util.Optional;
 
 public class Report {
 
@@ -65,6 +65,7 @@ public class Report {
     public String toJson() {
         Gson gson = new GsonBuilder()
                 .setPrettyPrinting()
+                .excludeFieldsWithoutExposeAnnotation()
                 .create();
         return gson.toJson(this, Report.class);
     }
