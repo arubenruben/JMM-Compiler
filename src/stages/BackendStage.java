@@ -238,8 +238,7 @@ public class BackendStage implements JasminBackend {
         Operand firstArg = (Operand) callInstruction.getFirstArg();
         int virtualRegister = getVarVirtualRegister(method, firstArg.getName());
 
-        CallType callType = OllirAccesser.getCallInvocation(callInstruction);
-
+        CallType callType = callInstruction.getInvocationType();
         switch (callType){
             case invokestatic, invokevirtual -> {
 
@@ -301,15 +300,20 @@ public class BackendStage implements JasminBackend {
                 stringBuilder.append("\tastore_").append(getVarVirtualRegister(method, firstArg.getName())).append("\n");
             }
             case NEW -> {
-                if(OllirAccesser.getCallInvocation(callInstruction) == CallType.NEW) {
-
-                    Operand newOperand = (Operand) callInstruction.getFirstArg();
-
+                Operand newOperand = (Operand) callInstruction.getFirstArg();
+                if (newOperand.getType().getTypeOfElement().equals(ElementType.ARRAYREF)) {
+                    stringBuilder.append("\ticonst_" + callType.ordinal() + "\n");
+                    stringBuilder.append("\tnewarray int\n");
+                } else {
                     stringBuilder.append("\tnew ").append(newOperand.getName()).append("\n");
                 }
             }
             case arraylength -> {
+                // load value array
+                stringBuilder.append("\taload_").append(virtualRegister).append("\n");
+                stringBuilder.append("\tarraylength\n");
             }
+            //TODO check if we will have any call instruction of this kind
             case ldc -> {
             }
         }
@@ -320,21 +324,22 @@ public class BackendStage implements JasminBackend {
         return "\tgoto " + gotoInstruction.getLabel() + "\n";
     }
 
-    //TODO
     private String dealWithCondBranchInstruction(Method method, CondBranchInstruction condBranchInstruction){
-        return "";
+        StringBuilder stringBuilder = new StringBuilder();
+
+
+
+        return stringBuilder.toString();
     }
 
     private String dealWithReturnInstruction(Method method, ReturnInstruction returnInstruction){
         StringBuilder stringBuilder = new StringBuilder();
-
         stringBuilder.append(dealWithElementPush(method, returnInstruction.getOperand()));
 
         stringBuilder.append("\t").append(dealWithStoreLoadReturnType(returnInstruction.getOperand().getType()));
         stringBuilder.append("return\n");
         return stringBuilder.toString();
     }
-
 
     private String dealWithPutFieldInstruction(Method method, PutFieldInstruction putFieldInstruction){
         StringBuilder stringBuilder = new StringBuilder();
@@ -365,7 +370,7 @@ public class BackendStage implements JasminBackend {
 
         return stringBuilder.toString();
     }
-    
+
     private String dealWithUnaryOpInstruction(Method method, UnaryOpInstruction unaryOpInstruction){
         StringBuilder stringBuilder = new StringBuilder();
 
@@ -405,12 +410,6 @@ public class BackendStage implements JasminBackend {
             }
             case AND -> {
                 stringBuilder.append("\tiand\n");
-            }
-            case LTH -> {
-
-            }
-            case GTE -> {
-
             }
         }
 
