@@ -258,8 +258,10 @@ public class OptimizationStage implements JmmOptimization {
 
         code.append("invokestatic(").append(leftChild.get("result")).append(", \"").append(rightChild.get("value")).append("\"");
 
-        for (JmmNode parameter : rightChild.getChildren().get(0).getChildren())
-            code.append(", ").append(parameter.get("prefix")).append(parameter.get("result")).append(parameter.get("suffix"));
+        if (rightChild.getNumChildren() > 0) {
+            for (JmmNode parameter : rightChild.getChildren().get(0).getChildren())
+                code.append(", ").append(parameter.get("prefix")).append(parameter.get("result")).append(parameter.get("suffix"));
+        }
 
         code.append(").V");
         code.append(";");
@@ -280,8 +282,10 @@ public class OptimizationStage implements JmmOptimization {
 
         code.append("invokevirtual(").append(leftChild.get("prefix")).append(leftChild.get("result")).append(leftChild.get("suffix")).append(", \"").append(rightChild.get("value")).append("\"");
 
-        for (JmmNode parameter : rightChild.getChildren().get(0).getChildren())
-            code.append(", ").append(parameter.get("prefix")).append(parameter.get("result")).append(parameter.get("suffix"));
+        if (rightChild.getNumChildren() > 0) {
+            for (JmmNode parameter : rightChild.getChildren().get(0).getChildren())
+                code.append(", ").append(parameter.get("prefix")).append(parameter.get("result")).append(parameter.get("suffix"));
+        }
 
         final String suffix = OptimizationStage.dealWithType(method.getType());
 

@@ -3,6 +3,7 @@ package visitors.ollir;
 import pt.up.fe.comp.jmm.JmmNode;
 import pt.up.fe.comp.jmm.analysis.table.Symbol;
 import stages.OptimizationStage;
+import symbols.MethodSymbol;
 import symbols.SymbolTableIml;
 
 import java.util.ArrayList;
@@ -318,9 +319,11 @@ public class SethiUllman {
         final JmmNode leftChild = statement.getChildren().get(0);
         final JmmNode rightChild = statement.getChildren().get(1);
 
-        for (JmmNode parameter : rightChild.getChildren().get(0).getChildren())
-            code.append(SethiUllman.run(parameter));
 
+        if (rightChild.getNumChildren() > 0) {
+            for (JmmNode parameter : rightChild.getChildren().get(0).getChildren())
+                code.append(SethiUllman.run(parameter));
+        }
         code.append(SethiUllman.run(leftChild));
 
         if (rightChild.get("value").equals("length"))
@@ -343,7 +346,25 @@ public class SethiUllman {
     private static String dealWithStaticMethodCall(JmmNode node) {
         StringBuilder code = new StringBuilder();
 
-        System.out.println("Static method");
+        final JmmNode leftChild = node.getChildren().get(0);
+        final JmmNode rightChild = node.getChildren().get(1);
+
+        final int registerUsed = registersAvailable.remove(0);
+        final String returnType = seekReturnTypeStaticCall(node);
+
+        node.put("result", "t" + registerUsed);
+        node.put("suffix", returnType);
+
+        code.append("t").append(registerUsed).append(node.get("suffix")).append(" :=").append(node.get("suffix")).append(" ").append("invokestatic(").append(leftChild.get("result")).append(", \"").append(rightChild.get("value")).append("\"");
+
+        if (rightChild.getNumChildren() > 0) {
+            for (JmmNode parameter : rightChild.getChildren().get(0).getChildren())
+                code.append(", ").append(parameter.get("prefix")).append(parameter.get("result")).append(parameter.get("suffix"));
+        }
+
+        code.append(")").append(returnType);
+        code.append(";");
+        code.append("\n");
 
         return code.toString();
     }
@@ -357,8 +378,55 @@ public class SethiUllman {
         final String methodCallResult = OptimizationStage.dealWithNonStaticMethodCall(node);
 
         code.append("t").append(registerUsed).append(node.get("suffix")).append(" :=").append(node.get("suffix")).append(" ").append(methodCallResult);
-        
+
         return code.toString();
+    }
+
+    private static String seekReturnTypeStaticCall(JmmNode node) {
+        String suffix = null;
+
+        label:
+        while (node.getParent() != null) {
+            JmmNode parent = node.getParent();
+
+            String kind = parent.getKind();
+            if ("Add".equals(kind) || "Sub".equals(kind) || "Mult".equals(kind) || "Div".equals(kind)) {
+                suffix = ".i32";
+            } else if ("Less".equals(kind) || "And".equals(kind) || "Not".equals(kind)) {
+                suffix = ".bool";
+            } else if ("Assignment".equals(kind)) {
+                suffix = parent.getChildren().get(0).get("suffix");
+            } else if ("Parameters".equals(kind)) {
+                suffix = seekReturnTypeParameterCase(node, parent);
+                if (suffix != null)
+                    break;
+            }
+            node = node.getParent();
+        }
+
+        if (suffix == null)
+            suffix = ".V";
+
+        return suffix;
+    }
+
+    private static String seekReturnTypeParameterCase(JmmNode node, JmmNode parametersNode) {
+        final JmmNode methodCall = parametersNode.getParent().getParent();
+
+        if (!methodCall.getChildren().get(0).getKind().equals("Identifier"))
+            return null;
+
+        MethodSymbol method = symbolTable.getMethodsHashmap().get(methodCall.getChildren().get(1).get("value"));
+
+        if (method == null)
+            return null;
+
+        for (int i = 0; i < parametersNode.getNumChildren(); i++) {
+            if (node.equals(parametersNode.getChildren().get(i)))
+                return OptimizationStage.dealWithType(method.getParameters().get(i).getType());
+        }
+
+        return null;
     }
 
 }

@@ -12,6 +12,11 @@ class Simple {
         return c;
     }
 
+    public int sub(Simple a) {
+        int c;
+        return c;
+    }
+
     public static void main(String[] args) {
         int a;
         int b;
@@ -29,7 +34,8 @@ class Simple {
          */
         //b = 10;
         //s = new Simple();
-        io.println(c, s.add(a, b), 2, true);
+        c = s.sub(io.println());
+        //d = io.println(c, io.add(a, b), 2, true);
     }
     /*
     public int constInstr() {
