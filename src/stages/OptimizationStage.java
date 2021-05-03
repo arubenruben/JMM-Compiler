@@ -15,8 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OptimizationStage implements JmmOptimization {
-    private SymbolTableIml symbolTable;
-    private MethodSymbol currentMethod;
+    private static SymbolTableIml symbolTable;
+    private static MethodSymbol currentMethod;
 
 
     @Override
@@ -150,7 +150,7 @@ public class OptimizationStage implements JmmOptimization {
         return code.toString();
     }
 
-    private String dealWithMethodCall(JmmNode statement) {
+    public String dealWithMethodCall(JmmNode statement) {
         StringBuilder code = new StringBuilder();
 
         final JmmNode leftChild = statement.getChildren().get(0);
@@ -162,7 +162,7 @@ public class OptimizationStage implements JmmOptimization {
         code.append(SethiUllman.run(leftChild));
 
         if (rightChild.get("value").equals("length"))
-            code.append(dealWithLengthCall(statement));
+            code.append(SethiUllman.dealWithLengthCall(statement));
         else if (SethiUllman.isMethodCallStatic(statement))
             code.append(dealWithStaticMethodCall(statement));
         else
@@ -250,13 +250,6 @@ public class OptimizationStage implements JmmOptimization {
         return code.toString();
     }
 
-    private String dealWithLengthCall(JmmNode node) {
-        StringBuilder code = new StringBuilder();
-        System.out.println("Length");
-
-        return code.toString();
-    }
-
     private String dealWithStaticMethodCall(JmmNode node) {
         StringBuilder code = new StringBuilder();
 
@@ -275,7 +268,7 @@ public class OptimizationStage implements JmmOptimization {
         return code.toString();
     }
 
-    private String dealWithNonStaticMethodCall(JmmNode node) {
+    public static String dealWithNonStaticMethodCall(JmmNode node) {
         StringBuilder code = new StringBuilder();
         final JmmNode leftChild = node.getChildren().get(0);
         final JmmNode rightChild = node.getChildren().get(1);
@@ -290,12 +283,17 @@ public class OptimizationStage implements JmmOptimization {
         for (JmmNode parameter : rightChild.getChildren().get(0).getChildren())
             code.append(", ").append(parameter.get("prefix")).append(parameter.get("result")).append(parameter.get("suffix"));
 
-        code.append(")").append(dealWithType(method.getType()));
+        final String suffix = OptimizationStage.dealWithType(method.getType());
+
+        node.put("suffix", suffix);
+
+        code.append(")").append(suffix);
 
         code.append(";");
         code.append("\n");
 
         return code.toString();
     }
+
 
 }

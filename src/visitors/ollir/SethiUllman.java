@@ -72,7 +72,8 @@ public class SethiUllman {
             code.append(secondStep(node.getChildren().get(0)));
             return code.toString();
         }
-        if (node.getNumChildren() == 2) {
+        //For Method Call
+        if (!isTerminal(node) && node.getNumChildren() == 2) {
             if (Integer.parseInt(node.getChildren().get(0).get("registers")) >= Integer.parseInt(node.getChildren().get(1).get("registers"))) {
                 code.append(secondStep(node.getChildren().get(0)));
                 code.append(secondStep(node.getChildren().get(1)));
@@ -134,14 +135,14 @@ public class SethiUllman {
 
     private static void fillTerminalValue(JmmNode node) {
         switch (node.getKind()) {
-            case "Boolean", "Integer", "This", "MethodCall" -> node.put("registers", "0");
+            case "Boolean", "Integer", "This" -> node.put("registers", "0");
             case "Identifier" -> {
                 if (isGetter(node))
                     node.put("registers", "1");
                 else
                     node.put("registers", "0");
             }
-            case "NewObject" -> node.put("registers", "1");
+            case "NewObject", "MethodCall" -> node.put("registers", "1");
         }
     }
 
@@ -246,6 +247,7 @@ public class SethiUllman {
             case "Less" -> dismemberLogic(node, "<");
             case "Not" -> dismemberLogic(node, "!");
             case "Identifier" -> dismemberGetter(node);
+            case "MethodCall" -> dealWithMethodCall(node);
             default -> "";
         };
     }
@@ -307,6 +309,55 @@ public class SethiUllman {
         code.append("t").append(registerUsed).append(suffix).append(" :=").append(suffix).append(" ").append("getfield(this, ").append(field.getName()).append(suffix).append(")").append(suffix).append(";");
 
         code.append("\n");
+        return code.toString();
+    }
+
+    public static String dealWithMethodCall(JmmNode statement) {
+        StringBuilder code = new StringBuilder();
+
+        final JmmNode leftChild = statement.getChildren().get(0);
+        final JmmNode rightChild = statement.getChildren().get(1);
+
+        for (JmmNode parameter : rightChild.getChildren().get(0).getChildren())
+            code.append(SethiUllman.run(parameter));
+
+        code.append(SethiUllman.run(leftChild));
+
+        if (rightChild.get("value").equals("length"))
+            code.append(dealWithLengthCall(statement));
+        else if (SethiUllman.isMethodCallStatic(statement))
+            code.append(dealWithStaticMethodCall(statement));
+        else
+            code.append(dealWithNonStaticMethodCall(statement));
+
+        return code.toString();
+    }
+
+    public static String dealWithLengthCall(JmmNode node) {
+        StringBuilder code = new StringBuilder();
+        System.out.println("Length");
+
+        return code.toString();
+    }
+
+    private static String dealWithStaticMethodCall(JmmNode node) {
+        StringBuilder code = new StringBuilder();
+
+        System.out.println("Static method");
+
+        return code.toString();
+    }
+
+    public static String dealWithNonStaticMethodCall(JmmNode node) {
+        StringBuilder code = new StringBuilder();
+
+        final int registerUsed = registersAvailable.remove(0);
+        node.put("result", "t" + registerUsed);
+
+        final String methodCallResult = OptimizationStage.dealWithNonStaticMethodCall(node);
+
+        code.append("t").append(registerUsed).append(node.get("suffix")).append(" :=").append(node.get("suffix")).append(" ").append(methodCallResult);
+        
         return code.toString();
     }
 

@@ -29,8 +29,7 @@ class Simple {
          */
         //b = 10;
         //s = new Simple();
-        s.add(a, b);
-        io.println(c, 1, 2, true);
+        io.println(c, s.add(a, b), 2, true);
     }
     /*
     public int constInstr() {
