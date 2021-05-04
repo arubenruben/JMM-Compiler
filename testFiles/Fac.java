@@ -33,11 +33,11 @@ class Simple {
 
          */
         //b = 10;
-        //s = new Simple();
+        s = new Simple();
         c = s.sub(io.println());
         d = io.println(c, io.add(a, b), 2, true);
         io.println(c, io.add(a, b), 2, true);
-        //io.println(new Simple().add(1, 1));
+        io.println(new Simple().add(1, 1));
     }
     /*
     public int constInstr() {
