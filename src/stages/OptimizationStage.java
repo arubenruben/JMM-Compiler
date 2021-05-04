@@ -86,6 +86,8 @@ public class OptimizationStage implements JmmOptimization {
 
         code.append(applyOffsetToString("\t\t", dealWithMethodBody()));
 
+        code.append(applyOffsetToString("\t\t", dealWithReturn()));
+
         code.append("\t").append(dealWithFooter());
 
         code.append("\n");
@@ -297,6 +299,24 @@ public class OptimizationStage implements JmmOptimization {
         node.put("suffix", suffix);
 
         code.append(")").append(suffix);
+
+        code.append(";");
+        code.append("\n");
+
+        return code.toString();
+    }
+
+    private String dealWithReturn() {
+        StringBuilder code = new StringBuilder();
+
+        if (currentMethod.getNode().getNumChildren() < 3)
+            return "";
+
+        final JmmNode returnNode = currentMethod.getNode().getChildren().get(3);
+
+        code.append(SethiUllman.run(returnNode.getChildren().get(0)));
+
+        code.append("ret").append(dealWithType(currentMethod.getType())).append(" ").append(returnNode.getChildren().get(0).get("prefix")).append(returnNode.getChildren().get(0).get("result")).append(returnNode.getChildren().get(0).get("suffix"));
 
         code.append(";");
         code.append("\n");
