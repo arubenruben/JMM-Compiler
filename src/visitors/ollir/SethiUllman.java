@@ -393,7 +393,9 @@ public class SethiUllman {
 
         final int registerUsed = registersAvailable.remove(0);
         node.put("result", "t" + registerUsed);
-        //node.put("suffix",);
+        node.put("suffix", "." + node.get("value"));
+        code.append(node.get("result")).append(node.get("suffix")).append(" ").append(":=").append(node.get("suffix")).append(" ").append("new(").append(node.get("value")).append(")").append(node.get("suffix")).append(";").append("\n");
+        code.append("invokespecial(").append(node.get("result")).append(node.get("suffix")).append(", \"<init>\"").append(").V").append(";").append("\n");
 
 
         return code.toString();
