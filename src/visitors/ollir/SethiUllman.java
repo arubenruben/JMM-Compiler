@@ -132,7 +132,7 @@ public class SethiUllman {
 
     private static boolean isTerminal(JmmNode node) {
         return switch (node.getKind()) {
-            case "Identifier", "This", "Boolean", "Integer", "NewObject", "MethodCall", "NewArray" -> true;
+            case "Identifier", "This", "Boolean", "Integer", "NewObject", "MethodCall", "NewArray", "ArrayAccess" -> true;
             default -> false;
         };
     }
@@ -146,7 +146,7 @@ public class SethiUllman {
                 else
                     node.put("registers", "0");
             }
-            case "NewObject", "MethodCall", "NewArray" -> node.put("registers", "1");
+            case "NewObject", "MethodCall", "NewArray", "ArrayAccess" -> node.put("registers", "1");
         }
     }
 
@@ -254,6 +254,7 @@ public class SethiUllman {
             case "MethodCall" -> dealWithMethodCall(node);
             case "NewObject" -> dealWithNewObject(node);
             case "NewArray" -> dealWithNewArray(node);
+            case "ArrayAccess" -> dealWithArrayAccess(node);
             default -> "";
         };
     }
@@ -423,6 +424,28 @@ public class SethiUllman {
         node.put("suffix", ".array.i32");
 
         code.append(node.get("result")).append(node.get("suffix")).append(" ").append(":=").append(node.get("suffix")).append(" ").append("new(array, ").append(node.getChildren().get(0).get("result")).append(node.getChildren().get(0).get("suffix")).append(")").append(node.get("suffix"));
+
+        code.append(";");
+        code.append("\n");
+
+        return code.toString();
+    }
+
+    private static String dealWithArrayAccess(JmmNode node) {
+        StringBuilder code = new StringBuilder();
+
+        final JmmNode leftChild = node.getChildren().get(0);
+        final JmmNode rightChild = node.getChildren().get(1);
+
+        code.append(SethiUllman.run(leftChild));
+        code.append(SethiUllman.run(rightChild));
+
+        final int registerUsed = registersAvailable.remove(0);
+
+        node.put("result", "t" + registerUsed);
+        node.put("suffix", ".i32");
+
+        code.append(node.get("result")).append(node.get("suffix")).append(" ").append(":=").append(node.get("suffix")).append(" ").append(leftChild.get("prefix")).append(leftChild.get("result")).append("[").append(rightChild.get("prefix")).append(rightChild.get("result")).append(rightChild.get("suffix")).append("]").append(node.get("suffix"));
 
         code.append(";");
         code.append("\n");
