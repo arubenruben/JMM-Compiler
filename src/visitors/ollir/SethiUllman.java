@@ -116,6 +116,9 @@ public class SethiUllman {
         if (node.getKind().equals("MethodCall"))
             return true;
 
+        if (node.getKind().equals("NewObject"))
+            return true;
+
         if (Integer.parseInt(node.get("registers")) >= 1)
             return true;
 
@@ -249,9 +252,11 @@ public class SethiUllman {
             case "Not" -> dismemberLogic(node, "!");
             case "Identifier" -> dismemberGetter(node);
             case "MethodCall" -> dealWithMethodCall(node);
+            case "NewObject" -> dealWithNewObject(node);
             default -> "";
         };
     }
+
 
     private static String dismemberMath(JmmNode node, String operator) {
         StringBuilder code = new StringBuilder();
@@ -382,10 +387,21 @@ public class SethiUllman {
         return code.toString();
     }
 
+    private static String dealWithNewObject(JmmNode node) {
+        StringBuilder code = new StringBuilder();
+        System.out.println("New Object");
+
+        final int registerUsed = registersAvailable.remove(0);
+        node.put("result", "t" + registerUsed);
+        //node.put("suffix",);
+
+
+        return code.toString();
+    }
+
     private static String seekReturnTypeStaticCall(JmmNode node) {
         String suffix = null;
 
-        label:
         while (node.getParent() != null) {
             JmmNode parent = node.getParent();
 
