@@ -69,7 +69,7 @@ public class SethiUllman {
             return code.toString();
         }
 
-        if (node.getNumChildren() == 1) {
+        if (!isTerminal(node) && node.getNumChildren() == 1) {
             code.append(secondStep(node.getChildren().get(0)));
             return code.toString();
         }
@@ -132,7 +132,7 @@ public class SethiUllman {
 
     private static boolean isTerminal(JmmNode node) {
         return switch (node.getKind()) {
-            case "Identifier", "This", "Boolean", "Integer", "NewObject", "MethodCall" -> true;
+            case "Identifier", "This", "Boolean", "Integer", "NewObject", "MethodCall", "NewArray" -> true;
             default -> false;
         };
     }
@@ -146,7 +146,7 @@ public class SethiUllman {
                 else
                     node.put("registers", "0");
             }
-            case "NewObject", "MethodCall" -> node.put("registers", "1");
+            case "NewObject", "MethodCall", "NewArray" -> node.put("registers", "1");
         }
     }
 
@@ -253,10 +253,10 @@ public class SethiUllman {
             case "Identifier" -> dismemberGetter(node);
             case "MethodCall" -> dealWithMethodCall(node);
             case "NewObject" -> dealWithNewObject(node);
+            case "NewArray" -> dealWithNewArray(node);
             default -> "";
         };
     }
-
 
     private static String dismemberMath(JmmNode node, String operator) {
         StringBuilder code = new StringBuilder();
@@ -389,14 +389,33 @@ public class SethiUllman {
 
     private static String dealWithNewObject(JmmNode node) {
         StringBuilder code = new StringBuilder();
-        System.out.println("New Object");
 
         final int registerUsed = registersAvailable.remove(0);
+
         node.put("result", "t" + registerUsed);
         node.put("suffix", "." + node.get("value"));
         code.append(node.get("result")).append(node.get("suffix")).append(" ").append(":=").append(node.get("suffix")).append(" ").append("new(").append(node.get("value")).append(")").append(node.get("suffix")).append(";").append("\n");
         code.append("invokespecial(").append(node.get("result")).append(node.get("suffix")).append(", \"<init>\"").append(").V").append(";").append("\n");
 
+
+        return code.toString();
+    }
+
+    private static String dealWithNewArray(JmmNode node) {
+        StringBuilder code = new StringBuilder();
+
+        //Deal With index expression
+        code.append(SethiUllman.run(node.getChildren().get(0)));
+
+        final int registerUsed = registersAvailable.remove(0);
+
+        node.put("result", "t" + registerUsed);
+        node.put("suffix", ".array.i32");
+
+        code.append(node.get("result")).append(node.get("suffix")).append(" ").append(":=").append(node.get("suffix")).append(" ").append("new(array, ").append(node.getChildren().get(0).get("result")).append(node.getChildren().get(0).get("suffix")).append(")").append(node.get("suffix"));
+
+        code.append(";");
+        code.append("\n");
 
         return code.toString();
     }

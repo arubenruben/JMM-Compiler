@@ -228,7 +228,12 @@ public class OptimizationStage implements JmmOptimization {
         StringBuilder code = new StringBuilder();
 
         switch (type.getName()) {
-            case "int" -> code.append(".i32");
+            case "int" -> {
+                if (type.isArray())
+                    code.append(".array.i32");
+                else
+                    code.append(".i32");
+            }
             case "boolean" -> code.append(".bool");
             case "void" -> code.append(".V");
             default -> code.append(".").append(type.getName());
