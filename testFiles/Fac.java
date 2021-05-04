@@ -8,7 +8,7 @@ class myClass {
         int[] C;
         myClass helper;
         helper = new myClass();
-        C = new int[helper.add()];
+        C = new int[A.length];
         i = 0;
         C = helper.sum(new int[helper.add()], new int[1]);
         while (i < A.length) {

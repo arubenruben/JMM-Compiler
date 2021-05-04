@@ -273,25 +273,25 @@
                           {
                             "kind": "MethodCall",
                             "attributes": {
-                              "col": "28",
+                              "col": "23",
                               "line": "11"
                             },
                             "children": [
                               {
                                 "kind": "Identifier",
                                 "attributes": {
-                                  "col": "27",
+                                  "col": "22",
                                   "line": "11",
-                                  "value": "helper"
+                                  "value": "A"
                                 },
                                 "children": []
                               },
                               {
                                 "kind": "Identifier",
                                 "attributes": {
-                                  "col": "28",
+                                  "col": "23",
                                   "line": "11",
-                                  "value": "add"
+                                  "value": "length"
                                 },
                                 "children": []
                               }

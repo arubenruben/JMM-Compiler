@@ -343,8 +343,18 @@ public class SethiUllman {
 
     public static String dealWithLengthCall(JmmNode node) {
         StringBuilder code = new StringBuilder();
-        System.out.println("Length");
 
+        final JmmNode leftChild = node.getChildren().get(0);
+
+        final int registerUsed = registersAvailable.remove(0);
+
+        node.put("result", "t" + registerUsed);
+        node.put("suffix", ".i32");
+
+        code.append("t").append(registerUsed).append(node.get("suffix")).append(" :=").append(node.get("suffix")).append(" ").append("arraylength(").append(leftChild.get("prefix")).append(leftChild.get("result")).append(leftChild.get("suffix")).append(")").append(node.get("suffix"));
+
+        code.append(";");
+        code.append("\n");
         return code.toString();
     }
 
