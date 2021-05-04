@@ -1,0 +1,17 @@
+import io;
+class Test {
+
+    public int sum(int a, int b){
+        int c;
+        c = a + b;
+        return c;
+    }
+
+	public static void main(String[] args) {
+	    int a;
+	    Test t;
+	    t = new Test();
+	    a = t.sum(5,3);
+		io.print(a);
+	}
+}

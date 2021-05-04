@@ -1,0 +1,14 @@
+import io;
+class HelloWorld {
+	public static void main(String[] args) {
+	    int a;
+	    a = 6 - 2;
+	    io.print(a);
+	    a = 6 * 2;
+	    io.print(a);
+	    a = 6 + 2;
+	    io.print(a);
+	    a = 6 / 2;
+	    io.print(a);
+	}
+}
