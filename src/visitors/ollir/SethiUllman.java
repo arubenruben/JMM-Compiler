@@ -108,6 +108,7 @@ public class SethiUllman {
                 node.put("result", node.get("value"));
                 node.put("suffix", ".bool");
             }
+            case "This" -> node.put("result", "this");
         }
     }
 
