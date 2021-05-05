@@ -1,22 +1,25 @@
-import io;
-
-class Fac {
-    public int compFac(int num) {
-        int num_aux;
-        if (num < 1)
-            num_aux = 1;
+class myClass {
+    public boolean check(int[] A, int N, int T) {
+        int i;
+        boolean all;
+        all = false;
+        i = 0;
+        while ((i < N) && (A[i] < T)) {
+            i = i + 1;
+        }
+        if (i < N)
+            all = true;
         else
-            num_aux = num * (this.compFac(num - 1));
+            all = false;
 
-        if (num < 1)
-            num_aux = 1;
-        else
-            num_aux = num * (this.compFac(num - 1));
+        while ((i < N) && (A[i] < T)) {
+            i = i + 1;
+        }
 
-        return num_aux;
-    }
+        while ((i < N) && (A[i] < T)) {
+            i = i + 1;
+        }
 
-    public static void main(String[] args) {
-        io.println(new Fac().compFac(10));
+        return all;
     }
 }

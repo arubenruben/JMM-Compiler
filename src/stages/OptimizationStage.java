@@ -149,8 +149,33 @@ public class OptimizationStage implements JmmOptimization {
 
     private String dealWithWhile(JmmNode statement) {
         StringBuilder code = new StringBuilder();
+        String labelAppender = "";
+
+        final JmmNode condition = statement.getChildren().get(0);
+        final JmmNode thenNode = statement.getChildren().get(1);
+
+        if (numberWhiles > 0)
+            labelAppender = String.valueOf(numberWhiles);
+
+        code.append("Loop").append(labelAppender).append(":").append("\n");
+
+        code.append(applyOffsetToString("\t", dealWithCondition(condition, labelAppender, "Body")));
+
+        code.append("goto EndLoop").append(labelAppender).append(";").append("\n");
+
+        code.append("Body").append(labelAppender).append(":").append("\n");
+
+        for (JmmNode node : thenNode.getChildren())
+            code.append(applyOffsetToString("\t", dealWithStatement(node)));
+
+        code.append("goto Loop").append(labelAppender).append(";").append("\n");
+
+        code.append("EndLoop").append(labelAppender).append(":");
 
         code.append("\n");
+
+        numberWhiles++;
+
         return code.toString();
     }
 
@@ -164,7 +189,7 @@ public class OptimizationStage implements JmmOptimization {
         if (numberIfs > 0)
             labelAppender = String.valueOf(numberIfs);
 
-        code.append("if(").append(dealWithIfCondition(condition)).append(")goto else").append(labelAppender).append(";").append("\n");
+        code.append(dealWithCondition(condition, labelAppender, "else"));
 
         for (JmmNode node : thenNode.getChildren())
             code.append(applyOffsetToString("\t", dealWithStatement(node)));
@@ -185,7 +210,7 @@ public class OptimizationStage implements JmmOptimization {
         return code.toString();
     }
 
-    private String dealWithIfCondition(JmmNode condition) {
+    private String dealWithCondition(JmmNode condition, String labelAppender, String gotoLabel) {
         StringBuilder code = new StringBuilder();
 
         final JmmNode logicCondition = condition.getChildren().get(0);
@@ -194,20 +219,26 @@ public class OptimizationStage implements JmmOptimization {
         switch (logicCondition.getKind()) {
             case "Less" -> {
                 code.append(SethiUllman.run(logicCondition.getChildren().get(1)));
+                code.append("if(");
                 code.append(logicCondition.getChildren().get(0).get("prefix")).append(logicCondition.getChildren().get(0).get("result")).append(logicCondition.getChildren().get(0).get("suffix"));
                 code.append(" ").append(">=.i32").append(" ");
                 code.append(logicCondition.getChildren().get(1).get("prefix")).append(logicCondition.getChildren().get(1).get("result")).append(logicCondition.getChildren().get(1).get("suffix"));
+                code.append(") goto").append(" ").append(gotoLabel).append(labelAppender).append(";").append("\n");
             }
             case "And" -> {
                 code.append(SethiUllman.run(logicCondition.getChildren().get(1)));
+                code.append("if(");
                 code.append(logicCondition.getChildren().get(0).get("prefix")).append(logicCondition.getChildren().get(0).get("result")).append(logicCondition.getChildren().get(0).get("suffix"));
                 code.append(" ").append("&&.bool").append(" ");
                 code.append(logicCondition.getChildren().get(1).get("prefix")).append(logicCondition.getChildren().get(1).get("result")).append(logicCondition.getChildren().get(1).get("suffix"));
+                code.append(") goto").append(" ").append(gotoLabel).append(labelAppender).append(";").append("\n");
             }
             case "Not" -> {
+                code.append("if(");
                 code.append(logicCondition.getChildren().get(0).get("prefix")).append(logicCondition.getChildren().get(0).get("result")).append(logicCondition.getChildren().get(0).get("suffix"));
                 code.append(" ").append("!.bool").append(" ");
                 code.append(logicCondition.getChildren().get(0).get("prefix")).append(logicCondition.getChildren().get(0).get("result")).append(logicCondition.getChildren().get(0).get("suffix"));
+                code.append(") goto").append(" ").append(gotoLabel).append(labelAppender).append(";").append("\n");
             }
         }
 
