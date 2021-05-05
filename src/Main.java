@@ -82,19 +82,18 @@ public class Main implements JmmParser {
             return;
         }
 
-        Utils.printSymbolTable(semanticsResults.getSymbolTable());
+        //Utils.printSymbolTable(semanticsResults.getSymbolTable());
 
         JmmOptimization optimization = new OptimizationStage();
 
         OllirResult ollirResult = optimization.toOllir(semanticsResults);
 
-        System.out.println(ollirResult);
 
         JasminBackend backend = new BackendStage();
 
         JasminResult jasminResult = backend.toJasmin(ollirResult);
 
-        System.out.println(jasminResult.getJasminCode());
+        //System.out.println(jasminResult.getJasminCode());
     }
 
     public static void writeToFile(String content, String path) {

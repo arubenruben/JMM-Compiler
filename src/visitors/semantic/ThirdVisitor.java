@@ -98,6 +98,10 @@ public class ThirdVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boolea
         }
 
         for (int i = 0; i < listParameters.size(); i++) {
+
+            if (listParameters.get(i).getName().equals("static"))
+                continue;
+
             if (!listParameters.get(i).equals(method.getParameters().get(i).getType())) {
                 secondVisitorHelper.getReportList().add(ReportsUtils.reportEntryError(Stage.SEMANTIC, "Type of the parameters don't match function arguments", Integer.parseInt(node.get("line")), Integer.parseInt(node.get("col"))));
                 return true;

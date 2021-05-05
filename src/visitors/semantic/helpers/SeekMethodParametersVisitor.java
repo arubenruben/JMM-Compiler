@@ -27,8 +27,10 @@ public class SeekMethodParametersVisitor extends PreorderJmmVisitor<SecondVisito
             seekReturnTypeVisitor.visit(childNode, secondVisitorHelper);
             Type type = seekReturnTypeVisitor.getType();
 
-            if (type != null)
-                parameters.add(seekReturnTypeVisitor.getType());
+            if (type == null)
+                type = new Type("static", false);
+
+            parameters.add(type);
         }
 
         return true;

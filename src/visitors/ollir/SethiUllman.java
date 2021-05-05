@@ -2,6 +2,7 @@ package visitors.ollir;
 
 import pt.up.fe.comp.jmm.JmmNode;
 import pt.up.fe.comp.jmm.analysis.table.Symbol;
+import stages.OptimizationStage;
 import symbols.MethodSymbol;
 import symbols.SymbolTableIml;
 
@@ -10,10 +11,9 @@ import java.util.List;
 
 public class SethiUllman {
 
-    public static List<Integer> registersAvailable;
     private static SymbolTableIml symbolTable;
     private static String currentMethod;
-    private static String requiredType;
+    public static List<Integer> registersAvailable;
 
     public static void initialize(SymbolTableIml symbolTable, String currentMethod) {
 
@@ -28,177 +28,29 @@ public class SethiUllman {
     }
 
     public static String run(JmmNode node) {
-        requiredType = "";
         firstStep(node);
         return secondStep(node);
-    }
-
-    public static String run(JmmNode node, String typeRequired) {
-        requiredType = typeRequired;
-
-        return run(node);
     }
 
     private static void firstStep(JmmNode node) {
 
         if (isTerminal(node)) {
             fillTerminalValue(node);
-            return;
-        }
-
-        for (JmmNode child : node.getChildren())
-            firstStep(child);
-
-        fillNonTerminalValue(node);
-    }
-
-    private static String secondStep(JmmNode node) {
-        StringBuilder code = new StringBuilder();
-
-        if (!canDismember(node)) {
-            code.append(fillNonDismember(node));
-            return code.toString();
-        }
-
-        if (node.getKind().equals("MethodCall")) {
-            code.append(dismemberMethodCall(node));
-            return code.toString();
-        }
-
-        if (node.getKind().equals("NewArray")) {
-            code.append(dismemberNewArray(node));
-            return code.toString();
-        }
-
-        for (JmmNode child : node.getChildren())
-            code.append(codeDismember(child));
-
-
-        if (!node.getParent().getKind().equals("Assignment") && !node.getParent().getKind().equals("Condition"))
-            code.append(dismemberHelper(node));
-        else
-            code.append(dismemberHelper(node));
-
-        return code.toString();
-    }
-
-    private static String fillNonDismember(JmmNode node) {
-        String typePrefix = "";
-        String typeSuffix = "";
-        boolean isClassField = false;
-
-        switch (node.getKind()) {
-            case "Integer" -> typeSuffix = ".i32";
-            case "Boolean" -> typeSuffix = ".bool";
-            case "Identifier" -> {
-
-                Symbol variable = null;
-
-                if (symbolTable.getMethodsHashmap().get(currentMethod).getLocalVariables().containsKey(node.get("value")))
-                    variable = symbolTable.getMethodsHashmap().get(currentMethod).getLocalVariables().get(node.get("value"));
-
-                if (variable == null) {
-                    for (int i = 0; i < symbolTable.getMethodsHashmap().get(currentMethod).getParameters().size(); i++) {
-                        Symbol iterator = symbolTable.getMethodsHashmap().get(currentMethod).getParameters().get(i);
-                        if (iterator.getName().equals(node.get("value"))) {
-                            typePrefix = "$" + i + ".";
-                            variable = iterator;
-                            break;
-                        }
-                    }
-                }
-
-                if (variable == null) {
-                    if (symbolTable.getClassFields().containsKey(node.get("value"))) {
-                        variable = symbolTable.getClassFields().get(node.get("value"));
-                        isClassField = true;
-                    }
-                }
-
-                if (variable == null) {
-                    if (symbolTable.getImportedClasses().contains(node.get("value"))) {
-                        node.put("result", node.get("value"));
-                        node.put("typeSuffix", requiredType);
-                        return "";
-                    }
-                }
-                if (variable == null)
-                    return "";
-
-                if (variable.getType().getName().equals("int"))
-                    if (!variable.getType().isArray())
-                        typeSuffix = ".i32";
-                    else
-                        typeSuffix = ".array.i32";
-                else if (variable.getType().getName().equals("boolean"))
-                    typeSuffix = ".bool";
-                else
-                    typeSuffix = "." + variable.getType().getName();
-
-            }
-        }
-        if (isClassField && !node.getParent().getKind().equals("Assignment")) {
-            int registerUsed = registersAvailable.remove(0);
-
-            node.put("result", "t" + registerUsed);
-            node.put("typePrefix", typePrefix);
-            node.put("typeSuffix", typeSuffix);
-
-            return node.get("result") + typeSuffix + " :=" + typeSuffix + " getfield(this, " + node.get("value") + typeSuffix + ")" + typeSuffix + ";" + "\n";
-
         } else {
-            node.put("result", node.get("value"));
-            node.put("typePrefix", typePrefix);
-            node.put("typeSuffix", typeSuffix);
+            for (JmmNode child : node.getChildren())
+                firstStep(child);
+
+            fillNonTerminalValue(node);
         }
-        return "";
-    }
 
-
-    private static boolean canDismember(JmmNode node) {
-        return switch (node.getKind()) {
-            case "Identifier", "This", "Boolean", "Integer" -> false;
-            default -> true;
-        };
-    }
-
-    private static boolean isTerminal(JmmNode node) {
-        return switch (node.getKind()) {
-            case "Identifier", "This", "Boolean", "Integer", "NewObject", "MethodCall" -> true;
-            default -> false;
-        };
-    }
-
-    private static void fillTerminalValue(JmmNode node) {
-
-        switch (node.getKind()) {
-            case "Identifier", "Boolean", "Integer", "This", "MethodCall" -> node.put("registers", "0");
-            case "NewObject" -> node.put("registers", "1");
-
-            default -> System.err.println("Not implemented yet");
-        }
+        node.put("result", "");
+        node.put("prefix", "");
+        node.put("suffix", "");
     }
 
     private static void fillNonTerminalValue(JmmNode node) {
 
-        if (node.getNumChildren() == 0) {
-            node.put("registers", String.valueOf(0));
-            return;
-        }
-
         int leftChildValue = Integer.parseInt(node.getChildren().get(0).get("registers"));
-
-        //For Unary
-        if (node.getNumChildren() == 1 && !node.getKind().equals("Not")) {
-            node.put("registers", String.valueOf(leftChildValue));
-            return;
-        }
-        //Not is no longer Unary
-        else if (node.getKind().equals("Not")) {
-            node.put("registers", String.valueOf(leftChildValue + 1));
-            return;
-        }
-
         int rightChildValue = Integer.parseInt(node.getChildren().get(1).get("registers"));
 
         if (leftChildValue == rightChildValue)
@@ -206,396 +58,446 @@ public class SethiUllman {
         else
             node.put("registers", String.valueOf(Math.max(leftChildValue, rightChildValue)));
 
+
     }
 
-    ///Step 1 helpers - Step 2 helpers
-    ///----------------------------------------///
-    private static String codeDismember(JmmNode node) {
+    private static String secondStep(JmmNode node) {
         StringBuilder code = new StringBuilder();
 
-        if (isTerminal(node) && node.getAttributes().contains("value")) {
-            code.append(fillNonDismember(node));
+        if (isTerminal(node) && Integer.parseInt(node.get("registers")) == 0) {
+            fillTerminalNonDismember(node);
             return code.toString();
         }
 
-        if (node.getKind().equals("MethodCall")) {
-            code.append(dismemberMethodCall(node));
+        if (!isTerminal(node) && node.getNumChildren() == 1) {
+            code.append(secondStep(node.getChildren().get(0)));
             return code.toString();
         }
-
-        if (node.getKind().equals("NewArray")) {
-            code.append(dismemberNewArray(node));
-            return code.toString();
-        }
-
-        if (node.getNumChildren() == 1) {
-            code.append(codeDismember(node.getChildren().get(0)));
-        } else if (node.getNumChildren() == 2) {
+        //For Method Call
+        if (!isTerminal(node) && node.getNumChildren() == 2) {
             if (Integer.parseInt(node.getChildren().get(0).get("registers")) >= Integer.parseInt(node.getChildren().get(1).get("registers"))) {
-                code.append(codeDismember(node.getChildren().get(0)));
-                code.append(codeDismember(node.getChildren().get(1)));
+                code.append(secondStep(node.getChildren().get(0)));
+                code.append(secondStep(node.getChildren().get(1)));
             } else {
-                code.append(codeDismember(node.getChildren().get(1)));
-                code.append(codeDismember(node.getChildren().get(0)));
+                code.append(secondStep(node.getChildren().get(1)));
+                code.append(secondStep(node.getChildren().get(0)));
             }
         }
+
+        //Fire dismember
+        if (canDismember(node)) {
+            code.append(dismember(node));
+            return code.toString();
+        }
+
+        return code.toString();
+    }
+
+    private static void fillTerminalNonDismember(JmmNode node) {
+        switch (node.getKind()) {
+            case "Identifier" -> {
+                node.put("prefix", prefixSeeker(node.get("value")));
+                node.put("result", node.get("value"));
+                node.put("suffix", suffixSeeker(node.get("value")));
+            }
+            case "Integer" -> {
+                node.put("result", node.get("value"));
+                node.put("suffix", ".i32");
+            }
+            case "Boolean" -> {
+                node.put("result", node.get("value"));
+                node.put("suffix", ".bool");
+            }
+            case "This" -> node.put("result", "this");
+        }
+    }
+
+    private static boolean canDismember(JmmNode node) {
+
+        if (node.getKind().equals("MethodCall"))
+            return true;
+
+        if (node.getKind().equals("NewObject"))
+            return true;
 
         if (Integer.parseInt(node.get("registers")) >= 1)
-            code.append(dismemberHelper(node));
+            return true;
+
+        if (Integer.parseInt(node.get("registers")) == 0)
+            return false;
+
+
+        return false;
+    }
+
+
+    private static boolean isTerminal(JmmNode node) {
+        return switch (node.getKind()) {
+            case "Identifier", "This", "Boolean", "Integer", "NewObject", "MethodCall", "NewArray", "ArrayAccess" -> true;
+            default -> false;
+        };
+    }
+
+    private static void fillTerminalValue(JmmNode node) {
+        switch (node.getKind()) {
+            case "Boolean", "Integer", "This" -> node.put("registers", "0");
+            case "Identifier" -> {
+                if (isGetter(node))
+                    node.put("registers", "1");
+                else
+                    node.put("registers", "0");
+            }
+            case "NewObject", "MethodCall", "NewArray", "ArrayAccess" -> node.put("registers", "1");
+        }
+    }
+
+    private static boolean isGetter(JmmNode node) {
+        final String variableName = node.get("value");
+
+        if (node.getParent().getKind().equals("Assignment"))
+            return false;
+
+        if (!symbolTable.getClassFields().containsKey(variableName))
+            return false;
+
+        if (symbolTable.getMethodsHashmap().get(currentMethod).getLocalVariables().containsKey(variableName))
+            return false;
+
+        for (Symbol parameter : symbolTable.getMethodsHashmap().get(currentMethod).getParameters()) {
+            if (parameter.getName().equals(variableName))
+                return false;
+        }
+
+        return true;
+    }
+
+    public static boolean isMethodCallStatic(JmmNode node) {
+
+        final JmmNode leftChild = node.getChildren().get(0);
+        final String invokerName = leftChild.get("result");
+
+        if (!symbolTable.getImportedClasses().contains(invokerName))
+            return false;
+
+        if (symbolTable.getClassFields().containsKey(invokerName))
+            return false;
+
+        if (symbolTable.getMethodsHashmap().get(currentMethod).getLocalVariables().containsKey(invokerName))
+            return false;
+
+        for (Symbol parameter : symbolTable.getMethodsHashmap().get(currentMethod).getParameters()) {
+            if (parameter.getName().equals(invokerName))
+                return false;
+        }
+
+        return true;
+
+    }
+
+    private static String prefixSeeker(String variableName) {
+        StringBuilder code = new StringBuilder();
+
+        if (symbolTable.getMethodsHashmap().get(currentMethod).getLocalVariables().containsKey(variableName))
+            return "";
+
+        for (int i = 0; i < symbolTable.getMethodsHashmap().get(currentMethod).getParameters().size(); i++) {
+            Symbol iterator = symbolTable.getMethodsHashmap().get(currentMethod).getParameters().get(i);
+            if (iterator.getName().equals(variableName))
+                return "$" + i + ".";
+        }
 
         return code.toString();
     }
 
-    private static String dismemberMethodCall(JmmNode node) {
-        StringBuilder code = new StringBuilder();
+    private static String suffixSeeker(String variableName) {
+        Symbol variable = null;
 
-        if (node.getChildren().get(1).get("value").equals("length"))
-            code.append(dismemberLength(node));
+        if (symbolTable.getMethodsHashmap().get(currentMethod).getLocalVariables().containsKey(variableName))
+            variable = symbolTable.getMethodsHashmap().get(currentMethod).getLocalVariables().get(variableName);
+
+        for (int i = 0; i < symbolTable.getMethodsHashmap().get(currentMethod).getParameters().size(); i++) {
+            if (symbolTable.getMethodsHashmap().get(currentMethod).getParameters().get(i).getName().equals(variableName)) {
+                variable = symbolTable.getMethodsHashmap().get(currentMethod).getParameters().get(i);
+                break;
+            }
+        }
+
+        if (symbolTable.getClassFields().containsKey(variableName))
+            variable = symbolTable.getClassFields().get(variableName);
+
+        //TODO:Because of imported methods. Refactor this
+        if (variable == null)
+            return "";
+
+        if (variable.getType().getName().equals("int"))
+            if (!variable.getType().isArray())
+                return ".i32";
+            else
+                return ".array.i32";
+        else if (variable.getType().getName().equals("boolean"))
+            return ".bool";
         else
-            code.append(dismemberMethodCallNonLength(node));
+            return "." + variable.getType().getName();
 
-        return code.toString();
     }
 
-    private static String dismemberLength(JmmNode node) {
+    private static String dismember(JmmNode node) {
+
+        return switch (node.getKind()) {
+            case "Add" -> dismemberMath(node, "+");
+            case "Sub" -> dismemberMath(node, "-");
+            case "Mult" -> dismemberMath(node, "*");
+            case "Div" -> dismemberMath(node, "/");
+            case "And" -> dismemberLogic(node, "&&");
+            case "Less" -> dismemberLogic(node, "<");
+            case "Not" -> dismemberLogic(node, "!");
+            case "Identifier" -> dismemberGetter(node);
+            case "MethodCall" -> dealWithMethodCall(node);
+            case "NewObject" -> dealWithNewObject(node);
+            case "NewArray" -> dealWithNewArray(node);
+            case "ArrayAccess" -> dealWithArrayAccess(node);
+            default -> "";
+        };
+    }
+
+    private static String dismemberMath(JmmNode node, String operator) {
         StringBuilder code = new StringBuilder();
-        int registerUsed = registersAvailable.remove(0);
-        node.put("result", "t" + registerUsed + ".i32");
-
-        code.append(SethiUllman.run(node.getChildren().get(0)));
-
-        code.append("t").append(registerUsed).append(".i32").append(" :=");
-        code.append(".i32 ").append("arraylength(");
-
-        if (node.getChildren().get(0).getAttributes().contains("typePrefix"))
-            code.append(node.getChildren().get(0).get("typePrefix"));
-
-        code.append(node.getChildren().get(0).get("result"));
-
-        if (node.getChildren().get(0).getAttributes().contains("typeSuffix"))
-            code.append(node.getChildren().get(0).get("typeSuffix"));
-
-        code.append(")").append(".i32;");
-
-        code.append("\n");
-
-        return code.toString();
-    }
-
-    private static String dismemberMethodCallNonLength(JmmNode node) {
-        if (symbolTable.getMethodsHashmap().containsKey(node.getChildren().get(1).get("value")))
-            return dismemberMethodCallNonStatic(node);
-        //else
-        //  return dismemberMethodCallStatic(node);
-        return "";
-    }
-
-    private static String dismemberMethodCallNonStatic(JmmNode node) {
-        StringBuilder code = new StringBuilder();
-
-        int registerUsed = registersAvailable.remove(0);
-
-        MethodSymbol method = symbolTable.getMethodsHashmap().get(node.getChildren().get(1).get("value"));
-        code.append(SethiUllman.run(node.getChildren().get(0)));
+        final int registerUsed = registersAvailable.remove(0);
+        final JmmNode leftChild = node.getChildren().get(0);
+        final JmmNode rightChild = node.getChildren().get(1);
 
         node.put("result", "t" + registerUsed);
+        node.put("suffix", ".i32");
 
-        switch (method.getType().getName()) {
-            case "int":
-                if (method.getType().isArray())
-                    node.put("typeSuffix", ".array.i32");
-                else
-                    node.put("typeSuffix", ".i32");
-                break;
-            case "boolean":
-                node.put("typeSuffix", ".bool");
-                break;
-            default:
-                node.put("typeSuffix", "." + method.getType().getName());
-                break;
-        }
+        code.append("t").append(registerUsed).append(".i32").append(" :=").append(".i32 ");
 
-        code.append(node.get("result")).append(node.get("typeSuffix")).append(" :=").append(node.get("typeSuffix")).append(" ");
+        code.append(leftChild.get("prefix")).append(leftChild.get("result")).append(leftChild.get("suffix"));
+        code.append(" ").append(operator).append(".i32").append(" ");
+        code.append(rightChild.get("prefix")).append(rightChild.get("result")).append(rightChild.get("suffix"));
 
-        code.append("invokevirtual(").append(node.getChildren().get(0).get("result")).append(node.getChildren().get(0).get("typeSuffix")).append(", ");
-        code.append("\"").append(node.getChildren().get(1).get("value")).append("\"");
-
-        if (node.getChildren().get(1).getNumChildren() > 0) {
-            for (JmmNode parameter : node.getChildren().get(1).getChildren().get(0).getChildren()) {
-                registersAvailable.remove(0);
-                code.append(SethiUllman.run(parameter));
-            }
-        }
-
-        if (node.getChildren().get(1).getNumChildren() > 0) {
-            for (JmmNode parameter : node.getChildren().get(1).getChildren().get(0).getChildren()) {
-
-                code.append(", ");
-                if (parameter.getAttributes().contains("typePrefix"))
-                    code.append(parameter.get("typePrefix"));
-
-                code.append(parameter.get("result"));
-
-                if (parameter.getAttributes().contains("typeSuffix"))
-                    code.append(parameter.get("typeSuffix"));
-
-            }
-        }
-
-        code.append(")").append(node.get("typeSuffix")).append(";");
-
-        code.append("\n");
-        return code.toString();
-    }
-    /*
-    private static String dismemberMethodCallStatic(JmmNode node) {
-        StringBuilder code = new StringBuilder();
-
-        int registerUsed = registersAvailable.remove(0);
-
-        code.append(SethiUllman.run(node.getChildren().get(0)));
-
-        code.append("invokestatic(").append(node.getChildren().get(0).get("result")).append(",").append("\"").append(node.getChildren().get(1).get("value")).append("\"");
-
-        node.put("typeSuffix", ".V");
-
-        if (node.getChildren().get(1).getNumChildren() > 0) {
-            for (JmmNode parameter : node.getChildren().get(1).getChildren().get(0).getChildren())
-                code.append(SethiUllman.run(parameter));
-        }
-
-        if (node.getChildren().get(1).getNumChildren() > 0) {
-            for (JmmNode parameter : node.getChildren().get(1).getChildren().get(0).getChildren()) {
-
-                code.append(", ");
-                if (parameter.getAttributes().contains("typePrefix"))
-                    code.append(parameter.get("typePrefix"));
-
-                code.append(parameter.get("result"));
-
-                if (parameter.getAttributes().contains("typeSuffix"))
-                    code.append(parameter.get("typeSuffix"));
-
-            }
-        }
-
-        code.append(")").append(node.get("typeSuffix")).append(";");
+        code.append(";");
         code.append("\n");
 
         return code.toString();
     }
 
-     */
-
-
-    private static String dismemberNewArray(JmmNode node) {
+    private static String dismemberLogic(JmmNode node, String operator) {
         StringBuilder code = new StringBuilder();
+        final int registerUsed = registersAvailable.remove(0);
+        final JmmNode leftChild = node.getChildren().get(0);
+        final JmmNode rightChild = node.getChildren().get(1);
 
-        code.append(SethiUllman.run(node.getChildren().get(0)));
+        node.put("result", "t" + registerUsed);
+        node.put("suffix", ".bool");
 
-        node.put("result", "new(array," + node.getChildren().get(0).get("result") + ")");
-        node.put("typeSuffix", ".array.i32");
-
-        return code.toString();
-    }
-
-    private static String dismemberHelper(JmmNode node) {
-        StringBuilder code = new StringBuilder();
-        int registerUsed = registersAvailable.remove(0);
-
-        switch (node.getKind()) {
-            case "Less" -> {
-                node.put("result", "t" + registerUsed);
-                node.put("typeSuffix", ".bool");
-                code.append("t").append(registerUsed).append(".bool").append(" :=").append(".bool ");
-
-                if (node.getChildren().get(0).getAttributes().contains("typePrefix"))
-                    code.append(node.getChildren().get(0).get("typePrefix"));
-
-                code.append(node.getChildren().get(0).get("result"));
-
-                if (node.getChildren().get(0).getAttributes().contains("typeSuffix"))
-                    code.append(node.getChildren().get(0).get("typeSuffix"));
-
-                code.append(" <").append(".i32 ");
-
-                if (node.getChildren().get(1).getAttributes().contains("typePrefix"))
-                    code.append(node.getChildren().get(1).get("typePrefix"));
-
-                code.append(node.getChildren().get(1).get("result"));
-
-                if (node.getChildren().get(1).getAttributes().contains("typeSuffix"))
-                    code.append(node.getChildren().get(1).get("typeSuffix"));
-            }
-            case "And" -> {
-                node.put("result", "t" + registerUsed);
-                node.put("typeSuffix", ".bool");
-                code.append("t").append(registerUsed).append(".bool").append(" :=").append(".bool ");
-                if (node.getChildren().get(0).getAttributes().contains("typePrefix"))
-                    code.append(node.getChildren().get(0).get("typePrefix"));
-
-                code.append(node.getChildren().get(0).get("result"));
-
-                if (node.getChildren().get(0).getAttributes().contains("typeSuffix"))
-                    code.append(node.getChildren().get(0).get("typeSuffix"));
+        code.append("t").append(registerUsed).append(".bool").append(" :=").append(".bool ");
 
 
-                code.append("&&").append(".i32 ");
+        code.append(leftChild.get("prefix")).append(leftChild.get("result")).append(leftChild.get("suffix"));
+        code.append(" ").append(operator).append(".bool").append(" ");
+        code.append(rightChild.get("prefix")).append(rightChild.get("result")).append(rightChild.get("suffix"));
 
-                if (node.getChildren().get(1).getAttributes().contains("typePrefix"))
-                    code.append(node.getChildren().get(1).get("typePrefix"));
-
-                code.append(node.getChildren().get(1).get("result"));
-
-                if (node.getChildren().get(1).getAttributes().contains("typeSuffix"))
-                    code.append(node.getChildren().get(1).get("typeSuffix"));
-            }
-            case "Not" -> {
-                node.put("result", "t" + registerUsed);
-
-                node.put("typeSuffix", ".bool");
-                code.append("t").append(registerUsed).append(".bool").append(" :=").append(".bool ");
-
-                if (node.getChildren().get(0).getAttributes().contains("typePrefix"))
-                    code.append(node.getChildren().get(0).get("typePrefix"));
-
-                code.append(node.getChildren().get(0).get("result"));
-
-                if (node.getChildren().get(0).getAttributes().contains("typeSuffix"))
-                    code.append(node.getChildren().get(0).get("typeSuffix"));
-
-                code.append(" !.bool ");
-
-                if (node.getChildren().get(0).getAttributes().contains("typePrefix"))
-                    code.append(node.getChildren().get(0).get("typePrefix"));
-
-                code.append(node.getChildren().get(0).get("result"));
-
-                if (node.getChildren().get(0).getAttributes().contains("typeSuffix"))
-                    code.append(node.getChildren().get(0).get("typeSuffix"));
-            }
-            case "Add" -> {
-                node.put("result", "t" + registerUsed);
-                node.put("typeSuffix", ".i32");
-                code.append("t").append(registerUsed).append(".i32").append(" :=").append(".i32 ");
-
-                if (node.getChildren().get(0).getAttributes().contains("typePrefix"))
-                    code.append(node.getChildren().get(0).get("typePrefix"));
-
-                code.append(node.getChildren().get(0).get("result"));
-
-                if (node.getChildren().get(0).getAttributes().contains("typeSuffix"))
-                    code.append(node.getChildren().get(0).get("typeSuffix"));
-
-
-                code.append("+").append(".i32 ");
-
-                if (node.getChildren().get(1).getAttributes().contains("typePrefix"))
-                    code.append(node.getChildren().get(1).get("typePrefix"));
-
-                code.append(node.getChildren().get(1).get("result"));
-
-                if (node.getChildren().get(1).getAttributes().contains("typeSuffix"))
-                    code.append(node.getChildren().get(1).get("typeSuffix"));
-            }
-            case "Sub" -> {
-                node.put("result", "t" + registerUsed);
-                node.put("typeSuffix", ".i32");
-                code.append("t").append(registerUsed).append(".i32").append(" :=").append(".i32 ");
-
-                if (node.getChildren().get(0).getAttributes().contains("typePrefix"))
-                    code.append(node.getChildren().get(0).get("typePrefix"));
-
-                code.append(node.getChildren().get(0).get("result"));
-
-                if (node.getChildren().get(0).getAttributes().contains("typeSuffix"))
-                    code.append(node.getChildren().get(0).get("typeSuffix"));
-
-
-                code.append("-").append(".i32 ");
-
-                if (node.getChildren().get(1).getAttributes().contains("typePrefix"))
-                    code.append(node.getChildren().get(1).get("typePrefix"));
-
-                code.append(node.getChildren().get(1).get("result"));
-
-                if (node.getChildren().get(1).getAttributes().contains("typeSuffix"))
-                    code.append(node.getChildren().get(1).get("typeSuffix"));
-            }
-            case "Mult" -> {
-                node.put("result", "t" + registerUsed);
-                node.put("typeSuffix", ".i32");
-                code.append("t").append(registerUsed).append(".i32").append(" :=").append(".i32 ");
-
-                if (node.getChildren().get(0).getAttributes().contains("typePrefix"))
-                    code.append(node.getChildren().get(0).get("typePrefix"));
-
-                code.append(node.getChildren().get(0).get("result"));
-
-                if (node.getChildren().get(0).getAttributes().contains("typeSuffix"))
-                    code.append(node.getChildren().get(0).get("typeSuffix"));
-
-                code.append("*").append(".i32 ");
-
-                if (node.getChildren().get(1).getAttributes().contains("typePrefix"))
-                    code.append(node.getChildren().get(1).get("typePrefix"));
-
-                code.append(node.getChildren().get(1).get("result"));
-
-                if (node.getChildren().get(1).getAttributes().contains("typeSuffix"))
-                    code.append(node.getChildren().get(1).get("typeSuffix"));
-
-            }
-            case "Div" -> {
-                node.put("result", "t" + registerUsed);
-                node.put("typeSuffix", ".i32");
-                code.append("t").append(registerUsed).append(".i32").append(" :=").append(".i32 ");
-                if (node.getChildren().get(0).getAttributes().contains("typePrefix"))
-                    code.append(node.getChildren().get(0).get("typePrefix"));
-
-                code.append(node.getChildren().get(0).get("result"));
-
-                if (node.getChildren().get(0).getAttributes().contains("typeSuffix"))
-                    code.append(node.getChildren().get(0).get("typeSuffix"));
-
-
-                code.append("/").append(".i32 ");
-
-                if (node.getChildren().get(1).getAttributes().contains("typePrefix"))
-                    code.append(node.getChildren().get(1).get("typePrefix"));
-
-                code.append(node.getChildren().get(1).get("result"));
-
-                if (node.getChildren().get(1).getAttributes().contains("typeSuffix"))
-                    code.append(node.getChildren().get(1).get("typeSuffix"));
-            }
-            case "ArrayAccess" -> {
-                node.put("result", "t" + registerUsed);
-                node.put("typeSuffix", ".i32");
-                code.append("t").append(registerUsed).append(".i32").append(" :=").append(".i32 ");
-                code.append(node.getChildren().get(0).get("result")).append("[");
-
-                if (node.getChildren().get(1).getAttributes().contains("typePrefix"))
-                    code.append(node.getChildren().get(1).get("typePrefix"));
-
-                code.append(node.getChildren().get(1).get("result"));
-
-                if (node.getChildren().get(1).getAttributes().contains("typeSuffix"))
-                    code.append(node.getChildren().get(1).get("typeSuffix"));
-
-                code.append("]").append(".i32");
-            }
-            case "NewObject" -> {
-                node.put("result", "t" + registerUsed);
-                node.put("typeSuffix", "." + node.get("value"));
-                code.append("t").append(registerUsed).append(".").append(node.get("value")).append(" :=.");
-                code.append(node.get("value")).append(" new(").append(node.get("value")).append(").").append(node.get("value")).append(";");
-                code.append("\n");
-                code.append("invokespecial(").append("t").append(registerUsed).append(".").append(node.get("value")).append(",\"<init>\").V");
-            }
-        }
         code.append(";");
         code.append("\n");
         return code.toString();
     }
+
+    private static String dismemberGetter(JmmNode node) {
+        StringBuilder code = new StringBuilder();
+
+        final String variableName = node.get("value");
+        final Symbol field = symbolTable.getClassFields().get(variableName);
+        final String suffix = OptimizationStage.dealWithType(field.getType());
+
+        final int registerUsed = registersAvailable.remove(0);
+
+        node.put("result", "t" + registerUsed);
+        node.put("suffix", suffix);
+
+        code.append("t").append(registerUsed).append(suffix).append(" :=").append(suffix).append(" ").append("getfield(this, ").append(field.getName()).append(suffix).append(")").append(suffix).append(";");
+
+        code.append("\n");
+        return code.toString();
+    }
+
+    public static String dealWithMethodCall(JmmNode statement) {
+        StringBuilder code = new StringBuilder();
+
+        final JmmNode leftChild = statement.getChildren().get(0);
+        final JmmNode rightChild = statement.getChildren().get(1);
+
+
+        if (rightChild.getNumChildren() > 0) {
+            for (JmmNode parameter : rightChild.getChildren().get(0).getChildren())
+                code.append(SethiUllman.run(parameter));
+        }
+        code.append(SethiUllman.run(leftChild));
+
+        if (rightChild.get("value").equals("length"))
+            code.append(dealWithLengthCall(statement));
+        else if (SethiUllman.isMethodCallStatic(statement))
+            code.append(dealWithStaticMethodCall(statement));
+        else
+            code.append(dealWithNonStaticMethodCall(statement));
+
+        return code.toString();
+    }
+
+    public static String dealWithLengthCall(JmmNode node) {
+        StringBuilder code = new StringBuilder();
+
+        final JmmNode leftChild = node.getChildren().get(0);
+
+        final int registerUsed = registersAvailable.remove(0);
+
+        node.put("result", "t" + registerUsed);
+        node.put("suffix", ".i32");
+
+        code.append("t").append(registerUsed).append(node.get("suffix")).append(" :=").append(node.get("suffix")).append(" ").append("arraylength(").append(leftChild.get("prefix")).append(leftChild.get("result")).append(leftChild.get("suffix")).append(")").append(node.get("suffix"));
+
+        code.append(";");
+        code.append("\n");
+        return code.toString();
+    }
+
+    private static String dealWithStaticMethodCall(JmmNode node) {
+        StringBuilder code = new StringBuilder();
+
+        final JmmNode leftChild = node.getChildren().get(0);
+        final JmmNode rightChild = node.getChildren().get(1);
+
+        final int registerUsed = registersAvailable.remove(0);
+        final String returnType = seekReturnTypeStaticCall(node);
+
+        node.put("result", "t" + registerUsed);
+        node.put("suffix", returnType);
+
+        code.append("t").append(registerUsed).append(node.get("suffix")).append(" :=").append(node.get("suffix")).append(" ").append("invokestatic(").append(leftChild.get("result")).append(", \"").append(rightChild.get("value")).append("\"");
+
+        if (rightChild.getNumChildren() > 0) {
+            for (JmmNode parameter : rightChild.getChildren().get(0).getChildren())
+                code.append(", ").append(parameter.get("prefix")).append(parameter.get("result")).append(parameter.get("suffix"));
+        }
+
+        code.append(")").append(returnType);
+        code.append(";");
+        code.append("\n");
+
+        return code.toString();
+    }
+
+    public static String dealWithNonStaticMethodCall(JmmNode node) {
+        StringBuilder code = new StringBuilder();
+
+        final int registerUsed = registersAvailable.remove(0);
+        node.put("result", "t" + registerUsed);
+
+        final String methodCallResult = OptimizationStage.dealWithNonStaticMethodCall(node);
+
+        code.append("t").append(registerUsed).append(node.get("suffix")).append(" :=").append(node.get("suffix")).append(" ").append(methodCallResult);
+
+        return code.toString();
+    }
+
+    private static String dealWithNewObject(JmmNode node) {
+        StringBuilder code = new StringBuilder();
+
+        final int registerUsed = registersAvailable.remove(0);
+
+        node.put("result", "t" + registerUsed);
+        node.put("suffix", "." + node.get("value"));
+        code.append(node.get("result")).append(node.get("suffix")).append(" ").append(":=").append(node.get("suffix")).append(" ").append("new(").append(node.get("value")).append(")").append(node.get("suffix")).append(";").append("\n");
+        code.append("invokespecial(").append(node.get("result")).append(node.get("suffix")).append(", \"<init>\"").append(").V").append(";").append("\n");
+
+
+        return code.toString();
+    }
+
+    private static String dealWithNewArray(JmmNode node) {
+        StringBuilder code = new StringBuilder();
+
+        //Deal With index expression
+        code.append(SethiUllman.run(node.getChildren().get(0)));
+
+        final int registerUsed = registersAvailable.remove(0);
+
+        node.put("result", "t" + registerUsed);
+        node.put("suffix", ".array.i32");
+
+        code.append(node.get("result")).append(node.get("suffix")).append(" ").append(":=").append(node.get("suffix")).append(" ").append("new(array, ").append(node.getChildren().get(0).get("result")).append(node.getChildren().get(0).get("suffix")).append(")").append(node.get("suffix"));
+
+        code.append(";");
+        code.append("\n");
+
+        return code.toString();
+    }
+
+    private static String dealWithArrayAccess(JmmNode node) {
+        StringBuilder code = new StringBuilder();
+
+        final JmmNode leftChild = node.getChildren().get(0);
+        final JmmNode rightChild = node.getChildren().get(1);
+
+        code.append(SethiUllman.run(leftChild));
+        code.append(SethiUllman.run(rightChild));
+
+        final int registerUsed = registersAvailable.remove(0);
+
+        node.put("result", "t" + registerUsed);
+        node.put("suffix", ".i32");
+
+        code.append(node.get("result")).append(node.get("suffix")).append(" ").append(":=").append(node.get("suffix")).append(" ").append(leftChild.get("prefix")).append(leftChild.get("result")).append("[").append(rightChild.get("prefix")).append(rightChild.get("result")).append(rightChild.get("suffix")).append("]").append(node.get("suffix"));
+
+        code.append(";");
+        code.append("\n");
+
+        return code.toString();
+    }
+
+    private static String seekReturnTypeStaticCall(JmmNode node) {
+        String suffix = null;
+
+        while (node.getParent() != null) {
+            JmmNode parent = node.getParent();
+
+            String kind = parent.getKind();
+            if ("Add".equals(kind) || "Sub".equals(kind) || "Mult".equals(kind) || "Div".equals(kind)) {
+                suffix = ".i32";
+            } else if ("Less".equals(kind) || "And".equals(kind) || "Not".equals(kind)) {
+                suffix = ".bool";
+            } else if ("Assignment".equals(kind)) {
+                suffix = parent.getChildren().get(0).get("suffix");
+            } else if ("Parameters".equals(kind)) {
+                suffix = seekReturnTypeParameterCase(node, parent);
+                if (suffix != null)
+                    break;
+            }
+            node = node.getParent();
+        }
+
+        if (suffix == null)
+            suffix = ".V";
+
+        return suffix;
+    }
+
+    private static String seekReturnTypeParameterCase(JmmNode node, JmmNode parametersNode) {
+        final JmmNode methodCall = parametersNode.getParent().getParent();
+
+        if (!methodCall.getChildren().get(0).getKind().equals("Identifier"))
+            return null;
+
+        MethodSymbol method = symbolTable.getMethodsHashmap().get(methodCall.getChildren().get(1).get("value"));
+
+        if (method == null)
+            return null;
+
+        for (int i = 0; i < parametersNode.getNumChildren(); i++) {
+            if (node.equals(parametersNode.getChildren().get(i)))
+                return OptimizationStage.dealWithType(method.getParameters().get(i).getType());
+        }
+
+        return null;
+    }
+
 }

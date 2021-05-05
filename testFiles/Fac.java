@@ -1,37 +1,25 @@
-import io;
-class Simple {
+class myClass {
+    public boolean check(int[] A, int N, int T) {
+        int i;
+        boolean all;
+        all = false;
+        i = 0;
+        while ((i < N) && (A[i] < T)) {
+            i = i + 1;
+        }
+        if (i < N)
+            all = true;
+        else
+            all = false;
 
-    public int add(int a, int b){
-        int c;
-        c = a + this.constInstr();
-        return c;
+        while ((i < N) && (A[i] < T)) {
+            i = i + 1;
+        }
+
+        while ((i < N) && (A[i] < T)) {
+            i = i + 1;
+        }
+
+        return all;
     }
-
-    public static void main(String[] args){
-        int a;
-        int b;
-        int c;
-        Simple s;
-        a = 20;
-        b = 10;
-        s = new Simple();
-        c = s.add(a,b);
-        io.println(c);
-    }
-
-    public int constInstr(){
-        int c;
-        c = 0;
-        c = 4;
-        c = 8;
-        c = 14;
-        c = 250;
-        c = 400;
-        c = 1000;
-        c = 100474650;
-        c = 10;
-        return c;
-    }
-
-
 }
