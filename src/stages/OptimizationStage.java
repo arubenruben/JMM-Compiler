@@ -17,6 +17,9 @@ import java.util.List;
 public class OptimizationStage implements JmmOptimization {
     private static SymbolTableIml symbolTable;
     private static MethodSymbol currentMethod;
+    private static int numberIfs = 0;
+    private static int numberWhiles = 0;
+    private static String offset = "\t\t";
 
 
     @Override
@@ -84,9 +87,9 @@ public class OptimizationStage implements JmmOptimization {
 
         code.append("\t").append(dealWithMethodHeader());
 
-        code.append(applyOffsetToString("\t\t", dealWithMethodBody()));
+        code.append(applyOffsetToString(offset, dealWithMethodBody()));
 
-        code.append(applyOffsetToString("\t\t", dealWithReturn()));
+        code.append(applyOffsetToString(offset, dealWithReturn()));
 
         code.append("\t").append(dealWithFooter());
 
@@ -126,13 +129,19 @@ public class OptimizationStage implements JmmOptimization {
         StringBuilder code = new StringBuilder();
         final JmmNode bodyNode = currentMethod.getNode().getChildren().get(2);
 
-        for (JmmNode statement : bodyNode.getChildren()) {
-            switch (statement.getKind()) {
-                case "While" -> code.append(dealWithWhile(statement));
-                case "If" -> code.append(dealWithIf(statement));
-                case "Assignment" -> code.append(dealWithAssignment(statement));
-                case "MethodCall" -> code.append(dealWithMethodCall(statement));
-            }
+        for (JmmNode statement : bodyNode.getChildren())
+            code.append(dealWithStatement(statement));
+
+        return code.toString();
+    }
+
+    private String dealWithStatement(JmmNode statement) {
+        StringBuilder code = new StringBuilder();
+        switch (statement.getKind()) {
+            case "While" -> code.append(dealWithWhile(statement));
+            case "If" -> code.append(dealWithIf(statement));
+            case "Assignment" -> code.append(dealWithAssignment(statement));
+            case "MethodCall" -> code.append(dealWithMethodCall(statement));
         }
         return code.toString();
     }
@@ -147,8 +156,61 @@ public class OptimizationStage implements JmmOptimization {
 
     private String dealWithIf(JmmNode statement) {
         StringBuilder code = new StringBuilder();
+        String labelAppender = "";
+        final JmmNode condition = statement.getChildren().get(0);
+        final JmmNode thenNode = statement.getChildren().get(1);
+        final JmmNode elseNode = statement.getChildren().get(2);
+
+        if (numberIfs > 0)
+            labelAppender = String.valueOf(numberIfs);
+
+        code.append("if(").append(dealWithIfCondition(condition)).append(")goto else").append(labelAppender).append(";").append("\n");
+
+        for (JmmNode node : thenNode.getChildren())
+            code.append(applyOffsetToString("\t", dealWithStatement(node)));
+
+        code.append(applyOffsetToString("\t", "goto endif" + labelAppender + ";" + "\n"));
+
+        code.append("else").append(labelAppender).append(":").append("\n");
+
+        for (JmmNode node : elseNode.getChildren())
+            code.append(applyOffsetToString("\t", dealWithStatement(node)));
+
+        code.append("endif").append(labelAppender).append(":");
 
         code.append("\n");
+
+        numberIfs++;
+
+        return code.toString();
+    }
+
+    private String dealWithIfCondition(JmmNode condition) {
+        StringBuilder code = new StringBuilder();
+
+        final JmmNode logicCondition = condition.getChildren().get(0);
+        code.append(SethiUllman.run(logicCondition.getChildren().get(0)));
+
+        switch (logicCondition.getKind()) {
+            case "Less" -> {
+                code.append(SethiUllman.run(logicCondition.getChildren().get(1)));
+                code.append(logicCondition.getChildren().get(0).get("prefix")).append(logicCondition.getChildren().get(0).get("result")).append(logicCondition.getChildren().get(0).get("suffix"));
+                code.append(" ").append(">=.i32").append(" ");
+                code.append(logicCondition.getChildren().get(1).get("prefix")).append(logicCondition.getChildren().get(1).get("result")).append(logicCondition.getChildren().get(1).get("suffix"));
+            }
+            case "And" -> {
+                code.append(SethiUllman.run(logicCondition.getChildren().get(1)));
+                code.append(logicCondition.getChildren().get(0).get("prefix")).append(logicCondition.getChildren().get(0).get("result")).append(logicCondition.getChildren().get(0).get("suffix"));
+                code.append(" ").append("&&.bool").append(" ");
+                code.append(logicCondition.getChildren().get(1).get("prefix")).append(logicCondition.getChildren().get(1).get("result")).append(logicCondition.getChildren().get(1).get("suffix"));
+            }
+            case "Not" -> {
+                code.append(logicCondition.getChildren().get(0).get("prefix")).append(logicCondition.getChildren().get(0).get("result")).append(logicCondition.getChildren().get(0).get("suffix"));
+                code.append(" ").append("!.bool").append(" ");
+                code.append(logicCondition.getChildren().get(0).get("prefix")).append(logicCondition.getChildren().get(0).get("result")).append(logicCondition.getChildren().get(0).get("suffix"));
+            }
+        }
+
         return code.toString();
     }
 
@@ -251,6 +313,9 @@ public class OptimizationStage implements JmmOptimization {
     private String applyOffsetToString(String offset, String rawCode) {
         StringBuilder code = new StringBuilder();
 
+        if (rawCode.length() == 0)
+            return code.toString();
+
         for (String str : rawCode.split("\n"))
             code.append(offset).append(str).append("\n");
 
@@ -309,8 +374,8 @@ public class OptimizationStage implements JmmOptimization {
     private String dealWithReturn() {
         StringBuilder code = new StringBuilder();
 
-        if (currentMethod.getNode().getNumChildren() < 3)
-            return "";
+        if (currentMethod.getNode().getNumChildren() < 4)
+            return code.toString();
 
         final JmmNode returnNode = currentMethod.getNode().getChildren().get(3);
 
