@@ -112,7 +112,10 @@ public class SethiUllman {
                 node.put("result", node.get("value"));
                 node.put("suffix", ".bool");
             }
-            case "This" -> node.put("result", "this");
+            case "This" -> {
+                node.put("result", "this");
+                node.put("suffix", "." + symbolTable.getClassName());
+            }
         }
     }
 

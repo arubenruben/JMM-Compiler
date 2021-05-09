@@ -426,7 +426,17 @@ public class OptimizationStage implements JmmOptimization {
             type = symbolTable.getMethodsHashmap().get(rightChild.get("value")).getType();
 
 
-        code.append("invokevirtual(").append(leftChild.get("prefix")).append(leftChild.get("result")).append(leftChild.get("suffix")).append(", \"").append(rightChild.get("value")).append("\"");
+        code.append("invokevirtual(");
+
+        if (!leftChild.getKind().equals("This"))
+            code.append(leftChild.get("prefix"));
+
+        code.append(leftChild.get("result"));
+
+        if (!leftChild.getKind().equals("This"))
+            code.append(leftChild.get("suffix"));
+
+        code.append(", \"").append(rightChild.get("value")).append("\"");
 
         if (rightChild.getNumChildren() > 0) {
             for (JmmNode parameter : rightChild.getChildren().get(0).getChildren())

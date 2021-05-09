@@ -24,7 +24,7 @@ class Fac {
         var_array = new int[3];
 
         var_array = this.returnArray();
-
+        facTest=this;
         fac2Test = Fac2.create();
 
     }
