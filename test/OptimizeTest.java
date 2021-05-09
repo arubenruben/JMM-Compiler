@@ -107,7 +107,7 @@ public class OptimizeTest {
     //Custom Tests
     @Test
     public void testAssignmentOk() {
-        //testFile("custom/optimization/AssignmentTest.jmm", false);
+        testFile("custom/optimization/AssignmentTest.jmm", false);
     }
 
     @Test

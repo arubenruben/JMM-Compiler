@@ -25,7 +25,6 @@ class Fac {
 
         var_array = this.returnArray();
 
-        factTest = this;
         fac2Test = Fac2.create();
 
     }
