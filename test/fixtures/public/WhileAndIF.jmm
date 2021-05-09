@@ -9,15 +9,15 @@ class WhileAndIF {
         a = 20;
         b = 10;
         d = new int[10];
-        if( a < b){
+        /*if( a < b){
             c  = a-1;
         }else{
             c = b-1;
-        }
+        }*/
 
-
+/*
         while((0-1) < c){
-            d[c] = a-b; 
+            d[c] = a-b;
             c= c-1;
             a= a-1;
             b= b-1;
@@ -27,6 +27,8 @@ class WhileAndIF {
             io.println(d[c]);
             c= c+1;
         }
+*/
+        c=0;
     }
 
 }

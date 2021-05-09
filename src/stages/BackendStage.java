@@ -8,10 +8,7 @@ import pt.up.fe.comp.jmm.ollir.OllirResult;
 import pt.up.fe.comp.jmm.report.Report;
 import pt.up.fe.comp.jmm.report.Stage;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Copyright 2021 SPeCS.
@@ -45,6 +42,8 @@ public class BackendStage implements JasminBackend {
 
             // Convert the OLLIR to a String containing the equivalent Jasmin code
             String jasminCode = dealWithClass(); // Convert node ...
+
+            System.out.println(jasminCode);
 
             // More reports from this stage
             List<Report> reports = new ArrayList<>();
@@ -172,6 +171,16 @@ public class BackendStage implements JasminBackend {
 
     private String dealWithInstruction(Method method, Instruction instruction){
         StringBuilder stringBuilder = new StringBuilder();
+
+//        method.getLabels().forEach((k, v) -> {
+//            if (v.getId() == instruction.getId()) {
+//                stringBuilder.append("\t").append(k).append(":\n");
+//            }
+//        });
+
+        for (String label : method.getLabels(instruction)) {
+            stringBuilder.append("\t").append(label).append(":\n");
+        }
 
         switch (instruction.getInstType()){
             case ASSIGN -> {
@@ -327,6 +336,13 @@ public class BackendStage implements JasminBackend {
     //TODO
     private String dealWithCondBranchInstruction(Method method, CondBranchInstruction condBranchInstruction){
         StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append(dealWithElementPush(method, condBranchInstruction.getLeftOperand()));
+
+        stringBuilder.append(dealWithElementPush(method, condBranchInstruction.getRightOperand()));
+
+        stringBuilder.append("\tif_icmpge ").append(condBranchInstruction.getLabel()).append("\n");
+
         return stringBuilder.toString();
     }
 
