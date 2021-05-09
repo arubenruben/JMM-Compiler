@@ -360,7 +360,7 @@ public class BackendStage implements JasminBackend {
 
         Operand firstOperand = (Operand) putFieldInstruction.getFirstOperand();
         Operand secondOperand = (Operand) putFieldInstruction.getSecondOperand();
-        Operand thirdOperand = (Operand) putFieldInstruction.getThirdOperand();
+        Element thirdOperand = (Element) putFieldInstruction.getThirdOperand();
 
         stringBuilder.append(dealWithElementPush(method, firstOperand));
 
