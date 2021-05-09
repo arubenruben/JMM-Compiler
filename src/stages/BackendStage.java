@@ -311,7 +311,7 @@ public class BackendStage implements JasminBackend {
             case NEW -> {
                 Operand newOperand = (Operand) callInstruction.getFirstArg();
                 if (newOperand.getType().getTypeOfElement().equals(ElementType.ARRAYREF)) {
-                    stringBuilder.append("\ticonst_" + callType.ordinal() + "\n");
+                    stringBuilder.append(dealWithElementPush(method, callInstruction.getListOfOperands().get(0)));
                     stringBuilder.append("\tnewarray int\n");
                 } else {
                     stringBuilder.append("\tnew ").append(newOperand.getName()).append("\n");
