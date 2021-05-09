@@ -282,25 +282,47 @@ public class OptimizationStage implements JmmOptimization {
         return code.toString();
     }
 
+    //TODO:Refactor this
     private String dealWithAssignment(JmmNode statement) {
         StringBuilder code = new StringBuilder();
         final JmmNode leftChild = statement.getChildren().get(0);
         final JmmNode rightChild = statement.getChildren().get(1);
 
-        code.append(SethiUllman.run(leftChild));
+        final String leftChildString = SethiUllman.run(leftChild);
         code.append(SethiUllman.run(rightChild));
 
-        if (isSetter(statement)) {
-            code.append("putfield(this,").append(" ").append(leftChild.get("result")).append(leftChild.get("suffix")).append(", ").append(rightChild.get("prefix")).append(rightChild.get("result")).append(rightChild.get("suffix")).append(").V").append(";");
+        if (leftChild.getKind().equals("ArrayAccess")) {
+
+            final StringBuilder arrayAccessStr = new StringBuilder();
+            arrayAccessStr.append(leftChild.getChildren().get(0).get("prefix")).append(leftChild.getChildren().get(0).get("result")).append("[").append(leftChild.getChildren().get(1).get("prefix")).append(leftChild.getChildren().get(1).get("result")).append(leftChild.getChildren().get(1).get("suffix")).append("]").append(leftChild.getChildren().get(0).get("suffix"));
+
+            if (isSetter(statement)) {
+                code.append("putfield(this,").append(" ");
+                code.append(arrayAccessStr);
+                code.append(", ").append(rightChild.get("prefix")).append(rightChild.get("result")).append(rightChild.get("suffix")).append(").V").append(";");
+            } else {
+                code.append(arrayAccessStr);
+
+                code.append(" :=").append(leftChild.get("suffix")).append(" ");
+
+                code.append(rightChild.get("prefix")).append(rightChild.get("result")).append(rightChild.get("suffix")).append(";");
+            }
+
         } else {
+            code.append(leftChildString);
 
-            code.append(leftChild.get("prefix")).append(leftChild.get("result")).append(leftChild.get("suffix"));
+            if (isSetter(statement)) {
+                code.append("putfield(this,").append(" ").append(leftChild.get("result")).append(leftChild.get("suffix")).append(", ").append(rightChild.get("prefix")).append(rightChild.get("result")).append(rightChild.get("suffix")).append(").V").append(";");
+            } else {
+                code.append(leftChild.get("prefix")).append(leftChild.get("result")).append(leftChild.get("suffix"));
 
-            code.append(" :=").append(leftChild.get("suffix")).append(" ");
+                code.append(" :=").append(leftChild.get("suffix")).append(" ");
 
-            code.append(rightChild.get("prefix")).append(rightChild.get("result")).append(rightChild.get("suffix")).append(";");
+                code.append(rightChild.get("prefix")).append(rightChild.get("result")).append(rightChild.get("suffix")).append(";");
+            }
 
         }
+
 
         code.append("\n");
 

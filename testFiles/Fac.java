@@ -1,81 +1,45 @@
-import MathUtils; //lowerLimit,upperLimit
-import Quicksort;
+import io;
 
-class Lazysort extends Quicksort {
+class WhileAndIF {
 
-    public static void main(String[] a) {
-        Lazysort q;
-        boolean d;
-        int[] L;
+    public static void main(String[] args) {
+        int[] d;
+        int a;
+        int b;
+        int c;
 
-        int i;
 
-        L = new int[10];
-
-        i = 0;
-        while (i < L.length) {
-            L[i] = L.length - i;
-            i = i + 1;
-        }
-
-        q = new Lazysort();
-
-        q.quicksort(L);
-        q = q.printL(L);
-        d = q.getBool(L);
-    }
-
-    public boolean getBool(int[] L) {
-        return true;
-    }
-
-    public boolean quicksort(int[] L) {
-
-        boolean lazy;
-
-        int rand;
-
-        rand = MathUtils.random(0, 5);
-        if (rand < 4) {
-            this.beLazy(L);
-            lazy = true;
+        /*
+        a = 20;
+        b = 10;
+        d = new int[10];
+        if (a < b) {
+            c = a - 1;
         } else {
-            lazy = false;
+            c = b - 1;
         }
 
+         */
 
-        if (lazy && lazy) {
-            //lazy = !lazy;
-        } else {
-            lazy = this.quicksort(L, 0, L.length - 1);
+
+        while ((0 - 1) < c) {
+            d[c] = a - b;
+            c = c - 1;
+            a = a - 1;
+            b = b - 1;
+        }
+        c = 0;
+
+        /*
+        c = 0;
+        while (c < d.length) {
+            io.println(d[c]);
+            c = c + 1;
         }
 
+        c = 0;
 
-        return lazy;
-    }
-
-    public boolean beLazy(int[] L) {
-        int _allowedNameL;
-        int allowedNameI;
-        int rand;
-        _allowedNameL = L.length;
-
-        allowedNameI = 0;
-        while (allowedNameI < _allowedNameL / 2) {
-            L[allowedNameI] = MathUtils.random(0, 10);
-
-            allowedNameI = allowedNameI + 1;
-        }
-
-        while (allowedNameI < _allowedNameL) {
-            rand = MathUtils.random(0, 10);
-            L[allowedNameI] = rand + 1;
-
-            allowedNameI = allowedNameI + 1;
-        }
-
-
-        return true;
+         */
     }
 
 }
