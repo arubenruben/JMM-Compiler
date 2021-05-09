@@ -347,7 +347,11 @@ public class OptimizationStage implements JmmOptimization {
             }
             case "boolean" -> code.append(".bool");
             case "void" -> code.append(".V");
-            default -> code.append(".").append(type.getName());
+            default -> {
+                if (type.isArray())
+                    code.append(".array");
+                code.append(".").append(type.getName());
+            }
         }
 
         return code.toString();
