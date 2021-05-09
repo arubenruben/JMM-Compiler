@@ -404,12 +404,8 @@ public class SethiUllman {
 
         final String methodCallResult = OptimizationStage.dealWithNonStaticMethodCall(node);
 
-        if (methodCallResult.isEmpty()) {
-            //methodCallResult=
-        }
         code.append("t").append(registerUsed).append(node.get("suffix")).append(" :=").append(node.get("suffix")).append(" ").append(methodCallResult);
 
-        code.append("\n");
         return code.toString();
     }
 
@@ -468,7 +464,7 @@ public class SethiUllman {
         return code.toString();
     }
 
-    private static String seekReturnTypeStaticCall(JmmNode node) {
+    public static String seekReturnTypeStaticCall(JmmNode node) {
         String suffix = null;
 
         while (node.getParent() != null) {
