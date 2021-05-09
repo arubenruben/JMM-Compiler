@@ -22,7 +22,7 @@ public class SethiUllman {
 
         registersAvailable = new ArrayList<>();
 
-        for (int i = 1; i <= 100; i++)
+        for (int i = 1; i <= 1000; i++)
             registersAvailable.add(i);
 
     }
