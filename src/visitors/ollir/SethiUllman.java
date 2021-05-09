@@ -49,11 +49,12 @@ public class SethiUllman {
     }
 
     private static void fillNonTerminalValue(JmmNode node) {
-
-        if (node.getNumChildren() == 1) {
+        if (node.getNumChildren() == 1 && node.getKind().equals("Not")) {
+            int leftChildValue = Integer.parseInt(node.getChildren().get(0).get("registers"));
+            node.put("registers", String.valueOf(Math.max(1, leftChildValue)));
+        } else if (node.getNumChildren() == 1 && !node.getKind().equals("Not")) {
             int leftChildValue = Integer.parseInt(node.getChildren().get(0).get("registers"));
             node.put("registers", String.valueOf(leftChildValue));
-
         } else if (node.getNumChildren() == 2) {
             int leftChildValue = Integer.parseInt(node.getChildren().get(0).get("registers"));
             int rightChildValue = Integer.parseInt(node.getChildren().get(1).get("registers"));
@@ -73,10 +74,9 @@ public class SethiUllman {
             return code.toString();
         }
 
-        if (!isTerminal(node) && node.getNumChildren() == 1) {
+        if (!isTerminal(node) && node.getNumChildren() == 1)
             code.append(secondStep(node.getChildren().get(0)));
-            return code.toString();
-        }
+
         //For Method Call
         if (!isTerminal(node) && node.getNumChildren() == 2) {
             if (Integer.parseInt(node.getChildren().get(0).get("registers")) >= Integer.parseInt(node.getChildren().get(1).get("registers"))) {
@@ -260,7 +260,7 @@ public class SethiUllman {
             case "Div" -> dismemberMath(node, "/");
             case "And" -> dismemberLogic(node, "&&");
             case "Less" -> dismemberLogic(node, "<");
-            case "Not" -> dismemberLogic(node, "!");
+            case "Not" -> dismemberNot(node);
             case "Identifier" -> dismemberGetter(node);
             case "MethodCall" -> dealWithMethodCall(node);
             case "NewObject" -> dealWithNewObject(node);
@@ -269,6 +269,7 @@ public class SethiUllman {
             default -> "";
         };
     }
+
 
     private static String dismemberMath(JmmNode node, String operator) {
         StringBuilder code = new StringBuilder();
@@ -306,6 +307,25 @@ public class SethiUllman {
         code.append(leftChild.get("prefix")).append(leftChild.get("result")).append(leftChild.get("suffix"));
         code.append(" ").append(operator).append(".bool").append(" ");
         code.append(rightChild.get("prefix")).append(rightChild.get("result")).append(rightChild.get("suffix"));
+
+        code.append(";");
+        code.append("\n");
+        return code.toString();
+    }
+
+    private static String dismemberNot(JmmNode node) {
+        StringBuilder code = new StringBuilder();
+        final int registerUsed = registersAvailable.remove(0);
+        final JmmNode leftChild = node.getChildren().get(0);
+
+        node.put("result", "t" + registerUsed);
+        node.put("suffix", ".bool");
+
+        code.append("t").append(registerUsed).append(".bool").append(" :=").append(".bool ");
+
+        code.append(leftChild.get("prefix")).append(leftChild.get("result")).append(leftChild.get("suffix"));
+        code.append(" ").append("!").append(".bool").append(" ");
+        code.append(leftChild.get("prefix")).append(leftChild.get("result")).append(leftChild.get("suffix"));
 
         code.append(";");
         code.append("\n");
