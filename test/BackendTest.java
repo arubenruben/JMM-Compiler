@@ -59,4 +59,21 @@ public class BackendTest {
         var output = result.run();
         assertEquals("30", output.trim());
     }
+
+    @Test
+    public void testWhileAndIF() {
+        var result = TestUtils.backend(SpecsIo.getResource("fixtures/public/WhileAndIF.jmm"));
+        TestUtils.noErrors(result.getReports());
+        var output = result.run();
+        assertEquals("10\n" +
+                "10\n" +
+                "10\n" +
+                "10\n" +
+                "10\n" +
+                "10\n" +
+                "10\n" +
+                "10\n" +
+                "10\n" +
+                "10", output.trim());
+    }
 }
