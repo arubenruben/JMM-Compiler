@@ -1,0 +1,49 @@
+import ioPlus;
+class FindMaximum {
+	int[] test_arr;
+	int index;
+
+	public int find_maximum(int[] arr) {
+		int i;
+		int maximum;
+		int value;
+
+		i = 1;
+		maximum = arr[index];
+		while (i < arr.length) {
+			value = arr[i];
+			if (maximum < value) {
+				maximum = value;
+			} else {
+			}
+			i = i + 1;
+		}
+
+		return maximum;
+	}
+
+	public int build_test_arr() {
+		test_arr = new int[5];
+		test_arr[index] = 14;
+		test_arr[index] = 28;
+		test_arr[index] = 0;
+		test_arr[index] = 0-5; // No unary minus in Java--
+		test_arr[index] = 12;
+
+		return 0;
+	}
+
+	public int[] get_array() {
+		return test_arr;
+	}
+
+	public static void main(String[] args) {
+		FindMaximum fm;
+		int max;
+		fm = new FindMaximum();
+		fm.build_test_arr();
+
+		max = fm.find_maximum(fm.get_array());
+		ioPlus.printResult(max);
+	}
+}

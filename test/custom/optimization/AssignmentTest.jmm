@@ -13,7 +13,7 @@ class Fac {
     public static void main(String[] args) {
         int var1;
         boolean var2;
-        int[] array;
+        int[] var_array;
         Fac facTest;
         Fac2 fac2Test;
 
@@ -21,9 +21,9 @@ class Fac {
         var2 = true;
         var2 = false;
 
-        array = new int[3];
+        var_array = new int[3];
 
-        array = this.returnArray();
+        var_array = this.returnArray();
 
         factTest = this;
         fac2Test = Fac2.create();

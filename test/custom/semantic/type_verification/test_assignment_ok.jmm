@@ -27,8 +27,5 @@ class Fac {
         factTest=this;
         fac2Test=Fac2.create();
 
-
-
-
     }
 }

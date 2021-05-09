@@ -30,7 +30,7 @@ public class BackendTest {
 
     @Test
     public void testBinaryOperation() {
-        var result = TestUtils.backend(SpecsIo.getResource("custom_jasmin/test_binary_operation.jmm"));
+        var result = TestUtils.backend(SpecsIo.getResource("custom/backend/test_binary_operation.jmm"));
         TestUtils.noErrors(result.getReports());
         var output = result.run();
         assertEquals("41283", output.trim());
@@ -38,7 +38,7 @@ public class BackendTest {
 
     @Test
     public void testInvokeStatic() {
-        var result = TestUtils.backend(SpecsIo.getResource("custom_jasmin/test_invoke_static.jmm"));
+        var result = TestUtils.backend(SpecsIo.getResource("custom/backend/test_invoke_static.jmm"));
         TestUtils.noErrors(result.getReports());
         var output = result.run();
         assertEquals("Result: 3", output.trim());
@@ -46,7 +46,7 @@ public class BackendTest {
 
     @Test
     public void testInvokeVirtual() {
-        var result = TestUtils.backend(SpecsIo.getResource("custom_jasmin/test_invoke_virtual.jmm"));
+        var result = TestUtils.backend(SpecsIo.getResource("custom/backend/test_invoke_virtual.jmm"));
         TestUtils.noErrors(result.getReports());
         var output = result.run();
         assertEquals("8", output.trim());
