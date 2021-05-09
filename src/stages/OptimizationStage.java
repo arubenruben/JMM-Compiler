@@ -398,10 +398,11 @@ public class OptimizationStage implements JmmOptimization {
         final JmmNode leftChild = node.getChildren().get(0);
         final JmmNode rightChild = node.getChildren().get(1);
 
-        MethodSymbol method = symbolTable.getMethodsHashmap().get(rightChild.get("value"));
+        Type type = null;
 
-        if (method == null)
-            return "";
+        if (symbolTable.getMethodsHashmap().containsKey(rightChild.get("value")))
+            type = symbolTable.getMethodsHashmap().get(rightChild.get("value")).getType();
+
 
         code.append("invokevirtual(").append(leftChild.get("prefix")).append(leftChild.get("result")).append(leftChild.get("suffix")).append(", \"").append(rightChild.get("value")).append("\"");
 
@@ -410,7 +411,13 @@ public class OptimizationStage implements JmmOptimization {
                 code.append(", ").append(parameter.get("prefix")).append(parameter.get("result")).append(parameter.get("suffix"));
         }
 
-        final String suffix = OptimizationStage.dealWithType(method.getType());
+
+        String suffix;
+
+        if (type != null)
+            suffix = OptimizationStage.dealWithType(type);
+        else
+            suffix = SethiUllman.seekReturnTypeStaticCall(node);
 
         node.put("suffix", suffix);
 

@@ -6,8 +6,8 @@ class Lazysort extends Quicksort {
     public static void main(String[] a) {
         Lazysort q;
         boolean d;
-        /*
         int[] L;
+
         int i;
 
         L = new int[10];
@@ -17,17 +17,22 @@ class Lazysort extends Quicksort {
             L[i] = L.length - i;
             i = i + 1;
         }
-        */
+
         q = new Lazysort();
 
-        //q.quicksort(L);
-        d = q.printL(L);
+        q.quicksort(L);
+        q = q.printL(L);
+        d = q.getBool(L);
+    }
+
+    public boolean getBool(int[] L) {
+        return true;
     }
 
     public boolean quicksort(int[] L) {
 
         boolean lazy;
-        /*
+
         int rand;
 
         rand = MathUtils.random(0, 5);
@@ -44,11 +49,11 @@ class Lazysort extends Quicksort {
         } else {
             lazy = this.quicksort(L, 0, L.length - 1);
         }
-         */
+
 
         return lazy;
     }
-/*
+
     public boolean beLazy(int[] L) {
         int _allowedNameL;
         int allowedNameI;
@@ -72,22 +77,5 @@ class Lazysort extends Quicksort {
 
         return true;
     }
-        private String dealWithMethodHeader() {
-        StringBuilder code = new StringBuilder();
-
-        code.append(".method public").append(" ");
-
-        if (currentMethod.getName().equals("main"))
-            code.append("static").append(" ");
-
-        code.append(currentMethod.getName()).append("(").append(dealWithMethodHeaderParameters(currentMethod.getParameters())).append(")").append(dealWithType(currentMethod.getType())).append(" ").append("{");
-
-        code.append("\n");
-
-        return code.toString();
-
-    }
- */
-
 
 }
