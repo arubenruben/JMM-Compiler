@@ -50,15 +50,19 @@ public class SethiUllman {
 
     private static void fillNonTerminalValue(JmmNode node) {
 
-        int leftChildValue = Integer.parseInt(node.getChildren().get(0).get("registers"));
-        int rightChildValue = Integer.parseInt(node.getChildren().get(1).get("registers"));
+        if (node.getNumChildren() == 1) {
+            int leftChildValue = Integer.parseInt(node.getChildren().get(0).get("registers"));
+            node.put("registers", String.valueOf(leftChildValue));
 
-        if (leftChildValue == rightChildValue)
-            node.put("registers", String.valueOf(leftChildValue + 1));
-        else
-            node.put("registers", String.valueOf(Math.max(leftChildValue, rightChildValue)));
+        } else if (node.getNumChildren() == 2) {
+            int leftChildValue = Integer.parseInt(node.getChildren().get(0).get("registers"));
+            int rightChildValue = Integer.parseInt(node.getChildren().get(1).get("registers"));
 
-
+            if (leftChildValue == rightChildValue)
+                node.put("registers", String.valueOf(leftChildValue + 1));
+            else
+                node.put("registers", String.valueOf(Math.max(leftChildValue, rightChildValue)));
+        }
     }
 
     private static String secondStep(JmmNode node) {
@@ -195,18 +199,24 @@ public class SethiUllman {
     }
 
     private static String prefixSeeker(String variableName) {
-        StringBuilder code = new StringBuilder();
 
         if (symbolTable.getMethodsHashmap().get(currentMethod).getLocalVariables().containsKey(variableName))
             return "";
 
+        final MethodSymbol method = symbolTable.getMethodsHashmap().get(currentMethod);
+
         for (int i = 0; i < symbolTable.getMethodsHashmap().get(currentMethod).getParameters().size(); i++) {
             Symbol iterator = symbolTable.getMethodsHashmap().get(currentMethod).getParameters().get(i);
             if (iterator.getName().equals(variableName))
-                return "$" + i + ".";
+                if (method.getName().equals("main"))
+                    return "$" + i + ".";
+                else {
+                    final int value = i + 1;
+                    return "$" + value + ".";
+                }
         }
 
-        return code.toString();
+        return "";
     }
 
     private static String suffixSeeker(String variableName) {
