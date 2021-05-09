@@ -101,7 +101,12 @@ public class OptimizationStage implements JmmOptimization {
     private String dealWithMethodHeader() {
         StringBuilder code = new StringBuilder();
 
-        code.append(".method public ").append(currentMethod.getName()).append("(").append(dealWithMethodHeaderParameters(currentMethod.getParameters())).append(")").append(dealWithType(currentMethod.getType())).append(" ").append("{");
+        code.append(".method public").append(" ");
+
+        if (currentMethod.getName().equals("main"))
+            code.append("static").append(" ");
+
+        code.append(currentMethod.getName()).append("(").append(dealWithMethodHeaderParameters(currentMethod.getParameters())).append(")").append(dealWithType(currentMethod.getType())).append(" ").append("{");
 
         code.append("\n");
 
@@ -214,10 +219,11 @@ public class OptimizationStage implements JmmOptimization {
         StringBuilder code = new StringBuilder();
 
         final JmmNode logicCondition = condition.getChildren().get(0);
-        code.append(SethiUllman.run(logicCondition.getChildren().get(0)));
+
 
         switch (logicCondition.getKind()) {
             case "Less" -> {
+                code.append(SethiUllman.run(logicCondition.getChildren().get(0)));
                 code.append(SethiUllman.run(logicCondition.getChildren().get(1)));
                 code.append("if(");
                 code.append(logicCondition.getChildren().get(0).get("prefix")).append(logicCondition.getChildren().get(0).get("result")).append(logicCondition.getChildren().get(0).get("suffix"));
@@ -226,6 +232,7 @@ public class OptimizationStage implements JmmOptimization {
                 code.append(") goto").append(" ").append(gotoLabel).append(labelAppender).append(";").append("\n");
             }
             case "And" -> {
+                code.append(SethiUllman.run(logicCondition.getChildren().get(0)));
                 code.append(SethiUllman.run(logicCondition.getChildren().get(1)));
                 code.append("if(");
                 code.append(logicCondition.getChildren().get(0).get("prefix")).append(logicCondition.getChildren().get(0).get("result")).append(logicCondition.getChildren().get(0).get("suffix"));
@@ -234,10 +241,17 @@ public class OptimizationStage implements JmmOptimization {
                 code.append(") goto").append(" ").append(gotoLabel).append(labelAppender).append(";").append("\n");
             }
             case "Not" -> {
+                code.append(SethiUllman.run(logicCondition.getChildren().get(0)));
                 code.append("if(");
                 code.append(logicCondition.getChildren().get(0).get("prefix")).append(logicCondition.getChildren().get(0).get("result")).append(logicCondition.getChildren().get(0).get("suffix"));
                 code.append(" ").append("!.bool").append(" ");
                 code.append(logicCondition.getChildren().get(0).get("prefix")).append(logicCondition.getChildren().get(0).get("result")).append(logicCondition.getChildren().get(0).get("suffix"));
+                code.append(") goto").append(" ").append(gotoLabel).append(labelAppender).append(";").append("\n");
+            }
+            case "Identifier" -> {
+                code.append(SethiUllman.run(logicCondition));
+                code.append("if(");
+                code.append(logicCondition.get("prefix")).append(logicCondition.get("result")).append(logicCondition.get("suffix"));
                 code.append(") goto").append(" ").append(gotoLabel).append(labelAppender).append(";").append("\n");
             }
         }

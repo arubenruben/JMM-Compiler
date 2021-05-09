@@ -68,12 +68,11 @@ public class ThirdVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boolea
         if (secondVisitorHelper.getSymbolTableIml().getImportedClasses().contains(symbol.getType().getName()))
             return true;
 
-        if (symbol.equals(new Symbol(new Type("this", false), "this"))) {
-            //A class that extends something is to assumes the method exists always
-            if (secondVisitorHelper.getSymbolTableIml().getSuper() != null) {
-                return true;
-            }
+        //A class that extends something is to assumes the method exists always
+        if (secondVisitorHelper.getSymbolTableIml().getSuper() != null) {
+            return true;
         }
+
         //All objects contains length method in this grammar
         if (!symbol.getType().isArray() && methodName.equals("length")) {
             secondVisitorHelper.getReportList().add(ReportsUtils.reportEntryError(Stage.SEMANTIC, "Only arrays have length method", Integer.parseInt(node.get("line")), Integer.parseInt(node.get("col"))));
