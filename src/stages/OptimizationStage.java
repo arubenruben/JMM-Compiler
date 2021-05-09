@@ -282,25 +282,47 @@ public class OptimizationStage implements JmmOptimization {
         return code.toString();
     }
 
+    //TODO:Refactor this
     private String dealWithAssignment(JmmNode statement) {
         StringBuilder code = new StringBuilder();
         final JmmNode leftChild = statement.getChildren().get(0);
         final JmmNode rightChild = statement.getChildren().get(1);
 
-        code.append(SethiUllman.run(leftChild));
+        final String leftChildString = SethiUllman.run(leftChild);
         code.append(SethiUllman.run(rightChild));
 
-        if (isSetter(statement)) {
-            code.append("putfield(this,").append(" ").append(leftChild.get("result")).append(leftChild.get("suffix")).append(", ").append(rightChild.get("prefix")).append(rightChild.get("result")).append(rightChild.get("suffix")).append(").V").append(";");
+        if (leftChild.getKind().equals("ArrayAccess")) {
+
+            final StringBuilder arrayAccessStr = new StringBuilder();
+            arrayAccessStr.append(leftChild.getChildren().get(0).get("prefix")).append(leftChild.getChildren().get(0).get("result")).append("[").append(leftChild.getChildren().get(1).get("prefix")).append(leftChild.getChildren().get(1).get("result")).append(leftChild.getChildren().get(1).get("suffix")).append("]").append(leftChild.getChildren().get(0).get("suffix"));
+
+            if (isSetter(statement)) {
+                code.append("putfield(this,").append(" ");
+                code.append(arrayAccessStr);
+                code.append(", ").append(rightChild.get("prefix")).append(rightChild.get("result")).append(rightChild.get("suffix")).append(").V").append(";");
+            } else {
+                code.append(arrayAccessStr);
+
+                code.append(" :=").append(leftChild.get("suffix")).append(" ");
+
+                code.append(rightChild.get("prefix")).append(rightChild.get("result")).append(rightChild.get("suffix")).append(";");
+            }
+
         } else {
+            code.append(leftChildString);
 
-            code.append(leftChild.get("prefix")).append(leftChild.get("result")).append(leftChild.get("suffix"));
+            if (isSetter(statement)) {
+                code.append("putfield(this,").append(" ").append(leftChild.get("result")).append(leftChild.get("suffix")).append(", ").append(rightChild.get("prefix")).append(rightChild.get("result")).append(rightChild.get("suffix")).append(").V").append(";");
+            } else {
+                code.append(leftChild.get("prefix")).append(leftChild.get("result")).append(leftChild.get("suffix"));
 
-            code.append(" :=").append(leftChild.get("suffix")).append(" ");
+                code.append(" :=").append(leftChild.get("suffix")).append(" ");
 
-            code.append(rightChild.get("prefix")).append(rightChild.get("result")).append(rightChild.get("suffix")).append(";");
+                code.append(rightChild.get("prefix")).append(rightChild.get("result")).append(rightChild.get("suffix")).append(";");
+            }
 
         }
+
 
         code.append("\n");
 
@@ -347,7 +369,11 @@ public class OptimizationStage implements JmmOptimization {
             }
             case "boolean" -> code.append(".bool");
             case "void" -> code.append(".V");
-            default -> code.append(".").append(type.getName());
+            default -> {
+                if (type.isArray())
+                    code.append(".array");
+                code.append(".").append(type.getName());
+            }
         }
 
         return code.toString();
@@ -394,10 +420,11 @@ public class OptimizationStage implements JmmOptimization {
         final JmmNode leftChild = node.getChildren().get(0);
         final JmmNode rightChild = node.getChildren().get(1);
 
-        MethodSymbol method = symbolTable.getMethodsHashmap().get(rightChild.get("value"));
+        Type type = null;
 
-        if (method == null)
-            return "";
+        if (symbolTable.getMethodsHashmap().containsKey(rightChild.get("value")))
+            type = symbolTable.getMethodsHashmap().get(rightChild.get("value")).getType();
+
 
         code.append("invokevirtual(").append(leftChild.get("prefix")).append(leftChild.get("result")).append(leftChild.get("suffix")).append(", \"").append(rightChild.get("value")).append("\"");
 
@@ -406,7 +433,13 @@ public class OptimizationStage implements JmmOptimization {
                 code.append(", ").append(parameter.get("prefix")).append(parameter.get("result")).append(parameter.get("suffix"));
         }
 
-        final String suffix = OptimizationStage.dealWithType(method.getType());
+
+        String suffix;
+
+        if (type != null)
+            suffix = OptimizationStage.dealWithType(type);
+        else
+            suffix = SethiUllman.seekReturnTypeStaticCall(node);
 
         node.put("suffix", suffix);
 
