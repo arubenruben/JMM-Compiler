@@ -76,7 +76,7 @@ public class OptimizeTest {
 
     @Test
     public void testLife() {
-        //testFile("fixtures/public/Life.jmm", false);
+        testFile("custom/optimization/LifeCustom.jmm", false);
     }
 
     @Test
@@ -95,7 +95,7 @@ public class OptimizeTest {
 
     @Test
     public void testTicTacToe() {
-        //testFile("fixtures/public/TicTacToe.jmm", false);
+        testFile("custom/optimization/TicTacToe.jmm", false);
     }
 
     @Test

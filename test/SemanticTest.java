@@ -48,13 +48,10 @@ public class SemanticTest {
     }
 
 
-    /*TODO:Allow method overload
     @Test
     public void testQuickSort() {
         testFile("fixtures/public/QuickSort.jmm", true);
     }
-
-     */
 
     @Test
     public void testSimple() {

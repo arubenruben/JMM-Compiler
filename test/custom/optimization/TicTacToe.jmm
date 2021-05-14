@@ -8,15 +8,16 @@ class TicTacToe {
   int whoseturn;
   int movesmade;
   int[] pieces;
+  int index;
 
   // Initializes a Tic Tac Toe object.
   public boolean init() {
-    row0 = new int[3];
-    row1 = new int[3];
-    row2 = new int[3];
-    pieces = new int[2];
-    pieces[0] = 1;
-    pieces[1] = 2;
+    row0 = new int[index];
+    row1 = new int[index];
+    row2 = new int[index];
+    pieces = new int[index];
+    pieces[index] = 1;
+    pieces[index] = 2;
     whoseturn = 0;
     movesmade = 0;
     return true;
@@ -75,9 +76,9 @@ class TicTacToe {
       in =  false;
     else if (column < 0)
       in =  false;
-    else if (2 < row) 
+    else if (2 < row)
       in =  false;
-    else if (2 < column) 
+    else if (2 < column)
       in = false;
     else in = true;
     return in;
@@ -98,53 +99,53 @@ class TicTacToe {
 
   // Returns a character signifying the winner.
   public int winner() {
-    int[] array;
+    int[] array_escape;
     int winner;
     int i;
     boolean completeArray;
     boolean completeArray1;
     boolean completeArray2;
     winner = 0-1;
-    array = new int[3];
+    array_escape = new int[index];
     completeArray = BoardBase.sameArray(row0);
     completeArray1 = BoardBase.sameArray(row1);
     completeArray2 = BoardBase.sameArray(row2);
     // Check for three X's or O's in a row.
-    if (completeArray && 0 < row0[0]){
-        winner = row0[0];
+    if (completeArray && 0 < row0[index]){
+        winner = row0[index];
     }
-    else if (completeArray1 && 0 < row1[0]){
-        winner =  row1[0];
+    else if (completeArray1 && 0 < row1[index]){
+        winner =  row1[index];
     }
-    else if (completeArray2 && 0 < row2[0]){
-        winner =  row2[0];
-    } 
+    else if (completeArray2 && 0 < row2[index]){
+        winner =  row2[index];
+    }
     else{
         i = 0;
         while(winner < 1 && i < 3){
-            array[0] = row0[i];
-            array[1] = row1[i];
-            array[2] = row2[i];
-            completeArray = BoardBase.sameArray(array);
-            if (completeArray && 0 < array[0]){
-                winner = array[0];
+            array_escape[index] = row0[i];
+            array_escape[index] = row1[i];
+            array_escape[index] = row2[i];
+            completeArray = BoardBase.sameArray(array_escape);
+            if (completeArray && 0 < array_escape[index]){
+                winner = array_escape[index];
             }else{}
             i=i+1;
         }
         if(winner < 1){
-            array[0] = row0[0];
-            array[1] = row1[1];
-            array[2] = row2[2];
-			completeArray = BoardBase.sameArray(array);
-            if (completeArray && 0 < array[0]){
-                winner = array[0];
+            array_escape[index] = row0[index];
+            array_escape[index] = row1[index];
+            array_escape[index] = row2[index];
+			completeArray = BoardBase.sameArray(array_escape);
+            if (completeArray && 0 < array_escape[index]){
+                winner = array_escape[index];
             }else{
-                array[0] = row0[2];
-                array[1] = row1[1];
-                array[2] = row2[0];
-                completeArray = BoardBase.sameArray(array);
-                if (completeArray && 0 < array[0]){
-                    winner = array[0];
+                array_escape[index] = row0[index];
+                array_escape[index] = row1[index];
+                array_escape[index] = row2[index];
+                completeArray = BoardBase.sameArray(array_escape);
+                if (completeArray && 0 < array_escape[index]){
+                    winner = array_escape[index];
                 }else{}
             }
         }else{}
@@ -170,32 +171,32 @@ class TicTacToe {
       done = false;
       // Read in a move & check if it's valid.
       while(!done){
-	
-        BoardBase.printBoard(mygame.getRow0(), 
-          mygame.getRow1(), 
+
+        BoardBase.printBoard(mygame.getRow0(),
+          mygame.getRow1(),
           mygame.getRow2());
 
-        player = mygame.getCurrentPlayer();            
+        player = mygame.getCurrentPlayer();
         move = BoardBase.playerTurn(player);
-	    
-      		
-        if (!mygame.inbounds(move[0],move[1]))
+
+
+        if (!mygame.inbounds(move[index],move[index]))
           BoardBase.wrongMove();
         else {
-          if (!mygame.Move(move[0],move[1]))
+          if (!mygame.Move(move[index],move[index]))
              BoardBase.placeTaken();
           else
             done = true;
-       } 
+       }
       }
-	
+
       // Change who's turn it is.
       mygame.changeturn();
     }
 
     // Print out a message with the winner.
-    BoardBase.printBoard(mygame.getRow0(), 
-          mygame.getRow1(), 
+    BoardBase.printBoard(mygame.getRow0(),
+          mygame.getRow1(),
           mygame.getRow2());
     win = mygame.winner();
 

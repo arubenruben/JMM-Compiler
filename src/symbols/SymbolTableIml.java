@@ -126,9 +126,9 @@ public class SymbolTableIml implements SymbolTable {
                 '}';
     }
 
-    public String methodsPrint(){
+    public String methodsPrint() {
 
-        String return_string= "";
+        String return_string = "";
 
         for (Map.Entry<String, MethodSymbol> entry : methodsHashmap.entrySet()) {
 
@@ -138,9 +138,9 @@ public class SymbolTableIml implements SymbolTable {
         return return_string;
     }
 
-    public String ClassFieldsPrint(){
+    public String ClassFieldsPrint() {
 
-        String return_string= "";
+        String return_string = "";
 
         for (Map.Entry<String, Symbol> entry : classFields.entrySet()) {
 
