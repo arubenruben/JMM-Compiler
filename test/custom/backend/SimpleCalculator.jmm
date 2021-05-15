@@ -1,0 +1,158 @@
+import io;
+
+class SimpleCalculator {
+	public static void main(String[] args) {
+		int a;
+		SimpleCalculator calc;
+		calc = new SimpleCalculator();
+
+		a = calc.sum(7, 4);
+		io.print(a);
+
+		a = calc.sub(15, 9);
+		io.print(a);
+
+		a = calc.mult(3, 7);
+		io.print(a);
+
+		a = calc.div(8, 4);
+		io.print(a);
+
+		a = calc.pow(2, 3);
+		io.print(a);
+
+		a = calc.permutations(6, 3);
+		io.print(a);
+
+		a = calc.combinations(6, 4);
+		io.print(a);
+
+		a = calc.triangleArea(4, 9);
+		io.print(a);
+
+		a = calc.cubeVolume(3);
+		io.print(a);
+	}
+
+	public int sum(int num1, int num2) {
+	    int res;
+	    res = num1 + num2;
+
+	    return res;
+	}
+
+	public int sub(int num1, int num2) {
+        int res;
+        res = num1 - num2;
+
+        return res;
+    }
+
+    public int mult(int num1, int num2) {
+        int res;
+        res = num1 * num2;
+
+        return res;
+    }
+
+    public int div(int num1, int num2) {
+        int res;
+        res = num1 / num2;
+
+        return res;
+    }
+
+    public int pow(int base, int exp) {
+        int res;
+        int i;
+        res = 1;
+        i = 0;
+
+        while (i < exp) {
+            res = res * base;
+            i = i + 1;
+        }
+
+        return res;
+    }
+
+    public int factorial(int n) {
+        int res;
+        int i;
+        res = 1;
+        i = 1;
+
+        if (n < 0) {
+            return res;
+        } else {
+            while (i - 1 < n) {
+                res = res * i;
+                i = i + 1;
+            }
+        }
+
+        return res;
+    }
+
+    public int permutations(int n, int k) {
+        int res;
+        res = 0;
+
+        /*if (n < 1) {
+            return res;
+        } else if (k < 1) {
+            return res;
+        } else if (n < k) {
+            return res;
+        }*/
+
+        res = this.factorial(n) / this.factorial(n - k);
+
+        return res;
+    }
+
+    public int combinations(int n, int k) {
+        int res;
+        res = 0;
+
+        /*if (n < 1) {
+            return res;
+        } else if (k < 1) {
+            return res;
+        } else if (n < k) {
+            return res;
+        }*/
+
+        res = this.factorial(n) / (this.factorial(k) * this.factorial(n - k));
+
+        return res;
+    }
+
+    public int triangleArea(int base, int height) {
+        int res;
+        res = 0;
+
+        /*if (base < 0) {
+            return res;
+        } else if (height < 0) {
+            return res;
+        }*/
+
+        res = base * height / 2;
+
+        return res;
+    }
+
+    public int cubeVolume(int side) {
+        int res;
+        res = 0;
+
+        /*if (side < 0) {
+            return res;
+        }*/
+
+        res = this.pow(side, 3);
+
+        return res;
+    }
+}
