@@ -28,7 +28,9 @@ public class VisitorDataHelper {
         StringBuilder returnString = new StringBuilder();
 
         returnString.append(methodName);
-
+        if(methodName.equals("main")){
+            return returnString.toString();
+        }
         for(Symbol symbol : parameters){
             returnString.append("_" + symbol.getType().getName());
             if(symbol.getType().isArray()){

@@ -8,6 +8,7 @@ import pt.up.fe.comp.jmm.ollir.OllirResult;
 import pt.up.fe.comp.jmm.report.Report;
 import pt.up.fe.comp.jmm.report.Stage;
 
+import javax.print.DocFlavor;
 import java.util.*;
 
 /**
@@ -233,11 +234,36 @@ public class BackendStage implements JasminBackend {
 
         Instruction rhs = assignInstruction.getRhs();
 
-        stringBuilder.append(dealWithInstruction(method, rhs));
+        try {
+            ArrayOperand arrayOperand = (ArrayOperand) assignInstruction.getDest();
+            stringBuilder.append(dealWithArrayOperandAssignInstruction(method, arrayOperand, rhs));
+        }
+        catch (Exception e){
+            stringBuilder.append(dealWithInstruction(method, rhs));
+            // store call value
+            Operand dest = (Operand) assignInstruction.getDest();
+            stringBuilder.append(dealWithStoreInstruction(method, dest));
+        }
+        return stringBuilder.toString();
+    }
 
-        // store call value
-        Operand dest = (Operand) assignInstruction.getDest();
-        stringBuilder.append(dealWithStoreInstruction(method, dest));
+    private String dealWithArrayOperandAssignInstruction(Method method, ArrayOperand arrayOperand, Instruction rhs){
+        StringBuilder stringBuilder = new StringBuilder();
+
+        if (arrayOperand.getIndexOperands().size() > 0) {
+            stringBuilder.append("\taload");
+            int register = getVarVirtualRegister(method, arrayOperand.getName());
+            if(0<= register && register <= 3){
+                stringBuilder.append("_");
+            }
+            else{
+                stringBuilder.append(" ");
+            }
+            stringBuilder.append(register).append("\n");
+            stringBuilder.append(dealWithLoadInstruction(method, (Operand) arrayOperand.getIndexOperands().get(0)));
+            stringBuilder.append(dealWithInstruction(method, rhs));
+            stringBuilder.append("\tiastore\n");
+        }
 
         return stringBuilder.toString();
     }
@@ -334,14 +360,13 @@ public class BackendStage implements JasminBackend {
     }
 
     //TODO
-    private String dealWithCondBranchInstruction(Method method, CondBranchInstruction condBranchInstruction){
-        StringBuilder stringBuilder = new StringBuilder();
+    private String dealWithCondBranchInstruction(Method method, CondBranchInstruction condBranchInstruction){ StringBuilder stringBuilder = new StringBuilder();
 
-        stringBuilder.append(dealWithElementPush(method, condBranchInstruction.getLeftOperand()));
+        BinaryOpInstruction binaryOpInstruction = new BinaryOpInstruction(condBranchInstruction.getLeftOperand(), condBranchInstruction.getCondOperation(), condBranchInstruction.getRightOperand());
 
-        stringBuilder.append(dealWithElementPush(method, condBranchInstruction.getRightOperand()));
+        stringBuilder.append(dealWithBinaryOpInstruction(method, binaryOpInstruction));
 
-        stringBuilder.append("\tif_icmpge ").append(condBranchInstruction.getLabel()).append("\n");
+        stringBuilder.append(condBranchInstruction.getLabel()).append("\n");
 
         return stringBuilder.toString();
     }
@@ -425,6 +450,12 @@ public class BackendStage implements JasminBackend {
             case AND -> {
                 stringBuilder.append("\tiand\n");
             }
+            case GTE -> {
+                stringBuilder.append("\tif_icmpge ");
+            }
+            case LTH -> {
+                stringBuilder.append("\tif_icmplt ");
+            }
         }
 
         return stringBuilder.toString();
@@ -437,11 +468,28 @@ public class BackendStage implements JasminBackend {
     private String dealWithElementPush(Method method, Element element){
         StringBuilder stringBuilder = new StringBuilder();
 
-        if(element.isLiteral()){
-            return dealWithLiteralElementPush(method, (LiteralElement) element);
+        try{
+            ArrayOperand arrayOperand = (ArrayOperand) element;
+            stringBuilder.append("\taload");
+            int register = getVarVirtualRegister(method, arrayOperand.getName());
+            if(0<= register && register <= 3){
+                stringBuilder.append("_");
+            }
+            else{
+                stringBuilder.append(" ");
+            }
+            stringBuilder.append(register).append("\n");
+            stringBuilder.append(dealWithLoadInstruction(method, (Operand) arrayOperand.getIndexOperands().get(0)));
+            stringBuilder.append("\tiaload\n");
         }
-        Operand parameterOperand = (Operand) element;
-        stringBuilder.append(dealWithLoadInstruction(method, parameterOperand));
+        catch (Exception ignored){
+            if(element.isLiteral()){
+                return dealWithLiteralElementPush(method, (LiteralElement) element);
+            }
+            Operand parameterOperand = (Operand) element;
+            stringBuilder.append(dealWithLoadInstruction(method, parameterOperand));
+        }
+
         return stringBuilder.toString();
     }
 

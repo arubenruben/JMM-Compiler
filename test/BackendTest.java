@@ -45,6 +45,14 @@ public class BackendTest {
     }
 
     @Test
+    public void testArrayAccess() {
+        var result = TestUtils.backend(SpecsIo.getResource("custom/backend/test_array_access.jmm"));
+        TestUtils.noErrors(result.getReports());
+        var output = result.run();
+        assertEquals("Result: 10", output.trim());
+    }
+
+    @Test
     public void testInvokeVirtual() {
         var result = TestUtils.backend(SpecsIo.getResource("custom/backend/test_invoke_virtual.jmm"));
         TestUtils.noErrors(result.getReports());

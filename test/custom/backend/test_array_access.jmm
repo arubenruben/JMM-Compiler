@@ -1,0 +1,11 @@
+import ioPlus;
+class HelloWorld {
+	public static void main(String[] args) {
+	    int[] a;
+	    int c;
+	    c = 4;
+	    a = new int[10];
+	    a[c] = 10;
+	    ioPlus.printResult(a[c]);
+	}
+}
