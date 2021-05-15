@@ -1,3 +1,4 @@
+import pt.up.fe.comp.jmm.analysis.table.Symbol;
 import pt.up.fe.comp.jmm.analysis.table.SymbolTable;
 import pt.up.fe.comp.jmm.report.Report;
 import utils.Constants;
@@ -56,6 +57,21 @@ public class Utils {
 
     public static void printSymbolTable(SymbolTable symbolTableIml) {
         System.out.println(symbolTableIml.toString());
+    }
+
+    protected String nameGenerator(String methodName, List<Symbol> parameters){
+
+        StringBuilder returnString = new StringBuilder();
+
+        returnString.append(methodName);
+
+        for(Symbol symbol : parameters){
+            returnString.append("_" + symbol.getType().getName());
+            if(symbol.getType().isArray()){
+                returnString.append("[]");
+            }
+        }
+        return returnString.toString();
     }
 
 }

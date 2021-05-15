@@ -91,9 +91,6 @@ public class FirstVisitor extends PreorderJmmVisitor<VisitorDataHelper, Boolean>
         JmmNode parameterBlock = node.getChildren().get(1);
         JmmNode bodyBlock = node.getChildren().get(2);
 
-        MethodSymbol methodSymbol = new MethodSymbol(
-                new Type(node.getChildren().get(0).get("value"), node.getChildren().get(0).get("isArray").equals("true")),
-                node.get("value"), node);
 
         for (JmmNode parameter : parameterBlock.getChildren()) {
             JmmNode nodeType = parameter.getChildren().get(0);
@@ -101,6 +98,10 @@ public class FirstVisitor extends PreorderJmmVisitor<VisitorDataHelper, Boolean>
             Type type = new Type(nodeType.get("value"), nodeType.get("isArray").equals("true"));
             parameters.add(new Symbol(type, nodeIdentifier.get("value")));
         }
+
+        MethodSymbol methodSymbol = new MethodSymbol(
+                new Type(node.getChildren().get(0).get("value"), node.getChildren().get(0).get("isArray").equals("true")),
+                visitorDataHelper.nameGenerator(node.get("value"),parameters), node);
 
         methodSymbol.setParameters(parameters);
 
@@ -116,5 +117,7 @@ public class FirstVisitor extends PreorderJmmVisitor<VisitorDataHelper, Boolean>
     protected Boolean defaultVisit(JmmNode node, VisitorDataHelper visitorDataHelper) {
         return true;
     }
+
+
 
 }
