@@ -294,7 +294,7 @@ public class OptimizationStage implements JmmOptimization {
         if (leftChild.getKind().equals("ArrayAccess")) {
 
             final StringBuilder arrayAccessStr = new StringBuilder();
-            arrayAccessStr.append(leftChild.getChildren().get(0).get("prefix")).append(leftChild.getChildren().get(0).get("result")).append("[").append(leftChild.getChildren().get(1).get("prefix")).append(leftChild.getChildren().get(1).get("result")).append(leftChild.getChildren().get(1).get("suffix")).append("]").append(leftChild.getChildren().get(0).get("suffix"));
+            arrayAccessStr.append(leftChild.getChildren().get(0).get("prefix")).append(leftChild.getChildren().get(0).get("result")).append("[").append(leftChild.getChildren().get(1).get("prefix")).append(leftChild.getChildren().get(1).get("result")).append(leftChild.getChildren().get(1).get("suffix")).append("]").append(".i32");
 
             if (isSetter(statement)) {
                 code.append("putfield(this,").append(" ");

@@ -1,32 +1,13 @@
-import Class.Fac2;
-
-class Fac {
-    public int returnInt() {
-        return 1;
-    }
-
-    public int[] returnArray() {
-        return new int[3];
-    }
-
-
-    public static void main(String[] args) {
-        int var1;
-        boolean var2;
-        int[] array;
-        Fac facTest;
-        Fac2 fac2Test;
-
-        var1 = 1 + 2 + 5 + 8 * 8 / 7;
-        var2 = true;
-        var2 = false;
-
-        array = new int[3];
-
-        array = this.returnArray();
-
-        factTest = this;
-        fac2Test = Fac2.create();
-
+class myClass {
+    public int[] sum(int[] A, int[] B) {
+        int[] C;
+        int i;
+        i = 0;
+        C = new int[A.length];
+        while (i < A.length) {
+            C[i] = A[i] + B[i];
+            i = i + 1;
+        }
+        return C;
     }
 }

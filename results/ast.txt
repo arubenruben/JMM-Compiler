@@ -637,6 +637,15 @@
                           "value": "0"
                         },
                         "children": []
+                      },
+                      {
+                        "kind": "Identifier",
+                        "attributes": {
+                          "col": "28",
+                          "line": "2",
+                          "value": "A"
+                        },
+                        "children": []
                       }
                     ]
                   },
@@ -1078,7 +1087,7 @@
                     },
                     "children": [
                       {
-                        "kind": "Type",
+                        "kind": "Identifier",
                         "attributes": {
                           "col": "39",
                           "line": "40",
@@ -1106,7 +1115,7 @@
                     },
                     "children": [
                       {
-                        "kind": "Type",
+                        "kind": "Integer",
                         "attributes": {
                           "col": "47",
                           "line": "40",
@@ -1136,7 +1145,7 @@
                 },
                 "children": [
                   {
-                    "kind": "VarDeclaration",
+                    "kind": "Assignment",
                     "attributes": {
                       "col": "9",
                       "line": "41",
@@ -1144,7 +1153,7 @@
                     },
                     "children": [
                       {
-                        "kind": "Type",
+                        "kind": "Identifier",
                         "attributes": {
                           "col": "9",
                           "line": "41",
@@ -1152,6 +1161,44 @@
                           "value": "int"
                         },
                         "children": []
+                      },
+                      {
+                        "kind": "NewArray",
+                        "attributes": {
+                          "col": "17",
+                          "line": "6",
+                          "isArray": "true",
+                          "value": "int"
+                        },
+                        "children": [
+                          {
+                            "kind": "MethodCall",
+                            "attributes": {
+                              "col": "23",
+                              "line": "6"
+                            },
+                            "children": [
+                              {
+                                "kind": "Identifier",
+                                "attributes": {
+                                  "col": "22",
+                                  "line": "6",
+                                  "value": "A"
+                                },
+                                "children": []
+                              },
+                              {
+                                "kind": "Identifier",
+                                "attributes": {
+                                  "col": "23",
+                                  "line": "6",
+                                  "value": "length"
+                                },
+                                "children": []
+                              }
+                            ]
+                          }
+                        ]
                       }
                     ]
                   },
