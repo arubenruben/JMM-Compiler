@@ -282,6 +282,8 @@ public class OptimizationStage implements JmmOptimization {
             case "And" -> {
                 code.append(SethiUllman.run(logicCondition.getChildren().get(0)));
                 code.append(SethiUllman.run(logicCondition.getChildren().get(1)));
+                code.append(invertAnd(logicCondition.getChildren().get(0)));
+                code.append(invertAnd(logicCondition.getChildren().get(1)));
                 code.append("if(");
                 code.append(logicCondition.getChildren().get(0).get("prefix")).append(logicCondition.getChildren().get(0).get("result")).append(logicCondition.getChildren().get(0).get("suffix"));
                 code.append(" ").append("||.bool").append(" ");
@@ -307,6 +309,28 @@ public class OptimizationStage implements JmmOptimization {
         }
 
         return code.toString();
+    }
+
+    private String invertAnd(JmmNode node) {
+
+        StringBuilder code = new StringBuilder();
+        final int registerUsed = SethiUllman.registersAvailable.remove(0);
+
+
+        code.append("t").append(registerUsed).append(".bool").append(" :=").append(".bool ");
+
+        code.append(node.get("prefix")).append(node.get("result")).append(node.get("suffix"));
+        code.append(" ").append("!").append(".bool").append(" ");
+        code.append(node.get("prefix")).append(node.get("result")).append(node.get("suffix"));
+
+        code.append(";");
+        code.append("\n");
+
+        node.put("result", "t" + registerUsed);
+        node.put("suffix", ".bool");
+
+        return code.toString();
+
     }
 
     public String dealWithMethodCall(JmmNode statement) {

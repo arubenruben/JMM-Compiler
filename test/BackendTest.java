@@ -99,4 +99,15 @@ public class BackendTest {
                 //        "12015189"
                 , output.trim());
     }
+
+    @Test
+    public void testMethodOverload() {
+        var result = TestUtils.backend(SpecsIo.getResource("custom/backend/MethodOverload.jmm"));
+        TestUtils.noErrors(result.getReports());
+        var output = result.run();
+        assertEquals("true\n" +
+                "true\n" +
+                "false\n" +
+                "false", output.trim());
+    }
 }

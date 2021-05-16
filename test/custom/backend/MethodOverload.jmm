@@ -1,31 +1,33 @@
 import io;
-Class Animal{
 
+class Duck {
 
-public boolean quack(Animal animal){
-        io.println("Animal quack");
+    public boolean quack(Duck duck) {
+        io.println(true);
         return true;
-        }
-public boolean quack(int var){
-        io.println("Ints don't quack");
+    }
+
+    public boolean quack(int dummy_var) {
+        io.println(false);
         return false;
-        }
-public boolean quack(boolean var){
-        io.println("Boolean don't quack");
+    }
+
+    public boolean quack(boolean dummy_var) {
+        io.println(false);
         return false;
-        }
-public static void main(String[]args){
+    }
+
+    public static void main(String[] args) {
         int int_animal;
         boolean bool_animal;
-        Animal zebra;
-        Animal dolphin;
+        Duck arnaldo;
+        Duck jose;
+        arnaldo = new Duck();
+        jose = new Duck();
 
-        zebra=new Animal();
-        dolphin=new Animal();
-        this.quack(zebra);
-        this.quack(dolphin);
-        this.quack()
-        }
-
-
-        }
+        this.quack(arnaldo);
+        this.quack(jose);
+        this.quack(int_animal);
+        this.quack(bool_animal);
+    }
+}
