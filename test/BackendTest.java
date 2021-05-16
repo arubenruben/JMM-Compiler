@@ -140,12 +140,10 @@ public class BackendTest {
         var result = TestUtils.backend(SpecsIo.getResource("custom/backend/top/generic/ArrayLibrary.jmm"));
         TestUtils.noErrors(result.getReports());
         var output = result.run();
-        assertEquals("10\n" +
-                "100\n" +
-                "1000\n" +
+        assertEquals("01234567890123456789\n" +
                 "1\n" +
-                "1\n" +
-                "1", output.trim());
+                "012\n" +
+                "3", output.trim());
     }
 
 
