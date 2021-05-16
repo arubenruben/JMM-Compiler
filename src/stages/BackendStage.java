@@ -44,11 +44,10 @@ public class BackendStage implements JasminBackend {
             // Convert the OLLIR to a String containing the equivalent Jasmin code
             String jasminCode = dealWithClass(); // Convert node ...
 
-            System.out.println(jasminCode);
-
             // More reports from this stage
             List<Report> reports = new ArrayList<>();
 
+            System.out.println(jasminCode);
             return new JasminResult(ollirResult, jasminCode, reports);
 
         } catch (OllirErrorException e) {
@@ -110,7 +109,7 @@ public class BackendStage implements JasminBackend {
         stringBuilder.append(field.getFieldName()).append(" ");
 
         // <descriptor>
-        stringBuilder.append(dealWithType(field.getFieldType()));
+        stringBuilder.append(dealWithType(field.getFieldType(), true));
 
         return stringBuilder.toString();
     }
@@ -141,10 +140,10 @@ public class BackendStage implements JasminBackend {
 
         // method parameters
         for(int i = 0; i < parameters.size(); i++){
-            stringBuilder.append(dealWithType(parameters.get(i).getType()));
+            stringBuilder.append(dealWithType(parameters.get(i).getType(), true));
         }
 
-        stringBuilder.append(")").append(dealWithType(method.getReturnType())).append("\n");
+        stringBuilder.append(")").append(dealWithType(method.getReturnType(), true)).append("\n");
 
         // limits
         stringBuilder.append("\t.limit stack 99\n").append("\t.limit locals 99\n\n");
@@ -172,12 +171,6 @@ public class BackendStage implements JasminBackend {
 
     private String dealWithInstruction(Method method, Instruction instruction){
         StringBuilder stringBuilder = new StringBuilder();
-
-//        method.getLabels().forEach((k, v) -> {
-//            if (v.getId() == instruction.getId()) {
-//                stringBuilder.append("\t").append(k).append(":\n");
-//            }
-//        });
 
         for (String label : method.getLabels(instruction)) {
             stringBuilder.append("\t").append(label).append(":\n");
@@ -292,7 +285,7 @@ public class BackendStage implements JasminBackend {
                 if (callType == CallType.invokestatic) {
                     stringBuilder.append(firstArg.getName()).append(".");
                 } else {
-                    stringBuilder.append(dealWithType(firstArg.getType())).append(".");
+                    stringBuilder.append(dealWithType(firstArg.getType(), false)).append(".");
                 }
 
                 // function name
@@ -302,13 +295,13 @@ public class BackendStage implements JasminBackend {
 
                 // function parameters
                 for(Element element : callInstruction.getListOfOperands()){
-                    stringBuilder.append(dealWithType(element.getType()));
+                    stringBuilder.append(dealWithType(element.getType(), true));
                 }
 
                 stringBuilder.append(")");
 
                 // function return type
-                stringBuilder.append(dealWithType(callInstruction.getReturnType())).append("\n");
+                stringBuilder.append(dealWithType(callInstruction.getReturnType(), true)).append("\n");
             }
             case invokespecial -> {
 
@@ -321,7 +314,7 @@ public class BackendStage implements JasminBackend {
                 // Type of method invocation
                 stringBuilder.append("\t").append(OllirAccesser.getCallInvocation(callInstruction).toString()).append(" ");
 
-                stringBuilder.append(dealWithType(firstArg.getType())).append(".");
+                stringBuilder.append(dealWithType(firstArg.getType(), false)).append(".");
                 // function name
                 LiteralElement secondArg = (LiteralElement) callInstruction.getSecondArg();
                 stringBuilder.append(secondArg.getLiteral().toString().replace("\"", "")).append("(");
@@ -329,7 +322,7 @@ public class BackendStage implements JasminBackend {
                 stringBuilder.append(")");
 
                 // function return type
-                stringBuilder.append(dealWithType(callInstruction.getReturnType())).append("\n");
+                stringBuilder.append(dealWithType(callInstruction.getReturnType(), true)).append("\n");
 
                 // store value
                 stringBuilder.append(dealWithStoreInstruction(method, firstArg));
@@ -359,12 +352,35 @@ public class BackendStage implements JasminBackend {
         return "\tgoto " + gotoInstruction.getLabel() + "\n";
     }
 
-    //TODO
     private String dealWithCondBranchInstruction(Method method, CondBranchInstruction condBranchInstruction){ StringBuilder stringBuilder = new StringBuilder();
 
-        BinaryOpInstruction binaryOpInstruction = new BinaryOpInstruction(condBranchInstruction.getLeftOperand(), condBranchInstruction.getCondOperation(), condBranchInstruction.getRightOperand());
+        Operation operation = condBranchInstruction.getCondOperation();
 
-        stringBuilder.append(dealWithBinaryOpInstruction(method, binaryOpInstruction));
+        if(operation.getOpType() != OperationType.NOT && operation.getOpType() != OperationType.NOTB){
+            stringBuilder.append(dealWithElementPush(method, condBranchInstruction.getLeftOperand()));
+        }
+        stringBuilder.append(dealWithElementPush(method, condBranchInstruction.getRightOperand()));
+
+
+        switch (condBranchInstruction.getCondOperation().getOpType()){
+            case AND, ANDB -> {
+                stringBuilder.append("\tif_icmpeq ");
+            }
+            case NOT, NOTB -> {
+                stringBuilder.append("\tineg\n");
+                stringBuilder.append("\tifeq ");
+            }
+            case GTE -> {
+                stringBuilder.append("\tif_icmpge ");
+            }
+            case LTH -> {
+                stringBuilder.append("\tif_icmplt ");
+            }
+            case OR, ORB -> {
+                stringBuilder.append("\tior\n");
+                stringBuilder.append("\tifne ");
+            }
+        }
 
         stringBuilder.append(condBranchInstruction.getLabel()).append("\n");
 
@@ -393,7 +409,7 @@ public class BackendStage implements JasminBackend {
             stringBuilder.append(dealWithElementPush(method, thirdOperand));
         }
 
-        stringBuilder.append("\t").append("putfield ").append(secondOperand.getName()).append(" ").append(dealWithType(secondOperand.getType())).append("\n");
+        stringBuilder.append("\t").append("putfield ").append(secondOperand.getName()).append(" ").append(dealWithType(secondOperand.getType(), true)).append("\n");
 
         return stringBuilder.toString();
     }
@@ -405,7 +421,7 @@ public class BackendStage implements JasminBackend {
         Operand secondOperand = (Operand) getFieldInstruction.getSecondOperand();
 
         stringBuilder.append(dealWithElementPush(method, firstOperand));
-        stringBuilder.append("\t").append("getfield ").append(dealWithType(secondOperand.getType())).append(" " + secondOperand.getName()).append("\n");
+        stringBuilder.append("\t").append("getfield ").append(dealWithType(secondOperand.getType(), true)).append(" " + secondOperand.getName()).append("\n");
 
         return stringBuilder.toString();
     }
@@ -429,12 +445,14 @@ public class BackendStage implements JasminBackend {
     private String dealWithBinaryOpInstruction(Method method, BinaryOpInstruction binaryOpInstruction){
         StringBuilder stringBuilder = new StringBuilder();
 
-        stringBuilder.append(dealWithElementPush(method, binaryOpInstruction.getLeftOperand()));
-        stringBuilder.append(dealWithElementPush(method, binaryOpInstruction.getRightOperand()));
-
         Operation operation = binaryOpInstruction.getUnaryOperation();
 
-        switch (operation.getOpType()){
+        if(operation.getOpType() != OperationType.NOT && operation.getOpType() != OperationType.NOTB){
+            stringBuilder.append(dealWithElementPush(method, binaryOpInstruction.getLeftOperand()));
+        }
+        stringBuilder.append(dealWithElementPush(method, binaryOpInstruction.getRightOperand()));
+
+        switch (operation.getOpType()) {
             case ADD -> {
                 stringBuilder.append("\tiadd\n");
             }
@@ -447,17 +465,26 @@ public class BackendStage implements JasminBackend {
             case DIV -> {
                 stringBuilder.append("\tidiv\n");
             }
-            case AND -> {
+            case AND, ANDB -> {
                 stringBuilder.append("\tiand\n");
             }
-            case GTE -> {
-                stringBuilder.append("\tif_icmpge ");
+            case NOT, NOTB -> {
+                stringBuilder.append("\tineg\n");
             }
             case LTH -> {
-                stringBuilder.append("\tif_icmplt ");
+                String labelFalse = "LabelFalse" + binaryOpInstruction.getId();
+                String labelContinue = "LabelContinue" + binaryOpInstruction.getId();
+                stringBuilder.append("\tif_icmpge ").append(labelFalse).append("\n");
+                stringBuilder.append("\ticonst_1\n");
+                stringBuilder.append("\tgoto ").append(labelContinue).append("\n");
+                stringBuilder.append("\t").append(labelFalse).append(":\n");
+                stringBuilder.append("\ticonst_0\n");
+                stringBuilder.append("\t").append(labelContinue).append(":\n");
+            }
+            case OR, ORB -> {
+                stringBuilder.append("\tior\n");
             }
         }
-
         return stringBuilder.toString();
     }
 
@@ -575,7 +602,7 @@ public class BackendStage implements JasminBackend {
         return "a";
     }
     
-    private String dealWithType(Type type){
+    private String dealWithType(Type type, boolean objectRef){
         StringBuilder stringBuilder = new StringBuilder();
         switch (type.getTypeOfElement()){
             case ARRAYREF -> {
@@ -591,7 +618,6 @@ public class BackendStage implements JasminBackend {
             }
             case CLASS -> {
                 ClassType classType = (ClassType) type;
-
                 for(String string : symbolTable.getImports()) {
                     List<String> tokens = Arrays.asList(string.split("\\.").clone());
 
@@ -605,12 +631,21 @@ public class BackendStage implements JasminBackend {
                     break;
                 }
 
+
             }
-            case OBJECTREF, THIS -> {
+            case THIS-> {
                 ClassType classType = (ClassType) type;
                 stringBuilder.append(classType.getName());
             }
-
+            case OBJECTREF -> {
+                ClassType classType = (ClassType) type;
+                if(objectRef) {
+                    stringBuilder.append("L").append(classType.getName()).append(";");
+                }
+                else{
+                    stringBuilder.append(classType.getName());
+                }
+            }
             case STRING -> {
                 stringBuilder.append("LJava/Lang/String;");
             }

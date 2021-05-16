@@ -3,17 +3,17 @@ import io;
 class Duck {
 
     public boolean quack(Duck duck) {
-        io.println(true);
+        io.println(1);
         return true;
     }
 
     public boolean quack(int dummy_var) {
-        io.println(false);
+        io.println(0);
         return false;
     }
 
     public boolean quack(boolean dummy_var) {
-        io.println(false);
+        io.println(0);
         return false;
     }
 
@@ -24,10 +24,13 @@ class Duck {
         Duck jose;
         arnaldo = new Duck();
         jose = new Duck();
+        int_animal = 0;
+        bool_animal = true;
 
-        this.quack(arnaldo);
-        this.quack(jose);
-        this.quack(int_animal);
-        this.quack(bool_animal);
+
+        arnaldo.quack(arnaldo);
+        arnaldo.quack(jose);
+        arnaldo.quack(int_animal);
+        arnaldo.quack(bool_animal);
     }
 }

@@ -61,28 +61,29 @@ public class BackendTest {
     }
 
     @Test
+    public void testIfCondition() {
+        var result = TestUtils.backend(SpecsIo.getResource("custom/backend/test_if_condition.jmm"));
+        TestUtils.noErrors(result.getReports());
+        var output = result.run();
+        assertEquals("10\n" +
+                "5\n" +
+                "0\n" +
+                "2\n" +
+                "5", output.trim());
+    }
+
+    @Test
     public void testSimple() {
         var result = TestUtils.backend(SpecsIo.getResource("fixtures/public/Simple.jmm"));
         TestUtils.noErrors(result.getReports());
         var output = result.run();
         assertEquals("30", output.trim());
     }
+    
 
     @Test
     public void testWhileAndIF() {
-        var result = TestUtils.backend(SpecsIo.getResource("fixtures/public/WhileAndIF.jmm"));
-        TestUtils.noErrors(result.getReports());
-        var output = result.run();
-        assertEquals("10\n" +
-                "10\n" +
-                "10\n" +
-                "10\n" +
-                "10\n" +
-                "10\n" +
-                "10\n" +
-                "10\n" +
-                "10\n" +
-                "10", output.trim());
+        testBackend("fixtures/public/WhileAndIF.jmm", "fixtures/public/WhileAndIF.txt");
     }
 
     @Test
@@ -106,21 +107,19 @@ public class BackendTest {
         var result = TestUtils.backend(SpecsIo.getResource("custom/backend/top/extras/MethodOverload.jmm"));
         TestUtils.noErrors(result.getReports());
         var output = result.run();
-        assertEquals("true\n" +
-                "true\n" +
-                "false\n" +
-                "false", output.trim());
+        assertEquals("1\n" +
+                "1\n" +
+                "0\n" +
+                "0", output.trim());
     }
 
-    @Test
-    public void testMethodOverload1() {
-        var result = TestUtils.backend(SpecsIo.getResource("custom/backend/top/extras/MethodOverload1.jmm"));
+
+    public void testBackend(String filePath, String expectedPath){
+        var result = TestUtils.backend(SpecsIo.getResource(filePath));
         TestUtils.noErrors(result.getReports());
         var output = result.run();
-        assertEquals("10\n" +
-                "8\n" +
-                "true\n" +
-                "false", output.trim());
+        var expected = SpecsIo.getResource(expectedPath);
+        assertEquals(expected, output.trim());
     }
 
     @Test

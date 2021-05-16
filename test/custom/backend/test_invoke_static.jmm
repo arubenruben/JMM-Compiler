@@ -4,3 +4,4 @@ class HelloWorld {
 		ioPlus.printResult(3);
 	}
 }
+
