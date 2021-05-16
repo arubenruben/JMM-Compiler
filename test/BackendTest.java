@@ -79,7 +79,7 @@ public class BackendTest {
         var output = result.run();
         assertEquals("30", output.trim());
     }
-    
+
 
     @Test
     public void testWhileAndIF() {
@@ -114,7 +114,7 @@ public class BackendTest {
     }
 
 
-    public void testBackend(String filePath, String expectedPath){
+    public void testBackend(String filePath, String expectedPath) {
         var result = TestUtils.backend(SpecsIo.getResource(filePath));
         TestUtils.noErrors(result.getReports());
         var output = result.run();
@@ -125,6 +125,19 @@ public class BackendTest {
     @Test
     public void testConvertor() {
         var result = TestUtils.backend(SpecsIo.getResource("custom/backend/top/generic/ConvertorUnits.jmm"));
+        TestUtils.noErrors(result.getReports());
+        var output = result.run();
+        assertEquals("10\n" +
+                "100\n" +
+                "1000\n" +
+                "1\n" +
+                "1\n" +
+                "1", output.trim());
+    }
+
+    @Test
+    public void testArrays() {
+        var result = TestUtils.backend(SpecsIo.getResource("custom/backend/top/generic/ArrayLibrary.jmm"));
         TestUtils.noErrors(result.getReports());
         var output = result.run();
         assertEquals("10\n" +
