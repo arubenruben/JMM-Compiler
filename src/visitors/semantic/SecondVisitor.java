@@ -104,6 +104,9 @@ public class SecondVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boole
         seekReturnTypeVisitorLeft.visit(node.getChildren().get(0), secondVisitorHelper);
         Type typeLeft = seekReturnTypeVisitorLeft.getType();
 
+        if (typeLeft == null)
+            return null;
+
         if (!typeLeft.getName().equals("boolean") || typeLeft.isArray()) {
             secondVisitorHelper.getReportList().add(ReportsUtils.reportEntryError(Stage.SEMANTIC, "And Operators demand that left operand be a boolean expression", Integer.parseInt(node.get("line")), Integer.parseInt(node.get("col"))));
             return false;
@@ -142,6 +145,8 @@ public class SecondVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boole
         seekReturnTypeVisitorLeft.visit(node.getChildren().get(0), secondVisitorHelper);
         Type typeLeft = seekReturnTypeVisitorLeft.getType();
 
+        if (typeLeft == null)
+            return null;
 
         if (!typeLeft.getName().equals("int") || typeLeft.isArray()) {
             secondVisitorHelper.getReportList().add(ReportsUtils.reportEntryError(Stage.SEMANTIC, "Less Operators demand that left operand be an integer", Integer.parseInt(node.get("line")), Integer.parseInt(node.get("col"))));
