@@ -24,22 +24,22 @@ class Adder {
         return counter;
     }
 
-    public static void main(String[] args) {
+     public static void main(String[] args) {
         int index;
-
         int[] list;
 
+        index = 10;
+        list = new int[index];
         index = 0;
-        list = new int[10];
 
         while (index < list.length) {
             list[index] = index;
             index = index + 1;
         }
 
-        io.println(add(list));
-        io.println(4, 4);
-        io.println(true, true);
-        io.println(false, false);
+        io.println(this.add(list));
+        io.println(this.add(4, 4));
+        io.println(this.add(true, true));
+        io.println(this.add(false, false));
     }
 }

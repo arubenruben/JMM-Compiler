@@ -87,7 +87,7 @@ public class BackendTest {
 
     @Test
     public void testSimpleCalculator() {
-        var result = TestUtils.backend(SpecsIo.getResource("custom/backend/SimpleCalculator.jmm"));
+        var result = TestUtils.backend(SpecsIo.getResource("custom/backend/top/SimpleCalculator.jmm"));
         TestUtils.noErrors(result.getReports());
         var output = result.run();
         assertEquals("11\n" +
@@ -102,7 +102,7 @@ public class BackendTest {
 
     @Test
     public void testMethodOverload() {
-        var result = TestUtils.backend(SpecsIo.getResource("custom/backend/MethodOverload.jmm"));
+        var result = TestUtils.backend(SpecsIo.getResource("custom/backend/top/extras/MethodOverload.jmm"));
         TestUtils.noErrors(result.getReports());
         var output = result.run();
         assertEquals("true\n" +
@@ -110,4 +110,16 @@ public class BackendTest {
                 "false\n" +
                 "false", output.trim());
     }
+
+    @Test
+    public void testMethodOverload1() {
+        var result = TestUtils.backend(SpecsIo.getResource("custom/backend/top/extras/MethodOverload1.jmm"));
+        TestUtils.noErrors(result.getReports());
+        var output = result.run();
+        assertEquals("10\n" +
+                "8\n" +
+                "true\n" +
+                "false", output.trim());
+    }
+
 }
