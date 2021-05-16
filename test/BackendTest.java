@@ -91,13 +91,14 @@ public class BackendTest {
         TestUtils.noErrors(result.getReports());
         var output = result.run();
         assertEquals("11\n" +
-                        "6\n" +
-                        "21\n" +
-                        "2\n" +
-                        "8\n" +
-                        "27"
-                //        "12015189"
-                , output.trim());
+                "6\n" +
+                "21\n" +
+                "2\n" +
+                "8\n" +
+                "120\n" +
+                "15\n" +
+                "18\n" +
+                "27", output.trim());
     }
 
     @Test
@@ -121,5 +122,17 @@ public class BackendTest {
                 "true\n" +
                 "false", output.trim());
     }
+
+    @Test
+    public void testConversor() {
+        var result = TestUtils.backend(SpecsIo.getResource("custom/backend/top/generic/ConversorUnits.jmm"));
+        TestUtils.noErrors(result.getReports());
+        var output = result.run();
+        assertEquals("10\n" +
+                "8\n" +
+                "true\n" +
+                "false", output.trim());
+    }
+
 
 }

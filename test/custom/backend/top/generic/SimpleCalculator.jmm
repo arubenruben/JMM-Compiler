@@ -21,14 +21,14 @@ class SimpleCalculator {
         a = calc.pow(2, 3);
         io.println(a);
 
-        //a = calc.permutations(6, 3);
-        //io.println(a);
+        a = calc.permutations(6, 3);
+        io.println(a);
 
-        //a = calc.combinations(6, 4);
-        //io.println(a);
+        a = calc.combinations(6, 4);
+        io.println(a);
 
-        //a = calc.triangleArea(4, 9);
-        //io.println(a);
+        a = calc.triangleArea(4, 9);
+        io.println(a);
 
         a = calc.cubeVolume(3);
         io.println(a);
