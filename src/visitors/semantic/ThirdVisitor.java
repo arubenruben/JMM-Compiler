@@ -62,6 +62,10 @@ public class ThirdVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boolea
             for (JmmNode parameter : parameterBlock.getChildren()) {
                 final SeekReturnTypeVisitor returnTypeVisitor = new SeekReturnTypeVisitor();
                 returnTypeVisitor.visit(parameter, secondVisitorHelper);
+
+                if (returnTypeVisitor.getType() == null)
+                    return false;
+
                 if (parameter.getKind().equals("Identifier") && parameter.getKind().contains("value"))
                     parameters.add(new Symbol(returnTypeVisitor.getType(), parameter.get("value")));
                 else
@@ -98,8 +102,6 @@ public class ThirdVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boolea
             return true;
 
         if (!secondVisitorHelper.getSymbolTableIml().getMethodsHashmap().containsKey(methodName)) {
-            System.out.println(secondVisitorHelper.getSymbolTableIml().toString());
-            System.out.println(methodName);
             secondVisitorHelper.getReportList().add(ReportsUtils.reportEntryError(Stage.SEMANTIC, "This object don't contains this method", Integer.parseInt(node.get("line")), Integer.parseInt(node.get("col"))));
             return true;
         }

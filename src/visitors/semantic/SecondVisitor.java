@@ -101,7 +101,6 @@ public class SecondVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boole
         SeekReturnTypeVisitor seekReturnTypeVisitorLeft = new SeekReturnTypeVisitor();
         SeekReturnTypeVisitor seekReturnTypeVisitorRight = new SeekReturnTypeVisitor();
 
-
         seekReturnTypeVisitorLeft.visit(node.getChildren().get(0), secondVisitorHelper);
         Type typeLeft = seekReturnTypeVisitorLeft.getType();
 
@@ -117,7 +116,6 @@ public class SecondVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boole
             secondVisitorHelper.getReportList().add(ReportsUtils.reportEntryError(Stage.SEMANTIC, "And Operators demand that right operand be a boolean expression", Integer.parseInt(node.get("line")), Integer.parseInt(node.get("col"))));
             return false;
         }
-
         return true;
     }
 
@@ -126,6 +124,9 @@ public class SecondVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boole
         SeekReturnTypeVisitor seekReturnType = new SeekReturnTypeVisitor();
         seekReturnType.visit(node.getChildren().get(0), secondVisitorHelper);
         Type type = seekReturnType.getType();
+
+        if (type == null)
+            return false;
 
         if (!type.getName().equals("boolean") || type.isArray()) {
             secondVisitorHelper.getReportList().add(ReportsUtils.reportEntryError(Stage.SEMANTIC, "Not Operator demand that the expression result in a boolean", Integer.parseInt(node.get("line")), Integer.parseInt(node.get("col"))));
@@ -138,9 +139,9 @@ public class SecondVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boole
         SeekReturnTypeVisitor seekReturnTypeVisitorLeft = new SeekReturnTypeVisitor();
         SeekReturnTypeVisitor seekReturnTypeVisitorRight = new SeekReturnTypeVisitor();
 
-
         seekReturnTypeVisitorLeft.visit(node.getChildren().get(0), secondVisitorHelper);
         Type typeLeft = seekReturnTypeVisitorLeft.getType();
+
 
         if (!typeLeft.getName().equals("int") || typeLeft.isArray()) {
             secondVisitorHelper.getReportList().add(ReportsUtils.reportEntryError(Stage.SEMANTIC, "Less Operators demand that left operand be an integer", Integer.parseInt(node.get("line")), Integer.parseInt(node.get("col"))));
