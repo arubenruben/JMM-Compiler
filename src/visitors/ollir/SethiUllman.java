@@ -109,7 +109,12 @@ public class SethiUllman {
                 node.put("suffix", ".i32");
             }
             case "Boolean" -> {
-                node.put("result", node.get("value"));
+
+                if (node.get("value").equals("true"))
+                    node.put("result", "1");
+                else
+                    node.put("result", "0");
+
                 node.put("suffix", ".bool");
             }
             case "This" -> {
