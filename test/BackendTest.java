@@ -87,7 +87,7 @@ public class BackendTest {
 
     @Test
     public void testSimpleCalculator() {
-        var result = TestUtils.backend(SpecsIo.getResource("custom/backend/top/SimpleCalculator.jmm"));
+        var result = TestUtils.backend(SpecsIo.getResource("custom/backend/top/generic/SimpleCalculator.jmm"));
         TestUtils.noErrors(result.getReports());
         var output = result.run();
         assertEquals("11\n" +

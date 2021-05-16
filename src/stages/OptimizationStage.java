@@ -164,6 +164,8 @@ public class OptimizationStage implements JmmOptimization {
         if (numberWhiles > 0)
             labelAppender = String.valueOf(numberWhiles);
 
+        numberWhiles++;
+
         code.append("Loop").append(labelAppender).append(":").append("\n");
 
         code.append(applyOffsetToString("\t", dealWithWhileCondition(condition, labelAppender, "Body")));
@@ -181,8 +183,6 @@ public class OptimizationStage implements JmmOptimization {
 
         code.append("\n");
 
-        numberWhiles++;
-
         return code.toString();
     }
 
@@ -195,6 +195,8 @@ public class OptimizationStage implements JmmOptimization {
 
         if (numberIfs > 0)
             labelAppender = String.valueOf(numberIfs);
+
+        numberIfs++;
 
         code.append(dealWithIfCondition(condition, labelAppender, "else"));
 
@@ -212,8 +214,6 @@ public class OptimizationStage implements JmmOptimization {
 
         code.append("\n");
 
-        numberIfs++;
-
         return code.toString();
     }
 
@@ -221,7 +221,6 @@ public class OptimizationStage implements JmmOptimization {
         StringBuilder code = new StringBuilder();
 
         final JmmNode logicCondition = condition.getChildren().get(0);
-
 
         switch (logicCondition.getKind()) {
             case "Less" -> {
@@ -267,7 +266,6 @@ public class OptimizationStage implements JmmOptimization {
         StringBuilder code = new StringBuilder();
 
         final JmmNode logicCondition = condition.getChildren().get(0);
-
 
         switch (logicCondition.getKind()) {
             case "Less" -> {
