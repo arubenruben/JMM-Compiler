@@ -7,6 +7,9 @@ import pt.up.fe.comp.jmm.ast.PreorderJmmVisitor;
 import symbols.MethodSymbol;
 import visitors.semantic.helpers.data_helpers.SecondVisitorHelper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SeekReturnTypeVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Type> {
     private Type type;
     private boolean mustFail = false;
@@ -47,7 +50,29 @@ public class SeekReturnTypeVisitor extends PreorderJmmVisitor<SecondVisitorHelpe
                 return type;
             }
 
-            MethodSymbol method = secondVisitorHelper.getSymbolTableIml().getMethodsHashmap().get(node.getChildren().get(1).get("value"));
+            final List<Symbol> parameters = new ArrayList<>();
+            final JmmNode method_called = node.getChildren().get(1);
+
+            if (method_called.getChildren().size() > 0) {
+                final JmmNode parameterBlock = method_called.getChildren().get(0);
+                for (JmmNode parameter : parameterBlock.getChildren()) {
+                    final SeekReturnTypeVisitor returnTypeVisitor = new SeekReturnTypeVisitor();
+                    returnTypeVisitor.visit(parameter, secondVisitorHelper);
+
+                    if (returnTypeVisitor.getType() == null)
+                        return type;
+
+                    if (parameter.getKind().equals("Identifier") && parameter.getKind().contains("value"))
+                        parameters.add(new Symbol(returnTypeVisitor.getType(), parameter.get("value")));
+                    else
+                        parameters.add(new Symbol(returnTypeVisitor.getType(), ""));
+
+                }
+            }
+            String methodName = secondVisitorHelper.nameGenerator(node.getChildren().get(1).get("value"), parameters);
+
+
+            MethodSymbol method = secondVisitorHelper.getSymbolTableIml().getMethodsHashmap().get(methodName);
 
             if (method == null) {
                 mustFail = true;
@@ -56,7 +81,6 @@ public class SeekReturnTypeVisitor extends PreorderJmmVisitor<SecondVisitorHelpe
 
 
             type = method.getType();
-
         }
 
         return type;
