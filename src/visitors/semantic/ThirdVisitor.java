@@ -11,7 +11,6 @@ import visitors.semantic.helpers.SeekMethodParametersVisitor;
 import visitors.semantic.helpers.SeekObjectCallerVisitor;
 import visitors.semantic.helpers.SeekReturnTypeVisitor;
 import visitors.semantic.helpers.data_helpers.SecondVisitorHelper;
-import visitors.semantic.helpers.data_helpers.VisitorDataHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,37 +54,23 @@ public class ThirdVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boolea
 
     protected Boolean dealWithMethodCall(JmmNode node, SecondVisitorHelper secondVisitorHelper) {
 
-        List<Symbol> parameters = new ArrayList<>();
+        final List<Symbol> parameters = new ArrayList<>();
+        final JmmNode method_called = node.getChildren().get(1);
 
-        System.out.println("C: " + secondVisitorHelper.getCurrentMethodName());
-
-        JmmNode method_called = node.getChildren().get(1);
-        List<Symbol> classVariables = secondVisitorHelper.getSymbolTableIml().getLocalVariables(secondVisitorHelper.getCurrentMethodName());
-        classVariables.addAll(secondVisitorHelper.getSymbolTableIml().getParameters(secondVisitorHelper.getCurrentMethodName()));
-
-
-        if(method_called.getChildren().size() > 0){
-            JmmNode parameterBlock = method_called.getChildren().get(0);
-
+        if (method_called.getChildren().size() > 0) {
+            final JmmNode parameterBlock = method_called.getChildren().get(0);
             for (JmmNode parameter : parameterBlock.getChildren()) {
-                if(parameter.getKind().equals("Identifier") && parameter.getAttributes().contains("value") ){
-
-                    for (Symbol variable : classVariables){
-                        if(variable.getName().equals(parameter.get("value"))){
-                            parameters.add(new Symbol(variable.getType(), parameter.get("value")));
-                        }
-                    }
-                }
-                else{
-                    parameters.add(new Symbol(new Type("int",false), "temp"));
-                }
+                final SeekReturnTypeVisitor returnTypeVisitor = new SeekReturnTypeVisitor();
+                returnTypeVisitor.visit(parameter, secondVisitorHelper);
+                if (parameter.getKind().equals("Identifier") && parameter.getKind().contains("value"))
+                    parameters.add(new Symbol(returnTypeVisitor.getType(), parameter.get("value")));
+                else
+                    parameters.add(new Symbol(returnTypeVisitor.getType(), ""));
 
             }
         }
-
-        String methodName = secondVisitorHelper.nameGenerator(method_called.get("value"),parameters);
-        System.out.println("      " + methodName);
-
+        String methodName = secondVisitorHelper.nameGenerator(node.getChildren().get(1).get("value"), parameters);
+        ///Here
         SeekObjectCallerVisitor seekObjectCallerVisitor = new SeekObjectCallerVisitor();
 
         seekObjectCallerVisitor.visit(node.getChildren().get(0), secondVisitorHelper);
@@ -113,7 +98,8 @@ public class ThirdVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boolea
             return true;
 
         if (!secondVisitorHelper.getSymbolTableIml().getMethodsHashmap().containsKey(methodName)) {
-           // System.out.println(methodName);
+            System.out.println(secondVisitorHelper.getSymbolTableIml().toString());
+            System.out.println(methodName);
             secondVisitorHelper.getReportList().add(ReportsUtils.reportEntryError(Stage.SEMANTIC, "This object don't contains this method", Integer.parseInt(node.get("line")), Integer.parseInt(node.get("col"))));
             return true;
         }
@@ -142,7 +128,6 @@ public class ThirdVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boolea
 
         return true;
     }
-
 
 
     protected Boolean dealWithNewArray(JmmNode node, SecondVisitorHelper secondVisitorHelper) {

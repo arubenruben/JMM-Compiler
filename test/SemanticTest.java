@@ -34,7 +34,7 @@ public class SemanticTest {
 
     @Test
     public void testLazySort() {
-        testFile("fixtures/public/Lazysort.jmm", true);
+        testFile("fixtures/public/Lazysort.jmm", false);
     }
 
     @Test
@@ -47,10 +47,9 @@ public class SemanticTest {
         testFile("fixtures/public/MonteCarloPi.jmm", false);
     }
 
-
     @Test
     public void testQuickSort() {
-        testFile("fixtures/public/QuickSort.jmm", true);
+        testFile("fixtures/public/QuickSort.jmm", false);
     }
 
     @Test
@@ -135,12 +134,12 @@ public class SemanticTest {
     }
 
     @Test
-    public void testAssigmentOk() {
+    public void testAssignmentOk() {
         testFile("custom/semantic/type_verification/test_assignment_ok.jmm", false);
     }
 
     @Test
-    public void testAssigmentFail() {
+    public void testAssignmentFail() {
         testFile("custom/semantic/type_verification/test_assignment_fail.jmm", true);
     }
 

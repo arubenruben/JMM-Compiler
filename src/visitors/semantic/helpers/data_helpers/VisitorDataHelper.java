@@ -23,19 +23,20 @@ public class VisitorDataHelper {
         return reportList;
     }
 
-    public String nameGenerator(String methodName, List<Symbol> parameters){
+    public String nameGenerator(String methodName, List<Symbol> parameters) {
 
-        StringBuilder returnString = new StringBuilder();
+        final StringBuilder returnString = new StringBuilder();
 
         returnString.append(methodName);
-        if(methodName.equals("main")){
+
+        if (methodName.equals("main"))
             return returnString.toString();
-        }
-        for(Symbol symbol : parameters){
-            returnString.append("_" + symbol.getType().getName());
-            if(symbol.getType().isArray()){
+
+        for (Symbol symbol : parameters) {
+            returnString.append("_").append(symbol.getType().getName());
+            if (symbol.getType().isArray())
                 returnString.append("_arr");
-            }
+
         }
         return returnString.toString();
     }
