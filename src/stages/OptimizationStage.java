@@ -294,7 +294,7 @@ public class OptimizationStage implements JmmOptimization {
                 code.append(logicCondition.getChildren().get(0).get("prefix")).append(logicCondition.getChildren().get(0).get("result")).append(logicCondition.getChildren().get(0).get("suffix"));
                 code.append(") goto").append(" ").append(gotoLabel).append(labelAppender).append(";").append("\n");
             }
-            case "Identifier" -> {
+            case "Identifier", "Integer", "Boolean" -> {
                 code.append(SethiUllman.run(logicCondition));
                 code.append("if(");
                 code.append(logicCondition.get("prefix")).append(logicCondition.get("result")).append(logicCondition.get("suffix"));

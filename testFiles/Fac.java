@@ -2,9 +2,10 @@ import io;
 
 class HelloWorld {
     public static void main(String[] args) {
+        int c;
+        /*
         int a;
         int b;
-        int c;
         boolean d;
         boolean f;
         a = 10;
@@ -18,15 +19,17 @@ class HelloWorld {
             c = b;
         }
 
+         */
+
         // 10
         io.println(c);
 
-        if (true) {
+        if (1) {
             c = 5;
         } else {
             c = 6;
         }
-
+        /*
         // 5
         io.println(c);
 
@@ -35,9 +38,11 @@ class HelloWorld {
         } else {
             c = 2;
         }
+         */
 
         // 2
         io.println(c);
+
 
     }
 }
