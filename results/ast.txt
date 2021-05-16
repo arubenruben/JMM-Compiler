@@ -166,11 +166,11 @@
                         },
                         "children": [
                           {
-                            "kind": "Integer",
+                            "kind": "Boolean",
                             "attributes": {
-                              "col": "14",
+                              "col": "17",
                               "line": "27",
-                              "value": "1"
+                              "value": "true"
                             },
                             "children": []
                           }
@@ -179,7 +179,7 @@
                       {
                         "kind": "Then",
                         "attributes": {
-                          "col": "16",
+                          "col": "19",
                           "line": "27"
                         },
                         "children": [

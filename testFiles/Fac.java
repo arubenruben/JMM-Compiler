@@ -24,7 +24,7 @@ class HelloWorld {
         // 10
         io.println(c);
 
-        if (1) {
+        if (true) {
             c = 5;
         } else {
             c = 6;
