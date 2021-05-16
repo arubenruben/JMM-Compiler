@@ -284,7 +284,7 @@ public class OptimizationStage implements JmmOptimization {
                 code.append(SethiUllman.run(logicCondition.getChildren().get(1)));
                 code.append("if(");
                 code.append(logicCondition.getChildren().get(0).get("prefix")).append(logicCondition.getChildren().get(0).get("result")).append(logicCondition.getChildren().get(0).get("suffix"));
-                code.append(" ").append("&&.bool").append(" ");
+                code.append(" ").append("||.bool").append(" ");
                 code.append(logicCondition.getChildren().get(1).get("prefix")).append(logicCondition.getChildren().get(1).get("result")).append(logicCondition.getChildren().get(1).get("suffix"));
                 code.append(") goto").append(" ").append(gotoLabel).append(labelAppender).append(";").append("\n");
             }
@@ -292,7 +292,7 @@ public class OptimizationStage implements JmmOptimization {
                 code.append(SethiUllman.run(logicCondition.getChildren().get(0)));
                 code.append("if(");
                 code.append(logicCondition.getChildren().get(0).get("prefix")).append(logicCondition.getChildren().get(0).get("result")).append(logicCondition.getChildren().get(0).get("suffix"));
-                code.append(" ").append("!.bool").append(" ");
+                code.append(" ").append("&&.bool").append(" ");
                 code.append(logicCondition.getChildren().get(0).get("prefix")).append(logicCondition.getChildren().get(0).get("result")).append(logicCondition.getChildren().get(0).get("suffix"));
                 code.append(") goto").append(" ").append(gotoLabel).append(labelAppender).append(";").append("\n");
             }
@@ -300,7 +300,7 @@ public class OptimizationStage implements JmmOptimization {
                 code.append(SethiUllman.run(logicCondition));
                 code.append("if(");
                 code.append(logicCondition.get("prefix")).append(logicCondition.get("result")).append(logicCondition.get("suffix"));
-                code.append(" ").append("&&.bool").append(" ");
+                code.append(" ").append("!.bool").append(" ");
                 code.append(logicCondition.get("prefix")).append(logicCondition.get("result")).append(logicCondition.get("suffix"));
                 code.append(") goto").append(" ").append(gotoLabel).append(labelAppender).append(";").append("\n");
             }

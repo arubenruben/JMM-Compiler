@@ -1,47 +1,47 @@
 import io;
 
 class SimpleCalculator {
-	public static void main(String[] args) {
-		int a;
-		SimpleCalculator calc;
-		calc = new SimpleCalculator();
+    public static void main(String[] args) {
+        int a;
+        SimpleCalculator calc;
+        calc = new SimpleCalculator();
 
-		a = calc.sum(7, 4);
-		io.print(a);
+        a = calc.sum(7, 4);
+        io.println(a);
 
-		a = calc.sub(15, 9);
-		io.print(a);
+        a = calc.sub(15, 9);
+        io.println(a);
 
-		a = calc.mult(3, 7);
-		io.print(a);
+        a = calc.mult(3, 7);
+        io.println(a);
 
-		a = calc.div(8, 4);
-		io.print(a);
+        a = calc.div(8, 4);
+        io.println(a);
 
-		a = calc.pow(2, 3);
-		io.print(a);
+        a = calc.pow(2, 3);
+        io.println(a);
 
-		a = calc.permutations(6, 3);
-		io.print(a);
+        //a = calc.permutations(6, 3);
+        //io.println(a);
 
-		a = calc.combinations(6, 4);
-		io.print(a);
+        //a = calc.combinations(6, 4);
+        //io.println(a);
 
-		a = calc.triangleArea(4, 9);
-		io.print(a);
+        //a = calc.triangleArea(4, 9);
+        //io.println(a);
 
-		a = calc.cubeVolume(3);
-		io.print(a);
-	}
+        a = calc.cubeVolume(3);
+        io.println(a);
+    }
 
-	public int sum(int num1, int num2) {
-	    int res;
-	    res = num1 + num2;
+    public int sum(int num1, int num2) {
+        int res;
+        res = num1 + num2;
 
-	    return res;
-	}
+        return res;
+    }
 
-	public int sub(int num1, int num2) {
+    public int sub(int num1, int num2) {
         int res;
         res = num1 - num2;
 
@@ -83,7 +83,7 @@ class SimpleCalculator {
         i = 1;
 
         if (n < 0) {
-            return res;
+            res = 1;
         } else {
             while (i - 1 < n) {
                 res = res * i;
@@ -98,15 +98,20 @@ class SimpleCalculator {
         int res;
         res = 0;
 
-        /*if (n < 1) {
-            return res;
-        } else if (k < 1) {
-            return res;
-        } else if (n < k) {
-            return res;
-        }*/
+        if (n < 1) {
+            res = 0;
+        } else {
+            if (k < 1) {
+                res = 0;
+            } else {
+                if (n < k) {
+                    res = 0;
+                } else {
+                    res = this.factorial(n) / this.factorial(n - k);
+                }
 
-        res = this.factorial(n) / this.factorial(n - k);
+            }
+        }
 
         return res;
     }
@@ -115,15 +120,20 @@ class SimpleCalculator {
         int res;
         res = 0;
 
-        /*if (n < 1) {
-            return res;
-        } else if (k < 1) {
-            return res;
-        } else if (n < k) {
-            return res;
-        }*/
+        if (n < 1) {
+            res = 0;
+        } else {
+            if (k < 1) {
+                res = 0;
+            } else {
+                if (n < k) {
+                    res = 0;
+                } else {
+                    res = this.factorial(n) / (this.factorial(k) * this.factorial(n - k));
+                }
 
-        res = this.factorial(n) / (this.factorial(k) * this.factorial(n - k));
+            }
+        }
 
         return res;
     }
@@ -132,13 +142,15 @@ class SimpleCalculator {
         int res;
         res = 0;
 
-        /*if (base < 0) {
-            return res;
-        } else if (height < 0) {
-            return res;
-        }*/
-
-        res = base * height / 2;
+        if (base < 0) {
+            res = 0;
+        } else {
+            if (height < 0) {
+                res = 0;
+            } else {
+                res = base * height / 2;
+            }
+        }
 
         return res;
     }
@@ -147,11 +159,11 @@ class SimpleCalculator {
         int res;
         res = 0;
 
-        /*if (side < 0) {
-            return res;
-        }*/
-
-        res = this.pow(side, 3);
+        if (side < 0) {
+            res = 0;
+        } else {
+            res = this.pow(side, 3);
+        }
 
         return res;
     }
