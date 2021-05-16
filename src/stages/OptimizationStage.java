@@ -10,6 +10,8 @@ import pt.up.fe.comp.jmm.report.Report;
 import symbols.MethodSymbol;
 import symbols.SymbolTableIml;
 import visitors.ollir.SethiUllman;
+import visitors.semantic.helpers.SeekReturnTypeVisitor;
+import visitors.semantic.helpers.data_helpers.SecondVisitorHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -466,8 +468,31 @@ public class OptimizationStage implements JmmOptimization {
 
         Type type = null;
 
-        if (symbolTable.getMethodsHashmap().containsKey(rightChild.get("value")))
-            type = symbolTable.getMethodsHashmap().get(rightChild.get("value")).getType();
+
+        final List<Symbol> parameters = new ArrayList<>();
+        final JmmNode method_called = node.getChildren().get(1);
+        final SecondVisitorHelper secondVisitorHelper = new SecondVisitorHelper(currentMethod.getName(), symbolTable, new ArrayList<>());
+        if (method_called.getChildren().size() > 0) {
+            final JmmNode parameterBlock = method_called.getChildren().get(0);
+            for (JmmNode parameter : parameterBlock.getChildren()) {
+                final SeekReturnTypeVisitor returnTypeVisitor = new SeekReturnTypeVisitor();
+                returnTypeVisitor.visit(parameter, secondVisitorHelper);
+
+                if (returnTypeVisitor.getType() == null)
+                    return "";
+
+                if (parameter.getKind().equals("Identifier") && parameter.getKind().contains("value"))
+                    parameters.add(new Symbol(returnTypeVisitor.getType(), parameter.get("value")));
+                else
+                    parameters.add(new Symbol(returnTypeVisitor.getType(), ""));
+
+            }
+        }
+        String methodName = secondVisitorHelper.nameGenerator(node.getChildren().get(1).get("value"), parameters);
+
+
+        if (symbolTable.getMethodsHashmap().containsKey(methodName))
+            type = symbolTable.getMethodsHashmap().get(methodName).getType();
 
 
         code.append("invokevirtual(");
@@ -480,7 +505,7 @@ public class OptimizationStage implements JmmOptimization {
         if (!leftChild.getKind().equals("This"))
             code.append(leftChild.get("suffix"));
 
-        code.append(", \"").append(rightChild.get("value")).append("\"");
+        code.append(", \"").append(methodName).append("\"");
 
         if (rightChild.getNumChildren() > 0) {
             for (JmmNode parameter : rightChild.getChildren().get(0).getChildren())
