@@ -32,6 +32,11 @@ class Convertor {
 
         convertor_aux=new Convertor();
 
-        io.println(convertor_aux.metersToDecimeters(convertor_aux.metersToCentimeters(convertor_aux.metersToMillimeters(convertor_aux.millimetersToCentimeters(convertor_aux.millimetersToDecimeters(convertor_aux.millimetersToMeters(1000)))))));
+        io.println(convertor_aux.metersToDecimeters(1));
+        io.println(convertor_aux.metersToCentimeters(1));
+        io.println(convertor_aux.metersToMillimeters(1));
+        io.println(convertor_aux.millimetersToCentimeters(10));
+        io.println(convertor_aux.millimetersToDecimeters(100));
+        io.println(convertor_aux.millimetersToMeters(1000));
     }
 }

@@ -123,14 +123,16 @@ public class BackendTest {
     }
 
     @Test
-    public void testConversor() {
-        var result = TestUtils.backend(SpecsIo.getResource("custom/backend/top/generic/ConversorUnits.jmm"));
+    public void testConvertor() {
+        var result = TestUtils.backend(SpecsIo.getResource("custom/backend/top/generic/ConvertorUnits.jmm"));
         TestUtils.noErrors(result.getReports());
         var output = result.run();
         assertEquals("10\n" +
-                "8\n" +
-                "true\n" +
-                "false", output.trim());
+                "100\n" +
+                "1000\n" +
+                "1\n" +
+                "1\n" +
+                "1", output.trim());
     }
 
 
