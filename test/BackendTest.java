@@ -143,7 +143,8 @@ public class BackendTest {
         assertEquals("01234567890123456789\n" +
                 "1\n" +
                 "012\n" +
-                "3", output.trim());
+                "3\n" +
+                "0123456789", output.trim());
     }
 
     @Test

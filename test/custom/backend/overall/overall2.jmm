@@ -32,7 +32,7 @@ class Overall2 {
             } else {
                 counter = counter * 0;
             }
-            
+
             i = i + 1;
         }
 
