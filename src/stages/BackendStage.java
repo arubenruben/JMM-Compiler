@@ -169,7 +169,6 @@ public class BackendStage implements JasminBackend {
                 returnInstruction = true;
         }
 
-
         // limits
         stringBuilder.append("\t.limit stack ").append(maxLimitStack).append("\n");
 
@@ -194,10 +193,21 @@ public class BackendStage implements JasminBackend {
         return stringBuilder.toString();
     }
 
-    // Functions to deal with each type of instructions
+    private String clearStack(){
+        StringBuilder stringBuilder = new StringBuilder();
+        for(int i = 0; i < currentStack; i++){
+            stringBuilder.append("\tpop\n");
+        }
+        return stringBuilder.toString();
+    }
 
+    // Functions to deal with each type of instructions
     private String dealWithInstruction(Method method, Instruction instruction){
         StringBuilder stringBuilder = new StringBuilder();
+
+        if(method.getLabels(instruction).size() > 0){
+            clearStack();
+        }
 
         for (String label : method.getLabels(instruction)) {
             stringBuilder.append("\t").append(label).append(":\n");
@@ -392,16 +402,17 @@ public class BackendStage implements JasminBackend {
 
     private String dealWithGotoInstruction(Method method, GotoInstruction gotoInstruction){
         StringBuilder stringBuilder = new StringBuilder();
-        for(int i = 0; i < currentStack; i++){
-            stringBuilder.append("\tpop\n");
-        }
+        stringBuilder.append(clearStack());
         stringBuilder.append("\tgoto " + gotoInstruction.getLabel() + "\n");
         return stringBuilder.toString();
     }
 
-    private String dealWithCondBranchInstruction(Method method, CondBranchInstruction condBranchInstruction){ StringBuilder stringBuilder = new StringBuilder();
+    private String dealWithCondBranchInstruction(Method method, CondBranchInstruction condBranchInstruction){
+        StringBuilder stringBuilder = new StringBuilder();
 
         Operation operation = condBranchInstruction.getCondOperation();
+
+        stringBuilder.append(clearStack());
 
         if(operation.getOpType() != OperationType.NOT && operation.getOpType() != OperationType.NOTB){
             stringBuilder.append(dealWithElementPush(method, condBranchInstruction.getLeftOperand()));

@@ -164,8 +164,7 @@ class List {
 
         io.println();
 
-        list.sort(list3, 0, list3.length - 1);
-        list.print(list1);
-
+        list.sort(list1, 0, result_list.length - 1);
+        list.print(result_list);
     }
 }
