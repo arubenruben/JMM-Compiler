@@ -69,36 +69,36 @@ class List {
 
         return result;
     }
-    /*
-    public boolean quicksort(int[] L, int lo, int hi) {
+
+    public boolean quicksort(int[] list, int lo, int hi) {
         int p;
 
         if (lo < hi) {
-            p = this.partition(L, lo, hi);
+            p = this.partition(list, lo, hi);
 
-            this.quicksort(L, lo, p - 1);
-            this.quicksort(L, p + 1, hi);
+            this.quicksort(list, lo, p - 1);
+            this.quicksort(list, p + 1, hi);
         } else {
         }
 
         return true;
     }
 
-    public int partition(int[] L, int lo, int hi) {
+    public int partition(int[] list, int lo, int hi) {
         int p;
         int i;
         int j;
         int tmp;
 
-        p = L[hi];
+        p = list[hi];
         i = lo;
         j = lo;
 
         while (j < hi) {
-            if (L[j] < p) {
-                tmp = L[i];
-                L[i] = L[j];
-                L[j] = tmp;
+            if (list[j] < p) {
+                tmp = list[i];
+                list[i] = list[j];
+                list[j] = tmp;
 
                 i = i + 1;
             } else {
@@ -107,14 +107,13 @@ class List {
             j = j + 1;
         }
 
-        tmp = L[i];
-        L[i] = L[hi];
-        L[hi] = tmp;
+        tmp = list[i];
+        list[i] = list[hi];
+        list[hi] = tmp;
 
         return i;
-
     }
-    */
+
 
     public static void main(String[] args) {
         int[] list1;
@@ -150,10 +149,10 @@ class List {
         result_list = list.slice(list1, 3, 4);
         list.print(result_list);
 
-        //io.println();
+        /*io.println();
 
-        //result_list = list.quicksort(list1, 0, result_list.length - 1)
-        //list.print(result_list);
+        result_list = list.quicksort(list1, 0, result_list.length - 1)
+        list.print(result_list);*/
 
     }
 }
