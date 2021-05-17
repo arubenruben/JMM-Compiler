@@ -9,25 +9,30 @@ class Overall2 {
         int counter;
 
         list = new int[10];
+        i = 0;
+        counter=0;
 
         while (i < list.length) {
             list[i] = i;
             i = i + 1;
         }
 
-        if (!i < 0) {
+        if (i < 0) {
             i = 0;
         } else {
             i = 0;
         }
 
         while (i < list.length) {
-            if (!i < 0) {
-                counter = counter * 0;
-            } else {
+
+            counter = counter + list[i];
+
+            if (i < 0) {
                 counter = 0;
+            } else {
+                counter = counter * 0;
             }
-            counter = counter + list[i]
+            
             i = i + 1;
         }
 

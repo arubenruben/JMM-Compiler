@@ -1,0 +1,35 @@
+import io;
+
+class Overall1 {
+
+    public static void main(String[] args) {
+
+        int[] list;
+        int i;
+        int counter;
+
+        list = new int[10];
+        i=0;
+        while (i < list.length) {
+            list[i] = i;
+            i = i + 1;
+        }
+
+        counter = 0;
+
+        i=0;
+
+        while (i < list.length) {
+            counter = counter + list[i];
+            i=i+1;
+        }
+
+        if (counter < 100)
+            io.println(counter);
+        else
+            io.println(0);
+
+        counter = 0;
+
+    }
+}

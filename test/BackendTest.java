@@ -30,7 +30,7 @@ public class BackendTest {
 
     @Test
     public void testBinaryOperation() {
-        var result = TestUtils.backend(SpecsIo.getResource("custom/backend/test_binary_operation.jmm"));
+        var result = TestUtils.backend(SpecsIo.getResource("custom/backend/specific/test_binary_operation.jmm"));
         TestUtils.noErrors(result.getReports());
         var output = result.run();
         assertEquals("41283", output.trim());
@@ -38,7 +38,7 @@ public class BackendTest {
 
     @Test
     public void testInvokeStatic() {
-        var result = TestUtils.backend(SpecsIo.getResource("custom/backend/test_invoke_static.jmm"));
+        var result = TestUtils.backend(SpecsIo.getResource("custom/backend/specific/test_invoke_static.jmm"));
         TestUtils.noErrors(result.getReports());
         var output = result.run();
         assertEquals("Result: 3", output.trim());
@@ -46,7 +46,7 @@ public class BackendTest {
 
     @Test
     public void testArrayAccess() {
-        var result = TestUtils.backend(SpecsIo.getResource("custom/backend/test_array_access.jmm"));
+        var result = TestUtils.backend(SpecsIo.getResource("custom/backend/specific/test_array_access.jmm"));
         TestUtils.noErrors(result.getReports());
         var output = result.run();
         assertEquals("Result: 10", output.trim());
@@ -54,7 +54,7 @@ public class BackendTest {
 
     @Test
     public void testInvokeVirtual() {
-        var result = TestUtils.backend(SpecsIo.getResource("custom/backend/test_invoke_virtual.jmm"));
+        var result = TestUtils.backend(SpecsIo.getResource("custom/backend/specific/test_invoke_virtual.jmm"));
         TestUtils.noErrors(result.getReports());
         var output = result.run();
         assertEquals("8", output.trim());
@@ -62,7 +62,7 @@ public class BackendTest {
 
     @Test
     public void testIfCondition() {
-        var result = TestUtils.backend(SpecsIo.getResource("custom/backend/test_if_condition.jmm"));
+        var result = TestUtils.backend(SpecsIo.getResource("custom/backend/specific/test_if_condition.jmm"));
         TestUtils.noErrors(result.getReports());
         var output = result.run();
         assertEquals("10\n" +
@@ -144,6 +144,22 @@ public class BackendTest {
                 "1\n" +
                 "012\n" +
                 "3", output.trim());
+    }
+
+    @Test
+    public void testOverall1() {
+        var result = TestUtils.backend(SpecsIo.getResource("custom/backend/overall/overall1.jmm"));
+        TestUtils.noErrors(result.getReports());
+        var output = result.run();
+        assertEquals("45", output.trim());
+    }
+
+    @Test
+    public void testOverall2() {
+        var result = TestUtils.backend(SpecsIo.getResource("custom/backend/overall/overall2.jmm"));
+        TestUtils.noErrors(result.getReports());
+        var output = result.run();
+        assertEquals("0", output.trim());
     }
 
 
