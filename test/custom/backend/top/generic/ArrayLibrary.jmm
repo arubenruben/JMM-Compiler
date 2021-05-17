@@ -158,10 +158,10 @@ class List {
         result_list = list.slice(list1, 3, 4);
         list.print(result_list);
 
-        /*io.println();
+        io.println();
 
-        //result_list = list.sort(list1, 0, result_list.length - 1)
-        //list.print(result_list);
+        result_list = list.sort(list1, 0, result_list.length - 1);
+        list.print(result_list);
 
     }
 }

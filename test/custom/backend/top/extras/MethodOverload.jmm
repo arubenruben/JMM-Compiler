@@ -30,7 +30,7 @@ class Duck {
 
         arnaldo.quack(arnaldo);
         arnaldo.quack(jose);
-        //arnaldo.quack(int_animal);
-        //arnaldo.quack(bool_animal);
+        arnaldo.quack(int_animal);
+        arnaldo.quack(bool_animal);
     }
 }
