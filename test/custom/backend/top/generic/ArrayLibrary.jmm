@@ -69,16 +69,25 @@ class List {
 
         return result;
     }
-    /*
-    public boolean quicksort(int[] L, int lo, int hi) {
+
+    public boolean sort(int[] list, int lo, int hi) {
         int p;
+        int dummy;
+        int[] par1;
+        int par2;
+        int par3;
 
-        if (lo < hi) {
-            p = this.partition(L, lo, hi);
+        par1=list;
+        par2=lo;
+        par3=hi;
 
-            this.quicksort(L, lo, p - 1);
-            this.quicksort(L, p + 1, hi);
+        if (par2 < par3) {
+            p = this.partition(par1, par2, par3);
+
+            this.sort(par1, par2, p - 1);
+            this.sort(par1, p + 1, par3);
         } else {
+            dummy = 0;
         }
 
         return true;
@@ -114,7 +123,6 @@ class List {
         return i;
 
     }
-    */
 
     public static void main(String[] args) {
         int[] list1;
@@ -152,7 +160,7 @@ class List {
 
         //io.println();
 
-        //result_list = list.quicksort(list1, 0, result_list.length - 1)
+        //result_list = list.sort(list1, 0, result_list.length - 1)
         //list.print(result_list);
 
     }

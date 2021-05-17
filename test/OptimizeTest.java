@@ -84,14 +84,11 @@ public class OptimizeTest {
         testFile("fixtures/public/MonteCarloPi.jmm", false);
     }
 
-
-    /*TODO:Allow method overload
     @Test
-    public void testQuickSort() {
-        testFile("fixtures/public/QuickSort.jmm", true);
-    }
 
-     */
+    public void testQuickSort() {
+        testFile("fixtures/public/QuickSort.jmm", false);
+    }
 
     @Test
     public void testTicTacToe() {

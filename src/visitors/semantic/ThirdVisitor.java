@@ -7,7 +7,6 @@ import pt.up.fe.comp.jmm.ast.PreorderJmmVisitor;
 import pt.up.fe.comp.jmm.report.Stage;
 import symbols.MethodSymbol;
 import utils.ReportsUtils;
-import visitors.semantic.helpers.SeekMethodParametersVisitor;
 import visitors.semantic.helpers.SeekObjectCallerVisitor;
 import visitors.semantic.helpers.SeekReturnTypeVisitor;
 import visitors.semantic.helpers.data_helpers.SecondVisitorHelper;
@@ -107,10 +106,25 @@ public class ThirdVisitor extends PreorderJmmVisitor<SecondVisitorHelper, Boolea
         }
         MethodSymbol method = secondVisitorHelper.getSymbolTableIml().getMethodsHashmap().get(methodName);
 
-        SeekMethodParametersVisitor seekMethodParametersVisitor = new SeekMethodParametersVisitor();
-        seekMethodParametersVisitor.visit(node, secondVisitorHelper);
+        final List<Type> listParameters = new ArrayList<>();
 
-        List<Type> listParameters = seekMethodParametersVisitor.getParameters();
+        if (node.getChildren().get(1).getNumChildren() > 0) {
+            final JmmNode parameterNode = node.getChildren().get(1).getChildren().get(0);
+
+            for (JmmNode childNode : parameterNode.getChildren()) {
+
+                SeekReturnTypeVisitor seekReturnTypeVisitor = new SeekReturnTypeVisitor();
+
+                seekReturnTypeVisitor.visit(childNode, secondVisitorHelper);
+                Type type = seekReturnTypeVisitor.getType();
+
+                if (type == null)
+                    type = new Type("static", false);
+
+                listParameters.add(type);
+            }
+
+        }
 
         if (listParameters.size() != method.getParameters().size()) {
             secondVisitorHelper.getReportList().add(ReportsUtils.reportEntryError(Stage.SEMANTIC, "Method invocation with the wrong number of parameters", Integer.parseInt(node.get("line")), Integer.parseInt(node.get("col"))));
