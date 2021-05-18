@@ -163,5 +163,21 @@ public class BackendTest {
         assertEquals("0", output.trim());
     }
 
+    @Test
+    public void testOverall3() {
+        var result = TestUtils.backend(SpecsIo.getResource("custom/backend/overall/overall3.jmm"));
+        TestUtils.noErrors(result.getReports());
+        var output = result.run("12\n13");
+        assertEquals("25", output.trim());
+    }
+
+    @Test
+    public void testOverall4() {
+        var result = TestUtils.backend(SpecsIo.getResource("custom/backend/overall/overall4.jmm"));
+        TestUtils.noErrors(result.getReports());
+        var output = result.run("12\n");
+        assertEquals("12", output.trim());
+    }
+
 
 }

@@ -1,0 +1,11 @@
+import io;
+
+class Overall3 {
+    public static void main(String[] args) {
+        int value;
+        int value1;
+        value = io.read();
+        value1 = io.read();
+        io.println(value+value1);
+    }
+}
