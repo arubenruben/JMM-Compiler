@@ -45,6 +45,7 @@ public class OptimizationStage implements JmmOptimization {
 
         code.append(dealWithClassHeaders());
 
+
         for (MethodSymbol method : symbolTable.getMethodsHashmap().values()) {
             SethiUllman.initialize(symbolTable, method.getName());
             code.append(dealWithMethod(method));
@@ -52,6 +53,17 @@ public class OptimizationStage implements JmmOptimization {
 
         code.append(dealWithFooter());
 
+        return code.toString();
+    }
+
+    private String dealWithClassFields() {
+        StringBuilder code = new StringBuilder();
+
+        for (Symbol field : symbolTable.getClassFields().values()) {
+            code.append("\t").append(".field").append(" ").append("protected").append(" ").append(dealWithSymbol(field));
+            code.append(";");
+            code.append("\n");
+        }
         return code.toString();
     }
 
@@ -73,6 +85,9 @@ public class OptimizationStage implements JmmOptimization {
         StringBuilder code = new StringBuilder();
 
         code.append(symbolTable.getClassName()).append(" ").append("{").append("\n");
+
+        code.append(dealWithClassFields());
+
         code.append("\t").append(".construct ").append(symbolTable.getClassName()).append("().V").append("{").append("\n");
         code.append("\t\t").append("invokespecial").append("(this,").append("\"<init>\")").append(".V;").append("\n");
         code.append("\t").append("}");

@@ -20,14 +20,162 @@
         "attributes": {
           "col": "1",
           "line": "3",
-          "value": "Overall4"
+          "value": "HelloWorld"
         },
         "children": [
+          {
+            "kind": "VarDeclaration",
+            "attributes": {
+              "col": "5",
+              "line": "5",
+              "value": "a"
+            },
+            "children": [
+              {
+                "kind": "Type",
+                "attributes": {
+                  "col": "5",
+                  "line": "5",
+                  "isArray": "false",
+                  "value": "int"
+                },
+                "children": []
+              }
+            ]
+          },
           {
             "kind": "ClassMethod",
             "attributes": {
               "col": "12",
-              "line": "4",
+              "line": "7",
+              "value": "classFieldAccess"
+            },
+            "children": [
+              {
+                "kind": "Type",
+                "attributes": {
+                  "col": "12",
+                  "line": "7",
+                  "isArray": "false",
+                  "value": "int"
+                },
+                "children": []
+              },
+              {
+                "kind": "Parameters",
+                "attributes": {
+                  "col": "33",
+                  "line": "7"
+                },
+                "children": []
+              },
+              {
+                "kind": "Body",
+                "attributes": {
+                  "col": "9",
+                  "line": "8"
+                },
+                "children": [
+                  {
+                    "kind": "Assignment",
+                    "attributes": {
+                      "col": "13",
+                      "line": "8"
+                    },
+                    "children": [
+                      {
+                        "kind": "Identifier",
+                        "attributes": {
+                          "col": "11",
+                          "line": "8",
+                          "value": "a"
+                        },
+                        "children": []
+                      },
+                      {
+                        "kind": "Integer",
+                        "attributes": {
+                          "col": "14",
+                          "line": "8",
+                          "value": "5"
+                        },
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "MethodCall",
+                    "attributes": {
+                      "col": "12",
+                      "line": "11"
+                    },
+                    "children": [
+                      {
+                        "kind": "Identifier",
+                        "attributes": {
+                          "col": "11",
+                          "line": "11",
+                          "value": "io"
+                        },
+                        "children": []
+                      },
+                      {
+                        "kind": "Identifier",
+                        "attributes": {
+                          "col": "12",
+                          "line": "11",
+                          "value": "println"
+                        },
+                        "children": [
+                          {
+                            "kind": "Parameters",
+                            "attributes": {
+                              "col": "20",
+                              "line": "11"
+                            },
+                            "children": [
+                              {
+                                "kind": "Identifier",
+                                "attributes": {
+                                  "col": "21",
+                                  "line": "11",
+                                  "value": "a"
+                                },
+                                "children": []
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "Return",
+                "attributes": {
+                  "col": "17",
+                  "line": "12"
+                },
+                "children": [
+                  {
+                    "kind": "Integer",
+                    "attributes": {
+                      "col": "17",
+                      "line": "12",
+                      "value": "0"
+                    },
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "kind": "ClassMethod",
+            "attributes": {
+              "col": "12",
+              "line": "15",
               "value": "main"
             },
             "children": [
@@ -35,7 +183,7 @@
                 "kind": "Type",
                 "attributes": {
                   "col": "12",
-                  "line": "4",
+                  "line": "15",
                   "isArray": "false",
                   "value": "void"
                 },
@@ -45,21 +193,21 @@
                 "kind": "Parameters",
                 "attributes": {
                   "col": "29",
-                  "line": "4"
+                  "line": "15"
                 },
                 "children": [
                   {
                     "kind": "Parameter",
                     "attributes": {
                       "col": "38",
-                      "line": "4"
+                      "line": "15"
                     },
                     "children": [
                       {
                         "kind": "Type",
                         "attributes": {
                           "col": "29",
-                          "line": "4",
+                          "line": "15",
                           "isArray": "true",
                           "value": "String"
                         },
@@ -69,7 +217,7 @@
                         "kind": "Identifier",
                         "attributes": {
                           "col": "38",
-                          "line": "4",
+                          "line": "15",
                           "value": "args"
                         },
                         "children": []
@@ -82,14 +230,14 @@
                 "kind": "Body",
                 "attributes": {
                   "col": "9",
-                  "line": "5"
+                  "line": "16"
                 },
                 "children": [
                   {
                     "kind": "VarDeclaration",
                     "attributes": {
                       "col": "9",
-                      "line": "5",
+                      "line": "16",
                       "value": "value"
                     },
                     "children": [
@@ -97,9 +245,56 @@
                         "kind": "Type",
                         "attributes": {
                           "col": "9",
-                          "line": "5",
+                          "line": "16",
                           "isArray": "false",
                           "value": "int"
+                        },
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "VarDeclaration",
+                    "attributes": {
+                      "col": "9",
+                      "line": "18",
+                      "value": "helloWorld"
+                    },
+                    "children": [
+                      {
+                        "kind": "Type",
+                        "attributes": {
+                          "col": "9",
+                          "line": "18",
+                          "isArray": "false",
+                          "value": "HelloWorld"
+                        },
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "Assignment",
+                    "attributes": {
+                      "col": "22",
+                      "line": "19"
+                    },
+                    "children": [
+                      {
+                        "kind": "Identifier",
+                        "attributes": {
+                          "col": "20",
+                          "line": "19",
+                          "value": "helloWorld"
+                        },
+                        "children": []
+                      },
+                      {
+                        "kind": "NewObject",
+                        "attributes": {
+                          "col": "26",
+                          "line": "19",
+                          "value": "HelloWorld"
                         },
                         "children": []
                       }
@@ -109,14 +304,14 @@
                     "kind": "Assignment",
                     "attributes": {
                       "col": "17",
-                      "line": "6"
+                      "line": "20"
                     },
                     "children": [
                       {
                         "kind": "Identifier",
                         "attributes": {
                           "col": "15",
-                          "line": "6",
+                          "line": "20",
                           "value": "value"
                         },
                         "children": []
@@ -124,73 +319,27 @@
                       {
                         "kind": "MethodCall",
                         "attributes": {
-                          "col": "20",
-                          "line": "6"
+                          "col": "28",
+                          "line": "20"
                         },
                         "children": [
                           {
                             "kind": "Identifier",
                             "attributes": {
-                              "col": "19",
-                              "line": "6",
-                              "value": "io"
+                              "col": "27",
+                              "line": "20",
+                              "value": "helloWorld"
                             },
                             "children": []
                           },
                           {
                             "kind": "Identifier",
                             "attributes": {
-                              "col": "20",
-                              "line": "6",
-                              "value": "read"
+                              "col": "28",
+                              "line": "20",
+                              "value": "classFieldAccess"
                             },
                             "children": []
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "kind": "MethodCall",
-                    "attributes": {
-                      "col": "12",
-                      "line": "7"
-                    },
-                    "children": [
-                      {
-                        "kind": "Identifier",
-                        "attributes": {
-                          "col": "11",
-                          "line": "7",
-                          "value": "io"
-                        },
-                        "children": []
-                      },
-                      {
-                        "kind": "Identifier",
-                        "attributes": {
-                          "col": "12",
-                          "line": "7",
-                          "value": "println"
-                        },
-                        "children": [
-                          {
-                            "kind": "Parameters",
-                            "attributes": {
-                              "col": "20",
-                              "line": "7"
-                            },
-                            "children": [
-                              {
-                                "kind": "Identifier",
-                                "attributes": {
-                                  "col": "25",
-                                  "line": "7",
-                                  "value": "value"
-                                },
-                                "children": []
-                              }
-                            ]
                           }
                         ]
                       }
