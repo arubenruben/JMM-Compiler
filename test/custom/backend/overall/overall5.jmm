@@ -21,7 +21,7 @@ class HelloWorld {
 
         i = 0;
         while(i < 5){
-            c[i] = a[i] + c[i];
+            c[i] = a[i] + b[i];
             i = i + 1;
         }
 

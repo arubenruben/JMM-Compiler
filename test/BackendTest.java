@@ -195,11 +195,11 @@ public class BackendTest {
         var result = TestUtils.backend(SpecsIo.getResource("custom/backend/overall/overall5.jmm"));
         TestUtils.noErrors(result.getReports());
         var output = result.run();
-        assertEquals("2\n" +
-                "2\n" +
-                "2\n" +
-                "2\n" +
-                "2", output.trim());
+        assertEquals("3\n" +
+                "3\n" +
+                "3\n" +
+                "3\n" +
+                "3", output.trim());
     }
 
 
