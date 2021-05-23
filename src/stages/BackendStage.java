@@ -30,6 +30,7 @@ public class BackendStage implements JasminBackend {
     private ClassUnit ollirClass;
     private int maxLimitStack = 0;
     private int currentStack = 0;
+
     @Override
     public JasminResult toJasmin(OllirResult ollirResult) {
         symbolTable = ollirResult.getSymbolTable();
@@ -197,11 +198,13 @@ public class BackendStage implements JasminBackend {
         StringBuilder stringBuilder = new StringBuilder();
         for(int i = 0; i < currentStack; i++){
             stringBuilder.append("\tpop\n");
+            AddRemoveFromStack(-1);
         }
         return stringBuilder.toString();
     }
 
     // Functions to deal with each type of instructions
+
     private String dealWithInstruction(Method method, Instruction instruction){
         StringBuilder stringBuilder = new StringBuilder();
 
@@ -299,7 +302,6 @@ public class BackendStage implements JasminBackend {
 
         return stringBuilder.toString();
     }
-
 
     private String dealWithCallInstruction(Method method, CallInstruction callInstruction){
         StringBuilder stringBuilder = new StringBuilder();
@@ -474,9 +476,9 @@ public class BackendStage implements JasminBackend {
             stringBuilder.append(dealWithElementPush(method, thirdOperand));
         }
 
-        stringBuilder.append("\t").append("putfield ").append(secondOperand.getName()).append(" ").append(dealWithType(secondOperand.getType(), true)).append("\n");
+        stringBuilder.append("\t").append("putfield ").append(dealWithType(firstOperand.getType(), false)).append("/" + secondOperand.getName()).append(" ").append(dealWithType(secondOperand.getType(), true)).append("\n");
 
-        AddRemoveFromStack(+1);
+        AddRemoveFromStack(-2);
 
         return stringBuilder.toString();
     }
@@ -488,7 +490,7 @@ public class BackendStage implements JasminBackend {
         Operand secondOperand = (Operand) getFieldInstruction.getSecondOperand();
 
         stringBuilder.append(dealWithElementPush(method, firstOperand));
-        stringBuilder.append("\t").append("getfield ").append(dealWithType(secondOperand.getType(), true)).append(" " + secondOperand.getName()).append("\n");
+        stringBuilder.append("\t").append("getfield ").append(dealWithType(firstOperand.getType(), false)).append("/"+ secondOperand.getName() + " ").append(dealWithType(secondOperand.getType(), true)).append("\n");
 
         return stringBuilder.toString();
     }
@@ -756,7 +758,7 @@ public class BackendStage implements JasminBackend {
     // Auxiliary functions to get information from the var table of each method
 
     private int getVarVirtualRegister(Method method, String var){
-        return OllirAccesser.getVarTable(method).get(var).getVirtualReg();
+        return method.getVarTable().get(var).getVirtualReg();
     }
 
     private VarScope getVarScope(Method method, String var){

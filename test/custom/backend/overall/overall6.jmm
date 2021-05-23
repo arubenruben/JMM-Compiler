@@ -1,13 +1,14 @@
 import io;
 
-class HelloWorld {
+class Overall5 {
 
     int[] c;
     int[] a;
     int[] b;
     int i;
 
-    public int classFieldAccess(){
+    public static void main(String[] args) {
+
         a = new int[5];
         b = new int[5];
         c = new int[5];
@@ -21,7 +22,7 @@ class HelloWorld {
 
         i = 0;
         while(i < 5){
-            c[i] = a[i] + c[i];
+            c[i] = a[i] + a[i];
             i = i + 1;
         }
 
@@ -30,13 +31,7 @@ class HelloWorld {
             io.println(c[i]);
             i = i + 1;
         }
-        return 0;
-    }
 
-    public static void main(String[] args) {
-        int value;
-        HelloWorld helloWorld;
-        helloWorld = new HelloWorld();
-        value = helloWorld.classFieldAccess();
+        i = 0;
     }
 }

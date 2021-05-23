@@ -73,12 +73,23 @@ public class BackendTest {
     }
 
     @Test
+    public void tesClassFields() {
+        var result = TestUtils.backend(SpecsIo.getResource("custom/backend/specific/test_class_fields.jmm"));
+        TestUtils.noErrors(result.getReports());
+        var output = result.run();
+        assertEquals("5", output.trim());
+    }
+
+
+    @Test
     public void testSimple() {
         var result = TestUtils.backend(SpecsIo.getResource("fixtures/public/Simple.jmm"));
         TestUtils.noErrors(result.getReports());
         var output = result.run();
         assertEquals("30", output.trim());
     }
+
+
 
 
     @Test
@@ -184,7 +195,11 @@ public class BackendTest {
         var result = TestUtils.backend(SpecsIo.getResource("custom/backend/overall/overall5.jmm"));
         TestUtils.noErrors(result.getReports());
         var output = result.run();
-        assertEquals("5", output.trim());
+        assertEquals("2\n" +
+                "2\n" +
+                "2\n" +
+                "2\n" +
+                "2", output.trim());
     }
 
 
