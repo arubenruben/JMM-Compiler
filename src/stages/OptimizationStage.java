@@ -390,7 +390,10 @@ public class OptimizationStage implements JmmOptimization {
         } else {
 
             if (isSetter(statement)) {
-                code.append("putfield(this,").append(" ").append(leftChild.get("result")).append(leftChild.get("suffix")).append(", ").append(rightChild.get("prefix")).append(rightChild.get("result")).append(rightChild.get("suffix")).append(").V").append(";");
+                if (!leftChild.get("suffix").equals(""))
+                    code.append("putfield(this,").append(" ").append(leftChild.get("result")).append(leftChild.get("suffix")).append(", ").append(rightChild.get("prefix")).append(rightChild.get("result")).append(rightChild.get("suffix")).append(").V").append(";");
+                else
+                    code.append("putfield(this,").append(" ").append(leftChild.get("result")).append(rightChild.get("suffix")).append(", ").append(rightChild.get("prefix")).append(rightChild.get("result")).append(rightChild.get("suffix")).append(").V").append(";");
             } else {
                 code.append(leftChild.get("prefix")).append(leftChild.get("result")).append(leftChild.get("suffix"));
 
@@ -411,9 +414,6 @@ public class OptimizationStage implements JmmOptimization {
             return false;
 
         final String variableName = leftChild.get("value");
-
-        if (!symbolTable.getClassFields().containsKey(variableName))
-            return false;
 
         if (symbolTable.getMethodsHashmap().get(currentMethod.getName()).getLocalVariables().containsKey(variableName))
             return false;

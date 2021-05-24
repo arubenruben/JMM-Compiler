@@ -1,37 +1,14 @@
-import io;
+import shape;
 
-class Overall5 {
-
-    int[] c;
-    int[] a;
-    int[] b;
-    int i;
-
+class Rectange extends Shape {
     public static void main(String[] args) {
+        int edge1;
+        int edge2;
+        edge1 = 3;
+        edge2 = 6;
+        area = edge1 * edge2;
+        perimeter = edge1 * 2 + edge2 * 2;
 
-        a = new int[5];
-        b = new int[5];
-        c = new int[5];
-        i = 0;
-
-        while (i < 5) {
-            a[i] = 1;
-            b[i] = 2;
-            i = i + 1;
-        }
-        i = 0;
-        while (i < 5) {
-            c[i] = a[i] + a[i];
-            i = i + 1;
-        }
-
-        i = 0;
-        while (i < 5) {
-            io.println(c[i]);
-            i = i + 1;
-        }
-/*
- */
-        i = 0;
+        this.printStats();
     }
 }

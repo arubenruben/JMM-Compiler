@@ -1,0 +1,13 @@
+import io;
+
+class Shape {
+    int area;
+    int perimeter;
+
+    public boolean printStats(){
+        io.println(area);
+        io.println(perimeter);
+
+        return true;
+    }
+}

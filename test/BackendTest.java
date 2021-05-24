@@ -80,6 +80,17 @@ public class BackendTest {
         assertEquals("5", output.trim());
     }
 
+    @Test
+    public void testExtends() {
+        TestUtils.backend(SpecsIo.getResource("custom/backend/specific/test_extends_1.jmm")).compile();
+
+        var result = TestUtils.backend(SpecsIo.getResource("custom/backend/specific/test_extends_2.jmm"));
+        TestUtils.noErrors(result.getReports());
+        var output = result.run();
+        assertEquals("12\n" +
+                "16", output.trim());
+    }
+
 
     @Test
     public void testSimple() {
@@ -88,8 +99,6 @@ public class BackendTest {
         var output = result.run();
         assertEquals("30", output.trim());
     }
-
-
 
 
     @Test
@@ -201,6 +210,4 @@ public class BackendTest {
                 "3\n" +
                 "3", output.trim());
     }
-
-
 }

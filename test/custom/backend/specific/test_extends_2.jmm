@@ -1,0 +1,24 @@
+import shape;
+
+class Rectangle extends Shape {
+
+    public boolean doThings(){
+        int edge1;
+        int edge2;
+        boolean dummy;
+
+        edge1 = 2;
+        edge2 = 6;
+        area = edge1 * edge2;
+        perimeter = edge1 * 2 + edge2 * 2;
+        dummy=this.printStats();
+
+        return true;
+    }
+
+    public static void main(String[] args) {
+        Rectangle rec;
+        rec=new Rectangle();
+        rec.doThings();
+    }
+}
