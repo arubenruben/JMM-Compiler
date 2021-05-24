@@ -198,8 +198,10 @@ public class BackendStage implements JasminBackend {
         StringBuilder stringBuilder = new StringBuilder();
         for(int i = 0; i < currentStack; i++){
             stringBuilder.append("\tpop\n");
-            AddRemoveFromStack(-1);
         }
+
+        AddRemoveFromStack(-currentStack);
+
         return stringBuilder.toString();
     }
 
