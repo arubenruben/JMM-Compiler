@@ -11,7 +11,7 @@
         "attributes": {
           "col": "8",
           "line": "1",
-          "value": "[shape]"
+          "value": "[io]"
         },
         "children": []
       },
@@ -20,18 +20,9 @@
         "attributes": {
           "col": "1",
           "line": "3",
-          "value": "Rectange"
+          "value": "Example"
         },
         "children": [
-          {
-            "kind": "Extends",
-            "attributes": {
-              "col": "30",
-              "line": "3",
-              "value": "Shape"
-            },
-            "children": []
-          },
           {
             "kind": "ClassMethod",
             "attributes": {
@@ -329,11 +320,11 @@
                                     "children": []
                                   },
                                   {
-                                    "kind": "Identifier",
+                                    "kind": "Integer",
                                     "attributes": {
                                       "col": "26",
                                       "line": "14",
-                                      "value": "i"
+                                      "value": "1"
                                     },
                                     "children": []
                                   }
@@ -391,29 +382,48 @@
                     ]
                   },
                   {
-                    "kind": "Assignment",
+                    "kind": "MethodCall",
                     "attributes": {
-                      "col": "13",
-                      "line": "17"
+                      "col": "12",
+                      "line": "18"
                     },
                     "children": [
                       {
                         "kind": "Identifier",
                         "attributes": {
                           "col": "11",
-                          "line": "17",
-                          "value": "i"
+                          "line": "18",
+                          "value": "io"
                         },
                         "children": []
                       },
                       {
-                        "kind": "Integer",
+                        "kind": "Identifier",
                         "attributes": {
-                          "col": "14",
-                          "line": "17",
-                          "value": "0"
+                          "col": "12",
+                          "line": "18",
+                          "value": "println"
                         },
-                        "children": []
+                        "children": [
+                          {
+                            "kind": "Parameters",
+                            "attributes": {
+                              "col": "20",
+                              "line": "18"
+                            },
+                            "children": [
+                              {
+                                "kind": "Identifier",
+                                "attributes": {
+                                  "col": "23",
+                                  "line": "18",
+                                  "value": "sum"
+                                },
+                                "children": []
+                              }
+                            ]
+                          }
+                        ]
                       }
                     ]
                   }

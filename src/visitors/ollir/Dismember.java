@@ -9,7 +9,7 @@ import symbols.SymbolTableIml;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SethiUllman {
+public class Dismember {
 
     private static SymbolTableIml symbolTable;
     private static String currentMethod;
@@ -17,8 +17,8 @@ public class SethiUllman {
 
     public static void initialize(SymbolTableIml symbolTable, String currentMethod) {
 
-        SethiUllman.symbolTable = symbolTable;
-        SethiUllman.currentMethod = currentMethod;
+        Dismember.symbolTable = symbolTable;
+        Dismember.currentMethod = currentMethod;
 
         registersAvailable = new ArrayList<>();
 
@@ -32,7 +32,7 @@ public class SethiUllman {
         return secondStep(node);
     }
 
-    private static void firstStep(JmmNode node) {
+    public static void firstStep(JmmNode node) {
 
         if (isTerminal(node)) {
             fillTerminalValue(node);
@@ -62,7 +62,7 @@ public class SethiUllman {
             if (leftChildValue == rightChildValue)
                 node.put("registers", String.valueOf(leftChildValue + 1));
             else
-                node.put("registers", String.valueOf(Math.max(leftChildValue, rightChildValue)));
+                node.put("registers", String.valueOf(Math.max(leftChildValue, rightChildValue)) + 1);
         }
     }
 
@@ -367,13 +367,13 @@ public class SethiUllman {
 
         if (rightChild.getNumChildren() > 0) {
             for (JmmNode parameter : rightChild.getChildren().get(0).getChildren())
-                code.append(SethiUllman.run(parameter));
+                code.append(Dismember.run(parameter));
         }
-        code.append(SethiUllman.run(leftChild));
+        code.append(Dismember.run(leftChild));
 
         if (rightChild.get("value").equals("length"))
             code.append(dealWithLengthCall(statement));
-        else if (SethiUllman.isMethodCallStatic(statement))
+        else if (Dismember.isMethodCallStatic(statement))
             code.append(dealWithStaticMethodCall(statement));
         else
             code.append(dealWithNonStaticMethodCall(statement));
@@ -455,7 +455,7 @@ public class SethiUllman {
         StringBuilder code = new StringBuilder();
 
         //Deal With index expression
-        code.append(SethiUllman.run(node.getChildren().get(0)));
+        code.append(Dismember.run(node.getChildren().get(0)));
 
         final int registerUsed = registersAvailable.remove(0);
 
@@ -476,8 +476,8 @@ public class SethiUllman {
         final JmmNode leftChild = node.getChildren().get(0);
         final JmmNode rightChild = node.getChildren().get(1);
 
-        code.append(SethiUllman.run(leftChild));
-        code.append(SethiUllman.run(rightChild));
+        code.append(Dismember.run(leftChild));
+        code.append(Dismember.run(rightChild));
 
         final int registerUsed = registersAvailable.remove(0);
 
