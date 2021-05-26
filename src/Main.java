@@ -24,6 +24,7 @@ import java.util.Scanner;
 
 
 public class Main implements JmmParser {
+    public static boolean oOptimization;
 
     @Override
     public JmmParserResult parse(String jmmCode) {
@@ -53,11 +54,19 @@ public class Main implements JmmParser {
 
 
     public static void main(String[] args) {
-        String code;
-        JmmParserResult parserResult;
+        final String code;
+        final JmmParserResult parserResult;
 
-        if (args[0].contains("fail"))
-            throw new RuntimeException("It's supposed to fail");
+        if (args.length == 0)
+            oOptimization = false;
+        else {
+
+            final List<String> list = Arrays.asList(args);
+
+            if (list.contains("-o") || list.contains("-O"))
+                oOptimization = true;
+        }
+
 
         System.out.println("Executing with args: " + Arrays.toString(args));
 
@@ -75,7 +84,7 @@ public class Main implements JmmParser {
         else
             return;
 
-        JmmSemanticsResult semanticsResults = new AnalysisStage().semanticAnalysis(parserResult);
+        final JmmSemanticsResult semanticsResults = new AnalysisStage().semanticAnalysis(parserResult);
 
         if (TestUtils.getNumReports(semanticsResults.getReports(), ReportType.ERROR) > 0) {
             Utils.printReports(semanticsResults.getReports());
@@ -84,14 +93,13 @@ public class Main implements JmmParser {
 
         //Utils.printSymbolTable(semanticsResults.getSymbolTable());
 
-        JmmOptimization optimization = new OptimizationStage();
+        final JmmOptimization optimization = new OptimizationStage();
 
-        OllirResult ollirResult = optimization.toOllir(semanticsResults);
+        final OllirResult ollirResult = optimization.toOllir(semanticsResults, oOptimization);
 
+        final JasminBackend backend = new BackendStage();
 
-        JasminBackend backend = new BackendStage();
-
-        JasminResult jasminResult = backend.toJasmin(ollirResult);
+        final JasminResult jasminResult = backend.toJasmin(ollirResult);
 
         //System.out.println(jasminResult.getJasminCode());
     }

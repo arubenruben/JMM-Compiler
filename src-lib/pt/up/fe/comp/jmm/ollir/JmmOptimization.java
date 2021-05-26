@@ -11,7 +11,7 @@ public interface JmmOptimization {
 
     /**
      * Step 1 (for CP3): otimize code at the AST level
-     * 
+     *
      * @param semanticsResult
      * @return
      */
@@ -21,7 +21,7 @@ public interface JmmOptimization {
 
     /**
      * Step 2 (for CP2): convert the AST to the OLLIR format
-     * 
+     *
      * @param semanticsResult
      * @return
      */
@@ -29,9 +29,9 @@ public interface JmmOptimization {
 
     /**
      * Step 2 (for CP2): convert the AST to the OLLIR format
-     * 
+     * <p>
      * Overload that receives a flag indicating if optimizations are enabled or not.
-     * 
+     *
      * @param semanticsResult
      * @param optimize
      * @return
@@ -42,7 +42,7 @@ public interface JmmOptimization {
 
     /**
      * Step 3 (for CP3): otimize code at the OLLIR level
-     * 
+     *
      * @param semanticsResult
      * @return
      */

@@ -21,8 +21,14 @@ public class OptimizationStage implements JmmOptimization {
     private static MethodSymbol currentMethod;
     private static int numberIfs = 0;
     private static int numberWhiles = 0;
-    private static String offset = "\t\t";
+    final private static String offset = "\t\t";
+    private static boolean optimizeActive;
 
+    @Override
+    public OllirResult toOllir(JmmSemanticsResult semanticsResult, boolean optimize) {
+        optimizeActive = optimize;
+        return toOllir(semanticsResult);
+    }
 
     @Override
     public OllirResult toOllir(JmmSemanticsResult semanticsResult) {
@@ -56,6 +62,9 @@ public class OptimizationStage implements JmmOptimization {
         return code.toString();
     }
 
+
+    //------Deal With Things------
+
     private String dealWithClassFields() {
         StringBuilder code = new StringBuilder();
 
@@ -66,20 +75,6 @@ public class OptimizationStage implements JmmOptimization {
         }
         return code.toString();
     }
-
-    @Override
-    public JmmSemanticsResult optimize(JmmSemanticsResult semanticsResult) {
-        // THIS IS JUST FOR CHECKPOINT 3
-        return semanticsResult;
-    }
-
-    @Override
-    public OllirResult optimize(OllirResult ollirResult) {
-        // THIS IS JUST FOR CHECKPOINT 3
-        return ollirResult;
-    }
-
-    //------Deal With Things------
 
     private String dealWithClassHeaders() {
         StringBuilder code = new StringBuilder();
@@ -179,14 +174,27 @@ public class OptimizationStage implements JmmOptimization {
             labelAppender = String.valueOf(numberWhiles);
 
         numberWhiles++;
-
         code.append("Loop").append(labelAppender).append(":").append("\n");
 
-        code.append(applyOffsetToString("\t", dealWithCondition(condition, labelAppender, "EndLoop")));
+        if (optimizeActive) {
 
-        for (JmmNode node : thenNode.getChildren())
-            code.append(applyOffsetToString("\t", dealWithStatement(node)));
+            code.append(applyOffsetToString("\t", dealWithCondition(condition, labelAppender, "EndLoop")));
 
+            for (JmmNode node : thenNode.getChildren())
+                code.append(applyOffsetToString("\t", dealWithStatement(node)));
+
+        } else {
+
+            code.append(applyOffsetToString("\t", dealWithWhileCondition(condition, labelAppender, "Body")));
+
+            code.append("goto EndLoop").append(labelAppender).append(";").append("\n");
+
+            code.append("Body").append(labelAppender).append(":").append("\n");
+
+            for (JmmNode node : thenNode.getChildren())
+                code.append(applyOffsetToString("\t", dealWithStatement(node)));
+
+        }
         code.append("\t").append("goto Loop").append(labelAppender).append(";").append("\n");
 
         code.append("EndLoop").append(labelAppender).append(":");
@@ -571,6 +579,4 @@ public class OptimizationStage implements JmmOptimization {
 
         return code.toString();
     }
-
-
 }
