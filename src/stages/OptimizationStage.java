@@ -168,7 +168,6 @@ public class OptimizationStage implements JmmOptimization {
         return code.toString();
     }
 
-
     private String dealWithWhile(JmmNode statement) {
         StringBuilder code = new StringBuilder();
         String labelAppender = "";
@@ -183,16 +182,12 @@ public class OptimizationStage implements JmmOptimization {
 
         code.append("Loop").append(labelAppender).append(":").append("\n");
 
-        code.append(applyOffsetToString("\t", dealWithWhileCondition(condition, labelAppender, "Body")));
-
-        code.append("goto EndLoop").append(labelAppender).append(";").append("\n");
-
-        code.append("Body").append(labelAppender).append(":").append("\n");
+        code.append(applyOffsetToString("\t", dealWithCondition(condition, labelAppender, "EndLoop")));
 
         for (JmmNode node : thenNode.getChildren())
             code.append(applyOffsetToString("\t", dealWithStatement(node)));
 
-        code.append("goto Loop").append(labelAppender).append(";").append("\n");
+        code.append("\t").append("goto Loop").append(labelAppender).append(";").append("\n");
 
         code.append("EndLoop").append(labelAppender).append(":");
 
@@ -213,7 +208,7 @@ public class OptimizationStage implements JmmOptimization {
 
         numberIfs++;
 
-        code.append(dealWithIfCondition(condition, labelAppender, "else"));
+        code.append(dealWithCondition(condition, labelAppender, "else"));
 
         for (JmmNode node : thenNode.getChildren())
             code.append(applyOffsetToString("\t", dealWithStatement(node)));
@@ -277,7 +272,7 @@ public class OptimizationStage implements JmmOptimization {
         return code.toString();
     }
 
-    private String dealWithIfCondition(JmmNode condition, String labelAppender, String gotoLabel) {
+    private String dealWithCondition(JmmNode condition, String labelAppender, String gotoLabel) {
         StringBuilder code = new StringBuilder();
 
         final JmmNode logicCondition = condition.getChildren().get(0);

@@ -2,13 +2,18 @@ import shape;
 
 class Rectange extends Shape {
     public static void main(String[] args) {
-        int edge1;
-        int edge2;
-        edge1 = 3;
-        edge2 = 6;
-        area = edge1 * edge2;
-        perimeter = edge1 * 2 + edge2 * 2;
+        int sum;
+        int i;
+        int[] A;
+        A = new int[4];
 
-        this.printStats();
+        sum = 0;
+        i = 0;
+
+        while (i < A.length) {
+            sum = sum + A[i];
+            i = i + 1;
+        }
+        i = 0;
     }
 }
