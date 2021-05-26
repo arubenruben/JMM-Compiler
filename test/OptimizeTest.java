@@ -3,6 +3,8 @@ import pt.up.fe.comp.TestUtils;
 import pt.up.fe.comp.jmm.ollir.OllirResult;
 import pt.up.fe.specs.util.SpecsIo;
 
+import static org.junit.Assert.assertEquals;
+
 /**
  * Copyright 2021 SPeCS.
  * <p>
@@ -127,5 +129,12 @@ public class OptimizeTest {
     @Test
     public void testConditionPrecedence() {
         testFile("custom/semantic/type_verification/test_condition_precedence.jmm", false);
+    }
+
+    @Test
+    public void testLoopUnrolling() {
+        var result = TestUtils.optimize(SpecsIo.getResource("custom/optimization/test_loop_unrolling.jmm"));
+        var output = TestUtils.backend(result).run();
+        assertEquals("50", output.trim());
     }
 }
