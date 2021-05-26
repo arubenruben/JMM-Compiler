@@ -155,7 +155,12 @@ public class OptimizationStage implements JmmOptimization {
     private String dealWithStatement(JmmNode statement) {
         StringBuilder code = new StringBuilder();
         switch (statement.getKind()) {
-            case "While" -> code.append(dealWithWhile(statement));
+            case "While" -> {
+                if (optimizeActive)
+                    code.append(dealWithLoopUnrolling(statement));
+                else
+                    code.append(dealWithWhile(statement));
+            }
             case "If" -> code.append(dealWithIf(statement));
             case "Assignment" -> code.append(dealWithAssignment(statement));
             case "MethodCall" -> code.append(dealWithMethodCall(statement));
@@ -578,5 +583,49 @@ public class OptimizationStage implements JmmOptimization {
         code.append("\n");
 
         return code.toString();
+    }
+
+    private String dealWithLoopUnrolling(JmmNode statement) {
+        int amountIterations;
+        final JmmNode condition = statement.getChildren().get(0);
+        final JmmNode thenNode = statement.getChildren().get(1);
+
+        if (!condition.getChildren().get(0).getKind().equals("Less") || !condition.getChildren().get(0).getChildren().get(1).getKind().equals("Integer"))
+            return dealWithWhile(statement);
+
+        amountIterations = Integer.parseInt(condition.getChildren().get(0).getChildren().get(1).get("value"));
+
+        if (amountIterations % 2 != 0)
+            return dealWithWhile(statement);
+
+        if (thenNode.getNumChildren() != 2)
+            return dealWithWhile(statement);
+
+        if (!thenNode.getChildren().get(0).getKind().equals("Assignment"))
+            return dealWithWhile(statement);
+
+        if (!thenNode.getChildren().get(0).getChildren().get(1).getKind().equals("Add") && !thenNode.getChildren().get(0).getChildren().get(1).getKind().equals("Sub") && !thenNode.getChildren().get(0).getChildren().get(1).getKind().equals("Div") && !thenNode.getChildren().get(0).getChildren().get(1).getKind().equals("Mult"))
+            return dealWithWhile(statement);
+
+        if (!thenNode.getChildren().get(1).getKind().equals("Assignment"))
+            return dealWithWhile(statement);
+
+        if (!thenNode.getChildren().get(1).getChildren().get(1).getKind().equals("Add"))
+            return dealWithWhile(statement);
+
+        if (!thenNode.getChildren().get(1).getChildren().get(1).getChildren().get(1).getKind().equals("Integer"))
+            return dealWithWhile(statement);
+
+        condition.getChildren().get(0).getChildren().get(1).put("value", String.valueOf(amountIterations / 2));
+
+        JmmNode iPlus = thenNode.removeChild(1);
+
+        thenNode.add(thenNode.getChildren().get(0));
+
+        iPlus.getChildren().get(1).getChildren().get(1).put("value", String.valueOf(Integer.parseInt(iPlus.getChildren().get(1).getChildren().get(1).get("value")) * 2));
+
+        thenNode.add(iPlus);
+
+        return dealWithWhile(statement);
     }
 }

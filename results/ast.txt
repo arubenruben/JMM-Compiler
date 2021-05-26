@@ -277,31 +277,13 @@
                                 "children": []
                               },
                               {
-                                "kind": "MethodCall",
+                                "kind": "Integer",
                                 "attributes": {
                                   "col": "22",
-                                  "line": "13"
+                                  "line": "13",
+                                  "value": "50"
                                 },
-                                "children": [
-                                  {
-                                    "kind": "Identifier",
-                                    "attributes": {
-                                      "col": "21",
-                                      "line": "13",
-                                      "value": "A"
-                                    },
-                                    "children": []
-                                  },
-                                  {
-                                    "kind": "Identifier",
-                                    "attributes": {
-                                      "col": "22",
-                                      "line": "13",
-                                      "value": "length"
-                                    },
-                                    "children": []
-                                  }
-                                ]
+                                "children": []
                               }
                             ]
                           }
@@ -310,7 +292,7 @@
                       {
                         "kind": "Body",
                         "attributes": {
-                          "col": "30",
+                          "col": "24",
                           "line": "13"
                         },
                         "children": [
@@ -347,31 +329,13 @@
                                     "children": []
                                   },
                                   {
-                                    "kind": "ArrayAccess",
+                                    "kind": "Identifier",
                                     "attributes": {
-                                      "col": "27",
-                                      "line": "14"
+                                      "col": "26",
+                                      "line": "14",
+                                      "value": "i"
                                     },
-                                    "children": [
-                                      {
-                                        "kind": "Identifier",
-                                        "attributes": {
-                                          "col": "26",
-                                          "line": "14",
-                                          "value": "A"
-                                        },
-                                        "children": []
-                                      },
-                                      {
-                                        "kind": "Identifier",
-                                        "attributes": {
-                                          "col": "28",
-                                          "line": "14",
-                                          "value": "i"
-                                        },
-                                        "children": []
-                                      }
-                                    ]
+                                    "children": []
                                   }
                                 ]
                               }
