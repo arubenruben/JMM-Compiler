@@ -630,8 +630,14 @@ public class BackendStage implements JasminBackend {
 
         if (0 <= integer && integer <= 5)
             stringBuilder.append("\ticonst_");
-        else
+        else if(-128 <= integer && integer <= 127)
+            stringBuilder.append("\tbipush ");
+        else if(-32768 <= integer && integer <= 32767){
+            stringBuilder.append("\tsipush ");
+        }
+        else{
             stringBuilder.append("\tldc ");
+        }
 
         stringBuilder.append(integer).append("\n");
 
@@ -660,7 +666,7 @@ public class BackendStage implements JasminBackend {
         return stringBuilder.toString();
     }
 
-    private String dealWithLoadInstruction(Method method, Operand origin) {
+    private String dealWithLoadInstruction(Method method, Operand origin){
         StringBuilder stringBuilder = new StringBuilder();
 
         stringBuilder.append("\t").append(dealWithStoreLoadReturnType(origin.getType()));
