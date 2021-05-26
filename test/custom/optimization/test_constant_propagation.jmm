@@ -16,5 +16,7 @@ class Example {
         result = nothing1 + nothing2;
         result = nothing3 + nothing4;
 
+        io.println(result);
+
     }
 }

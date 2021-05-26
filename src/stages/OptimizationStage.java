@@ -9,6 +9,7 @@ import pt.up.fe.comp.jmm.ollir.OllirResult;
 import pt.up.fe.comp.jmm.report.Report;
 import symbols.MethodSymbol;
 import symbols.SymbolTableIml;
+import utils.ConstantPropagatingHelper;
 import visitors.ollir.Dismember;
 import visitors.semantic.helpers.SeekReturnTypeVisitor;
 import visitors.semantic.helpers.data_helpers.SecondVisitorHelper;
@@ -23,6 +24,8 @@ public class OptimizationStage implements JmmOptimization {
     private static int numberWhiles = 0;
     final private static String offset = "\t\t";
     private static boolean optimizeActive;
+    public static List<ConstantPropagatingHelper> constantPropagating = new ArrayList<>();
+    private List<ConstantPropagatingHelper> deniedAdd;
 
     @Override
     public OllirResult toOllir(JmmSemanticsResult semanticsResult, boolean optimize) {
@@ -53,13 +56,58 @@ public class OptimizationStage implements JmmOptimization {
 
 
         for (MethodSymbol method : symbolTable.getMethodsHashmap().values()) {
+
             Dismember.initialize(symbolTable, method.getName());
-            code.append(dealWithMethod(method));
+
+            currentMethod = method;
+
+            if (optimizeActive) {
+                this.constantPropagating = new ArrayList<>();
+                this.deniedAdd = new ArrayList<>();
+                bootstrapConstantPropagating(method.getNode().getChildren().get(2));
+            }
+
+            code.append(dealWithMethod());
         }
 
         code.append(dealWithFooter());
 
         return code.toString();
+    }
+
+    private void bootstrapConstantPropagating(JmmNode node) {
+
+        for (JmmNode statement : node.getChildren()) {
+
+            if (statement.getKind().equals("While")) {
+                bootstrapConstantPropagating(statement.getChildren().get(1));
+            }
+            if (statement.getKind().equals("If")) {
+                bootstrapConstantPropagating(statement.getChildren().get(1));
+                bootstrapConstantPropagating(statement.getChildren().get(2));
+            }
+
+            if (!statement.getKind().equals("Assignment"))
+                continue;
+
+            if (!statement.getChildren().get(0).getKind().equals("Identifier"))
+                continue;
+
+            for (ConstantPropagatingHelper helper : constantPropagating) {
+                if (helper.getSymbol().getName().equals(statement.getChildren().get(0).get("value"))) {
+                    constantPropagating.remove(helper);
+                    deniedAdd.add(helper);
+                    break;
+                }
+            }
+            if (!statement.getChildren().get(1).getKind().equals("Integer") && !statement.getChildren().get(1).getKind().equals("Boolean"))
+                continue;
+
+            final ConstantPropagatingHelper helper = new ConstantPropagatingHelper(symbolTable.lookup(statement.getChildren().get(0).get("value"), currentMethod.getName()), statement.getChildren().get(1).get("value"));
+
+            if (!deniedAdd.contains(helper))
+                constantPropagating.add(helper);
+        }
     }
 
 
@@ -92,10 +140,8 @@ public class OptimizationStage implements JmmOptimization {
         return code.toString();
     }
 
-    private String dealWithMethod(MethodSymbol method) {
+    private String dealWithMethod() {
         StringBuilder code = new StringBuilder();
-
-        currentMethod = method;
 
         code.append("\t").append(dealWithMethodHeader());
 
@@ -384,65 +430,78 @@ public class OptimizationStage implements JmmOptimization {
         final JmmNode rightChild = statement.getChildren().get(1);
 
         code.append(Dismember.run(leftChild));
+        final String rightSideStr = Dismember.run(rightChild);
 
         if (leftChild.getKind().equals("ArrayAccess")) {
-            code.append(Dismember.run(rightChild));
-            final StringBuilder arrayAccessStr = new StringBuilder();
+
+            final StringBuilder arrayAccessStr = new StringBuilder(rightSideStr);
+
             arrayAccessStr.append(leftChild.getChildren().get(0).get("prefix")).append(leftChild.getChildren().get(0).get("result")).append("[").append(leftChild.getChildren().get(1).get("prefix")).append(leftChild.getChildren().get(1).get("result")).append(leftChild.getChildren().get(1).get("suffix")).append("]").append(".i32");
 
             code.append(arrayAccessStr);
             code.append(" :=").append(leftChild.get("suffix")).append(" ");
             code.append(rightChild.get("prefix")).append(rightChild.get("result")).append(rightChild.get("suffix")).append(";");
+            code.append("\n");
 
-        } else {
+            return code.toString();
+        }
 
-            if (isSetter(statement)) {
+        if (isSetter(statement)) {
+            code.append(rightSideStr);
 
-                code.append(Dismember.run(rightChild));
+            if (!leftChild.get("suffix").equals(""))
+                code.append("putfield(this,").append(" ").append(leftChild.get("result")).append(leftChild.get("suffix")).append(", ").append(rightChild.get("prefix")).append(rightChild.get("result")).append(rightChild.get("suffix")).append(").V").append(";");
+            else
+                code.append("putfield(this,").append(" ").append(leftChild.get("result")).append(rightChild.get("suffix")).append(", ").append(rightChild.get("prefix")).append(rightChild.get("result")).append(rightChild.get("suffix")).append(").V").append(";");
 
-                if (!leftChild.get("suffix").equals(""))
-                    code.append("putfield(this,").append(" ").append(leftChild.get("result")).append(leftChild.get("suffix")).append(", ").append(rightChild.get("prefix")).append(rightChild.get("result")).append(rightChild.get("suffix")).append(").V").append(";");
+            code.append("\n");
+            return code.toString();
+        }
+        if (Integer.parseInt(rightChild.get("registers")) == 1) {
+            String operator = null;
+
+            switch (rightChild.getKind()) {
+                case "Add" -> operator = "+.i32";
+                case "Sub" -> operator = "-.i32";
+                case "Mult" -> operator = "*.i32";
+                case "Div" -> operator = "/.i32";
+                case "And" -> operator = "&&.bool";
+                case "Less" -> operator = "<.bool";
+            }
+            if (operator != null) {
+
+                code.append(leftChild.get("prefix"));
+
+                if (leftChild.getKind().equals("Identifier"))
+                    code.append(leftChild.get("value"));
                 else
-                    code.append("putfield(this,").append(" ").append(leftChild.get("result")).append(rightChild.get("suffix")).append(", ").append(rightChild.get("prefix")).append(rightChild.get("result")).append(rightChild.get("suffix")).append(").V").append(";");
-            } else {
-                Dismember.run(rightChild);
+                    code.append(leftChild.get("result"));
 
-                if (Integer.parseInt(rightChild.get("registers")) == 1 && rightChild.getNumChildren() == 2 && !rightChild.getChildren().get(1).getKind().equals("MethodCall") && !rightChild.getChildren().get(1).getKind().equals("ArrayAccess")) {
-                    String operator = "";
-                    switch (rightChild.getKind()) {
-                        case "Add" -> operator = "+.i32";
-                        case "Sub" -> operator = "-.i32";
-                        case "Mult" -> operator = "*.i32";
-                        case "Div" -> operator = "/.i32";
-                        case "And" -> operator = "&&.bool";
-                        case "Less" -> operator = "<.bool";
-                    }
+                code.append(leftChild.get("suffix"));
+                code.append(" :=").append(leftChild.get("suffix")).append(" ");
 
-                    if (operator.equals("")) {
-                        code.append(Dismember.run(rightChild));
+                code.append(rightChild.getChildren().get(0).get("prefix")).append(rightChild.getChildren().get(0).get("result")).append(rightChild.getChildren().get(0).get("suffix"));
+                code.append(" ").append(operator).append(" ");
+                code.append(rightChild.getChildren().get(1).get("prefix")).append(rightChild.getChildren().get(1).get("result")).append(rightChild.getChildren().get(1).get("suffix")).append(";");
+                code.append("\n");
 
-                        code.append(leftChild.get("prefix")).append(leftChild.get("result")).append(leftChild.get("suffix"));
-                        code.append(" :=").append(leftChild.get("suffix")).append(" ");
-                        code.append(rightChild.get("prefix")).append(rightChild.get("result")).append(rightChild.get("suffix")).append(";");
-
-                    } else {
-                        code.append(leftChild.get("prefix")).append(leftChild.get("result")).append(leftChild.get("suffix"));
-                        code.append(" :=").append(leftChild.get("suffix")).append(" ");
-
-                        code.append(rightChild.getChildren().get(0).get("prefix")).append(rightChild.getChildren().get(0).get("result")).append(rightChild.getChildren().get(0).get("suffix"));
-                        code.append(" ").append(operator).append(" ");
-                        code.append(rightChild.getChildren().get(1).get("prefix")).append(rightChild.getChildren().get(1).get("result")).append(rightChild.getChildren().get(1).get("suffix")).append(";");
-                    }
-
-                } else {
-                    code.append(Dismember.run(rightChild));
-
-                    code.append(leftChild.get("prefix")).append(leftChild.get("result")).append(leftChild.get("suffix"));
-                    code.append(" :=").append(leftChild.get("suffix")).append(" ");
-                    code.append(rightChild.get("prefix")).append(rightChild.get("result")).append(rightChild.get("suffix")).append(";");
-                }
+                return code.toString();
             }
         }
+
+        code.append(rightSideStr);
+
+        code.append(leftChild.get("prefix"));
+
+        if (leftChild.getKind().equals("Identifier"))
+            code.append(leftChild.get("value"));
+        else
+            code.append(leftChild.get("result"));
+
+        code.append(leftChild.get("suffix"));
+        code.append(" :=").append(leftChild.get("suffix")).append(" ");
+        code.append(rightChild.get("prefix")).append(rightChild.get("result")).append(rightChild.get("suffix")).append(";");
+
         code.append("\n");
 
         return code.toString();

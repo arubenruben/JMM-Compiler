@@ -5,6 +5,7 @@ import pt.up.fe.comp.jmm.analysis.table.Symbol;
 import stages.OptimizationStage;
 import symbols.MethodSymbol;
 import symbols.SymbolTableIml;
+import utils.ConstantPropagatingHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
 public class Dismember {
 
     private static SymbolTableIml symbolTable;
-    private static String currentMethod;
+    public static String currentMethod;
     public static List<Integer> registersAvailable;
 
     public static void initialize(SymbolTableIml symbolTable, String currentMethod) {
@@ -102,6 +103,12 @@ public class Dismember {
             case "Identifier" -> {
                 node.put("prefix", prefixSeeker(node.get("value")));
                 node.put("result", node.get("value"));
+                for (ConstantPropagatingHelper helper : OptimizationStage.constantPropagating) {
+                    if (helper.getSymbol().getName().equals(node.get("value"))) {
+                        node.put("result", helper.getValue());
+                        break;
+                    }
+                }
                 node.put("suffix", suffixSeeker(node.get("value")));
             }
             case "Integer" -> {
