@@ -61,6 +61,14 @@ public class BackendTest {
     }
 
     @Test
+    public void testIinc() {
+        var result = TestUtils.backend(SpecsIo.getResource("custom/backend/specific/test_iinc.jmm"));
+        TestUtils.noErrors(result.getReports());
+        var output = result.run();
+        assertEquals("1", output.trim());
+    }
+
+    @Test
     public void testIfCondition() {
         var result = TestUtils.backend(SpecsIo.getResource("custom/backend/specific/test_if_condition.jmm"));
         TestUtils.noErrors(result.getReports());

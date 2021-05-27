@@ -291,13 +291,66 @@ public class BackendStage implements JasminBackend {
             ArrayOperand arrayOperand = (ArrayOperand) assignInstruction.getDest();
             stringBuilder.append(dealWithArrayOperandAssignInstruction(method, arrayOperand, rhs));
         } catch (Exception e) {
-            stringBuilder.append(dealWithInstruction(method, rhs));
-            // store call value
+
             Operand dest = (Operand) assignInstruction.getDest();
-            stringBuilder.append(dealWithStoreInstruction(method, dest));
+
+            if(dealWithIincInstruction(dest, rhs, stringBuilder)){
+                return stringBuilder.toString();
+            }
+            else {
+                stringBuilder.append(dealWithInstruction(method, rhs));
+                stringBuilder.append(dealWithStoreInstruction(method, dest));
+            }
         }
         return stringBuilder.toString();
     }
+
+    private Boolean dealWithIincInstruction(Operand dest, Instruction rhs, StringBuilder stringBuilder){
+        try {
+            if (rhs.getInstType() != InstructionType.BINARYOPER)
+                return false;
+
+            BinaryOpInstruction binaryRhs = (BinaryOpInstruction) rhs;
+
+            // i = i / 1;
+            if (binaryRhs.getUnaryOperation().getOpType() != OperationType.ADD) {
+                return false;
+            }
+
+            // i = 2 + 2
+            if (binaryRhs.getLeftOperand().isLiteral() && binaryRhs.getRightOperand().isLiteral()) {
+                return false;
+            }
+
+            // i = a + b;
+            if (!binaryRhs.getLeftOperand().isLiteral() && !binaryRhs.getRightOperand().isLiteral()) {
+                return false;
+            }
+
+            Operand operand;
+            LiteralElement literalElement;
+            if (binaryRhs.getRightOperand().isLiteral()) {
+                operand = (Operand) binaryRhs.getLeftOperand();
+                literalElement = (LiteralElement) binaryRhs.getRightOperand();
+            } else {
+                operand = (Operand) binaryRhs.getRightOperand();
+                literalElement = (LiteralElement) binaryRhs.getLeftOperand();
+            }
+
+            operand = binaryRhs.getRightOperand().isLiteral() ? (Operand) binaryRhs.getLeftOperand() : (Operand) binaryRhs.getRightOperand();
+            literalElement = binaryRhs.getRightOperand().isLiteral() ? (LiteralElement) binaryRhs.getRightOperand() : (LiteralElement) binaryRhs.getLeftOperand();
+
+            if (operand.getName().equals(dest.getName()) && Integer.parseInt(literalElement.getLiteral()) == 1) {
+                stringBuilder.append("\tiinc ").append(dest.getName()).append("\n");
+                return true;
+            }
+        }
+        catch(Exception ignored){}
+
+        return false;
+    }
+
+
 
     private String dealWithArrayOperandAssignInstruction(Method method, ArrayOperand arrayOperand, Instruction rhs) {
         StringBuilder stringBuilder = new StringBuilder();
