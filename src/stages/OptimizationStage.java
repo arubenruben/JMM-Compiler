@@ -461,12 +461,12 @@ public class OptimizationStage implements JmmOptimization {
             String operator = null;
 
             switch (rightChild.getKind()) {
-                case "Add" -> operator = "+.i32";
-                case "Sub" -> operator = "-.i32";
-                case "Mult" -> operator = "*.i32";
-                case "Div" -> operator = "/.i32";
-                case "And" -> operator = "&&.bool";
-                case "Less" -> operator = "<.bool";
+                case "Add" -> operator = "+";
+                case "Sub" -> operator = "-";
+                case "Mult" -> operator = "*";
+                case "Div" -> operator = "/";
+                case "And" -> operator = "&&";
+                case "Less" -> operator = "<";
             }
             if (operator != null) {
 
@@ -480,10 +480,15 @@ public class OptimizationStage implements JmmOptimization {
                 code.append(leftChild.get("suffix"));
                 code.append(" :=").append(leftChild.get("suffix")).append(" ");
 
-                code.append(rightChild.getChildren().get(0).get("prefix")).append(rightChild.getChildren().get(0).get("result")).append(rightChild.getChildren().get(0).get("suffix"));
-                code.append(" ").append(operator).append(" ");
-                code.append(rightChild.getChildren().get(1).get("prefix")).append(rightChild.getChildren().get(1).get("result")).append(rightChild.getChildren().get(1).get("suffix")).append(";");
-                code.append("\n");
+                final String codeOptimization = Dismember.expressionMathSimplification(rightChild, operator);
+
+                if (codeOptimization.equals("")) {
+                    code.append(rightChild.getChildren().get(0).get("prefix")).append(rightChild.getChildren().get(0).get("result")).append(rightChild.getChildren().get(0).get("suffix"));
+                    code.append(" ").append(operator).append(leftChild.get("suffix")).append(" ");
+                    code.append(rightChild.getChildren().get(1).get("prefix")).append(rightChild.getChildren().get(1).get("result")).append(rightChild.getChildren().get(1).get("suffix")).append(";");
+                    code.append("\n");
+                } else
+                    code.append(codeOptimization);
 
                 return code.toString();
             }

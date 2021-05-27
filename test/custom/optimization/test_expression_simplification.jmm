@@ -17,5 +17,7 @@ class Example {
         result = nothing1 - 0;
         result = nothing1 * 1;
         result = nothing1 / 1;
+
+        io.println(result);
     }
 }

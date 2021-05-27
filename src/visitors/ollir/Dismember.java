@@ -297,14 +297,86 @@ public class Dismember {
 
         code.append("t").append(registerUsed).append(".i32").append(" :=").append(".i32 ");
 
-        code.append(leftChild.get("prefix")).append(leftChild.get("result")).append(leftChild.get("suffix"));
-        code.append(" ").append(operator).append(".i32").append(" ");
-        code.append(rightChild.get("prefix")).append(rightChild.get("result")).append(rightChild.get("suffix"));
+        final String expressionSimplification = expressionMathSimplification(node, operator);
+        if (expressionSimplification.equals("")) {
+            code.append(leftChild.get("prefix")).append(leftChild.get("result")).append(leftChild.get("suffix"));
+            code.append(" ").append(operator).append(".i32").append(" ");
+            code.append(rightChild.get("prefix")).append(rightChild.get("result")).append(rightChild.get("suffix"));
 
-        code.append(";");
-        code.append("\n");
+            code.append(";");
+            code.append("\n");
+
+        } else
+            code.append(expressionSimplification);
 
         return code.toString();
+    }
+
+    public static String expressionMathSimplification(JmmNode node, String operator) {
+        StringBuilder code = new StringBuilder();
+
+        if (!node.getChildren().get(0).getKind().equals("Integer") && !node.getChildren().get(1).getKind().equals("Integer"))
+            return "";
+
+        switch (operator) {
+            case "+" -> {
+
+                if (node.getChildren().get(0).getKind().equals("Integer")) {
+
+                    if (node.getChildren().get(0).get("result").equals("0")) {
+                        code.append(node.getChildren().get(1).get("prefix")).append(node.getChildren().get(1).get("result")).append(node.getChildren().get(1).get("suffix"));
+                        code.append(";");
+                        code.append("\n");
+
+                        return code.toString();
+                    }
+
+                } else if (node.getChildren().get(1).getKind().equals("Integer")) {
+
+                    if (node.getChildren().get(1).get("result").equals("0")) {
+                        code.append(node.getChildren().get(0).get("prefix")).append(node.getChildren().get(0).get("result")).append(node.getChildren().get(0).get("suffix"));
+                        code.append(";");
+                        code.append("\n");
+
+                        return code.toString();
+                    }
+                }
+            }
+            case "-" -> {
+                if (node.getChildren().get(1).getKind().equals("Integer")) {
+                    if (node.getChildren().get(1).get("result").equals("0")) {
+                        code.append(node.getChildren().get(0).get("prefix")).append(node.getChildren().get(0).get("result")).append(node.getChildren().get(0).get("suffix"));
+                        code.append(";");
+                        code.append("\n");
+                        return code.toString();
+                    }
+                }
+            }
+            case "*", "/" -> {
+                if (node.getChildren().get(0).getKind().equals("Integer")) {
+
+                    if (node.getChildren().get(0).get("result").equals("1")) {
+                        code.append(node.getChildren().get(1).get("prefix")).append(node.getChildren().get(1).get("result")).append(node.getChildren().get(1).get("suffix"));
+                        code.append(";");
+                        code.append("\n");
+
+                        return code.toString();
+                    }
+
+                } else if (node.getChildren().get(1).getKind().equals("Integer")) {
+
+                    if (node.getChildren().get(1).get("result").equals("1")) {
+                        code.append(node.getChildren().get(0).get("prefix")).append(node.getChildren().get(0).get("result")).append(node.getChildren().get(0).get("suffix"));
+                        code.append(";");
+                        code.append("\n");
+
+                        return code.toString();
+                    }
+                }
+            }
+        }
+        return code.toString();
+
     }
 
     private static String dismemberLogic(JmmNode node, String operator) {

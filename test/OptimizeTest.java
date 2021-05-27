@@ -144,4 +144,11 @@ public class OptimizeTest {
         var output = TestUtils.backend(result).run();
         assertEquals("0", output.trim());
     }
+
+    @Test
+    public void testExpressionSimplification() {
+        var result = TestUtils.optimize(SpecsIo.getResource("custom/optimization/test_expression_simplification.jmm"));
+        var output = TestUtils.backend(result).run();
+        assertEquals("0", output.trim());
+    }
 }
