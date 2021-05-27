@@ -294,7 +294,7 @@ public class BackendStage implements JasminBackend {
 
             Operand dest = (Operand) assignInstruction.getDest();
 
-            if(dealWithIincInstruction(dest, rhs, stringBuilder)){
+            if(dealWithIincInstruction(method, dest, rhs, stringBuilder)){
                 return stringBuilder.toString();
             }
             else {
@@ -305,7 +305,7 @@ public class BackendStage implements JasminBackend {
         return stringBuilder.toString();
     }
 
-    private Boolean dealWithIincInstruction(Operand dest, Instruction rhs, StringBuilder stringBuilder){
+    private Boolean dealWithIincInstruction(Method method, Operand dest, Instruction rhs, StringBuilder stringBuilder){
         try {
             if (rhs.getInstType() != InstructionType.BINARYOPER)
                 return false;
@@ -340,8 +340,8 @@ public class BackendStage implements JasminBackend {
             operand = binaryRhs.getRightOperand().isLiteral() ? (Operand) binaryRhs.getLeftOperand() : (Operand) binaryRhs.getRightOperand();
             literalElement = binaryRhs.getRightOperand().isLiteral() ? (LiteralElement) binaryRhs.getRightOperand() : (LiteralElement) binaryRhs.getLeftOperand();
 
-            if (operand.getName().equals(dest.getName()) && Integer.parseInt(literalElement.getLiteral()) == 1) {
-                stringBuilder.append("\tiinc ").append(dest.getName()).append("\n");
+            if (operand.getName().equals(dest.getName())) {
+                stringBuilder.append("\tiinc ").append(getVarVirtualRegister(method, dest.getName())).append(" " + Integer.parseInt(literalElement.getLiteral())).append("\n");
                 return true;
             }
         }
