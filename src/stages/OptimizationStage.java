@@ -202,7 +202,7 @@ public class OptimizationStage implements JmmOptimization {
         StringBuilder code = new StringBuilder();
         switch (statement.getKind()) {
             case "While" -> {
-                if (optimizeActive)
+                if (!optimizeActive)
                     code.append(dealWithLoopUnrolling(statement));
                 else
                     code.append(dealWithWhile(statement));
@@ -719,7 +719,7 @@ public class OptimizationStage implements JmmOptimization {
 
         thenNode.add(thenNode.getChildren().get(0));
 
-        iPlus.getChildren().get(1).getChildren().get(1).put("value", String.valueOf(Integer.parseInt(iPlus.getChildren().get(1).getChildren().get(1).get("value")) * 2));
+        iPlus.getChildren().get(1).getChildren().get(1).put("value", String.valueOf(Integer.parseInt(iPlus.getChildren().get(1).getChildren().get(1).get("value"))));
 
         thenNode.add(iPlus);
 

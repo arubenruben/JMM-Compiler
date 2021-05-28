@@ -101,7 +101,7 @@ public class Main implements JmmParser {
 
         final JasminResult jasminResult = backend.toJasmin(ollirResult);
 
-        //System.out.println(jasminResult.getJasminCode());
+        jasminResult.run();
     }
 
     public static void writeToFile(String content, String path) {

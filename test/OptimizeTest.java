@@ -132,6 +132,13 @@ public class OptimizeTest {
     }
 
     @Test
+    public void testLoopTemplate() {
+        var result = TestUtils.optimize(SpecsIo.getResource("custom/optimization/test_loop_template.jmm"));
+        var output = TestUtils.backend(result).run();
+        assertEquals("50", output.trim());
+    }
+
+    @Test
     public void testLoopUnrolling() {
         var result = TestUtils.optimize(SpecsIo.getResource("custom/optimization/test_loop_unrolling.jmm"));
         var output = TestUtils.backend(result).run();

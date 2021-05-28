@@ -14,7 +14,6 @@ class Example {
             sum = sum + 1;
             i = i + 1;
         }
-
         io.println(sum);
     }
 }
