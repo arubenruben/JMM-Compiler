@@ -140,21 +140,21 @@ public class OptimizeTest {
 
     @Test
     public void testLoopUnrolling() {
-        var result = TestUtils.optimize(SpecsIo.getResource("custom/optimization/test_loop_unrolling.jmm"));
+        var result = TestUtils.optimize(SpecsIo.getResource("custom/optimization/test_loop_unrolling.jmm"), true);
         var output = TestUtils.backend(result).run();
         assertEquals("50", output.trim());
     }
 
     @Test
     public void testConstantFolding() {
-        var result = TestUtils.optimize(SpecsIo.getResource("custom/optimization/test_constant_propagation.jmm"));
+        var result = TestUtils.optimize(SpecsIo.getResource("custom/optimization/test_constant_propagation.jmm"), true);
         var output = TestUtils.backend(result).run();
         assertEquals("0", output.trim());
     }
 
     @Test
     public void testExpressionSimplification() {
-        var result = TestUtils.optimize(SpecsIo.getResource("custom/optimization/test_expression_simplification.jmm"));
+        var result = TestUtils.optimize(SpecsIo.getResource("custom/optimization/test_expression_simplification.jmm"), true);
         var output = TestUtils.backend(result).run();
         assertEquals("0", output.trim());
     }
