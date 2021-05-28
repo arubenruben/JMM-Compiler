@@ -130,14 +130,7 @@ public class OptimizeTest {
     public void testConditionPrecedence() {
         testFile("custom/semantic/type_verification/test_condition_precedence.jmm", false);
     }
-
-    @Test
-    public void testLoopTemplate() {
-        var result = TestUtils.optimize(SpecsIo.getResource("custom/optimization/test_loop_template.jmm"));
-        var output = TestUtils.backend(result).run();
-        assertEquals("50", output.trim());
-    }
-
+    
     @Test
     public void testLoopUnrolling() {
         var result = TestUtils.optimize(SpecsIo.getResource("custom/optimization/test_loop_unrolling.jmm"), true);
