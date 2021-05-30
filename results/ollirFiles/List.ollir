@@ -1,0 +1,187 @@
+List {
+	.construct List().V{
+		invokespecial(this,"<init>").V;
+	}
+	.method public print_int_arr(list.array.i32).bool {
+		i.i32 :=.i32 0.i32;
+		Loop4:
+			t1.i32 :=.i32 arraylength($1.list.array.i32).i32;
+			if(i.i32 <.i32 t1.i32) goto Body4;
+		goto EndLoop4;
+		Body4:
+			t2.i32 :=.i32 $1.list[i.i32].i32;
+			invokestatic(io, "print", t2.i32).V;
+			i.i32 :=.i32 i.i32 +.i32 1.i32;
+			goto Loop4;
+		EndLoop4:
+		ret.bool 1.bool;
+	}
+	.method public sort_int_arr_int_int(list.array.i32, lo.i32, hi.i32).bool {
+		par1.array.i32 :=.array.i32 $1.list.array.i32;
+		par2.i32 :=.i32 $2.lo.i32;
+		par3.i32 :=.i32 $3.hi.i32;
+		if(par2.i32 >=.i32 par3.i32) goto else16;
+			t1.i32 :=.i32 invokevirtual(this, "partition_int_arr_int_int", par1.array.i32, par2.i32, par3.i32).i32;
+			p.i32 :=.i32 t1.i32;
+			t2.i32 :=.i32 p.i32 -.i32 1.i32;
+			invokevirtual(this, "sort_int_arr_int_int", par1.array.i32, par2.i32, t2.i32).bool;
+			t3.i32 :=.i32 p.i32 +.i32 1.i32;
+			invokevirtual(this, "sort_int_arr_int_int", par1.array.i32, t3.i32, par3.i32).bool;
+			goto endif16;
+		else16:
+			dummy.i32 :=.i32 0.i32;
+		endif16:
+		ret.bool 1.bool;
+	}
+	.method public partition_int_arr_int_int(list.array.i32, lo.i32, hi.i32).i32 {
+		t1.i32 :=.i32 $1.list[$3.hi.i32].i32;
+		p.i32 :=.i32 t1.i32;
+		i.i32 :=.i32 $2.lo.i32;
+		j.i32 :=.i32 $2.lo.i32;
+		Loop5:
+			if(j.i32 <.i32 $3.hi.i32) goto Body5;
+		goto EndLoop5;
+		Body5:
+			t2.i32 :=.i32 $1.list[j.i32].i32;
+			if(t2.i32 >=.i32 p.i32) goto else17;
+				t3.i32 :=.i32 $1.list[i.i32].i32;
+				tmp.i32 :=.i32 t3.i32;
+				t4.i32 :=.i32 $1.list[i.i32].i32;
+				t5.i32 :=.i32 $1.list[j.i32].i32;
+				$1.list[i.i32].i32 :=.i32 t5.i32;
+				t6.i32 :=.i32 $1.list[j.i32].i32;
+				$1.list[j.i32].i32 :=.i32 tmp.i32;
+				i.i32 :=.i32 i.i32 +.i32 1.i32;
+				goto endif17;
+			else17:
+			endif17:
+			j.i32 :=.i32 j.i32 +.i32 1.i32;
+			goto Loop5;
+		EndLoop5:
+		t9.i32 :=.i32 $1.list[i.i32].i32;
+		tmp.i32 :=.i32 t9.i32;
+		t10.i32 :=.i32 $1.list[i.i32].i32;
+		t11.i32 :=.i32 $1.list[$3.hi.i32].i32;
+		$1.list[i.i32].i32 :=.i32 t11.i32;
+		t12.i32 :=.i32 $1.list[$3.hi.i32].i32;
+		$1.list[$3.hi.i32].i32 :=.i32 tmp.i32;
+		ret.i32 i.i32;
+	}
+	.method public slice_int_arr_int_int(list.array.i32, lowerBound.i32, upperBound.i32).array.i32 {
+		t1.i32 :=.i32 $3.upperBound.i32 -.i32 $2.lowerBound.i32;
+		t2.array.i32 :=.array.i32 new(array, t1.i32).array.i32;
+		result.array.i32 :=.array.i32 t2.array.i32;
+		i.i32 :=.i32 $2.lowerBound.i32;
+		j.i32 :=.i32 0.i32;
+		Loop6:
+			if(i.i32 <.i32 $3.upperBound.i32) goto Body6;
+		goto EndLoop6;
+		Body6:
+			t3.i32 :=.i32 result[j.i32].i32;
+			t4.i32 :=.i32 $1.list[i.i32].i32;
+			result[j.i32].i32 :=.i32 t4.i32;
+			i.i32 :=.i32 i.i32 +.i32 1.i32;
+			j.i32 :=.i32 j.i32 +.i32 1.i32;
+			goto Loop6;
+		EndLoop6:
+		ret.array.i32 result.array.i32;
+	}
+	.method public static main(args.array.String).V {
+		t1.List :=.List new(List).List;
+		invokespecial(t1.List, "<init>").V;
+		list.List :=.List t1.List;
+		t2.array.i32 :=.array.i32 new(array, 10.i32).array.i32;
+		list1.array.i32 :=.array.i32 t2.array.i32;
+		t3.array.i32 :=.array.i32 new(array, 10.i32).array.i32;
+		list2.array.i32 :=.array.i32 t3.array.i32;
+		t4.array.i32 :=.array.i32 new(array, 10.i32).array.i32;
+		list3.array.i32 :=.array.i32 t4.array.i32;
+		i.i32 :=.i32 0.i32;
+		Loop7:
+			if(i.i32 <.i32 10.i32) goto Body7;
+		goto EndLoop7;
+		Body7:
+			t5.i32 :=.i32 list1[i.i32].i32;
+			list1[i.i32].i32 :=.i32 i.i32;
+			t6.i32 :=.i32 list2[i.i32].i32;
+			list2[i.i32].i32 :=.i32 i.i32;
+			t7.i32 :=.i32 list3[i.i32].i32;
+			t8.i32 :=.i32 9.i32 -.i32 i.i32;
+			list3[i.i32].i32 :=.i32 t8.i32;
+			i.i32 :=.i32 i.i32 +.i32 1.i32;
+			goto Loop7;
+		EndLoop7:
+		t10.array.i32 :=.array.i32 invokevirtual(list.List, "concat_int_arr_int_arr", list1.array.i32, list2.array.i32).array.i32;
+		result_list.array.i32 :=.array.i32 t10.array.i32;
+		invokevirtual(list.List, "print_int_arr", result_list.array.i32).bool;
+		invokestatic(io, "println").V;
+		t11.i32 :=.i32 invokevirtual(list.List, "at_int_arr_int", list1.array.i32, 1.i32).i32;
+		result_value.i32 :=.i32 t11.i32;
+		invokestatic(io, "println", result_value.i32).V;
+		t12.array.i32 :=.array.i32 invokevirtual(list.List, "slice_int_arr_int", list1.array.i32, 3.i32).array.i32;
+		result_list.array.i32 :=.array.i32 t12.array.i32;
+		invokevirtual(list.List, "print_int_arr", result_list.array.i32).bool;
+		invokestatic(io, "println").V;
+		t13.array.i32 :=.array.i32 invokevirtual(list.List, "slice_int_arr_int_int", list1.array.i32, 3.i32, 4.i32).array.i32;
+		result_list.array.i32 :=.array.i32 t13.array.i32;
+		invokevirtual(list.List, "print_int_arr", result_list.array.i32).bool;
+		invokestatic(io, "println").V;
+		t14.i32 :=.i32 arraylength(list3.array.i32).i32;
+		t15.i32 :=.i32 t14.i32 -.i32 1.i32;
+		invokevirtual(list.List, "sort_int_arr_int_int", list3.array.i32, 0.i32, t15.i32).bool;
+		invokevirtual(list.List, "print_int_arr", list3.array.i32).bool;
+	}
+	.method public slice_int_arr_int(list.array.i32, upperBound.i32).array.i32 {
+		t1.array.i32 :=.array.i32 new(array, upperBound.i32).array.i32;
+		result.array.i32 :=.array.i32 t1.array.i32;
+		i.i32 :=.i32 0.i32;
+		Loop8:
+			if(i.i32 <.i32 $2.upperBound.i32) goto Body8;
+		goto EndLoop8;
+		Body8:
+			t2.i32 :=.i32 result[i.i32].i32;
+			t3.i32 :=.i32 $1.list[i.i32].i32;
+			result[i.i32].i32 :=.i32 t3.i32;
+			i.i32 :=.i32 i.i32 +.i32 1.i32;
+			goto Loop8;
+		EndLoop8:
+		ret.array.i32 result.array.i32;
+	}
+	.method public concat_int_arr_int_arr(list1.array.i32, list2.array.i32).array.i32 {
+		t1.i32 :=.i32 arraylength($1.list1.array.i32).i32;
+		t2.i32 :=.i32 arraylength($2.list2.array.i32).i32;
+		t3.i32 :=.i32 t1.i32 +.i32 t2.i32;
+		t4.array.i32 :=.array.i32 new(array, t3.i32).array.i32;
+		listResult.array.i32 :=.array.i32 t4.array.i32;
+		i.i32 :=.i32 0.i32;
+		Loop9:
+			t5.i32 :=.i32 arraylength($1.list1.array.i32).i32;
+			if(i.i32 <.i32 t5.i32) goto Body9;
+		goto EndLoop9;
+		Body9:
+			t6.i32 :=.i32 listResult[i.i32].i32;
+			t7.i32 :=.i32 $1.list1[i.i32].i32;
+			listResult[i.i32].i32 :=.i32 t7.i32;
+			i.i32 :=.i32 i.i32 +.i32 1.i32;
+			goto Loop9;
+		EndLoop9:
+		j.i32 :=.i32 0.i32;
+		Loop10:
+			t9.i32 :=.i32 arraylength($2.list2.array.i32).i32;
+			if(j.i32 <.i32 t9.i32) goto Body10;
+		goto EndLoop10;
+		Body10:
+			t10.i32 :=.i32 listResult[i.i32].i32;
+			t11.i32 :=.i32 $2.list2[j.i32].i32;
+			listResult[i.i32].i32 :=.i32 t11.i32;
+			i.i32 :=.i32 i.i32 +.i32 1.i32;
+			j.i32 :=.i32 j.i32 +.i32 1.i32;
+			goto Loop10;
+		EndLoop10:
+		ret.array.i32 listResult.array.i32;
+	}
+	.method public at_int_arr_int(list.array.i32, index.i32).i32 {
+		t1.i32 :=.i32 $1.list[$2.index.i32].i32;
+		ret.i32 t1.i32;
+	}
+}

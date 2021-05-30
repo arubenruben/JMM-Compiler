@@ -1,0 +1,13 @@
+Overall3 {
+	.construct Overall3().V{
+		invokespecial(this,"<init>").V;
+	}
+	.method public static main(args.array.String).V {
+		t1.i32 :=.i32 invokestatic(io, "read").i32;
+		value.i32 :=.i32 t1.i32;
+		t2.i32 :=.i32 invokestatic(io, "read").i32;
+		value1.i32 :=.i32 t2.i32;
+		t3.i32 :=.i32 value.i32 +.i32 value1.i32;
+		invokestatic(io, "println", t3.i32).V;
+	}
+}

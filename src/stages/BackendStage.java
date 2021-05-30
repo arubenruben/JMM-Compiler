@@ -8,9 +8,13 @@ import pt.up.fe.comp.jmm.ollir.OllirResult;
 import pt.up.fe.comp.jmm.report.Report;
 import pt.up.fe.comp.jmm.report.Stage;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static utils.GeneralUtils.writeToFile;
 
 /**
  * Copyright 2021 SPeCS.
@@ -52,6 +56,7 @@ public class BackendStage implements JasminBackend {
             List<Report> reports = new ArrayList<>();
 
             System.out.println(jasminCode);
+            writeToFile(jasminCode, "results/jasminFiles/" + ollirResult.getSymbolTable().getClassName() + ".jasmin");
             return new JasminResult(ollirResult, jasminCode, reports);
 
         } catch (OllirErrorException e) {
@@ -851,5 +856,6 @@ public class BackendStage implements JasminBackend {
         }
         return result.toString();
     }
+
 
 }

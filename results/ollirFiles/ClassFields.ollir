@@ -1,0 +1,19 @@
+ClassFields {
+	.field protected a.i32;
+	.construct ClassFields().V{
+		invokespecial(this,"<init>").V;
+	}
+	.method public classFieldAccess().i32 {
+		putfield(this, a.i32, 5.i32).V;
+		t1.i32 :=.i32 getfield(this, a.i32).i32;
+		invokestatic(io, "println", t1.i32).V;
+		ret.i32 0.i32;
+	}
+	.method public static main(args.array.String).V {
+		t1.ClassFields :=.ClassFields new(ClassFields).ClassFields;
+		invokespecial(t1.ClassFields, "<init>").V;
+		classFields.ClassFields :=.ClassFields t1.ClassFields;
+		t2.i32 :=.i32 invokevirtual(classFields.ClassFields, "classFieldAccess").i32;
+		value.i32 :=.i32 t2.i32;
+	}
+}

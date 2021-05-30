@@ -1,0 +1,81 @@
+Overall5 {
+	.field protected a.array.i32;
+	.field protected b.array.i32;
+	.field protected c.array.i32;
+	.field protected i.i32;
+	.construct Overall5().V{
+		invokespecial(this,"<init>").V;
+	}
+	.method public classFieldAccess().i32 {
+		t1.array.i32 :=.array.i32 new(array, 5.i32).array.i32;
+		putfield(this, a.array.i32, t1.array.i32).V;
+		t2.array.i32 :=.array.i32 new(array, 5.i32).array.i32;
+		putfield(this, b.array.i32, t2.array.i32).V;
+		t3.array.i32 :=.array.i32 new(array, 5.i32).array.i32;
+		putfield(this, c.array.i32, t3.array.i32).V;
+		putfield(this, i.i32, 0.i32).V;
+		Loop15:
+			t4.i32 :=.i32 getfield(this, i.i32).i32;
+			if(t4.i32 <.i32 5.i32) goto Body15;
+		goto EndLoop15;
+		Body15:
+			t5.array.i32 :=.array.i32 getfield(this, a.array.i32).array.i32;
+			t6.i32 :=.i32 getfield(this, i.i32).i32;
+			t7.i32 :=.i32 t5[t6.i32].i32;
+			t5[t6.i32].i32 :=.i32 1.i32;
+			t8.array.i32 :=.array.i32 getfield(this, b.array.i32).array.i32;
+			t9.i32 :=.i32 getfield(this, i.i32).i32;
+			t10.i32 :=.i32 t8[t9.i32].i32;
+			t8[t9.i32].i32 :=.i32 2.i32;
+			t11.i32 :=.i32 getfield(this, i.i32).i32;
+			t12.i32 :=.i32 t11.i32 +.i32 1.i32;
+			putfield(this, i.i32, t12.i32).V;
+			goto Loop15;
+		EndLoop15:
+		putfield(this, i.i32, 0.i32).V;
+		Loop16:
+			t13.i32 :=.i32 getfield(this, i.i32).i32;
+			if(t13.i32 <.i32 5.i32) goto Body16;
+		goto EndLoop16;
+		Body16:
+			t14.array.i32 :=.array.i32 getfield(this, c.array.i32).array.i32;
+			t15.i32 :=.i32 getfield(this, i.i32).i32;
+			t16.i32 :=.i32 t14[t15.i32].i32;
+			t17.array.i32 :=.array.i32 getfield(this, a.array.i32).array.i32;
+			t18.i32 :=.i32 getfield(this, i.i32).i32;
+			t19.i32 :=.i32 t17[t18.i32].i32;
+			t20.array.i32 :=.array.i32 getfield(this, b.array.i32).array.i32;
+			t21.i32 :=.i32 getfield(this, i.i32).i32;
+			t22.i32 :=.i32 t20[t21.i32].i32;
+			t23.i32 :=.i32 t19.i32 +.i32 t22.i32;
+			t14[t15.i32].i32 :=.i32 t23.i32;
+			t24.i32 :=.i32 getfield(this, i.i32).i32;
+			t25.i32 :=.i32 t24.i32 +.i32 1.i32;
+			putfield(this, i.i32, t25.i32).V;
+			goto Loop16;
+		EndLoop16:
+		putfield(this, i.i32, 0.i32).V;
+		Loop17:
+			t26.i32 :=.i32 getfield(this, i.i32).i32;
+			if(t26.i32 <.i32 5.i32) goto Body17;
+		goto EndLoop17;
+		Body17:
+			t27.array.i32 :=.array.i32 getfield(this, c.array.i32).array.i32;
+			t28.i32 :=.i32 getfield(this, i.i32).i32;
+			t29.i32 :=.i32 t27[t28.i32].i32;
+			invokestatic(io, "println", t29.i32).V;
+			t30.i32 :=.i32 getfield(this, i.i32).i32;
+			t31.i32 :=.i32 t30.i32 +.i32 1.i32;
+			putfield(this, i.i32, t31.i32).V;
+			goto Loop17;
+		EndLoop17:
+		ret.i32 0.i32;
+	}
+	.method public static main(args.array.String).V {
+		t1.Overall5 :=.Overall5 new(Overall5).Overall5;
+		invokespecial(t1.Overall5, "<init>").V;
+		helloWorld.Overall5 :=.Overall5 t1.Overall5;
+		t2.i32 :=.i32 invokevirtual(helloWorld.Overall5, "classFieldAccess").i32;
+		value.i32 :=.i32 t2.i32;
+	}
+}

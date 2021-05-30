@@ -17,6 +17,8 @@ import visitors.semantic.helpers.data_helpers.SecondVisitorHelper;
 import java.util.ArrayList;
 import java.util.List;
 
+import static utils.GeneralUtils.writeToFile;
+
 public class OptimizationStage implements JmmOptimization {
     private static SymbolTableIml symbolTable;
     private static MethodSymbol currentMethod;
@@ -63,6 +65,7 @@ public class OptimizationStage implements JmmOptimization {
         String ollirCode = ollirCodeString();
 
         System.out.println(ollirCode);
+        writeToFile(ollirCode, "results/ollirFiles/" + symbolTable.getClassName() + ".ollir");
 
         // More reports from this stage
         List<Report> reports = new ArrayList<>();

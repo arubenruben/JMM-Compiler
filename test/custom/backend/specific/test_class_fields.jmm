@@ -1,5 +1,5 @@
 import io;
-class HelloWorld {
+class ClassFields {
 
     int a;
 
@@ -14,8 +14,8 @@ class HelloWorld {
 	public static void main(String[] args) {
 	    int value;
 
-        HelloWorld helloWorld;
-        helloWorld = new HelloWorld();
-        value = helloWorld.classFieldAccess();
+        ClassFields classFields;
+        classFields = new ClassFields();
+        value = classFields.classFieldAccess();
 	}
 }

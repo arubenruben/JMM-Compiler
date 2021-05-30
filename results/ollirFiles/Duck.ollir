@@ -1,0 +1,31 @@
+Duck {
+	.construct Duck().V{
+		invokespecial(this,"<init>").V;
+	}
+	.method public quack_boolean(dummy_var.bool).bool {
+		invokestatic(io, "println", 0.i32).V;
+		ret.bool 0.bool;
+	}
+	.method public static main(args.array.String).V {
+		t1.Duck :=.Duck new(Duck).Duck;
+		invokespecial(t1.Duck, "<init>").V;
+		arnaldo.Duck :=.Duck t1.Duck;
+		t2.Duck :=.Duck new(Duck).Duck;
+		invokespecial(t2.Duck, "<init>").V;
+		jose.Duck :=.Duck t2.Duck;
+		int_animal.i32 :=.i32 0.i32;
+		bool_animal.bool :=.bool 1.bool;
+		invokevirtual(arnaldo.Duck, "quack_Duck", arnaldo.Duck).bool;
+		invokevirtual(arnaldo.Duck, "quack_Duck", jose.Duck).bool;
+		invokevirtual(arnaldo.Duck, "quack_int", int_animal.i32).bool;
+		invokevirtual(arnaldo.Duck, "quack_boolean", bool_animal.bool).bool;
+	}
+	.method public quack_Duck(duck.Duck).bool {
+		invokestatic(io, "println", 1.i32).V;
+		ret.bool 1.bool;
+	}
+	.method public quack_int(dummy_var.i32).bool {
+		invokestatic(io, "println", 0.i32).V;
+		ret.bool 0.bool;
+	}
+}
