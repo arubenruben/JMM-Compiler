@@ -1,5 +1,5 @@
 import io;
-class Test {
+class InvokeVirtual {
 
     public int sum(int a, int b){
         int c;
@@ -9,8 +9,8 @@ class Test {
 
 	public static void main(String[] args) {
 	    int a;
-	    Test t;
-	    t = new Test();
+	    InvokeVirtual t;
+	    t = new InvokeVirtual();
 	    a = t.sum(5,3);
 		io.print(a);
 	}

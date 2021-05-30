@@ -1,0 +1,48 @@
+IfCondition {
+	.construct IfCondition().V{
+		invokespecial(this,"<init>").V;
+	}
+	.method public static main(args.array.String).V {
+		a.i32 :=.i32 10.i32;
+		b.i32 :=.i32 20.i32;
+		d.bool :=.bool 1.bool;
+		f.bool :=.bool 0.bool;
+		if(a.i32 >=.i32 15.i32) goto else;
+			c.i32 :=.i32 a.i32;
+			goto endif;
+		else:
+			c.i32 :=.i32 b.i32;
+		endif:
+		invokestatic(io, "println", c.i32).V;
+		if(1.bool !.bool 1.bool) goto else1;
+			c.i32 :=.i32 5.i32;
+			goto endif1;
+		else1:
+			c.i32 :=.i32 6.i32;
+		endif1:
+		invokestatic(io, "println", c.i32).V;
+		t1.bool :=.bool d.bool !.bool d.bool;
+		t2.bool :=.bool f.bool !.bool f.bool;
+		if(t1.bool ||.bool t2.bool) goto else2;
+			c.i32 :=.i32 2.i32;
+			goto endif2;
+		else2:
+			c.i32 :=.i32 0.i32;
+		endif2:
+		invokestatic(io, "println", c.i32).V;
+		if(d.bool &&.bool d.bool) goto else3;
+			c.i32 :=.i32 0.i32;
+			goto endif3;
+		else3:
+			c.i32 :=.i32 2.i32;
+		endif3:
+		invokestatic(io, "println", c.i32).V;
+		if(d.bool !.bool d.bool) goto else4;
+			c.i32 :=.i32 5.i32;
+			goto endif4;
+		else4:
+			c.i32 :=.i32 0.i32;
+		endif4:
+		invokestatic(io, "println", c.i32).V;
+	}
+}

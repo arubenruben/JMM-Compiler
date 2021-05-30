@@ -1,0 +1,45 @@
+Overall2 {
+	.construct Overall2().V{
+		invokespecial(this,"<init>").V;
+	}
+	.method public static main(args.array.String).V {
+		t1.array.i32 :=.array.i32 new(array, 10.i32).array.i32;
+		list.array.i32 :=.array.i32 t1.array.i32;
+		i.i32 :=.i32 0.i32;
+		counter.i32 :=.i32 0.i32;
+		Loop13:
+			t2.i32 :=.i32 arraylength(list.array.i32).i32;
+			if(i.i32 <.i32 t2.i32) goto Body13;
+		goto EndLoop13;
+		Body13:
+			t3.i32 :=.i32 list[i.i32].i32;
+			list[i.i32].i32 :=.i32 i.i32;
+			i.i32 :=.i32 i.i32 +.i32 1.i32;
+			goto Loop13;
+		EndLoop13:
+		if(i.i32 >=.i32 0.i32) goto else19;
+			i.i32 :=.i32 0.i32;
+			goto endif19;
+		else19:
+			i.i32 :=.i32 0.i32;
+		endif19:
+		Loop14:
+			t5.i32 :=.i32 arraylength(list.array.i32).i32;
+			if(i.i32 <.i32 t5.i32) goto Body14;
+		goto EndLoop14;
+		Body14:
+			t6.i32 :=.i32 list[i.i32].i32;
+			t7.i32 :=.i32 counter.i32 +.i32 t6.i32;
+			counter.i32 :=.i32 t7.i32;
+			if(i.i32 >=.i32 0.i32) goto else20;
+				counter.i32 :=.i32 0.i32;
+				goto endif20;
+			else20:
+				counter.i32 :=.i32 counter.i32 *.i32 0.i32;
+			endif20:
+			i.i32 :=.i32 i.i32 +.i32 1.i32;
+			goto Loop14;
+		EndLoop14:
+		invokestatic(io, "println", counter.i32).V;
+	}
+}

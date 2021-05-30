@@ -1,0 +1,16 @@
+Fac {
+	.construct Fac().V{
+		invokespecial(this,"<init>").V;
+	}
+	.method public static main(args.array.String).V {
+		t1.i32 :=.i32 var_array1[j.i32].i32;
+		t2.i32 :=.i32 var_array2[j.i32].i32;
+		if(t1.i32 >=.i32 t2.i32) goto else56;
+			j.i32 :=.i32 1.i32;
+			goto endif56;
+		else56:
+			j.i32 :=.i32 1.i32;
+		endif56:
+		j.i32 :=.i32 0.i32;
+	}
+}

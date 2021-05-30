@@ -1,6 +1,6 @@
 import io;
 
-class HelloWorld {
+class Overall5 {
 
     int[] c;
     int[] a;
@@ -35,8 +35,8 @@ class HelloWorld {
 
     public static void main(String[] args) {
         int value;
-        HelloWorld helloWorld;
-        helloWorld = new HelloWorld();
+        Overall5 helloWorld;
+        helloWorld = new Overall5();
         value = helloWorld.classFieldAccess();
     }
 }

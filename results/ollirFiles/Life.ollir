@@ -1,0 +1,608 @@
+Life {
+	.field protected REPRODUCE_NUM.i32;
+	.field protected yMax.i32;
+	.field protected field.array.i32;
+	.field protected OVERPOP_LIM.i32;
+	.field protected UNDERPOP_LIM.i32;
+	.field protected index.i32;
+	.field protected xMax.i32;
+	.field protected LOOPS_PER_MS.i32;
+	.construct Life().V{
+		invokespecial(this,"<init>").V;
+	}
+	.method public init().bool {
+		t1.i32 :=.i32 getfield(this, index.i32).i32;
+		t2.array.i32 :=.array.i32 new(array, t1.i32).array.i32;
+		lineLenA.array.i32 :=.array.i32 t2.array.i32;
+		putfield(this, UNDERPOP_LIM.i32, 2.i32).V;
+		putfield(this, OVERPOP_LIM.i32, 3.i32).V;
+		putfield(this, REPRODUCE_NUM.i32, 3.i32).V;
+		putfield(this, LOOPS_PER_MS.i32, 225000.i32).V;
+		t3.array.i32 :=.array.i32 invokevirtual(this, "field_int_arr", lineLenA.array.i32).array.i32;
+		putfield(this, field.array.i32, t3.array.i32).V;
+		t4.i32 :=.i32 getfield(this, index.i32).i32;
+		t5.i32 :=.i32 lineLenA[t4.i32].i32;
+		lineLen.i32 :=.i32 t5.i32;
+		t6.i32 :=.i32 lineLen.i32 -.i32 1.i32;
+		putfield(this, xMax.i32, t6.i32).V;
+		t7.array.i32 :=.array.i32 getfield(this, field.array.i32).array.i32;
+		t8.i32 :=.i32 arraylength(t7.array.i32).i32;
+		t9.i32 :=.i32 t8.i32 /.i32 lineLen.i32;
+		t10.i32 :=.i32 t9.i32 -.i32 1.i32;
+		putfield(this, yMax.i32, t10.i32).V;
+		ret.bool 1.bool;
+	}
+	.method public busyWait_int(ms.i32).bool {
+		t1.i32 :=.i32 getfield(this, LOOPS_PER_MS.i32).i32;
+		t2.i32 :=.i32 $1.ms.i32 *.i32 t1.i32;
+		n.i32 :=.i32 t2.i32;
+		i.i32 :=.i32 0.i32;
+		Loop22:
+			if(i.i32 <.i32 n.i32) goto Body22;
+		goto EndLoop22;
+		Body22:
+			i.i32 :=.i32 i.i32 +.i32 1.i32;
+			goto Loop22;
+		EndLoop22:
+		ret.bool 1.bool;
+	}
+	.method public le_int_int(a.i32, b.i32).bool {
+		t1.bool :=.bool invokevirtual(this, "lt_int_int", $1.a.i32, $2.b.i32).bool;
+		t2.bool :=.bool t1.bool !.bool t1.bool;
+		t3.bool :=.bool invokevirtual(this, "eq_int_int", $1.a.i32, $2.b.i32).bool;
+		t4.bool :=.bool t3.bool !.bool t3.bool;
+		t5.bool :=.bool t2.bool &&.bool t4.bool;
+		t6.bool :=.bool t5.bool !.bool t5.bool;
+		ret.bool t6.bool;
+	}
+	.method public trIdx_int_int(x.i32, y.i32).i32 {
+		t1.i32 :=.i32 getfield(this, xMax.i32).i32;
+		t2.i32 :=.i32 t1.i32 +.i32 1.i32;
+		t3.i32 :=.i32 t2.i32 *.i32 $2.y.i32;
+		t4.i32 :=.i32 $1.x.i32 +.i32 t3.i32;
+		ret.i32 t4.i32;
+	}
+	.method public ne_int_int(a.i32, b.i32).bool {
+		t1.bool :=.bool invokevirtual(this, "eq_int_int", $1.a.i32, $2.b.i32).bool;
+		t2.bool :=.bool t1.bool !.bool t1.bool;
+		ret.bool t2.bool;
+	}
+	.method public lt_int_int(a.i32, b.i32).bool {
+		t1.bool :=.bool $1.a.i32 <.bool $2.b.i32;
+		ret.bool t1.bool;
+	}
+	.method public field_int_arr(lineLen.array.i32).array.i32 {
+		t1.array.i32 :=.array.i32 new(array, 100.i32).array.i32;
+		field.array.i32 :=.array.i32 t1.array.i32;
+		t2.i32 :=.i32 getfield(this, index.i32).i32;
+		t3.i32 :=.i32 $1.lineLen[t2.i32].i32;
+		$1.lineLen[t2.i32].i32 :=.i32 10.i32;
+		t4.i32 :=.i32 getfield(this, index.i32).i32;
+		t5.i32 :=.i32 field[t4.i32].i32;
+		field[t4.i32].i32 :=.i32 0.i32;
+		t6.i32 :=.i32 getfield(this, index.i32).i32;
+		t7.i32 :=.i32 field[t6.i32].i32;
+		field[t6.i32].i32 :=.i32 0.i32;
+		t8.i32 :=.i32 getfield(this, index.i32).i32;
+		t9.i32 :=.i32 field[t8.i32].i32;
+		field[t8.i32].i32 :=.i32 1.i32;
+		t10.i32 :=.i32 getfield(this, index.i32).i32;
+		t11.i32 :=.i32 field[t10.i32].i32;
+		field[t10.i32].i32 :=.i32 0.i32;
+		t12.i32 :=.i32 getfield(this, index.i32).i32;
+		t13.i32 :=.i32 field[t12.i32].i32;
+		field[t12.i32].i32 :=.i32 0.i32;
+		t14.i32 :=.i32 getfield(this, index.i32).i32;
+		t15.i32 :=.i32 field[t14.i32].i32;
+		field[t14.i32].i32 :=.i32 0.i32;
+		t16.i32 :=.i32 getfield(this, index.i32).i32;
+		t17.i32 :=.i32 field[t16.i32].i32;
+		field[t16.i32].i32 :=.i32 0.i32;
+		t18.i32 :=.i32 getfield(this, index.i32).i32;
+		t19.i32 :=.i32 field[t18.i32].i32;
+		field[t18.i32].i32 :=.i32 0.i32;
+		t20.i32 :=.i32 getfield(this, index.i32).i32;
+		t21.i32 :=.i32 field[t20.i32].i32;
+		field[t20.i32].i32 :=.i32 0.i32;
+		t22.i32 :=.i32 getfield(this, index.i32).i32;
+		t23.i32 :=.i32 field[t22.i32].i32;
+		field[t22.i32].i32 :=.i32 0.i32;
+		t24.i32 :=.i32 getfield(this, index.i32).i32;
+		t25.i32 :=.i32 field[t24.i32].i32;
+		field[t24.i32].i32 :=.i32 1.i32;
+		t26.i32 :=.i32 getfield(this, index.i32).i32;
+		t27.i32 :=.i32 field[t26.i32].i32;
+		field[t26.i32].i32 :=.i32 0.i32;
+		t28.i32 :=.i32 getfield(this, index.i32).i32;
+		t29.i32 :=.i32 field[t28.i32].i32;
+		field[t28.i32].i32 :=.i32 1.i32;
+		t30.i32 :=.i32 getfield(this, index.i32).i32;
+		t31.i32 :=.i32 field[t30.i32].i32;
+		field[t30.i32].i32 :=.i32 0.i32;
+		t32.i32 :=.i32 getfield(this, index.i32).i32;
+		t33.i32 :=.i32 field[t32.i32].i32;
+		field[t32.i32].i32 :=.i32 0.i32;
+		t34.i32 :=.i32 getfield(this, index.i32).i32;
+		t35.i32 :=.i32 field[t34.i32].i32;
+		field[t34.i32].i32 :=.i32 0.i32;
+		t36.i32 :=.i32 getfield(this, index.i32).i32;
+		t37.i32 :=.i32 field[t36.i32].i32;
+		field[t36.i32].i32 :=.i32 0.i32;
+		t38.i32 :=.i32 getfield(this, index.i32).i32;
+		t39.i32 :=.i32 field[t38.i32].i32;
+		field[t38.i32].i32 :=.i32 0.i32;
+		t40.i32 :=.i32 getfield(this, index.i32).i32;
+		t41.i32 :=.i32 field[t40.i32].i32;
+		field[t40.i32].i32 :=.i32 0.i32;
+		t42.i32 :=.i32 getfield(this, index.i32).i32;
+		t43.i32 :=.i32 field[t42.i32].i32;
+		field[t42.i32].i32 :=.i32 0.i32;
+		t44.i32 :=.i32 getfield(this, index.i32).i32;
+		t45.i32 :=.i32 field[t44.i32].i32;
+		field[t44.i32].i32 :=.i32 0.i32;
+		t46.i32 :=.i32 getfield(this, index.i32).i32;
+		t47.i32 :=.i32 field[t46.i32].i32;
+		field[t46.i32].i32 :=.i32 1.i32;
+		t48.i32 :=.i32 getfield(this, index.i32).i32;
+		t49.i32 :=.i32 field[t48.i32].i32;
+		field[t48.i32].i32 :=.i32 1.i32;
+		t50.i32 :=.i32 getfield(this, index.i32).i32;
+		t51.i32 :=.i32 field[t50.i32].i32;
+		field[t50.i32].i32 :=.i32 0.i32;
+		t52.i32 :=.i32 getfield(this, index.i32).i32;
+		t53.i32 :=.i32 field[t52.i32].i32;
+		field[t52.i32].i32 :=.i32 0.i32;
+		t54.i32 :=.i32 getfield(this, index.i32).i32;
+		t55.i32 :=.i32 field[t54.i32].i32;
+		field[t54.i32].i32 :=.i32 0.i32;
+		t56.i32 :=.i32 getfield(this, index.i32).i32;
+		t57.i32 :=.i32 field[t56.i32].i32;
+		field[t56.i32].i32 :=.i32 0.i32;
+		t58.i32 :=.i32 getfield(this, index.i32).i32;
+		t59.i32 :=.i32 field[t58.i32].i32;
+		field[t58.i32].i32 :=.i32 0.i32;
+		t60.i32 :=.i32 getfield(this, index.i32).i32;
+		t61.i32 :=.i32 field[t60.i32].i32;
+		field[t60.i32].i32 :=.i32 0.i32;
+		t62.i32 :=.i32 getfield(this, index.i32).i32;
+		t63.i32 :=.i32 field[t62.i32].i32;
+		field[t62.i32].i32 :=.i32 0.i32;
+		t64.i32 :=.i32 getfield(this, index.i32).i32;
+		t65.i32 :=.i32 field[t64.i32].i32;
+		field[t64.i32].i32 :=.i32 0.i32;
+		t66.i32 :=.i32 getfield(this, index.i32).i32;
+		t67.i32 :=.i32 field[t66.i32].i32;
+		field[t66.i32].i32 :=.i32 0.i32;
+		t68.i32 :=.i32 getfield(this, index.i32).i32;
+		t69.i32 :=.i32 field[t68.i32].i32;
+		field[t68.i32].i32 :=.i32 0.i32;
+		t70.i32 :=.i32 getfield(this, index.i32).i32;
+		t71.i32 :=.i32 field[t70.i32].i32;
+		field[t70.i32].i32 :=.i32 0.i32;
+		t72.i32 :=.i32 getfield(this, index.i32).i32;
+		t73.i32 :=.i32 field[t72.i32].i32;
+		field[t72.i32].i32 :=.i32 0.i32;
+		t74.i32 :=.i32 getfield(this, index.i32).i32;
+		t75.i32 :=.i32 field[t74.i32].i32;
+		field[t74.i32].i32 :=.i32 0.i32;
+		t76.i32 :=.i32 getfield(this, index.i32).i32;
+		t77.i32 :=.i32 field[t76.i32].i32;
+		field[t76.i32].i32 :=.i32 0.i32;
+		t78.i32 :=.i32 getfield(this, index.i32).i32;
+		t79.i32 :=.i32 field[t78.i32].i32;
+		field[t78.i32].i32 :=.i32 0.i32;
+		t80.i32 :=.i32 getfield(this, index.i32).i32;
+		t81.i32 :=.i32 field[t80.i32].i32;
+		field[t80.i32].i32 :=.i32 0.i32;
+		t82.i32 :=.i32 getfield(this, index.i32).i32;
+		t83.i32 :=.i32 field[t82.i32].i32;
+		field[t82.i32].i32 :=.i32 0.i32;
+		t84.i32 :=.i32 getfield(this, index.i32).i32;
+		t85.i32 :=.i32 field[t84.i32].i32;
+		field[t84.i32].i32 :=.i32 0.i32;
+		t86.i32 :=.i32 getfield(this, index.i32).i32;
+		t87.i32 :=.i32 field[t86.i32].i32;
+		field[t86.i32].i32 :=.i32 0.i32;
+		t88.i32 :=.i32 getfield(this, index.i32).i32;
+		t89.i32 :=.i32 field[t88.i32].i32;
+		field[t88.i32].i32 :=.i32 0.i32;
+		t90.i32 :=.i32 getfield(this, index.i32).i32;
+		t91.i32 :=.i32 field[t90.i32].i32;
+		field[t90.i32].i32 :=.i32 0.i32;
+		t92.i32 :=.i32 getfield(this, index.i32).i32;
+		t93.i32 :=.i32 field[t92.i32].i32;
+		field[t92.i32].i32 :=.i32 0.i32;
+		t94.i32 :=.i32 getfield(this, index.i32).i32;
+		t95.i32 :=.i32 field[t94.i32].i32;
+		field[t94.i32].i32 :=.i32 0.i32;
+		t96.i32 :=.i32 getfield(this, index.i32).i32;
+		t97.i32 :=.i32 field[t96.i32].i32;
+		field[t96.i32].i32 :=.i32 0.i32;
+		t98.i32 :=.i32 getfield(this, index.i32).i32;
+		t99.i32 :=.i32 field[t98.i32].i32;
+		field[t98.i32].i32 :=.i32 0.i32;
+		t100.i32 :=.i32 getfield(this, index.i32).i32;
+		t101.i32 :=.i32 field[t100.i32].i32;
+		field[t100.i32].i32 :=.i32 0.i32;
+		t102.i32 :=.i32 getfield(this, index.i32).i32;
+		t103.i32 :=.i32 field[t102.i32].i32;
+		field[t102.i32].i32 :=.i32 0.i32;
+		t104.i32 :=.i32 getfield(this, index.i32).i32;
+		t105.i32 :=.i32 field[t104.i32].i32;
+		field[t104.i32].i32 :=.i32 0.i32;
+		t106.i32 :=.i32 getfield(this, index.i32).i32;
+		t107.i32 :=.i32 field[t106.i32].i32;
+		field[t106.i32].i32 :=.i32 0.i32;
+		t108.i32 :=.i32 getfield(this, index.i32).i32;
+		t109.i32 :=.i32 field[t108.i32].i32;
+		field[t108.i32].i32 :=.i32 0.i32;
+		t110.i32 :=.i32 getfield(this, index.i32).i32;
+		t111.i32 :=.i32 field[t110.i32].i32;
+		field[t110.i32].i32 :=.i32 0.i32;
+		t112.i32 :=.i32 getfield(this, index.i32).i32;
+		t113.i32 :=.i32 field[t112.i32].i32;
+		field[t112.i32].i32 :=.i32 0.i32;
+		t114.i32 :=.i32 getfield(this, index.i32).i32;
+		t115.i32 :=.i32 field[t114.i32].i32;
+		field[t114.i32].i32 :=.i32 0.i32;
+		t116.i32 :=.i32 getfield(this, index.i32).i32;
+		t117.i32 :=.i32 field[t116.i32].i32;
+		field[t116.i32].i32 :=.i32 0.i32;
+		t118.i32 :=.i32 getfield(this, index.i32).i32;
+		t119.i32 :=.i32 field[t118.i32].i32;
+		field[t118.i32].i32 :=.i32 0.i32;
+		t120.i32 :=.i32 getfield(this, index.i32).i32;
+		t121.i32 :=.i32 field[t120.i32].i32;
+		field[t120.i32].i32 :=.i32 0.i32;
+		t122.i32 :=.i32 getfield(this, index.i32).i32;
+		t123.i32 :=.i32 field[t122.i32].i32;
+		field[t122.i32].i32 :=.i32 0.i32;
+		t124.i32 :=.i32 getfield(this, index.i32).i32;
+		t125.i32 :=.i32 field[t124.i32].i32;
+		field[t124.i32].i32 :=.i32 0.i32;
+		t126.i32 :=.i32 getfield(this, index.i32).i32;
+		t127.i32 :=.i32 field[t126.i32].i32;
+		field[t126.i32].i32 :=.i32 0.i32;
+		t128.i32 :=.i32 getfield(this, index.i32).i32;
+		t129.i32 :=.i32 field[t128.i32].i32;
+		field[t128.i32].i32 :=.i32 0.i32;
+		t130.i32 :=.i32 getfield(this, index.i32).i32;
+		t131.i32 :=.i32 field[t130.i32].i32;
+		field[t130.i32].i32 :=.i32 0.i32;
+		t132.i32 :=.i32 getfield(this, index.i32).i32;
+		t133.i32 :=.i32 field[t132.i32].i32;
+		field[t132.i32].i32 :=.i32 0.i32;
+		t134.i32 :=.i32 getfield(this, index.i32).i32;
+		t135.i32 :=.i32 field[t134.i32].i32;
+		field[t134.i32].i32 :=.i32 0.i32;
+		t136.i32 :=.i32 getfield(this, index.i32).i32;
+		t137.i32 :=.i32 field[t136.i32].i32;
+		field[t136.i32].i32 :=.i32 0.i32;
+		t138.i32 :=.i32 getfield(this, index.i32).i32;
+		t139.i32 :=.i32 field[t138.i32].i32;
+		field[t138.i32].i32 :=.i32 0.i32;
+		t140.i32 :=.i32 getfield(this, index.i32).i32;
+		t141.i32 :=.i32 field[t140.i32].i32;
+		field[t140.i32].i32 :=.i32 0.i32;
+		t142.i32 :=.i32 getfield(this, index.i32).i32;
+		t143.i32 :=.i32 field[t142.i32].i32;
+		field[t142.i32].i32 :=.i32 0.i32;
+		t144.i32 :=.i32 getfield(this, index.i32).i32;
+		t145.i32 :=.i32 field[t144.i32].i32;
+		field[t144.i32].i32 :=.i32 0.i32;
+		t146.i32 :=.i32 getfield(this, index.i32).i32;
+		t147.i32 :=.i32 field[t146.i32].i32;
+		field[t146.i32].i32 :=.i32 0.i32;
+		t148.i32 :=.i32 getfield(this, index.i32).i32;
+		t149.i32 :=.i32 field[t148.i32].i32;
+		field[t148.i32].i32 :=.i32 0.i32;
+		t150.i32 :=.i32 getfield(this, index.i32).i32;
+		t151.i32 :=.i32 field[t150.i32].i32;
+		field[t150.i32].i32 :=.i32 0.i32;
+		t152.i32 :=.i32 getfield(this, index.i32).i32;
+		t153.i32 :=.i32 field[t152.i32].i32;
+		field[t152.i32].i32 :=.i32 0.i32;
+		t154.i32 :=.i32 getfield(this, index.i32).i32;
+		t155.i32 :=.i32 field[t154.i32].i32;
+		field[t154.i32].i32 :=.i32 0.i32;
+		t156.i32 :=.i32 getfield(this, index.i32).i32;
+		t157.i32 :=.i32 field[t156.i32].i32;
+		field[t156.i32].i32 :=.i32 0.i32;
+		t158.i32 :=.i32 getfield(this, index.i32).i32;
+		t159.i32 :=.i32 field[t158.i32].i32;
+		field[t158.i32].i32 :=.i32 0.i32;
+		t160.i32 :=.i32 getfield(this, index.i32).i32;
+		t161.i32 :=.i32 field[t160.i32].i32;
+		field[t160.i32].i32 :=.i32 0.i32;
+		t162.i32 :=.i32 getfield(this, index.i32).i32;
+		t163.i32 :=.i32 field[t162.i32].i32;
+		field[t162.i32].i32 :=.i32 0.i32;
+		t164.i32 :=.i32 getfield(this, index.i32).i32;
+		t165.i32 :=.i32 field[t164.i32].i32;
+		field[t164.i32].i32 :=.i32 0.i32;
+		t166.i32 :=.i32 getfield(this, index.i32).i32;
+		t167.i32 :=.i32 field[t166.i32].i32;
+		field[t166.i32].i32 :=.i32 0.i32;
+		t168.i32 :=.i32 getfield(this, index.i32).i32;
+		t169.i32 :=.i32 field[t168.i32].i32;
+		field[t168.i32].i32 :=.i32 0.i32;
+		t170.i32 :=.i32 getfield(this, index.i32).i32;
+		t171.i32 :=.i32 field[t170.i32].i32;
+		field[t170.i32].i32 :=.i32 0.i32;
+		t172.i32 :=.i32 getfield(this, index.i32).i32;
+		t173.i32 :=.i32 field[t172.i32].i32;
+		field[t172.i32].i32 :=.i32 0.i32;
+		t174.i32 :=.i32 getfield(this, index.i32).i32;
+		t175.i32 :=.i32 field[t174.i32].i32;
+		field[t174.i32].i32 :=.i32 0.i32;
+		t176.i32 :=.i32 getfield(this, index.i32).i32;
+		t177.i32 :=.i32 field[t176.i32].i32;
+		field[t176.i32].i32 :=.i32 0.i32;
+		t178.i32 :=.i32 getfield(this, index.i32).i32;
+		t179.i32 :=.i32 field[t178.i32].i32;
+		field[t178.i32].i32 :=.i32 0.i32;
+		t180.i32 :=.i32 getfield(this, index.i32).i32;
+		t181.i32 :=.i32 field[t180.i32].i32;
+		field[t180.i32].i32 :=.i32 0.i32;
+		t182.i32 :=.i32 getfield(this, index.i32).i32;
+		t183.i32 :=.i32 field[t182.i32].i32;
+		field[t182.i32].i32 :=.i32 0.i32;
+		t184.i32 :=.i32 getfield(this, index.i32).i32;
+		t185.i32 :=.i32 field[t184.i32].i32;
+		field[t184.i32].i32 :=.i32 0.i32;
+		t186.i32 :=.i32 getfield(this, index.i32).i32;
+		t187.i32 :=.i32 field[t186.i32].i32;
+		field[t186.i32].i32 :=.i32 0.i32;
+		t188.i32 :=.i32 getfield(this, index.i32).i32;
+		t189.i32 :=.i32 field[t188.i32].i32;
+		field[t188.i32].i32 :=.i32 0.i32;
+		t190.i32 :=.i32 getfield(this, index.i32).i32;
+		t191.i32 :=.i32 field[t190.i32].i32;
+		field[t190.i32].i32 :=.i32 0.i32;
+		t192.i32 :=.i32 getfield(this, index.i32).i32;
+		t193.i32 :=.i32 field[t192.i32].i32;
+		field[t192.i32].i32 :=.i32 0.i32;
+		t194.i32 :=.i32 getfield(this, index.i32).i32;
+		t195.i32 :=.i32 field[t194.i32].i32;
+		field[t194.i32].i32 :=.i32 0.i32;
+		t196.i32 :=.i32 getfield(this, index.i32).i32;
+		t197.i32 :=.i32 field[t196.i32].i32;
+		field[t196.i32].i32 :=.i32 0.i32;
+		t198.i32 :=.i32 getfield(this, index.i32).i32;
+		t199.i32 :=.i32 field[t198.i32].i32;
+		field[t198.i32].i32 :=.i32 0.i32;
+		t200.i32 :=.i32 getfield(this, index.i32).i32;
+		t201.i32 :=.i32 field[t200.i32].i32;
+		field[t200.i32].i32 :=.i32 0.i32;
+		t202.i32 :=.i32 getfield(this, index.i32).i32;
+		t203.i32 :=.i32 field[t202.i32].i32;
+		field[t202.i32].i32 :=.i32 0.i32;
+		ret.array.i32 field.array.i32;
+	}
+	.method public update().bool {
+		t1.array.i32 :=.array.i32 getfield(this, field.array.i32).array.i32;
+		t2.i32 :=.i32 arraylength(t1.array.i32).i32;
+		t3.array.i32 :=.array.i32 new(array, t2.i32).array.i32;
+		newField.array.i32 :=.array.i32 t3.array.i32;
+		i.i32 :=.i32 0.i32;
+		Loop23:
+			t4.array.i32 :=.array.i32 getfield(this, field.array.i32).array.i32;
+			t5.i32 :=.i32 arraylength(t4.array.i32).i32;
+			if(i.i32 <.i32 t5.i32) goto Body23;
+		goto EndLoop23;
+		Body23:
+			t6.array.i32 :=.array.i32 getfield(this, field.array.i32).array.i32;
+			t7.i32 :=.i32 t6[i.i32].i32;
+			cur.i32 :=.i32 t7.i32;
+			t8.i32 :=.i32 invokevirtual(this, "getLiveNeighborN_int", i.i32).i32;
+			neighN.i32 :=.i32 t8.i32;
+			t9.bool :=.bool cur.i32 <.bool 1.i32;
+			if(t9.bool &&.bool t9.bool) goto else25;
+				t10.i32 :=.i32 getfield(this, UNDERPOP_LIM.i32).i32;
+				t11.bool :=.bool invokevirtual(this, "ge_int_int", neighN.i32, t10.i32).bool;
+				t12.i32 :=.i32 getfield(this, OVERPOP_LIM.i32).i32;
+				t13.bool :=.bool invokevirtual(this, "le_int_int", neighN.i32, t12.i32).bool;
+				t14.bool :=.bool t11.bool &&.bool t13.bool;
+				goodPop.bool :=.bool t14.bool;
+				if(goodPop.bool &&.bool goodPop.bool) goto else26;
+					t15.i32 :=.i32 newField[i.i32].i32;
+					newField[i.i32].i32 :=.i32 0.i32;
+					goto endif26;
+				else26:
+					t16.i32 :=.i32 newField[i.i32].i32;
+					t17.array.i32 :=.array.i32 getfield(this, field.array.i32).array.i32;
+					t18.i32 :=.i32 t17[i.i32].i32;
+					newField[i.i32].i32 :=.i32 t18.i32;
+				endif26:
+				goto endif25;
+			else25:
+					t19.i32 :=.i32 newField[i.i32].i32;
+					newField[i.i32].i32 :=.i32 1.i32;
+					goto endif27;
+				else27:
+					t20.i32 :=.i32 newField[i.i32].i32;
+					t21.array.i32 :=.array.i32 getfield(this, field.array.i32).array.i32;
+					t22.i32 :=.i32 t21[i.i32].i32;
+					newField[i.i32].i32 :=.i32 t22.i32;
+				endif27:
+			endif25:
+			i.i32 :=.i32 i.i32 +.i32 1.i32;
+			goto Loop23;
+		EndLoop23:
+		putfield(this, field.array.i32, newField.array.i32).V;
+		ret.bool 1.bool;
+	}
+	.method public static main(a.array.String).V {
+		t1.Life :=.Life new(Life).Life;
+		invokespecial(t1.Life, "<init>").V;
+		l.Life :=.Life t1.Life;
+		invokevirtual(l.Life, "init").bool;
+		Loop24:
+			if(1.bool &&.bool 1.bool) goto Body24;
+		goto EndLoop24;
+		Body24:
+			invokevirtual(l.Life, "printField").bool;
+			invokevirtual(l.Life, "update").bool;
+			t2.i32 :=.i32 invokestatic(io, "read").i32;
+			unused.i32 :=.i32 t2.i32;
+			goto Loop24;
+		EndLoop24:
+		dummy.i32 :=.i32 0.i32;
+	}
+	.method public printField().bool {
+		i.i32 :=.i32 0.i32;
+		j.i32 :=.i32 0.i32;
+		Loop25:
+			t1.array.i32 :=.array.i32 getfield(this, field.array.i32).array.i32;
+			t2.i32 :=.i32 arraylength(t1.array.i32).i32;
+			if(i.i32 <.i32 t2.i32) goto Body25;
+		goto EndLoop25;
+		Body25:
+				invokestatic(io, "println").V;
+				j.i32 :=.i32 0.i32;
+				goto endif28;
+			else28:
+			endif28:
+			t3.array.i32 :=.array.i32 getfield(this, field.array.i32).array.i32;
+			t4.i32 :=.i32 t3[i.i32].i32;
+			invokestatic(io, "print", t4.i32).V;
+			i.i32 :=.i32 i.i32 +.i32 1.i32;
+			j.i32 :=.i32 j.i32 +.i32 1.i32;
+			goto Loop25;
+		EndLoop25:
+		invokestatic(io, "println").V;
+		invokestatic(io, "println").V;
+		ret.bool 1.bool;
+	}
+	.method public getLiveNeighborN_int(absPos.i32).i32 {
+		ret_escape.i32 :=.i32 0.i32;
+		t1.array.i32 :=.array.i32 invokevirtual(this, "getNeighborCoords_int", $1.absPos.i32).array.i32;
+		neigh.array.i32 :=.array.i32 t1.array.i32;
+		i.i32 :=.i32 0.i32;
+		Loop26:
+			t2.i32 :=.i32 arraylength(neigh.array.i32).i32;
+			if(i.i32 <.i32 t2.i32) goto Body26;
+		goto EndLoop26;
+		Body26:
+				ret_escape.i32 :=.i32 ret_escape.i32 +.i32 1.i32;
+				goto endif29;
+			else29:
+			endif29:
+			i.i32 :=.i32 i.i32 +.i32 1.i32;
+			goto Loop26;
+		EndLoop26:
+		ret.i32 ret_escape.i32;
+	}
+	.method public ge_int_int(a.i32, b.i32).bool {
+		t1.bool :=.bool invokevirtual(this, "gt_int_int", $1.a.i32, $2.b.i32).bool;
+		t2.bool :=.bool t1.bool !.bool t1.bool;
+		t3.bool :=.bool invokevirtual(this, "eq_int_int", $1.a.i32, $2.b.i32).bool;
+		t4.bool :=.bool t3.bool !.bool t3.bool;
+		t5.bool :=.bool t2.bool &&.bool t4.bool;
+		t6.bool :=.bool t5.bool !.bool t5.bool;
+		ret.bool t6.bool;
+	}
+	.method public getNeighborCoords_int(absPos.i32).array.i32 {
+		t1.array.i32 :=.array.i32 invokevirtual(this, "cartIdx_int", $1.absPos.i32).array.i32;
+		cart.array.i32 :=.array.i32 t1.array.i32;
+		t2.i32 :=.i32 getfield(this, index.i32).i32;
+		t3.i32 :=.i32 cart[t2.i32].i32;
+		x.i32 :=.i32 t3.i32;
+		t4.i32 :=.i32 getfield(this, index.i32).i32;
+		t5.i32 :=.i32 cart[t4.i32].i32;
+		y.i32 :=.i32 t5.i32;
+		t6.i32 :=.i32 getfield(this, xMax.i32).i32;
+		if(x.i32 >=.i32 t6.i32) goto else30;
+			downX.i32 :=.i32 x.i32 +.i32 1.i32;
+				upX.i32 :=.i32 x.i32 -.i32 1.i32;
+				goto endif31;
+			else31:
+				upX.i32 :=.i32 xMax.i32;
+			endif31:
+			goto endif30;
+		else30:
+			downX.i32 :=.i32 0.i32;
+			upX.i32 :=.i32 x.i32 -.i32 1.i32;
+		endif30:
+		t10.i32 :=.i32 getfield(this, yMax.i32).i32;
+		if(y.i32 >=.i32 t10.i32) goto else32;
+			downY.i32 :=.i32 y.i32 +.i32 1.i32;
+				upY.i32 :=.i32 y.i32 -.i32 1.i32;
+				goto endif33;
+			else33:
+				upY.i32 :=.i32 yMax.i32;
+			endif33:
+			goto endif32;
+		else32:
+			downY.i32 :=.i32 0.i32;
+			upY.i32 :=.i32 y.i32 -.i32 1.i32;
+		endif32:
+		t14.array.i32 :=.array.i32 new(array, 8.i32).array.i32;
+		ret_escape.array.i32 :=.array.i32 t14.array.i32;
+		t15.i32 :=.i32 getfield(this, index.i32).i32;
+		t16.i32 :=.i32 ret_escape[t15.i32].i32;
+		t17.i32 :=.i32 invokevirtual(this, "trIdx_int_int", x.i32, upY.i32).i32;
+		ret_escape[t15.i32].i32 :=.i32 t17.i32;
+		t18.i32 :=.i32 getfield(this, index.i32).i32;
+		t19.i32 :=.i32 ret_escape[t18.i32].i32;
+		t20.i32 :=.i32 invokevirtual(this, "trIdx_int_int", upX.i32, upY.i32).i32;
+		ret_escape[t18.i32].i32 :=.i32 t20.i32;
+		t21.i32 :=.i32 getfield(this, index.i32).i32;
+		t22.i32 :=.i32 ret_escape[t21.i32].i32;
+		t23.i32 :=.i32 invokevirtual(this, "trIdx_int_int", upX.i32, y.i32).i32;
+		ret_escape[t21.i32].i32 :=.i32 t23.i32;
+		t24.i32 :=.i32 getfield(this, index.i32).i32;
+		t25.i32 :=.i32 ret_escape[t24.i32].i32;
+		t26.i32 :=.i32 invokevirtual(this, "trIdx_int_int", upX.i32, downY.i32).i32;
+		ret_escape[t24.i32].i32 :=.i32 t26.i32;
+		t27.i32 :=.i32 getfield(this, index.i32).i32;
+		t28.i32 :=.i32 ret_escape[t27.i32].i32;
+		t29.i32 :=.i32 invokevirtual(this, "trIdx_int_int", x.i32, downY.i32).i32;
+		ret_escape[t27.i32].i32 :=.i32 t29.i32;
+		t30.i32 :=.i32 getfield(this, index.i32).i32;
+		t31.i32 :=.i32 ret_escape[t30.i32].i32;
+		t32.i32 :=.i32 invokevirtual(this, "trIdx_int_int", downX.i32, downY.i32).i32;
+		ret_escape[t30.i32].i32 :=.i32 t32.i32;
+		t33.i32 :=.i32 getfield(this, index.i32).i32;
+		t34.i32 :=.i32 ret_escape[t33.i32].i32;
+		t35.i32 :=.i32 invokevirtual(this, "trIdx_int_int", downX.i32, y.i32).i32;
+		ret_escape[t33.i32].i32 :=.i32 t35.i32;
+		t36.i32 :=.i32 getfield(this, index.i32).i32;
+		t37.i32 :=.i32 ret_escape[t36.i32].i32;
+		t38.i32 :=.i32 invokevirtual(this, "trIdx_int_int", downX.i32, upY.i32).i32;
+		ret_escape[t36.i32].i32 :=.i32 t38.i32;
+		ret.array.i32 ret_escape.array.i32;
+	}
+	.method public cartIdx_int(absPos.i32).array.i32 {
+		t1.i32 :=.i32 getfield(this, xMax.i32).i32;
+		t2.i32 :=.i32 t1.i32 +.i32 1.i32;
+		xLim.i32 :=.i32 t2.i32;
+		y.i32 :=.i32 $1.absPos.i32 /.i32 xLim.i32;
+		t4.i32 :=.i32 y.i32 *.i32 xLim.i32;
+		t5.i32 :=.i32 $1.absPos.i32 -.i32 t4.i32;
+		x.i32 :=.i32 t5.i32;
+		t6.i32 :=.i32 getfield(this, index.i32).i32;
+		t7.array.i32 :=.array.i32 new(array, t6.i32).array.i32;
+		ret_escape.array.i32 :=.array.i32 t7.array.i32;
+		t8.i32 :=.i32 getfield(this, index.i32).i32;
+		t9.i32 :=.i32 ret_escape[t8.i32].i32;
+		ret_escape[t8.i32].i32 :=.i32 x.i32;
+		t10.i32 :=.i32 getfield(this, index.i32).i32;
+		t11.i32 :=.i32 ret_escape[t10.i32].i32;
+		ret_escape[t10.i32].i32 :=.i32 y.i32;
+		ret.array.i32 ret_escape.array.i32;
+	}
+	.method public gt_int_int(a.i32, b.i32).bool {
+		t1.bool :=.bool invokevirtual(this, "le_int_int", $1.a.i32, $2.b.i32).bool;
+		t2.bool :=.bool t1.bool !.bool t1.bool;
+		ret.bool t2.bool;
+	}
+	.method public eq_int_int(a.i32, b.i32).bool {
+		t1.bool :=.bool invokevirtual(this, "lt_int_int", $1.a.i32, $2.b.i32).bool;
+		t2.bool :=.bool t1.bool !.bool t1.bool;
+		t3.bool :=.bool invokevirtual(this, "lt_int_int", $2.b.i32, $1.a.i32).bool;
+		t4.bool :=.bool t3.bool !.bool t3.bool;
+		t5.bool :=.bool t2.bool &&.bool t4.bool;
+		ret.bool t5.bool;
+	}
+}

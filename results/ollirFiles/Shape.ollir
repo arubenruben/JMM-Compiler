@@ -1,0 +1,14 @@
+Shape {
+	.field protected area.i32;
+	.field protected perimeter.i32;
+	.construct Shape().V{
+		invokespecial(this,"<init>").V;
+	}
+	.method public printStats().bool {
+		t1.i32 :=.i32 getfield(this, area.i32).i32;
+		invokestatic(io, "println", t1.i32).V;
+		t2.i32 :=.i32 getfield(this, perimeter.i32).i32;
+		invokestatic(io, "println", t2.i32).V;
+		ret.bool 1.bool;
+	}
+}

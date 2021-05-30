@@ -1,0 +1,8 @@
+InvokeStatic {
+	.construct InvokeStatic().V{
+		invokespecial(this,"<init>").V;
+	}
+	.method public static main(args.array.String).V {
+		invokestatic(ioPlus, "printResult", 3.i32).V;
+	}
+}

@@ -1,0 +1,17 @@
+InvokeVirtual {
+	.construct InvokeVirtual().V{
+		invokespecial(this,"<init>").V;
+	}
+	.method public sum_int_int(a.i32, b.i32).i32 {
+		c.i32 :=.i32 $1.a.i32 +.i32 $2.b.i32;
+		ret.i32 c.i32;
+	}
+	.method public static main(args.array.String).V {
+		t1.InvokeVirtual :=.InvokeVirtual new(InvokeVirtual).InvokeVirtual;
+		invokespecial(t1.InvokeVirtual, "<init>").V;
+		t.InvokeVirtual :=.InvokeVirtual t1.InvokeVirtual;
+		t2.i32 :=.i32 invokevirtual(t.InvokeVirtual, "sum_int_int", 5.i32, 3.i32).i32;
+		a.i32 :=.i32 t2.i32;
+		invokestatic(io, "print", a.i32).V;
+	}
+}

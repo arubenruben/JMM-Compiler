@@ -1,0 +1,94 @@
+QuickSort {
+	.construct QuickSort().V{
+		invokespecial(this,"<init>").V;
+	}
+	.method public quicksort_int_arr(L.array.i32).bool {
+		t1.i32 :=.i32 arraylength($1.L.array.i32).i32;
+		t2.i32 :=.i32 t1.i32 -.i32 1.i32;
+		t3.bool :=.bool invokevirtual(this, "quicksort_int_arr_int_int", $1.L.array.i32, 0.i32, t2.i32).bool;
+		ret.bool t3.bool;
+	}
+	.method public quicksort_int_arr_int_int(L.array.i32, lo.i32, hi.i32).bool {
+		if($2.lo.i32 >=.i32 $3.hi.i32) goto else57;
+			t1.i32 :=.i32 invokevirtual(this, "partition_int_arr_int_int", $1.L.array.i32, $2.lo.i32, $3.hi.i32).i32;
+			p.i32 :=.i32 t1.i32;
+			t2.i32 :=.i32 p.i32 -.i32 1.i32;
+			invokevirtual(this, "quicksort_int_arr_int_int", $1.L.array.i32, $2.lo.i32, t2.i32).bool;
+			t3.i32 :=.i32 p.i32 +.i32 1.i32;
+			invokevirtual(this, "quicksort_int_arr_int_int", $1.L.array.i32, t3.i32, $3.hi.i32).bool;
+			goto endif57;
+		else57:
+		endif57:
+		ret.bool 1.bool;
+	}
+	.method public partition_int_arr_int_int(L.array.i32, lo.i32, hi.i32).i32 {
+		t1.i32 :=.i32 $1.L[$3.hi.i32].i32;
+		p.i32 :=.i32 t1.i32;
+		i.i32 :=.i32 $2.lo.i32;
+		j.i32 :=.i32 $2.lo.i32;
+		Loop35:
+			if(j.i32 <.i32 $3.hi.i32) goto Body35;
+		goto EndLoop35;
+		Body35:
+			t2.i32 :=.i32 $1.L[j.i32].i32;
+			if(t2.i32 >=.i32 p.i32) goto else58;
+				t3.i32 :=.i32 $1.L[i.i32].i32;
+				tmp.i32 :=.i32 t3.i32;
+				t4.i32 :=.i32 $1.L[i.i32].i32;
+				t5.i32 :=.i32 $1.L[j.i32].i32;
+				$1.L[i.i32].i32 :=.i32 t5.i32;
+				t6.i32 :=.i32 $1.L[j.i32].i32;
+				$1.L[j.i32].i32 :=.i32 tmp.i32;
+				i.i32 :=.i32 i.i32 +.i32 1.i32;
+				goto endif58;
+			else58:
+			endif58:
+			j.i32 :=.i32 j.i32 +.i32 1.i32;
+			goto Loop35;
+		EndLoop35:
+		t9.i32 :=.i32 $1.L[i.i32].i32;
+		tmp.i32 :=.i32 t9.i32;
+		t10.i32 :=.i32 $1.L[i.i32].i32;
+		t11.i32 :=.i32 $1.L[$3.hi.i32].i32;
+		$1.L[i.i32].i32 :=.i32 t11.i32;
+		t12.i32 :=.i32 $1.L[$3.hi.i32].i32;
+		$1.L[$3.hi.i32].i32 :=.i32 tmp.i32;
+		ret.i32 i.i32;
+	}
+	.method public static main(a.array.String).V {
+		t1.array.i32 :=.array.i32 new(array, 10.i32).array.i32;
+		L.array.i32 :=.array.i32 t1.array.i32;
+		i.i32 :=.i32 0.i32;
+		Loop36:
+			t2.i32 :=.i32 arraylength(L.array.i32).i32;
+			if(i.i32 <.i32 t2.i32) goto Body36;
+		goto EndLoop36;
+		Body36:
+			t3.i32 :=.i32 L[i.i32].i32;
+			t4.i32 :=.i32 arraylength(L.array.i32).i32;
+			t5.i32 :=.i32 t4.i32 -.i32 i.i32;
+			L[i.i32].i32 :=.i32 t5.i32;
+			i.i32 :=.i32 i.i32 +.i32 1.i32;
+			goto Loop36;
+		EndLoop36:
+		t7.QuickSort :=.QuickSort new(QuickSort).QuickSort;
+		invokespecial(t7.QuickSort, "<init>").V;
+		q.QuickSort :=.QuickSort t7.QuickSort;
+		invokevirtual(q.QuickSort, "quicksort_int_arr", L.array.i32).bool;
+		invokevirtual(q.QuickSort, "printL_int_arr", L.array.i32).bool;
+	}
+	.method public printL_int_arr(L.array.i32).bool {
+		i.i32 :=.i32 0.i32;
+		Loop37:
+			t1.i32 :=.i32 arraylength($1.L.array.i32).i32;
+			if(i.i32 <.i32 t1.i32) goto Body37;
+		goto EndLoop37;
+		Body37:
+			t2.i32 :=.i32 $1.L[i.i32].i32;
+			invokestatic(io, "println", t2.i32).V;
+			i.i32 :=.i32 i.i32 +.i32 1.i32;
+			goto Loop37;
+		EndLoop37:
+		ret.bool 1.bool;
+	}
+}
