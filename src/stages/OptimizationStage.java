@@ -227,7 +227,7 @@ public class OptimizationStage implements JmmOptimization {
         StringBuilder code = new StringBuilder();
         switch (statement.getKind()) {
             case "While" -> {
-                if (!optimizeActive)
+                if (optimizeActive)
                     code.append(dealWithLoopUnrolling(statement));
                 else
                     code.append(dealWithWhile(statement));
