@@ -1,19 +1,12 @@
-import io;
+import ioPlus;
 
-class Example {
+class HelloWorld {
     public static void main(String[] args) {
-        int sum;
-        int i;
-        int[] A;
-        A = new int[4];
-
-        sum = 0;
-        i = 0;
-
-        while (i < 50) {
-            sum = sum + 1;
-            i = i + 1;
-        }
-        io.println(sum);
+        int[] a;
+        int c;
+        c = 4;
+        a = new int[10];
+        a[c] = 10;
+        ioPlus.printResult(a[c]);
     }
 }

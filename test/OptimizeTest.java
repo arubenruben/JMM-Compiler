@@ -139,7 +139,7 @@ public class OptimizeTest {
     }
 
     @Test
-    public void testConstantFolding() {
+    public void testConstantPropagation() {
         var result = TestUtils.optimize(SpecsIo.getResource("custom/optimization/test_constant_propagation.jmm"), true);
         var output = TestUtils.backend(result).run();
         assertEquals("0", output.trim());

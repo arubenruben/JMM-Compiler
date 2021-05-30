@@ -38,6 +38,8 @@ public class OptimizationStage implements JmmOptimization {
         // Convert the AST to a String containing the equivalent OLLIR code
         symbolTable = (SymbolTableIml) semanticsResult.getSymbolTable();
 
+        optimizeActive = false;
+
         String ollirCode = ollirCodeString();
 
         System.out.println(ollirCode);
