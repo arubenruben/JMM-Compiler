@@ -82,10 +82,10 @@ public class BackendTest {
         var result = TestUtils.backend(SpecsIo.getResource("custom/backend/specific/test_if_condition.jmm"));
         TestUtils.noErrors(result.getReports());
         var output = result.run();
-        assertEquals("10\n" +
-                "5\n" +
-                "0\n" +
-                "2\n" +
+        assertEquals("10" + System.lineSeparator() +
+                "5" + System.lineSeparator() +
+                "0" + System.lineSeparator() +
+                "2" + System.lineSeparator() +
                 "5", output.trim());
     }
 
@@ -104,7 +104,7 @@ public class BackendTest {
         var result = TestUtils.backend(SpecsIo.getResource("custom/backend/specific/test_extends_2.jmm"));
         TestUtils.noErrors(result.getReports());
         var output = result.run();
-        assertEquals("12\n" +
+        assertEquals("12" + System.lineSeparator() +
                 "16", output.trim());
     }
 
@@ -128,14 +128,14 @@ public class BackendTest {
         var result = TestUtils.backend(SpecsIo.getResource("custom/backend/top/generic/SimpleCalculator.jmm"));
         TestUtils.noErrors(result.getReports());
         var output = result.run();
-        assertEquals("11\n" +
-                "6\n" +
-                "21\n" +
-                "2\n" +
-                "8\n" +
-                "120\n" +
-                "15\n" +
-                "18\n" +
+        assertEquals("11" + System.lineSeparator() +
+                "6" + System.lineSeparator() +
+                "21" + System.lineSeparator() +
+                "2" + System.lineSeparator() +
+                "8" + System.lineSeparator() +
+                "120" + System.lineSeparator() +
+                "15" + System.lineSeparator() +
+                "18" + System.lineSeparator() +
                 "27", output.trim());
     }
 
@@ -144,9 +144,9 @@ public class BackendTest {
         var result = TestUtils.backend(SpecsIo.getResource("custom/backend/top/extras/MethodOverload.jmm"));
         TestUtils.noErrors(result.getReports());
         var output = result.run();
-        assertEquals("1\n" +
-                "1\n" +
-                "0\n" +
+        assertEquals("1" + System.lineSeparator() +
+                "1" + System.lineSeparator() +
+                "0" + System.lineSeparator() +
                 "0", output.trim());
     }
 
@@ -164,11 +164,11 @@ public class BackendTest {
         var result = TestUtils.backend(SpecsIo.getResource("custom/backend/top/generic/ConvertorUnits.jmm"));
         TestUtils.noErrors(result.getReports());
         var output = result.run();
-        assertEquals("10\n" +
-                "100\n" +
-                "1000\n" +
-                "1\n" +
-                "1\n" +
+        assertEquals("10" + System.lineSeparator() +
+                "100" + System.lineSeparator() +
+                "1000" + System.lineSeparator() +
+                "1" + System.lineSeparator() +
+                "1" + System.lineSeparator() +
                 "1", output.trim());
     }
 
@@ -177,10 +177,10 @@ public class BackendTest {
         var result = TestUtils.backend(SpecsIo.getResource("custom/backend/top/generic/ArrayLibrary.jmm"));
         TestUtils.noErrors(result.getReports());
         var output = result.run();
-        assertEquals("01234567890123456789\n" +
-                "1\n" +
-                "012\n" +
-                "3\n" +
+        assertEquals("01234567890123456789" + System.lineSeparator() +
+                "1" + System.lineSeparator() +
+                "012" + System.lineSeparator() +
+                "3" + System.lineSeparator() +
                 "0123456789", output.trim());
     }
 
@@ -204,7 +204,7 @@ public class BackendTest {
     public void testOverall3() {
         var result = TestUtils.backend(SpecsIo.getResource("custom/backend/overall/overall3.jmm"));
         TestUtils.noErrors(result.getReports());
-        var output = result.run("12\n13");
+        var output = result.run("12" + System.lineSeparator() + "13");
         assertEquals("25", output.trim());
     }
 
@@ -212,7 +212,7 @@ public class BackendTest {
     public void testOverall4() {
         var result = TestUtils.backend(SpecsIo.getResource("custom/backend/overall/overall4.jmm"));
         TestUtils.noErrors(result.getReports());
-        var output = result.run("12\n");
+        var output = result.run("12" + System.lineSeparator());
         assertEquals("12", output.trim());
     }
 
@@ -221,10 +221,10 @@ public class BackendTest {
         var result = TestUtils.backend(SpecsIo.getResource("custom/backend/overall/overall5.jmm"));
         TestUtils.noErrors(result.getReports());
         var output = result.run();
-        assertEquals("3\n" +
-                "3\n" +
-                "3\n" +
-                "3\n" +
+        assertEquals("3" + System.lineSeparator() +
+                "3" + System.lineSeparator() +
+                "3" + System.lineSeparator() +
+                "3" + System.lineSeparator() +
                 "3", output.trim());
     }
 }
