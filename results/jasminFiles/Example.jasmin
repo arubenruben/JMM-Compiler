@@ -24,13 +24,13 @@
 	iconst_0
 	istore 4
 
-	iload_1
-	iload_2
+	iconst_0
+	iconst_0
 	iadd
 	istore 5
 
-	iload_3
-	iload 4
+	iconst_0
+	iconst_0
 	iadd
 	istore 5
 

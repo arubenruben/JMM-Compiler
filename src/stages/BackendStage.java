@@ -206,7 +206,6 @@ public class BackendStage implements JasminBackend {
 
         stringBuilder.append(instructions);
 
-        //TODO see if we can do this or if have to check if the return type of the method is void
         if (!returnInstruction)
             stringBuilder.append("\treturn\n");
 
@@ -398,7 +397,7 @@ public class BackendStage implements JasminBackend {
                 // Type of method invocation
                 stringBuilder.append("\t").append(OllirAccesser.getCallInvocation(callInstruction).toString()).append(" ");
 
-                //TODO check if this is the correct wat to do it
+
                 if (callType == CallType.invokestatic) {
                     stringBuilder.append(firstArg.getName()).append(".");
                 } else {
@@ -470,9 +469,6 @@ public class BackendStage implements JasminBackend {
                 // load value array
                 stringBuilder.append(dealWithLoadInstruction(method, firstArg));
                 stringBuilder.append("\tarraylength\n");
-            }
-            //TODO check if we will have any call instruction of this kind
-            case ldc -> {
             }
         }
         return stringBuilder.toString();
