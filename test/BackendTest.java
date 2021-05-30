@@ -69,6 +69,15 @@ public class BackendTest {
     }
 
     @Test
+    public void testLife() {
+        var result = TestUtils.optimize(SpecsIo.getResource("fixtures/public/Simple.jmm"), true);
+        TestUtils.noErrors(result.getReports());
+        var output =  TestUtils.backend(result).run();
+        assertEquals("30", output.trim());
+    }
+
+
+    @Test
     public void testIfCondition() {
         var result = TestUtils.backend(SpecsIo.getResource("custom/backend/specific/test_if_condition.jmm"));
         TestUtils.noErrors(result.getReports());

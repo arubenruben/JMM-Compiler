@@ -91,7 +91,9 @@ public class Main implements JmmParser {
             return;
         }
 
-        //Utils.printSymbolTable(semanticsResults.getSymbolTable());
+        System.out.println("-----------------------------------------------");
+        Utils.printSymbolTable(semanticsResults.getSymbolTable());
+        System.out.println("-----------------------------------------------");
 
         final JmmOptimization optimization = new OptimizationStage();
 
@@ -101,6 +103,8 @@ public class Main implements JmmParser {
 
         final JasminResult jasminResult = backend.toJasmin(ollirResult);
 
+        System.out.println("-----------------------------------------------");
+        System.out.println("Execution Result:");
         jasminResult.run();
     }
 
