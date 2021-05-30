@@ -24,21 +24,18 @@ public class OptimizationStage implements JmmOptimization {
     private static int numberWhiles = 0;
     final private static String offset = "\t\t";
     private static boolean optimizeActive;
-    public static List<ConstantPropagatingHelper> constantPropagating = new ArrayList<>();
+    public static List<ConstantPropagatingHelper> constantPropagating;
     private List<ConstantPropagatingHelper> deniedAdd;
 
     @Override
     public OllirResult toOllir(JmmSemanticsResult semanticsResult, boolean optimize) {
-        optimizeActive = optimize;
-        return toOllir(semanticsResult);
-    }
 
-    @Override
-    public OllirResult toOllir(JmmSemanticsResult semanticsResult) {
+        optimizeActive = optimize;
+        constantPropagating = new ArrayList<>();
+        deniedAdd = new ArrayList<>();
+
         // Convert the AST to a String containing the equivalent OLLIR code
         symbolTable = (SymbolTableIml) semanticsResult.getSymbolTable();
-
-        optimizeActive = false;
 
         String ollirCode = ollirCodeString();
 
@@ -51,11 +48,34 @@ public class OptimizationStage implements JmmOptimization {
         return new OllirResult(semanticsResult, ollirCode, reports);
     }
 
+    @Override
+    public OllirResult toOllir(JmmSemanticsResult semanticsResult) {
+        // Convert the AST to a String containing the equivalent OLLIR code
+        optimizeActive = false;
+
+        constantPropagating = new ArrayList<>();
+        deniedAdd = new ArrayList<>();
+
+
+        symbolTable = (SymbolTableIml) semanticsResult.getSymbolTable();
+
+
+        String ollirCode = ollirCodeString();
+
+        System.out.println(ollirCode);
+
+        // More reports from this stage
+        List<Report> reports = new ArrayList<>();
+
+        // Fac {} must be replaced by ollirCode
+        return new OllirResult(semanticsResult, ollirCode, reports);
+    }
+
+
     private String ollirCodeString() {
         StringBuilder code = new StringBuilder();
 
         code.append(dealWithClassHeaders());
-
 
         for (MethodSymbol method : symbolTable.getMethodsHashmap().values()) {
 
@@ -64,7 +84,7 @@ public class OptimizationStage implements JmmOptimization {
             currentMethod = method;
 
             if (optimizeActive) {
-                this.constantPropagating = new ArrayList<>();
+                constantPropagating = new ArrayList<>();
                 this.deniedAdd = new ArrayList<>();
                 bootstrapConstantPropagating(method.getNode().getChildren().get(2));
             }

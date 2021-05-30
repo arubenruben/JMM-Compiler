@@ -1,12 +1,22 @@
-import ioPlus;
+import io;
 
-class HelloWorld {
+class Example {
     public static void main(String[] args) {
-        int[] a;
-        int c;
-        c = 4;
-        a = new int[10];
-        a[c] = 10;
-        ioPlus.printResult(a[c]);
+        int nothing1;
+        int nothing2;
+        int nothing3;
+        int nothing4;
+        int result;
+
+        nothing1 = 0;
+        nothing2 = 0;
+        nothing3 = 0;
+        nothing4 = 0;
+
+        result = nothing1 + nothing2;
+        result = nothing3 + nothing4;
+
+        io.println(result);
+
     }
 }

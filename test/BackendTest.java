@@ -70,9 +70,9 @@ public class BackendTest {
 
     @Test
     public void testLife() {
-        var result = TestUtils.optimize(SpecsIo.getResource("fixtures/public/Simple.jmm"), true);
+        var result = TestUtils.backend(SpecsIo.getResource("fixtures/public/Simple.jmm"));
         TestUtils.noErrors(result.getReports());
-        var output =  TestUtils.backend(result).run();
+        var output = result.run();
         assertEquals("30", output.trim());
     }
 
