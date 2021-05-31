@@ -8,8 +8,6 @@ import pt.up.fe.comp.jmm.ollir.OllirResult;
 import pt.up.fe.comp.jmm.report.Report;
 import pt.up.fe.comp.jmm.report.Stage;
 
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -56,7 +54,7 @@ public class BackendStage implements JasminBackend {
             List<Report> reports = new ArrayList<>();
 
             System.out.println(jasminCode);
-            writeToFile(jasminCode, "results/jasminFiles/" + ollirResult.getSymbolTable().getClassName() + ".jasmin");
+            writeToFile(jasminCode, "results/jasminFiles/" + ollirResult.getSymbolTable().getClassName() + ".j");
             return new JasminResult(ollirResult, jasminCode, reports);
 
         } catch (OllirErrorException e) {
@@ -298,10 +296,9 @@ public class BackendStage implements JasminBackend {
 
             Operand dest = (Operand) assignInstruction.getDest();
 
-            if(dealWithIincInstruction(method, dest, rhs, stringBuilder)){
+            if (dealWithIincInstruction(method, dest, rhs, stringBuilder)) {
                 return stringBuilder.toString();
-            }
-            else {
+            } else {
                 stringBuilder.append(dealWithInstruction(method, rhs));
                 stringBuilder.append(dealWithStoreInstruction(method, dest));
             }
@@ -309,7 +306,7 @@ public class BackendStage implements JasminBackend {
         return stringBuilder.toString();
     }
 
-    private Boolean dealWithIincInstruction(Method method, Operand dest, Instruction rhs, StringBuilder stringBuilder){
+    private Boolean dealWithIincInstruction(Method method, Operand dest, Instruction rhs, StringBuilder stringBuilder) {
         try {
             if (rhs.getInstType() != InstructionType.BINARYOPER)
                 return false;
@@ -348,12 +345,11 @@ public class BackendStage implements JasminBackend {
                 stringBuilder.append("\tiinc ").append(getVarVirtualRegister(method, dest.getName())).append(" " + Integer.parseInt(literalElement.getLiteral())).append("\n");
                 return true;
             }
+        } catch (Exception ignored) {
         }
-        catch(Exception ignored){}
 
         return false;
     }
-
 
 
     private String dealWithArrayOperandAssignInstruction(Method method, ArrayOperand arrayOperand, Instruction rhs) {
@@ -684,12 +680,11 @@ public class BackendStage implements JasminBackend {
 
         if (0 <= integer && integer <= 5)
             stringBuilder.append("\ticonst_");
-        else if(-128 <= integer && integer <= 127)
+        else if (-128 <= integer && integer <= 127)
             stringBuilder.append("\tbipush ");
-        else if(-32768 <= integer && integer <= 32767){
+        else if (-32768 <= integer && integer <= 32767) {
             stringBuilder.append("\tsipush ");
-        }
-        else{
+        } else {
             stringBuilder.append("\tldc ");
         }
 
@@ -720,7 +715,7 @@ public class BackendStage implements JasminBackend {
         return stringBuilder.toString();
     }
 
-    private String dealWithLoadInstruction(Method method, Operand origin){
+    private String dealWithLoadInstruction(Method method, Operand origin) {
         StringBuilder stringBuilder = new StringBuilder();
 
         stringBuilder.append("\t").append(dealWithStoreLoadReturnType(origin.getType()));
