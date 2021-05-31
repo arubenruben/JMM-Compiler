@@ -107,7 +107,7 @@ Checkpoint 1:
 
 Grammar:
 
-* Initial Grammar translation: PREENCHER
+* Initial Grammar translation: All members
 * Deal with comments in JavaCC: Rúben and José
 * Remove Left Recursions: Rúben
 * Remove demanding Lookaheads: Rúben
