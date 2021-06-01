@@ -15,6 +15,13 @@ JMM Compiler is a compiler of the Java-- programming language. JMM Compiler esta
 
 Like the most used compilers, JMM Compiler needs to deal with error possibility in all stages of its execution. This means that more than a simple compilation pipeline, JMM Compiler includes error handling and error displaying techniques to boost the user experience of the user and help in the task of finding errors in the code given as input.
 
+### Compilation and Execution
+
+In order to compile JMM Compiler you should run gradle build over your terminal
+
+The recommended version of Java is Java 15. In order to test the program you can run gradle test over your terminal to execute the tests.
+
+The compiler was tested in Windows and Debian based Linux distros.
 
 ### SYNTATIC ANALYSIS:
 
@@ -100,7 +107,7 @@ Checkpoint 1:
 
 Grammar:
 
-* Initial Grammar translation: PREENCHER
+* Initial Grammar translation: All members
 * Deal with comments in JavaCC: Rúben and José
 * Remove Left Recursions: Rúben
 * Remove demanding Lookaheads: Rúben
@@ -152,6 +159,7 @@ Setup the gradle testing properly: José
 ### CONS:
 
 * The code could be more well designed. This project was done incrementally, but at the beginning, we were not aware of the overview of tasks we were required to accomplish. This interfered a lot in the project's development and required us to step back to things considered already done that required small arrangements.
+* JMM Compiler uses third party code design by teacher João Bispo, His code has its own requirement and specifications. There are certain keywords that could break his code and therefore our project. Those reserved keywords should had been taken into account since the beginning of project in order to force the user to avoid its use. That was not possible to follow.    
 * Our code has difficulties in dealing with imported classes and with inherited methods
 * JMM Compiler is only able to deal automatically with a single compiled class. This fact makes the solution without any interest outside academia. If there were a feature planned to deal with multiple file compilation, JMM Compiler would compete with any other JMM Compiler in the market.
 * Since the specification does not introduce the possibility of having strings, the compiler is very limited in its tasks. It makes it harder to do real-world examples for testing purposes.

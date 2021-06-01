@@ -4,6 +4,7 @@ import pt.up.fe.comp.jmm.JmmParserResult;
 import pt.up.fe.comp.jmm.analysis.JmmSemanticsResult;
 import pt.up.fe.comp.jmm.jasmin.JasminBackend;
 import pt.up.fe.comp.jmm.jasmin.JasminResult;
+import pt.up.fe.comp.jmm.jasmin.JasminUtils;
 import pt.up.fe.comp.jmm.ollir.JmmOptimization;
 import pt.up.fe.comp.jmm.ollir.OllirResult;
 import pt.up.fe.comp.jmm.report.Report;
@@ -14,6 +15,7 @@ import stages.AnalysisStage;
 import stages.BackendStage;
 import stages.OptimizationStage;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringReader;
@@ -21,6 +23,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+
+import static utils.GeneralUtils.writeToFile;
 
 
 public class Main implements JmmParser {
@@ -86,6 +90,8 @@ public class Main implements JmmParser {
 
         final JmmSemanticsResult semanticsResults = new AnalysisStage().semanticAnalysis(parserResult);
 
+        writeToFile(semanticsResults.getSymbolTable().print(), "results/symbols.txt");
+
         if (TestUtils.getNumReports(semanticsResults.getReports(), ReportType.ERROR) > 0) {
             Utils.printReports(semanticsResults.getReports());
             return;
@@ -105,7 +111,13 @@ public class Main implements JmmParser {
 
         System.out.println("-----------------------------------------------");
         System.out.println("Execution Result:");
+
         jasminResult.run();
+
+        System.out.println("-----------------------------------------------");
+
+        JasminUtils.assemble(new File("results/jasminFiles/" + ollirResult.getSymbolTable().getClassName() + ".j"), new File("./results"));
+
     }
 
     public static void writeToFile(String content, String path) {

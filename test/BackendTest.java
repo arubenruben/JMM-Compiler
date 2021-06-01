@@ -2,6 +2,10 @@ import org.junit.Test;
 import pt.up.fe.comp.TestUtils;
 import pt.up.fe.specs.util.SpecsIo;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -72,7 +76,7 @@ public class BackendTest {
     public void testLife() {
         var result = TestUtils.backend(SpecsIo.getResource("fixtures/public/Simple.jmm"));
         TestUtils.noErrors(result.getReports());
-        var output =  result.run();
+        var output = result.run();
         assertEquals("30", output.trim());
     }
 
@@ -99,11 +103,15 @@ public class BackendTest {
 
     @Test
     public void testExtends() {
-        TestUtils.backend(SpecsIo.getResource("custom/backend/specific/test_extends_1.jmm")).compile();
+        TestUtils.backend(SpecsIo.getResource("custom/backend/specific/test_extends_1.jmm")).compile(new File("tmp"));
 
         var result = TestUtils.backend(SpecsIo.getResource("custom/backend/specific/test_extends_2.jmm"));
         TestUtils.noErrors(result.getReports());
-        var output = result.run();
+        final String classPath = TestUtils.getLibsClasspath();
+        final List<String> classPathFinal = new ArrayList<>();
+        classPathFinal.add(classPath);
+        classPathFinal.add("./tmp");
+        var output = result.run(new ArrayList<>(), classPathFinal, "");
         assertEquals("12" + System.lineSeparator() +
                 "16", output.trim());
     }
