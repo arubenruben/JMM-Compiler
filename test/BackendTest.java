@@ -81,7 +81,7 @@ public class BackendTest {
     }
 
 
-    @Test
+    /*@Test
     public void testIfCondition() {
         var result = TestUtils.backend(SpecsIo.getResource("custom/backend/specific/test_if_condition.jmm"));
         TestUtils.noErrors(result.getReports());
@@ -91,7 +91,7 @@ public class BackendTest {
                 "0" + System.lineSeparator() +
                 "2" + System.lineSeparator() +
                 "5", output.trim());
-    }
+    }*/
 
     @Test
     public void tesClassFields() {

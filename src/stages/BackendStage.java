@@ -496,8 +496,11 @@ public class BackendStage implements JasminBackend {
                 AddRemoveFromStack(-2);
             }
             case NOT, NOTB -> {
-                stringBuilder.append("\tineg\n");
-                stringBuilder.append("\tifeq ");
+                stringBuilder.append("\ticonst_1\n");
+                AddRemoveFromStack(1);
+                stringBuilder.append("\tixor\n");
+                AddRemoveFromStack(-1);
+                stringBuilder.append("\tifne ");
                 AddRemoveFromStack(-1);
             }
             case GTE -> {
@@ -572,7 +575,9 @@ public class BackendStage implements JasminBackend {
 
         switch (operation.getOpType()) {
             case NOT -> {
-                stringBuilder.append("\tineg\n");
+                stringBuilder.append("\ticonst_1\n");
+                AddRemoveFromStack(1);
+                stringBuilder.append("\tixor\n");
                 AddRemoveFromStack(-1);
             }
         }
@@ -612,7 +617,10 @@ public class BackendStage implements JasminBackend {
                 AddRemoveFromStack(-1);
             }
             case NOT, NOTB -> {
-                stringBuilder.append("\tineg\n");
+                stringBuilder.append("\ticonst_1\n");
+                AddRemoveFromStack(1);
+                stringBuilder.append("\tixor\n");
+                AddRemoveFromStack(-1);
             }
             case LTH -> {
                 String labelFalse = "LabelFalse" + binaryOpInstruction.getId();

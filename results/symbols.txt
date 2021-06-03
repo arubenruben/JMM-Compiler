@@ -1,0 +1,29 @@
+Class: Turing
+Super: java.lang.Object
+
+Imports:
+ - io
+
+Fields:
+ - int curPos
+ - int[] MTABLE
+ - int R
+ - int NUM_SYMBOLS
+ - int[] WTABLE
+ - int[] TAPE
+ - int[] NTABLE
+ - int H
+ - int L
+ - int curState
+ - int NUM_STATES
+
+Methods: 9
+ - int ss2i_int_int(int symbol, int state)
+ - boolean setTrans_int_int_int_int_int(int symbol, int state, int write, int move, int next)
+ - boolean init_bb_4s2sy()
+ - int[] initGeneric_int_int_int(int NUM_ST, int NUM_SY, int TAPE_LENGTH)
+ - void main(String[] a)
+ - boolean init_bb_3s2sy()
+ - boolean run()
+ - boolean printTape()
+ - boolean trans()
