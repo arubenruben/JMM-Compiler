@@ -574,7 +574,8 @@
 
 	iload 10
 	iload 10
-	if_icmpeq else
+	iand
+	ifne else
 
 	iconst_0
 	invokestatic io.print(I)V

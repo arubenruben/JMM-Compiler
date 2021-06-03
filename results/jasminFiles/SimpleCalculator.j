@@ -50,14 +50,14 @@
 
 	iload_1
 	iconst_0
-	if_icmpge else
+	if_icmpge else6
 
 	iconst_0
 	istore_2
 
-	goto endif
+	goto endif6
 
-	else:
+	else6:
 	aload_0
 	iload_1
 	iconst_3
@@ -67,7 +67,7 @@
 	iload_3
 	istore_2
 
-	endif:
+	endif6:
 	iload_2
 	ireturn
 
@@ -113,14 +113,14 @@
 
 	iload_1
 	iconst_0
-	if_icmpge else1
+	if_icmpge else7
 
 	iconst_1
 	istore_2
 
-	goto endif1
+	goto endif7
 
-	else1:
+	else7:
 	Loop1:
 	iload_3
 	iconst_1
@@ -144,7 +144,7 @@
 	goto Loop1
 
 	EndLoop1:
-	endif1:
+	endif7:
 	iload_2
 	ireturn
 
@@ -159,34 +159,34 @@
 
 	iload_1
 	iconst_1
-	if_icmpge else2
+	if_icmpge else8
 
 	iconst_0
 	istore_3
 
-	goto endif2
+	goto endif8
 
-	else2:
+	else8:
 	iload_2
 	iconst_1
-	if_icmpge else3
+	if_icmpge else9
 
 	iconst_0
 	istore_3
 
-	goto endif3
+	goto endif9
 
-	else3:
+	else9:
 	iload_1
 	iload_2
-	if_icmpge else4
+	if_icmpge else10
 
 	iconst_0
 	istore_3
 
-	goto endif4
+	goto endif10
 
-	else4:
+	else10:
 	aload_0
 	iload_2
 	invokevirtual SimpleCalculator.factorial_int(I)I
@@ -220,9 +220,9 @@
 	iload 9
 	istore_3
 
-	endif4:
-	endif2:
-	endif3:
+	endif8:
+	endif9:
+	endif10:
 	iload_3
 	ireturn
 
@@ -265,34 +265,34 @@
 
 	iload_1
 	iconst_1
-	if_icmpge else5
+	if_icmpge else11
 
 	iconst_0
 	istore_3
 
-	goto endif5
+	goto endif11
 
-	else5:
+	else11:
 	iload_2
 	iconst_1
-	if_icmpge else6
+	if_icmpge else12
 
 	iconst_0
 	istore_3
 
-	goto endif6
+	goto endif12
 
-	else6:
+	else12:
 	iload_1
 	iload_2
-	if_icmpge else7
+	if_icmpge else13
 
 	iconst_0
 	istore_3
 
-	goto endif7
+	goto endif13
 
-	else7:
+	else13:
 	aload_0
 	iload_1
 	invokevirtual SimpleCalculator.factorial_int(I)I
@@ -316,9 +316,9 @@
 	iload 7
 	istore_3
 
-	endif6:
-	endif7:
-	endif5:
+	endif11:
+	endif12:
+	endif13:
 	iload_3
 	ireturn
 
@@ -458,24 +458,24 @@
 
 	iload_1
 	iconst_0
-	if_icmpge else8
+	if_icmpge else14
 
 	iconst_0
 	istore_3
 
-	goto endif8
+	goto endif14
 
-	else8:
+	else14:
 	iload_2
 	iconst_0
-	if_icmpge else9
+	if_icmpge else15
 
 	iconst_0
 	istore_3
 
-	goto endif9
+	goto endif15
 
-	else9:
+	else15:
 	iload_1
 	iload_2
 	imul
@@ -489,8 +489,8 @@
 	iload 5
 	istore_3
 
-	endif8:
-	endif9:
+	endif15:
+	endif14:
 	iload_3
 	ireturn
 

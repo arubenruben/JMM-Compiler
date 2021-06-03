@@ -492,8 +492,10 @@ public class BackendStage implements JasminBackend {
 
         switch (condBranchInstruction.getCondOperation().getOpType()) {
             case AND, ANDB -> {
-                stringBuilder.append("\tif_icmpeq ");
-                AddRemoveFromStack(-2);
+                stringBuilder.append("\tiand\n");
+                AddRemoveFromStack(-1);
+                stringBuilder.append("\tifne ");
+                AddRemoveFromStack(-1);
             }
             case NOT, NOTB -> {
                 stringBuilder.append("\ticonst_1\n");

@@ -87,18 +87,18 @@
 	EndLoop12:
 	iload 7
 	bipush 100
-	if_icmpge else13
+	if_icmpge else19
 
 	iload 7
 	invokestatic io.println(I)V
 
-	goto endif13
+	goto endif19
 
-	else13:
+	else19:
 	iconst_0
 	invokestatic io.println(I)V
 
-	endif13:
+	endif19:
 	iconst_0
 	istore 7
 

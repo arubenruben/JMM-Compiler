@@ -64,5 +64,16 @@ class IfCondition {
     	     // 5
     	     io.println(c);
 
+    	    if(!(!(5 < 10) && !(6 < 20))){
+                c = 5;
+            }
+            else{
+                c = 0;
+            }
+
+             // 5
+             io.println(c);
+
+
     	}
 }

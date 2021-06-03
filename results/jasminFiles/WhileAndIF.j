@@ -27,22 +27,22 @@
 
 	iload_1
 	iload_2
-	if_icmpge else10
+	if_icmpge else16
 
 	iload_1
 	iconst_1
 	isub
 	istore 6
 
-	goto endif10
+	goto endif16
 
-	else10:
+	else16:
 	iload_2
 	iconst_1
 	isub
 	istore 6
 
-	endif10:
+	endif16:
 	Loop2:
 	iconst_0
 	iconst_1

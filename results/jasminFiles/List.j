@@ -60,7 +60,7 @@
 
 	iload 5
 	iload 6
-	if_icmpge else11
+	if_icmpge else17
 
 	aload_0
 	aload 4
@@ -96,13 +96,13 @@
 
 	pop
 	pop
-	goto endif11
+	goto endif17
 
-	else11:
+	else17:
 	iconst_0
 	istore 11
 
-	endif11:
+	endif17:
 	iconst_1
 	ireturn
 
@@ -141,7 +141,7 @@
 
 	iload 8
 	iload 5
-	if_icmpge else12
+	if_icmpge else18
 
 	aload_1
 	iload 6
@@ -178,10 +178,10 @@
 
 	iinc 6 1
 
-	goto endif12
+	goto endif18
 
-	endif12:
-	else12:
+	else18:
+	endif18:
 	iinc 7 1
 
 	goto Loop5

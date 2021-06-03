@@ -54,19 +54,19 @@
 	EndLoop13:
 	iload 4
 	iconst_0
-	if_icmpge else14
+	if_icmpge else20
 
 	iconst_0
 	istore 4
 
-	goto endif14
+	goto endif20
 
-	else14:
+	else20:
 	iconst_0
 	istore 4
 
-	endif14:
 	Loop14:
+	endif20:
 	aload_3
 	arraylength
 	istore 8
@@ -93,20 +93,20 @@
 
 	iload 4
 	iconst_0
-	if_icmpge else15
+	if_icmpge else21
 
 	iconst_0
 	istore 5
 
-	goto endif15
+	goto endif21
 
-	else15:
+	else21:
 	iload 5
 	iconst_0
 	imul
 	istore 5
 
-	endif15:
+	endif21:
 	iinc 4 1
 
 	goto Loop14
